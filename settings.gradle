@@ -1,0 +1,4 @@
+rootProject.name = 'ai_prog'
+
+include 'a_star'
+
