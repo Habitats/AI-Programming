@@ -7,7 +7,7 @@ public class Tile {
 
 
   public enum State {
-    FILLED, OUTLINE, EMPTY;
+    OBSTICLE, OUTLINE, EMPTY, START, GOAL;
   }
 
   public final int x;
@@ -26,5 +26,10 @@ public class Tile {
 
   public State getState() {
     return state;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("%s: %s, %s", Tile.class.getSimpleName(), x, y);
   }
 }

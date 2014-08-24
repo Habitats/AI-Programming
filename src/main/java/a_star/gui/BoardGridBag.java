@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import a_star.interfaces.AstarButtonListener;
 import a_star.models.Board;
 import aiprog.Log;
 
@@ -20,6 +21,10 @@ public class BoardGridBag {
   private JTextArea inputField;
   private BoardCanvas drawingCanvas;
   private JPanel mainPanel;
+  private JButton loadButton;
+  private JTextField statusField;
+  private AstarButtonListener listener;
+  private JFrame frame;
 
   private void buildFrame() {
     JFrame.setDefaultLookAndFeelDecorated(true);
@@ -28,8 +33,11 @@ public class BoardGridBag {
     } catch (Exception e) {
       Log.v(TAG, "invalid look and feel");
     }
-    JFrame frame = new JFrame();
+    frame = new JFrame();
     mainPanel.setPreferredSize(new Dimension(500, 300));
+    inputField.setPreferredSize(new Dimension(100, 0));
+    inputField.setLineWrap(true);
+    Log.setStatusField(statusField);
     frame.add(mainPanel);
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.pack();
@@ -41,20 +49,34 @@ public class BoardGridBag {
     runButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-
+        listener.runClicked();
       }
     });
     resetButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-
+        listener.resetClicked();
       }
     });
+    loadButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+       listener.loadClicked();
+      }
+    });
+    buildFrame();
   }
 
   public void setAdapter(Board adapter) {
     drawingCanvas.setAdapter(adapter);
-    buildFrame();
+    frame.repaint();
   }
 
+  public String getInput() {
+    return inputField.getText().trim();
+  }
+
+  public void setListener(AstarButtonListener listener) {
+    this.listener = listener;
+  }
 }

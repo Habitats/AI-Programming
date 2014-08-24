@@ -15,6 +15,8 @@ public class Board implements Iterable<List<Tile>> {
   public final int height;
   private BoardListener listener;
   private List<List<Tile>> board;
+  private Tile start;
+  private Tile goal;
 
   public Board(int width, int height) {
     this.width = width;
@@ -39,7 +41,7 @@ public class Board implements Iterable<List<Tile>> {
       }
       board.add(column);
     }
-    listener.notifyDataChanged();
+    notifyDataChanged();
   }
 
   public void clear() {
@@ -52,7 +54,13 @@ public class Board implements Iterable<List<Tile>> {
 
   public void set(Tile tile) {
     board.get(tile.x).get(tile.y).setState(tile.getState());
-    listener.notifyDataChanged();
+    notifyDataChanged();
+  }
+
+  private void notifyDataChanged() {
+    if (listener != null) {
+      listener.notifyDataChanged();
+    }
   }
 
   public void setListener(BoardListener listener) {
@@ -62,5 +70,23 @@ public class Board implements Iterable<List<Tile>> {
   @Override
   public Iterator<List<Tile>> iterator() {
     return board.iterator();
+  }
+
+  public void setGoal(Tile goal) {
+    this.goal = goal;
+    set(goal);
+  }
+
+  public void setStart(Tile start) {
+    this.start = start;
+    set(start);
+  }
+
+  public Tile getStart() {
+    return start;
+  }
+
+  public Tile getGoal() {
+    return goal;
   }
 }

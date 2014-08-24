@@ -30,13 +30,11 @@ public class BoardCanvas extends JPanel implements BoardListener {
   @Override
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
+    updateGridMetrics();
     paintsBoard(g);
   }
 
   private void paintsBoard(Graphics g) {
-    if (board == null) {
-      return;
-    }
     for (int x = 0; x < board.width; x++) {
       for (int y = 0; y < board.height; y++) {
         Tile tile = board.get(x, y);
@@ -51,7 +49,7 @@ public class BoardCanvas extends JPanel implements BoardListener {
     int y = getHeight() - tileHeight - tile.y * tileHeight;
 
     switch (tile.getState()) {
-      case FILLED:
+      case OBSTICLE:
         g.setColor(Color.RED);
         g.fillRect(x, y, tileWidth, tileHeight);
         break;
@@ -63,15 +61,17 @@ public class BoardCanvas extends JPanel implements BoardListener {
         g.setColor(Color.BLACK);
         g.fillRect(x, y, tileWidth, tileHeight);
         break;
+      case START:
+        g.setColor(Color.BLUE);
+        g.fillRect(x, y, tileWidth, tileHeight);
+        break;
+      case GOAL:
+        g.setColor(Color.ORANGE);
+        g.fillRect(x, y, tileWidth, tileHeight);
+        break;
     }
     g.setColor(Color.WHITE);
     g.drawRect(x, y, tileWidth, tileHeight);
-  }
-
-  @Override
-  public void repaint() {
-    super.repaint();
-    updateGridMetrics();
   }
 
   private void updateGridMetrics() {
