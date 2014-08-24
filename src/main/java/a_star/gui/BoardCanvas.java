@@ -46,8 +46,10 @@ public class BoardCanvas extends JPanel implements BoardListener {
   }
 
   private void paintTile(Graphics g, Tile tile) {
+    // set origin to be the left bottom corner
     int x = tile.x * tileWidth;
     int y = getHeight() - tileHeight - tile.y * tileHeight;
+
     switch (tile.getState()) {
       case FILLED:
         g.setColor(Color.RED);
@@ -58,8 +60,8 @@ public class BoardCanvas extends JPanel implements BoardListener {
         g.drawRect(x, y, tileWidth, tileHeight);
         break;
       case EMPTY:
-        g.setColor(Color.WHITE);
-        g.drawRect(x, y, tileWidth, tileHeight);
+        g.setColor(Color.BLACK);
+        g.fillRect(x, y, tileWidth, tileHeight);
         break;
     }
     g.setColor(Color.WHITE);
