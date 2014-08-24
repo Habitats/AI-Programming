@@ -49,7 +49,8 @@ public class ShortestPathController implements AstarButtonListener {
   }
 
   @Override
-  public void runClicked() {
+  public void astarClicked() {
+    Log.v(TAG, "A* not implemented!");
   }
 
   @Override
@@ -60,5 +61,15 @@ public class ShortestPathController implements AstarButtonListener {
   @Override
   public void loadClicked() {
     initializeBoard();
+  }
+
+  @Override
+  public void dfsClicked() {
+    Log.v(TAG, "DFS not implemented!");
+  }
+
+  @Override
+  public void bfsClicked() {
+    Log.v(TAG, "BFS not implemented!");
   }
 }

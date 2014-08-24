@@ -6,9 +6,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import aiprog.Log;
 import shortestpath.interfaces.AstarButtonListener;
 import shortestpath.models.Board;
-import aiprog.Log;
 
 /**
  * Created by Patrick on 23.08.2014.
@@ -23,6 +23,8 @@ public class BoardGridBag {
   private JPanel mainPanel;
   private JButton loadButton;
   private JTextField statusField;
+  private JButton BFSButton;
+  private JButton DFSButton;
   private AstarButtonListener listener;
   private JFrame frame;
 
@@ -49,7 +51,7 @@ public class BoardGridBag {
     runButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        listener.runClicked();
+        listener.astarClicked();
       }
     });
     resetButton.addActionListener(new ActionListener() {
@@ -61,7 +63,19 @@ public class BoardGridBag {
     loadButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-       listener.loadClicked();
+        listener.loadClicked();
+      }
+    });
+    BFSButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        listener.bfsClicked();
+      }
+    });
+    DFSButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+listener.dfsClicked();
       }
     });
     buildFrame();

@@ -5,9 +5,13 @@ package shortestpath.interfaces;
  */
 public interface AstarButtonListener {
 
-  void runClicked();
+  void astarClicked();
 
   void resetClicked();
 
   void loadClicked();
+
+  void dfsClicked();
+
+  void bfsClicked();
 }
