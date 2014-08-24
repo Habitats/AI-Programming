@@ -72,14 +72,16 @@ public class Board implements Iterable<List<Tile>> {
     return board.iterator();
   }
 
-  public void setGoal(Tile goal) {
+  public Board setGoal(Tile goal) {
     this.goal = goal;
     set(goal);
+    return this;
   }
 
-  public void setStart(Tile start) {
+  public Board setStart(Tile start) {
     this.start = start;
     set(start);
+    return this;
   }
 
   public Tile getStart() {
@@ -88,5 +90,25 @@ public class Board implements Iterable<List<Tile>> {
 
   public Tile getGoal() {
     return goal;
+  }
+
+  public boolean hasTile(int x, int y) {
+    try {
+      Tile tile = board.get(x).get(y);
+      return tile.getState() != Tile.State.OBSTICLE;
+    } catch (IndexOutOfBoundsException e) {
+      return false;
+    }
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder mapAsString = new StringBuilder();
+    for (int x = 0; x < width; x++) {
+      for (int y = 0; y < height; y++) {
+        mapAsString.append(board.get(x).get(y).getState());
+      }
+    }
+    return mapAsString.toString();
   }
 }

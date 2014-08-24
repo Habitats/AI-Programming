@@ -7,7 +7,17 @@ public class Tile {
 
 
   public enum State {
-    OBSTICLE, OUTLINE, EMPTY, START, GOAL;
+    OBSTICLE("x"), OUTLINE("."), EMPTY("_"), START("@"), GOAL("$"), PATH("o");
+    private final String x;
+
+    State(String x) {
+      this.x = x;
+    }
+
+    @Override
+    public String toString() {
+      return x;
+    }
   }
 
   public final int x;

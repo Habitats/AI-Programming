@@ -22,8 +22,8 @@ public class Log {
     log(String.format("%s > %s > %s", getPrettyDate(), tag, msg));
   }
 
-  public static void v(String tag, String msg) {
-    log(String.format("%s > %s > %s", getPrettyDate(), tag, msg));
+  public static void v(String tag, Object msg) {
+    log(String.format("%s > %s > %s", getPrettyDate(), tag, msg.toString()));
   }
 
   private static void log(String msg) {

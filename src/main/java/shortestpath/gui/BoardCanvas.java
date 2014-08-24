@@ -71,6 +71,10 @@ public class BoardCanvas extends JPanel implements BoardListener {
         g.setColor(Color.ORANGE);
         g.fillRect(x, y, tileWidth, tileHeight);
         break;
+      case PATH:
+        g.setColor(Color.MAGENTA);
+        g.fillRect(x, y, tileWidth, tileHeight);
+        break;
     }
     g.setColor(Color.WHITE);
     g.drawRect(x, y, tileWidth, tileHeight);

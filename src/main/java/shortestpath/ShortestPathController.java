@@ -1,5 +1,7 @@
 package shortestpath;
 
+import a_star.algorithm.Astar;
+import a_star.node.Node;
 import aiprog.Log;
 import shortestpath.gui.BoardGridBag;
 import shortestpath.interfaces.AstarButtonListener;
@@ -14,6 +16,7 @@ public class ShortestPathController implements AstarButtonListener {
 
   private static final String TAG = ShortestPathController.class.getSimpleName();
   private final BoardGridBag gui;
+  private Board board;
 
   public static void main(String args[]) {
     new ShortestPathController();
@@ -22,12 +25,16 @@ public class ShortestPathController implements AstarButtonListener {
   public ShortestPathController() {
     gui = new BoardGridBag();
     gui.setListener(this);
-//    initializeTestBoard();
-//    new Astar().run();
+    initializeTestBoard2();
+  }
+
+  private void initializeTestBoard2() {
+    board = InputUtils.build("(6,6)(1, 0)(5, 5)(3, 2, 2, 2)(0, 3, 1, 3)(2, 0, 4, 2)(2, 5, 2, 1)").getBoard();
+    gui.setAdapter(board);
   }
 
   private void initializeTestBoard() {
-    Board board = new Board(6, 6);
+    board = new Board(6, 6);
     gui.setAdapter(board);
 
     board.clear();
@@ -40,8 +47,9 @@ public class ShortestPathController implements AstarButtonListener {
 
   private void initializeBoard() {
     try {
-      Board board = InputUtils.build(gui.getInput()).getBoard();
+      board = InputUtils.build(gui.getInput()).getBoard();
       gui.setAdapter(board);
+      Log.v(TAG, board);
       Log.v(TAG, "Successfully loaded input!");
     } catch (Exception e) {
       Log.v(TAG, "Unable to parse input!");
@@ -50,7 +58,13 @@ public class ShortestPathController implements AstarButtonListener {
 
   @Override
   public void astarClicked() {
-    Log.v(TAG, "A* not implemented!");
+    Astar astar = new Astar();
+    Node start = new BoardNode(board.getStart(), board);
+    Node goal = new BoardNode(board.getGoal(), board);
+    Node best = astar.search(start, goal);
+    if (best != null) {
+      best.visualize();
+    }
   }
 
   @Override

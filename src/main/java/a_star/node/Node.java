@@ -1,4 +1,4 @@
-package a_star;
+package a_star.node;
 
 import java.util.List;
 
@@ -7,35 +7,29 @@ import java.util.List;
  */
 public abstract class Node implements Comparable<Node> {
 
-  public Status getStatus() {
-    return status;
-  }
-
-  public enum Status {
-    OPENED, CLOSED
-  }
-
   private int h;
   private int g;
   private Node goal;
   private Node parent;
   private List<Node> children;
-  private Status status;
   private String state;
   private int count;
+  private boolean closed;
 
-  public Node(String state) {
+  public Node() {
+    closed = false;
+  }
+
+  protected void setChildren(List<Node> children) {
+    this.children = children;
+  }
+
+  protected void setState(String state) {
     this.state = state;
-    status = Status.OPENED;
-    generateChildren();
   }
 
   public boolean hasParent() {
     return parent != null;
-  }
-
-  public void setStatus(Status status) {
-    this.status = status;
   }
 
   public Node setParent(Node parent) {
@@ -44,7 +38,18 @@ public abstract class Node implements Comparable<Node> {
   }
 
   public String getState() {
+    if (state == null) {
+      generateState();
+    }
     return state;
+  }
+
+  public Node getParent() {
+    return parent;
+  }
+
+  public void setHeuristic(int h) {
+    this.h = h;
   }
 
   public void setCount(int count) {
@@ -56,6 +61,9 @@ public abstract class Node implements Comparable<Node> {
   }
 
   public List<Node> getChildren() {
+    if (children == null) {
+      generateChildren();
+    }
     return children;
   }
 
@@ -76,13 +84,23 @@ public abstract class Node implements Comparable<Node> {
     return h;
   }
 
-  protected abstract int tentativeG(Node parent);
+  public void setClosed() {
+    closed = true;
+  }
+
+  public boolean isClosed() {
+    return closed;
+  }
+
+  public abstract int costFrom(Node parent);
 
   protected abstract void generateChildren();
 
-  protected abstract void generateHeuristic(Node goal);
-
   protected abstract void generateState();
+
+  public abstract void generateHeuristic(Node goal);
+
+  public abstract void visualize();
 
   @Override
   public int compareTo(Node o) {
@@ -91,6 +109,10 @@ public abstract class Node implements Comparable<Node> {
 
   @Override
   public String toString() {
-    return String.format("H: %d - G: %d - F: %d", h(), g(), f());
+    return String.format("H: %d - G: %d - F: %d - State: %s", h(), g(), f(), getState());
+  }
+
+  public boolean isSolution() {
+    return h == 0;
   }
 }
