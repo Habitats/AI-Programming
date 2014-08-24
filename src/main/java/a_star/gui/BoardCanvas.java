@@ -1,0 +1,92 @@
+package a_star.gui;
+
+import java.awt.*;
+
+import javax.swing.*;
+
+import a_star.interfaces.BoardListener;
+import a_star.models.Board;
+import a_star.models.Tile;
+import aiprog.Log;
+
+/**
+ * Created by Patrick on 24.08.2014.
+ */
+public class BoardCanvas extends JPanel implements BoardListener {
+
+  private static final String TAG = BoardCanvas.class.getSimpleName();
+  private Board board;
+  private int tileHeight;
+  private int tileWidth;
+  private Board adapter;
+
+  public BoardCanvas() {
+    setBackground(Color.BLACK);
+    tileHeight = 20;
+    tileWidth = 20;
+    Log.v(TAG, getHeight() + "");
+  }
+
+  @Override
+  public void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    paintsBoard(g);
+  }
+
+  private void paintsBoard(Graphics g) {
+    if (board == null) {
+      return;
+    }
+    for (int x = 0; x < board.width; x++) {
+      for (int y = 0; y < board.height; y++) {
+        Tile tile = board.get(x, y);
+        paintTile(g, tile);
+      }
+    }
+  }
+
+  private void paintTile(Graphics g, Tile tile) {
+    int x = tile.x * tileWidth;
+    int y = getHeight() - tileHeight - tile.y * tileHeight;
+    switch (tile.getState()) {
+      case FILLED:
+        g.setColor(Color.RED);
+        g.fillRect(x, y, tileWidth, tileHeight);
+        break;
+      case OUTLINE:
+        g.setColor(Color.RED);
+        g.drawRect(x, y, tileWidth, tileHeight);
+        break;
+      case EMPTY:
+        g.setColor(Color.WHITE);
+        g.drawRect(x, y, tileWidth, tileHeight);
+        break;
+    }
+    g.setColor(Color.WHITE);
+    g.drawRect(x, y, tileWidth, tileHeight);
+  }
+
+  @Override
+  public void repaint() {
+    super.repaint();
+    updateGridMetrics();
+  }
+
+  private void updateGridMetrics() {
+    if (board == null) {
+      return;
+    }
+    tileHeight = getHeight() / board.height;
+    tileWidth = getWidth() / board.width;
+  }
+
+  @Override
+  public void notifyDataChanged() {
+    repaint();
+  }
+
+  public void setAdapter(Board board) {
+    this.board = board;
+    board.setListener(this);
+  }
+}

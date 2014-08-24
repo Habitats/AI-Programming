@@ -1,10 +1,13 @@
-package a_star;
+package a_star.gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+
+import a_star.models.Board;
+import aiprog.Log;
 
 /**
  * Created by Patrick on 23.08.2014.
@@ -15,7 +18,7 @@ public class BoardGridBag {
   private JButton runButton;
   private JButton resetButton;
   private JTextArea inputField;
-  private JPanel drawingCanvas;
+  private BoardCanvas drawingCanvas;
   private JPanel mainPanel;
 
   private void buildFrame() {
@@ -29,7 +32,6 @@ public class BoardGridBag {
     mainPanel.setPreferredSize(new Dimension(500, 300));
     frame.add(mainPanel);
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    Log.v(TAG, "yoloswagger");
     frame.pack();
     frame.setLocationRelativeTo(frame.getRootPane());
     frame.setVisible(true);
@@ -48,7 +50,11 @@ public class BoardGridBag {
 
       }
     });
+  }
 
+  public void setAdapter(Board adapter) {
+    drawingCanvas.setAdapter(adapter);
     buildFrame();
   }
+
 }

@@ -6,7 +6,6 @@ package a_star;
 public class Astar {
 
   public void run() {
-    BoardGridBag board = new BoardGridBag();
     System.out.println("yo");
   }
 }
