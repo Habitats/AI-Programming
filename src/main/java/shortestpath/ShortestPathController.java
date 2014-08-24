@@ -1,29 +1,29 @@
-package aiprog;
+package shortestpath;
 
-import a_star.Astar;
-import a_star.gui.BoardGridBag;
-import a_star.interfaces.AstarButtonListener;
-import a_star.models.Board;
-import a_star.models.Tile;
-import a_star.utils.InputUtils;
+import aiprog.Log;
+import shortestpath.gui.BoardGridBag;
+import shortestpath.interfaces.AstarButtonListener;
+import shortestpath.models.Board;
+import shortestpath.models.Tile;
+import shortestpath.utils.InputUtils;
 
 /**
  * Created by Patrick on 24.08.2014.
  */
-public class Main implements AstarButtonListener {
+public class ShortestPathController implements AstarButtonListener {
 
-  private static final String TAG = Main.class.getSimpleName();
+  private static final String TAG = ShortestPathController.class.getSimpleName();
   private final BoardGridBag gui;
 
   public static void main(String args[]) {
-    new Main();
+    new ShortestPathController();
   }
 
-  public Main() {
+  public ShortestPathController() {
     gui = new BoardGridBag();
     gui.setListener(this);
 //    initializeTestBoard();
-    new Astar().run();
+//    new Astar().run();
   }
 
   private void initializeTestBoard() {

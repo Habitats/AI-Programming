@@ -1,10 +1,10 @@
-package a_star.models;
+package shortestpath.models;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import a_star.interfaces.BoardListener;
+import shortestpath.interfaces.BoardListener;
 
 /**
  * Created by Patrick on 24.08.2014.

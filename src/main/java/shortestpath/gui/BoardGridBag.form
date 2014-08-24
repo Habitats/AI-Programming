@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="a_star.gui.BoardGridBag">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="shortestpath.gui.BoardGridBag">
   <grid id="27dc6" binding="mainPanel" layout-manager="GridBagLayout">
     <constraints>
       <xy x="20" y="20" width="608" height="414"/>
@@ -43,7 +43,7 @@
           <gridbag weightx="0.0" weighty="0.4"/>
         </constraints>
       </vspacer>
-      <component id="f4d3c" class="a_star.gui.BoardCanvas" binding="drawingCanvas">
+      <component id="f4d3c" class="shortestpath.gui.BoardCanvas" binding="drawingCanvas">
         <constraints>
           <grid row="0" column="0" row-span="5" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
           <gridbag weightx="0.9" weighty="0.0"/>

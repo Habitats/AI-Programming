@@ -1,4 +1,4 @@
-package a_star.models;
+package shortestpath.models;
 
 /**
  * Created by Patrick on 24.08.2014.

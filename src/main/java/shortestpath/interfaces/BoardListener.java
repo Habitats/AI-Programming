@@ -1,4 +1,4 @@
-package a_star.interfaces;
+package shortestpath.interfaces;
 
 /**
  * Created by Patrick on 24.08.2014.

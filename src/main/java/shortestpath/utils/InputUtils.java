@@ -1,10 +1,10 @@
-package a_star.utils;
+package shortestpath.utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import a_star.models.Board;
-import a_star.models.Tile;
+import shortestpath.models.Board;
+import shortestpath.models.Tile;
 
 /**
  * Created by Patrick on 24.08.2014.

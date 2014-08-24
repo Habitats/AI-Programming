@@ -1,4 +1,4 @@
-package a_star.gui;
+package shortestpath.gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -6,8 +6,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import a_star.interfaces.AstarButtonListener;
-import a_star.models.Board;
+import shortestpath.interfaces.AstarButtonListener;
+import shortestpath.models.Board;
 import aiprog.Log;
 
 /**

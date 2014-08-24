@@ -1,13 +1,13 @@
-package a_star.gui;
+package shortestpath.gui;
 
 import java.awt.*;
 
 import javax.swing.*;
 
-import a_star.interfaces.BoardListener;
-import a_star.models.Board;
-import a_star.models.Tile;
 import aiprog.Log;
+import shortestpath.interfaces.BoardListener;
+import shortestpath.models.Board;
+import shortestpath.models.Tile;
 
 /**
  * Created by Patrick on 24.08.2014.
@@ -35,10 +35,12 @@ public class BoardCanvas extends JPanel implements BoardListener {
   }
 
   private void paintsBoard(Graphics g) {
-    for (int x = 0; x < board.width; x++) {
-      for (int y = 0; y < board.height; y++) {
-        Tile tile = board.get(x, y);
-        paintTile(g, tile);
+    if (board != null) {
+      for (int x = 0; x < board.width; x++) {
+        for (int y = 0; y < board.height; y++) {
+          Tile tile = board.get(x, y);
+          paintTile(g, tile);
+        }
       }
     }
   }
