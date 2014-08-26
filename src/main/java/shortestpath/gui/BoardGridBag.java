@@ -27,6 +27,7 @@ public class BoardGridBag {
   private JButton BFSButton;
   private JButton DFSButton;
   private JComboBox comboBox1;
+  private JButton stepButton;
   private AstarButtonListener listener;
   private JFrame frame;
 
@@ -87,6 +88,12 @@ public class BoardGridBag {
         JComboBox cb = (JComboBox) e.getSource();
         int i = cb.getSelectedIndex();
         inputField.setText(Samples.getAstarSample(i));
+      }
+    });
+    stepButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        listener.stepClicked();
       }
     });
   }

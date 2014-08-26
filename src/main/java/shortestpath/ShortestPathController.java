@@ -15,8 +15,9 @@ import shortestpath.utils.InputUtils;
 public class ShortestPathController implements AstarButtonListener {
 
   private static final String TAG = ShortestPathController.class.getSimpleName();
-  private final BoardGridBag gui;
+  private BoardGridBag gui;
   private Board board;
+  private Astar astar;
 
   public static void main(String args[]) {
     new ShortestPathController();
@@ -24,7 +25,7 @@ public class ShortestPathController implements AstarButtonListener {
 
   public ShortestPathController() {
     gui = new BoardGridBag();
-    gui.setListener(this);
+    gui.setListener(ShortestPathController.this);
     initializeTestBoard2();
   }
 
@@ -58,13 +59,20 @@ public class ShortestPathController implements AstarButtonListener {
 
   @Override
   public void astarClicked() {
-    Astar astar = new Astar();
     Node start = new BoardNode(board.getStart(), board);
     Node goal = new BoardNode(board.getGoal(), board);
-    Node best = astar.search(start, goal);
-    if (best != null) {
-      best.visualize();
-    }
+    astar = new Astar(start, goal, new AstarCallback() {
+      @Override
+      public void finished(Node best) {
+      }
+
+      @Override
+      public void error() {
+
+      }
+    });
+
+    new Thread(astar).start();
   }
 
   @Override
@@ -85,5 +93,14 @@ public class ShortestPathController implements AstarButtonListener {
   @Override
   public void bfsClicked() {
     Log.v(TAG, "BFS not implemented!");
+  }
+
+  @Override
+  public void stepClicked() {
+    Log.v(TAG, "thread: " + Thread.currentThread().getName());
+    Log.v(TAG, astar);
+    synchronized (astar) {
+      astar.notify();
+    }
   }
 }

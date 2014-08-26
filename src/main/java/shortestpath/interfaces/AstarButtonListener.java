@@ -14,4 +14,6 @@ public interface AstarButtonListener {
   void dfsClicked();
 
   void bfsClicked();
+
+  void stepClicked();
 }

@@ -12,6 +12,7 @@ import shortestpath.models.Tile;
  */
 public class BoardNode extends Node {
 
+  private static final String TAG = BoardNode.class.getSimpleName();
   private Tile tile;
   private Board board;
 
@@ -36,6 +37,10 @@ public class BoardNode extends Node {
       for (int y = tile.y - 1; y <= tile.y + 1; y++) {
         // do not add self to its own children
         if (x == tile.x && y == tile.y) {
+          continue;
+        }
+        // disallow diagonal moves
+        if (tile.x != x && tile.y != y) {
           continue;
         }
         if (board.hasTile(x, y)) {
@@ -68,7 +73,7 @@ public class BoardNode extends Node {
   }
 
   @Override
-  public void visualize() {
+  public synchronized void visualize() {
     Node node = this;
     while (node.hasParent()) {
       Tile tile = ((BoardNode) node).getTile();

@@ -7,20 +7,30 @@ import java.util.Queue;
 
 import a_star.node.Node;
 import aiprog.Log;
+import shortestpath.AstarCallback;
 
 /**
  * Created by Patrick on 23.08.2014.
  */
-public class Astar {
+public class Astar implements Runnable {
 
   private static final String TAG = Astar.class.getSimpleName();
+  private final Node start;
+  private final Node goal;
+  private final AstarCallback callback;
   private Queue<Node> opened;
   private int count;
   private Map<String, Node> generated;
   private boolean dfs = false;
   private boolean bfs = false;
 
-  public Node search(Node start, Node goal) {
+  public Astar(Node start, Node goal, AstarCallback callback) {
+    this.start = start;
+    this.goal = goal;
+    this.callback = callback;
+  }
+
+  private Node search(Node start, Node goal) {
     start.generateHeuristic(goal);
 
     opened = new PriorityQueue<Node>();
@@ -35,7 +45,7 @@ public class Astar {
     Node current;
     while ((current = opened.poll()) != null) {
 
-//      current.visualize();
+      visualize(current);
       Log.v(TAG, current);
 
       current.setClosed();
@@ -79,6 +89,17 @@ public class Astar {
     return null;
   }
 
+  private synchronized  void visualize(Node current) {
+    current.visualize();
+      try {
+        Log.v(TAG, "waiting...");
+        wait();
+        Log.v(TAG, "continuing!");
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+  }
+
   private void attachAndEvaluate(Node child, Node parent, Node goal) {
     child.setParent(parent);
     child.setG(parent.g() + child.costFrom(parent));
@@ -93,5 +114,20 @@ public class Astar {
         propagatePathImprovement(child);
       }
     }
+  }
+
+  @Override
+  public void run() {
+    Node best = search(start, goal);
+    if (best == null) {
+      callback.error();
+    } else {
+      callback.finished(best);
+    }
+  }
+
+  @Override
+  public String toString() {
+    return super.toString();
   }
 }
