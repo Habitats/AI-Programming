@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import aiprog.Log;
+import shortestpath.Samples;
 import shortestpath.interfaces.AstarButtonListener;
 import shortestpath.models.Board;
 
@@ -25,6 +26,7 @@ public class BoardGridBag {
   private JTextField statusField;
   private JButton BFSButton;
   private JButton DFSButton;
+  private JComboBox comboBox1;
   private AstarButtonListener listener;
   private JFrame frame;
 
@@ -75,10 +77,18 @@ public class BoardGridBag {
     DFSButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-listener.dfsClicked();
+        listener.dfsClicked();
       }
     });
     buildFrame();
+    comboBox1.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        JComboBox cb = (JComboBox) e.getSource();
+        int i = cb.getSelectedIndex();
+        inputField.setText(Samples.getAstarSample(i));
+      }
+    });
   }
 
   public void setAdapter(Board adapter) {
