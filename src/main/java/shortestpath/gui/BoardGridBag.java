@@ -17,31 +17,33 @@ import shortestpath.models.Board;
 public class BoardGridBag {
 
   private static final String TAG = BoardGridBag.class.getSimpleName();
-  private JButton runButton;
-  private JButton resetButton;
-  private JTextArea inputField;
+  private BoardButton astarButton;
+  private BoardButton resetButton;
+  private BoardTextArea inputField;
   private BoardCanvas drawingCanvas;
   private JPanel mainPanel;
-  private JButton loadButton;
-  private JTextField statusField;
-  private JButton BFSButton;
-  private JButton DFSButton;
-  private JComboBox comboBox1;
-  private JButton stepButton;
+  private BoardButton loadButton;
+  private BoardTextField logField;
+  private BoardButton BFSButton;
+  private BoardButton DFSButton;
+  private BoardComboBox comboBox1;
+  private BoardButton stepButton;
+  private BoardTextField statusField;
   private AstarButtonListener listener;
   private JFrame frame;
 
   private void buildFrame() {
-    JFrame.setDefaultLookAndFeelDecorated(true);
-    try {
-      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch (Exception e) {
-      Log.v(TAG, "invalid look and feel");
-    }
+//    JFrame.setDefaultLookAndFeelDecorated(true);
+//    try {
+//      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//    } catch (Exception e) {
+//      Log.v(TAG, "invalid look and feel");
+//    }
     frame = new JFrame();
     mainPanel.setPreferredSize(new Dimension(500, 300));
     inputField.setPreferredSize(new Dimension(100, 0));
     inputField.setLineWrap(true);
+    Log.setLogField(logField);
     Log.setStatusField(statusField);
     frame.add(mainPanel);
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -51,7 +53,7 @@ public class BoardGridBag {
   }
 
   public BoardGridBag() {
-    runButton.addActionListener(new ActionListener() {
+    astarButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         listener.astarClicked();

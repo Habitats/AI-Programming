@@ -52,7 +52,7 @@ public class BoardCanvas extends JPanel implements BoardListener {
 
     switch (tile.getState()) {
       case OBSTICLE:
-        g.setColor(Color.RED);
+        g.setColor(Theme.getButtonBackground());
         g.fillRect(x, y, tileWidth, tileHeight);
         break;
       case OUTLINE:
@@ -60,7 +60,7 @@ public class BoardCanvas extends JPanel implements BoardListener {
         g.drawRect(x, y, tileWidth, tileHeight);
         break;
       case EMPTY:
-        g.setColor(Color.BLACK);
+        g.setColor(Theme.getBackground());
         g.fillRect(x, y, tileWidth, tileHeight);
         break;
       case START:
@@ -72,11 +72,15 @@ public class BoardCanvas extends JPanel implements BoardListener {
         g.fillRect(x, y, tileWidth, tileHeight);
         break;
       case PATH:
-        g.setColor(Color.MAGENTA);
+        g.setColor(Theme.getButtonHover());
+        g.fillRect(x, y, tileWidth, tileHeight);
+        break;
+      case CHILDREN:
+        g.setColor(Color.YELLOW);
         g.fillRect(x, y, tileWidth, tileHeight);
         break;
     }
-    g.setColor(Color.WHITE);
+    g.setColor(Theme.getForeground());
     g.drawRect(x, y, tileWidth, tileHeight);
   }
 
