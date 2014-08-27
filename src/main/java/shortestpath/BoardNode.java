@@ -17,6 +17,7 @@ public class BoardNode extends Node {
   private Board board;
 
   public BoardNode(Tile tile, Board board) {
+    super();
     this.tile = tile;
     this.board = board;
   }
@@ -39,7 +40,7 @@ public class BoardNode extends Node {
         if (x == tile.x && y == tile.y) {
           continue;
         }
-        // disallow diagonal moves
+//        disallow diagonal moves
         if (tile.x != x && tile.y != y) {
           continue;
         }
@@ -48,7 +49,9 @@ public class BoardNode extends Node {
         }
       }
     }
+
     setChildren(children);
+
   }
 
   @Override
@@ -66,14 +69,19 @@ public class BoardNode extends Node {
   @Override
   protected void generateState() {
     String id = "" + getTile().x + getTile().y;
-    if (hasParent()) {
-      id += getParent().getState();
-    }
+//    if (hasParent()) {
+//      id += getParent().getState();
+//    }
     setState(id);
   }
 
   @Override
   public synchronized void visualize() {
+//    drawPath();
+    drawChildren();
+  }
+
+  private void drawPath() {
     Node node = this;
     while (node.hasParent()) {
       Tile tile = ((BoardNode) node).getTile();
@@ -81,5 +89,15 @@ public class BoardNode extends Node {
       board.set(tile);
       node = node.getParent();
     }
+    board.notifyDataChanged();
+  }
+
+  private void drawChildren() {
+    for (Node node : getChildren()) {
+      Tile tile = ((BoardNode) node).getTile();
+      tile.setState(Tile.State.CHILDREN);
+      board.set(tile);
+    }
+    board.notifyDataChanged();
   }
 }

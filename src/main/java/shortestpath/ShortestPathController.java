@@ -64,6 +64,7 @@ public class ShortestPathController implements AstarButtonListener {
     astar = new Astar(start, goal, new AstarCallback() {
       @Override
       public void finished(Node best) {
+        best.visualize();
       }
 
       @Override

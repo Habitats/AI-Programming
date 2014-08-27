@@ -11,6 +11,7 @@ import javax.swing.*;
  */
 public class Log {
 
+  private static JTextField logField;
   private static JTextField statusField;
 
   private static String getPrettyDate() {
@@ -28,12 +29,27 @@ public class Log {
 
   private static void log(String msg) {
     System.out.println(msg);
-    if(statusField != null) {
-      statusField.setText(msg);
+    if (logField != null) {
+      logField.setText(msg);
     }
+  }
+
+  private static void status(String tag, String status) {
+    System.out.println(status);
+    if (statusField != null) {
+      statusField.setText(status);
+    }
+  }
+
+  public static void s(String tag, String status) {
+    status(tag, status);
   }
 
   public static void setStatusField(JTextField statusField) {
     Log.statusField = statusField;
+  }
+
+  public static void setLogField(JTextField statusField) {
+    Log.logField = statusField;
   }
 }

@@ -54,10 +54,9 @@ public class Board implements Iterable<List<Tile>> {
 
   public void set(Tile tile) {
     board.get(tile.x).get(tile.y).setState(tile.getState());
-    notifyDataChanged();
   }
 
-  private void notifyDataChanged() {
+  public void notifyDataChanged() {
     if (listener != null) {
       listener.notifyDataChanged();
     }

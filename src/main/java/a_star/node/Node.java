@@ -1,6 +1,8 @@
 package a_star.node;
 
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 /**
  * Created by Patrick on 24.08.2014.
@@ -10,7 +12,7 @@ public abstract class Node implements Comparable<Node> {
   private int h;
   private int g;
   private Node goal;
-  private Node parent;
+  private Queue<Node> parents;
   private List<Node> children;
   private String state;
   private int count;
@@ -18,6 +20,7 @@ public abstract class Node implements Comparable<Node> {
 
   public Node() {
     closed = false;
+    parents = new PriorityQueue<Node>();
   }
 
   protected void setChildren(List<Node> children) {
@@ -29,11 +32,11 @@ public abstract class Node implements Comparable<Node> {
   }
 
   public boolean hasParent() {
-    return parent != null;
+    return parents.size() > 0;
   }
 
-  public Node setParent(Node parent) {
-    this.parent = parent;
+  public Node addParent(Node parent) {
+    parents.add(parent);
     return this;
   }
 
@@ -45,7 +48,7 @@ public abstract class Node implements Comparable<Node> {
   }
 
   public Node getParent() {
-    return parent;
+    return parents.peek();
   }
 
   public void setHeuristic(int h) {

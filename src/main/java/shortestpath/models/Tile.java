@@ -7,7 +7,7 @@ public class Tile {
 
 
   public enum State {
-    OBSTICLE("x"), OUTLINE("."), EMPTY("_"), START("@"), GOAL("$"), PATH("o");
+    OBSTICLE("x"), OUTLINE("."), EMPTY("_"), START("@"), GOAL("$"), PATH("o"), CHILDREN("c");
     private final String x;
 
     State(String x) {
