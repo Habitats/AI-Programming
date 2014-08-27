@@ -1,23 +1,23 @@
-package shortestpath;
+package puzzles.shortestpath;
 
-import a_star.algorithm.Astar;
-import a_star.node.Node;
-import aiprog.Log;
-import shortestpath.gui.BoardGridBag;
-import shortestpath.interfaces.AstarButtonListener;
-import shortestpath.models.Board;
-import shortestpath.models.Tile;
-import shortestpath.utils.InputUtils;
+import algorithms.a_star.AStar;
+import algorithms.a_star.AStarCallback;
+import algorithms.a_star.AStarNode;
+import puzzles.shortestpath.gui.BoardGridBag;
+import puzzles.shortestpath.interfaces.ShortestPathButtonListener;
+import ai.models.Board;
+import puzzles.shortestpath.utils.InputUtils;
+import ai.Log;
 
 /**
  * Created by Patrick on 24.08.2014.
  */
-public class ShortestPathController implements AstarButtonListener {
+public class ShortestPathController implements ShortestPathButtonListener {
 
   private static final String TAG = ShortestPathController.class.getSimpleName();
   private BoardGridBag gui;
   private Board board;
-  private Astar astar;
+  private AStar astar;
 
   public static void main(String args[]) {
     new ShortestPathController();
@@ -26,24 +26,6 @@ public class ShortestPathController implements AstarButtonListener {
   public ShortestPathController() {
     gui = new BoardGridBag();
     gui.setListener(ShortestPathController.this);
-    initializeTestBoard2();
-  }
-
-  private void initializeTestBoard2() {
-    board = InputUtils.build("(6,6)(1, 0)(5, 5)(3, 2, 2, 2)(0, 3, 1, 3)(2, 0, 4, 2)(2, 5, 2, 1)").getBoard();
-    gui.setAdapter(board);
-  }
-
-  private void initializeTestBoard() {
-    board = new Board(6, 6);
-    gui.setAdapter(board);
-
-    board.clear();
-    board.set(0, 3, 1, 3, Tile.State.OBSTICLE);
-    board.set(3, 2, 2, 2, Tile.State.OBSTICLE);
-    board.set(2, 0, 4, 2, Tile.State.OBSTICLE);
-    board.set(2, 5, 2, 1, Tile.State.OBSTICLE);
-    board.set(1, 0, 1, 2, Tile.State.OUTLINE);
   }
 
   private void initializeBoard() {
@@ -59,11 +41,11 @@ public class ShortestPathController implements AstarButtonListener {
 
   @Override
   public void astarClicked() {
-    Node start = new BoardNode(board.getStart(), board);
-    Node goal = new BoardNode(board.getGoal(), board);
-    astar = new Astar(start, goal, new AstarCallback() {
+    AStarNode start = new BoardNode(board.getStart(), board);
+    AStarNode goal = new BoardNode(board.getGoal(), board);
+    astar = new AStar(start, goal, new AStarCallback() {
       @Override
-      public void finished(Node best) {
+      public void finished(AStarNode best) {
         best.visualize();
       }
 
@@ -98,8 +80,6 @@ public class ShortestPathController implements AstarButtonListener {
 
   @Override
   public void stepClicked() {
-    Log.v(TAG, "thread: " + Thread.currentThread().getName());
-    Log.v(TAG, astar);
     synchronized (astar) {
       astar.notify();
     }

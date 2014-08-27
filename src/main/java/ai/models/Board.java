@@ -1,10 +1,10 @@
-package shortestpath.models;
+package ai.models;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import shortestpath.interfaces.BoardListener;
+import puzzles.shortestpath.interfaces.BoardListener;
 
 /**
  * Created by Patrick on 24.08.2014.

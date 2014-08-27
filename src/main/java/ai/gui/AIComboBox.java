@@ -1,13 +1,13 @@
-package shortestpath.gui;
+package ai.gui;
 
 import javax.swing.*;
 
 /**
  * Created by Patrick on 27.08.2014.
  */
-public class BoardComboBox<E> extends JComboBox<E> {
+public class AIComboBox<E> extends JComboBox<E> {
 
-  public BoardComboBox() {
+  public AIComboBox() {
     super();
     setForeground(Theme.getForeground());
     setBackground(Theme.getBackgroundInteractive());

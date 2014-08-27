@@ -1,4 +1,4 @@
-package shortestpath.gui;
+package ai.gui;
 
 import java.awt.*;
 

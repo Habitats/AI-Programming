@@ -1,4 +1,4 @@
-package aiprog;
+package ai;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;

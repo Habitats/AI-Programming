@@ -1,16 +1,16 @@
-package shortestpath;
+package puzzles.shortestpath;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import a_star.node.Node;
-import shortestpath.models.Board;
-import shortestpath.models.Tile;
+import algorithms.a_star.AStarNode;
+import ai.models.Board;
+import ai.models.Tile;
 
 /**
  * Created by Patrick on 24.08.2014.
  */
-public class BoardNode extends Node {
+public class BoardNode extends AStarNode {
 
   private static final String TAG = BoardNode.class.getSimpleName();
   private Tile tile;
@@ -27,13 +27,13 @@ public class BoardNode extends Node {
   }
 
   @Override
-  public int costFrom(Node parent) {
-    return 50;
+  public int costFrom(AStarNode parent) {
+    return 30;
   }
 
   @Override
   protected void generateChildren() {
-    List<Node> children = new ArrayList<Node>();
+    List<AStarNode> children = new ArrayList<AStarNode>();
     for (int x = tile.x - 1; x <= tile.x + 1; x++) {
       for (int y = tile.y - 1; y <= tile.y + 1; y++) {
         // do not add self to its own children
@@ -55,7 +55,7 @@ public class BoardNode extends Node {
   }
 
   @Override
-  public void generateHeuristic(Node goal) {
+  public void generateHeuristic(AStarNode goal) {
     setHeuristic(distance(this, (BoardNode) goal));
   }
 
@@ -85,7 +85,7 @@ public class BoardNode extends Node {
   }
 
   private void drawPath() {
-    Node node = this;
+    AStarNode node = this;
     while (node.hasParent()) {
       Tile tile = ((BoardNode) node).getTile();
       tile.setState(Tile.State.PATH);
@@ -97,7 +97,7 @@ public class BoardNode extends Node {
   }
 
   private void drawChildren() {
-    for (Node node : getChildren()) {
+    for (AStarNode node : getChildren()) {
       Tile tile = ((BoardNode) node).getTile();
       tile.setState(Tile.State.CHILDREN);
       tile.setText(toStringShort());

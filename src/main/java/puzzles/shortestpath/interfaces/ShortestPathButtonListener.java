@@ -1,9 +1,9 @@
-package shortestpath.interfaces;
+package puzzles.shortestpath.interfaces;
 
 /**
  * Created by Patrick on 24.08.2014.
  */
-public interface AstarButtonListener {
+public interface ShortestPathButtonListener {
 
   void astarClicked();
 

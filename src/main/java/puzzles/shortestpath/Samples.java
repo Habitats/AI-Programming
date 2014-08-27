@@ -1,4 +1,4 @@
-package shortestpath;
+package puzzles.shortestpath;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,10 +1,10 @@
-package shortestpath.utils;
+package puzzles.shortestpath.utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import shortestpath.models.Board;
-import shortestpath.models.Tile;
+import ai.models.Board;
+import ai.models.Tile;
 
 /**
  * Created by Patrick on 24.08.2014.

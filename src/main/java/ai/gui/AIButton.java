@@ -1,4 +1,4 @@
-package shortestpath.gui;
+package ai.gui;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -8,9 +8,9 @@ import javax.swing.*;
 /**
  * Created by Patrick on 27.08.2014.
  */
-public class BoardButton extends JButton {
+public class AIButton extends JButton {
 
-  public BoardButton() {
+  public AIButton() {
     super();
     setBorder(BorderFactory.createEmptyBorder());
     setBackground(Theme.getButtonBackground());

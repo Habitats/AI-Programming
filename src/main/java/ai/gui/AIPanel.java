@@ -1,13 +1,13 @@
-package shortestpath.gui;
+package ai.gui;
 
 import javax.swing.*;
 
 /**
  * Created by Patrick on 27.08.2014.
  */
-public class BoardPanel extends JPanel {
+public class AIPanel extends JPanel {
 
-  public BoardPanel() {
+  public AIPanel() {
     super();
 
     setBackground(Theme.getBackground());

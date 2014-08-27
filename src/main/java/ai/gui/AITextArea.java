@@ -1,15 +1,14 @@
-package shortestpath.gui;
+package ai.gui;
 
 import javax.swing.*;
 
 /**
  * Created by Patrick on 27.08.2014.
  */
-public class BoardTextField extends JTextField {
+public class AITextArea extends JTextArea {
 
-  public BoardTextField() {
+  public AITextArea() {
     setBackground(Theme.getBackgroundInteractive());
     setForeground(Theme.getForeground());
-    setBorder(BorderFactory.createEmptyBorder());
   }
 }

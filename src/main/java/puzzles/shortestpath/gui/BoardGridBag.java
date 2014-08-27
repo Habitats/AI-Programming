@@ -1,4 +1,4 @@
-package shortestpath.gui;
+package puzzles.shortestpath.gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -6,10 +6,15 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import aiprog.Log;
-import shortestpath.Samples;
-import shortestpath.interfaces.AstarButtonListener;
-import shortestpath.models.Board;
+import puzzles.shortestpath.interfaces.ShortestPathButtonListener;
+import ai.Log;
+import puzzles.shortestpath.Samples;
+import ai.models.Board;
+import ai.gui.AIButton;
+import ai.gui.AICanvas;
+import ai.gui.AIComboBox;
+import ai.gui.AITextArea;
+import ai.gui.AITextField;
 
 /**
  * Created by Patrick on 23.08.2014.
@@ -17,23 +22,23 @@ import shortestpath.models.Board;
 public class BoardGridBag {
 
   private static final String TAG = BoardGridBag.class.getSimpleName();
-  private BoardButton astarButton;
-  private BoardButton resetButton;
-  private BoardButton BFSButton;
-  private BoardButton DFSButton;
-  private BoardButton loadButton;
-  private BoardButton stepButton;
+  private AIButton astarButton;
+  private AIButton resetButton;
+  private AIButton BFSButton;
+  private AIButton DFSButton;
+  private AIButton loadButton;
+  private AIButton stepButton;
 
   private JPanel mainPanel;
   private JFrame frame;
 
-  private BoardCanvas drawingCanvas;
-  private BoardTextArea inputField;
-  private BoardTextField logField;
-  private BoardTextField statusField;
-  private BoardComboBox comboBox1;
+  private AICanvas drawingCanvas;
+  private AITextArea inputField;
+  private AITextField logField;
+  private AITextField statusField;
+  private AIComboBox comboBox1;
 
-  private AstarButtonListener listener;
+  private ShortestPathButtonListener listener;
 
   private void buildFrame() {
 //    JFrame.setDefaultLookAndFeelDecorated(true);
@@ -112,7 +117,7 @@ public class BoardGridBag {
     return inputField.getText().trim();
   }
 
-  public void setListener(AstarButtonListener listener) {
+  public void setListener(ShortestPathButtonListener listener) {
     this.listener = listener;
   }
 }

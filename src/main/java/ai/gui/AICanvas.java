@@ -1,26 +1,26 @@
-package shortestpath.gui;
+package ai.gui;
 
 import java.awt.*;
 
 import javax.swing.*;
 
-import aiprog.Log;
-import shortestpath.interfaces.BoardListener;
-import shortestpath.models.Board;
-import shortestpath.models.Tile;
+import ai.Log;
+import puzzles.shortestpath.interfaces.BoardListener;
+import ai.models.Board;
+import ai.models.Tile;
 
 /**
  * Created by Patrick on 24.08.2014.
  */
-public class BoardCanvas extends JPanel implements BoardListener {
+public class AICanvas extends JPanel implements BoardListener {
 
-  private static final String TAG = BoardCanvas.class.getSimpleName();
+  private static final String TAG = AICanvas.class.getSimpleName();
   private Board board;
   private int tileHeight;
   private int tileWidth;
   private Board adapter;
 
-  public BoardCanvas() {
+  public AICanvas() {
     setBackground(Color.BLACK);
     tileHeight = 20;
     tileWidth = 20;
@@ -80,15 +80,18 @@ public class BoardCanvas extends JPanel implements BoardListener {
         g.fillRect(x, y, tileWidth, tileHeight);
         break;
     }
-    g.setColor(Theme.getForeground());
-    g.drawString(tile.toString(), x, y);
-    printSimpleString(g, tile.getText(), x, y);
+    drawStringCenter(g, tile.getText(), x, y);
+    drawOutline(g, x, y);
+  }
+
+  private void drawOutline(Graphics g, int x, int y) {
     g.setColor(Theme.getForeground());
     g.drawRect(x, y, tileWidth, tileHeight);
   }
 
-  private void printSimpleString(Graphics g, String s, int XPos, int YPos) {
+  private void drawStringCenter(Graphics g, String s, int XPos, int YPos) {
     Graphics2D g2d = (Graphics2D) g;
+    g.setColor(Theme.getForeground());
     int stringLen = (int) g2d.getFontMetrics().getStringBounds(s, g2d).getWidth();
     int stringHeight = (int) g2d.getFontMetrics().getStringBounds(s, g2d).getHeight();
     int offsetWidth = tileWidth / 2 - stringLen / 2;

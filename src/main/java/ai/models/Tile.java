@@ -1,4 +1,4 @@
-package shortestpath.models;
+package ai.models;
 
 /**
  * Created by Patrick on 24.08.2014.
@@ -6,25 +6,24 @@ package shortestpath.models;
 public class Tile {
 
 
-
   public enum State {
     OBSTICLE("x"), OUTLINE("."), EMPTY("_"), START("@"), GOAL("$"), PATH("o"), CHILDREN("c");
-    private final String x;
+    private final String state;
 
-    State(String x) {
-      this.x = x;
+    State(String state) {
+      this.state = state;
     }
 
     @Override
     public String toString() {
-      return x;
+      return state;
     }
   }
 
   public final int x;
   public final int y;
   private State state;
-  private String text = toString();
+  private String text;
 
   public Tile(int x, int y, State state) {
     this.x = x;
@@ -37,8 +36,12 @@ public class Tile {
   }
 
   public String getText() {
+    if (text == null) {
+      return toString();
+    }
     return text;
   }
+
   public void setState(State state) {
     this.state = state;
   }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="shortestpath.gui.BoardGridBag">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="puzzles.shortestpath.gui.BoardGridBag">
   <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="13" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
@@ -16,13 +16,13 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="8d1b4" class="shortestpath.gui.BoardTextField" binding="logField">
+          <component id="8d1b4" class="ai.gui.AITextField" binding="logField">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
           </component>
-          <component id="cb632" class="shortestpath.gui.BoardTextField" binding="statusField">
+          <component id="cb632" class="ai.gui.AITextField" binding="statusField">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -41,7 +41,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="daae4" class="shortestpath.gui.BoardButton" binding="stepButton">
+          <component id="daae4" class="ai.gui.AIButton" binding="stepButton">
             <constraints>
               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -49,7 +49,7 @@
               <text value="Step"/>
             </properties>
           </component>
-          <component id="1f3f0" class="shortestpath.gui.BoardComboBox" binding="comboBox1" default-binding="true">
+          <component id="1f3f0" class="ai.gui.AIComboBox" binding="comboBox1" default-binding="true">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -64,13 +64,13 @@
               </model>
             </properties>
           </component>
-          <component id="1df44" class="shortestpath.gui.BoardTextArea" binding="inputField">
+          <component id="1df44" class="ai.gui.AITextArea" binding="inputField">
             <constraints>
               <grid row="1" column="0" row-span="2" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
           </component>
-          <component id="11212" class="shortestpath.gui.BoardButton" binding="astarButton">
+          <component id="11212" class="ai.gui.AIButton" binding="astarButton">
             <constraints>
               <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -78,7 +78,7 @@
               <text value="A*"/>
             </properties>
           </component>
-          <component id="f0333" class="shortestpath.gui.BoardButton" binding="BFSButton">
+          <component id="f0333" class="ai.gui.AIButton" binding="BFSButton">
             <constraints>
               <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -86,7 +86,7 @@
               <text value="BFS"/>
             </properties>
           </component>
-          <component id="aa0fb" class="shortestpath.gui.BoardButton" binding="DFSButton">
+          <component id="aa0fb" class="ai.gui.AIButton" binding="DFSButton">
             <constraints>
               <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -94,7 +94,7 @@
               <text value="DFS"/>
             </properties>
           </component>
-          <component id="83243" class="shortestpath.gui.BoardButton" binding="loadButton">
+          <component id="83243" class="ai.gui.AIButton" binding="loadButton">
             <constraints>
               <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -102,7 +102,7 @@
               <text value="Load"/>
             </properties>
           </component>
-          <component id="c7099" class="shortestpath.gui.BoardButton" binding="resetButton">
+          <component id="c7099" class="ai.gui.AIButton" binding="resetButton">
             <constraints>
               <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -110,7 +110,7 @@
               <text value="Reset"/>
             </properties>
           </component>
-          <component id="5c9fa" class="shortestpath.gui.BoardPanel">
+          <component id="5c9fa" class="ai.gui.AIPanel">
             <constraints>
               <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false">
                 <preferred-size width="-1" height="10"/>
@@ -119,7 +119,7 @@
             </constraints>
             <properties/>
           </component>
-          <component id="6053a" class="shortestpath.gui.BoardPanel">
+          <component id="6053a" class="ai.gui.AIPanel">
             <constraints>
               <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="1" anchor="0" fill="3" indent="0" use-parent-layout="false">
                 <preferred-size width="-1" height="10"/>
@@ -130,7 +130,7 @@
           </component>
         </children>
       </grid>
-      <component id="f4d3c" class="shortestpath.gui.BoardCanvas" binding="drawingCanvas">
+      <component id="f4d3c" class="ai.gui.AICanvas" binding="drawingCanvas">
         <constraints>
           <grid row="0" column="0" row-span="12" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>

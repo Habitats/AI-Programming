@@ -1,4 +1,4 @@
-package a_star.node;
+package algorithms.a_star;
 
 import java.util.List;
 import java.util.PriorityQueue;
@@ -7,23 +7,23 @@ import java.util.Queue;
 /**
  * Created by Patrick on 24.08.2014.
  */
-public abstract class Node implements Comparable<Node> {
+public abstract class AStarNode implements Comparable<AStarNode> {
 
   private int h;
   private int g;
-  private Node goal;
-  private Queue<Node> parents;
-  private List<Node> children;
+  private AStarNode goal;
+  private Queue<AStarNode> parents;
+  private List<AStarNode> children;
   private String state;
   private int count;
   private boolean closed;
 
-  public Node() {
+  public AStarNode() {
     closed = false;
-    parents = new PriorityQueue<Node>();
+    parents = new PriorityQueue<AStarNode>();
   }
 
-  protected void setChildren(List<Node> children) {
+  protected void setChildren(List<AStarNode> children) {
     this.children = children;
   }
 
@@ -35,7 +35,7 @@ public abstract class Node implements Comparable<Node> {
     return parents.size() > 0;
   }
 
-  public Node addParent(Node parent) {
+  public AStarNode addParent(AStarNode parent) {
     parents.add(parent);
     return this;
   }
@@ -47,7 +47,7 @@ public abstract class Node implements Comparable<Node> {
     return state;
   }
 
-  public Node getParent() {
+  public AStarNode getParent() {
     return parents.peek();
   }
 
@@ -63,14 +63,14 @@ public abstract class Node implements Comparable<Node> {
     return count;
   }
 
-  public List<Node> getChildren() {
+  public List<AStarNode> getChildren() {
     if (children == null) {
       generateChildren();
     }
     return children;
   }
 
-  public Node setG(int g) {
+  public AStarNode setG(int g) {
     this.g = g;
     return this;
   }
@@ -95,18 +95,18 @@ public abstract class Node implements Comparable<Node> {
     return closed;
   }
 
-  public abstract int costFrom(Node parent);
+  public abstract int costFrom(AStarNode parent);
 
   protected abstract void generateChildren();
 
   protected abstract void generateState();
 
-  public abstract void generateHeuristic(Node goal);
+  public abstract void generateHeuristic(AStarNode goal);
 
   public abstract void visualize();
 
   @Override
-  public int compareTo(Node o) {
+  public int compareTo(AStarNode o) {
     return this.f() - o.f();
   }
 
