@@ -19,18 +19,21 @@ public class BoardGridBag {
   private static final String TAG = BoardGridBag.class.getSimpleName();
   private BoardButton astarButton;
   private BoardButton resetButton;
-  private BoardTextArea inputField;
-  private BoardCanvas drawingCanvas;
-  private JPanel mainPanel;
-  private BoardButton loadButton;
-  private BoardTextField logField;
   private BoardButton BFSButton;
   private BoardButton DFSButton;
-  private BoardComboBox comboBox1;
+  private BoardButton loadButton;
   private BoardButton stepButton;
-  private BoardTextField statusField;
-  private AstarButtonListener listener;
+
+  private JPanel mainPanel;
   private JFrame frame;
+
+  private BoardCanvas drawingCanvas;
+  private BoardTextArea inputField;
+  private BoardTextField logField;
+  private BoardTextField statusField;
+  private BoardComboBox comboBox1;
+
+  private AstarButtonListener listener;
 
   private void buildFrame() {
 //    JFrame.setDefaultLookAndFeelDecorated(true);
