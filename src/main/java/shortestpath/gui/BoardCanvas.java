@@ -72,16 +72,28 @@ public class BoardCanvas extends JPanel implements BoardListener {
         g.fillRect(x, y, tileWidth, tileHeight);
         break;
       case PATH:
-        g.setColor(Theme.getButtonHover());
+        g.setColor(Color.RED);
         g.fillRect(x, y, tileWidth, tileHeight);
         break;
       case CHILDREN:
-        g.setColor(Color.YELLOW);
+        g.setColor(Theme.getButtonHover());
         g.fillRect(x, y, tileWidth, tileHeight);
         break;
     }
     g.setColor(Theme.getForeground());
+    g.drawString(tile.toString(), x, y);
+    printSimpleString(g, tile.getText(), x, y);
+    g.setColor(Theme.getForeground());
     g.drawRect(x, y, tileWidth, tileHeight);
+  }
+
+  private void printSimpleString(Graphics g, String s, int XPos, int YPos) {
+    Graphics2D g2d = (Graphics2D) g;
+    int stringLen = (int) g2d.getFontMetrics().getStringBounds(s, g2d).getWidth();
+    int stringHeight = (int) g2d.getFontMetrics().getStringBounds(s, g2d).getHeight();
+    int offsetWidth = tileWidth / 2 - stringLen / 2;
+    int offsetHeight = tileHeight / 2 - stringHeight / 2;
+    g2d.drawString(s, offsetWidth + XPos, offsetHeight + YPos);
   }
 
   private void updateGridMetrics() {

@@ -115,6 +115,10 @@ public abstract class Node implements Comparable<Node> {
     return String.format("H: %d - G: %d - F: %d - State: %s", h(), g(), f(), getState());
   }
 
+  public String toStringShort(){
+    return String.format("H: %d - G: %d - F: %d", h(), g(), f());
+  }
+
   public boolean isSolution() {
     return h == 0;
   }
