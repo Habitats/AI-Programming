@@ -28,7 +28,7 @@ public class BoardNode extends Node {
 
   @Override
   public int costFrom(Node parent) {
-    return 1;
+    return 50;
   }
 
   @Override
@@ -63,7 +63,7 @@ public class BoardNode extends Node {
     int k1 = goal.getTile().y - start.getTile().y;
     int k2 = goal.getTile().x - start.getTile().x;
     double h = Math.sqrt(Math.pow(k1, 2) + Math.pow(k2, 2));
-    return (int) Math.round(h);
+    return (int) Math.round(h * 100);
   }
 
   @Override
@@ -77,8 +77,11 @@ public class BoardNode extends Node {
 
   @Override
   public synchronized void visualize() {
-//    drawPath();
-    drawChildren();
+    if (isSolution()) {
+      drawPath();
+    } else {
+      drawChildren();
+    }
   }
 
   private void drawPath() {
@@ -86,6 +89,7 @@ public class BoardNode extends Node {
     while (node.hasParent()) {
       Tile tile = ((BoardNode) node).getTile();
       tile.setState(Tile.State.PATH);
+      tile.setText(toStringShort());
       board.set(tile);
       node = node.getParent();
     }
@@ -96,6 +100,7 @@ public class BoardNode extends Node {
     for (Node node : getChildren()) {
       Tile tile = ((BoardNode) node).getTile();
       tile.setState(Tile.State.CHILDREN);
+      tile.setText(toStringShort());
       board.set(tile);
     }
     board.notifyDataChanged();
