@@ -5,16 +5,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-import puzzles.shortestpath.interfaces.ShortestPathButtonListener;
 import ai.Log;
-import puzzles.shortestpath.Samples;
-import ai.models.Board;
 import ai.gui.AIButton;
 import ai.gui.AICanvas;
+import ai.gui.AICheckBox;
 import ai.gui.AIComboBox;
+import ai.gui.AISlider;
 import ai.gui.AITextArea;
 import ai.gui.AITextField;
+import ai.models.Board;
+import puzzles.shortestpath.Samples;
+import puzzles.shortestpath.interfaces.ShortestPathButtonListener;
 
 /**
  * Created by Patrick on 23.08.2014.
@@ -37,6 +41,8 @@ public class BoardGridBag {
   private AITextField logField;
   private AITextField statusField;
   private AIComboBox comboBox1;
+  private AISlider stepSlider;
+  private AICheckBox labelsCheckbox;
 
   private ShortestPathButtonListener listener;
 
@@ -104,6 +110,21 @@ public class BoardGridBag {
       @Override
       public void actionPerformed(ActionEvent e) {
         listener.stepClicked();
+      }
+    });
+    stepSlider.addChangeListener(new ChangeListener() {
+      @Override
+      public void stateChanged(ChangeEvent e) {
+        Log.v(TAG, "slider event: " + e);
+        AISlider slider = (AISlider) e.getSource();
+        listener.stepChanged(slider.getValue());
+      }
+    });
+    labelsCheckbox.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        AICheckBox checkbox = (AICheckBox) e.getSource();
+        drawingCanvas.drawLabels(checkbox.isSelected());
       }
     });
   }

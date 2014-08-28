@@ -2,8 +2,6 @@ package algorithms.a_star;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
 
 /**
  * Created by Patrick on 24.08.2014.
@@ -12,7 +10,6 @@ public abstract class AStarNode implements Comparable<AStarNode> {
 
   private int h;
   private int g;
-  private Queue<AStarNode> parents;
   private AStarNode parent;
   private List<AStarNode> children;
   private List<AStarNode> successors;
@@ -20,11 +17,8 @@ public abstract class AStarNode implements Comparable<AStarNode> {
   private int count;
   private boolean closed;
 
-  private static boolean SINGLE_PARENT = true;
-
   public AStarNode() {
     closed = false;
-    parents = new PriorityQueue<AStarNode>();
     children = new ArrayList<AStarNode>();
   }
 
@@ -33,13 +27,12 @@ public abstract class AStarNode implements Comparable<AStarNode> {
   }
 
   public boolean hasParent() {
-    return parents.size() > 0;
-//    return parent != null;
+    return parent != null;
   }
 
-  public AStarNode addParent(AStarNode parent) {
-    parents.add(parent);
-//    this.parent = parent;
+  public AStarNode setParent(AStarNode parent) {
+    this.parent = parent;
+    setG(parent.g() + costFrom(parent));
     return this;
   }
 
@@ -55,8 +48,7 @@ public abstract class AStarNode implements Comparable<AStarNode> {
   }
 
   public AStarNode getParent() {
-    return parents.peek();
-//    return parent;
+    return parent;
   }
 
   public void setHeuristic(int h) {
@@ -84,6 +76,16 @@ public abstract class AStarNode implements Comparable<AStarNode> {
       generateSuccessors();
     }
     return successors;
+  }
+
+  public int getPathLength() {
+    AStarNode node = this;
+    int count = 0;
+    while (node.hasParent()) {
+      count++;
+      node = node.getParent();
+    }
+    return count;
   }
 
   public AStarNode setG(int g) {
@@ -143,12 +145,16 @@ public abstract class AStarNode implements Comparable<AStarNode> {
     return ""//
 //           + "H: " + h() //
            + " G: " + g() //
-//           + " - F: " + f()  //
-           + " C: " + isClosed() //
+           + " - F: " + f()  //
+//           + " C: " + isClosed() //
         ;
   }
 
   public boolean isSolution() {
     return h == 0;
+  }
+
+  public boolean hasBetter(AStarNode parent) {
+    return parent.g() + costFrom(parent) < g();
   }
 }

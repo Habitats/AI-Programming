@@ -32,12 +32,17 @@ public class AStar implements Runnable {
   private DateTime startTime;
   private Status status;
 
+  // step time in ms
+  private int stepTime = 100;
+
+
   public AStar(AStarNode start, AStarNode goal, AStarCallback callback) {
     this.start = start;
     this.goal = goal;
     this.callback = callback;
     setStatus(Status.PAUSED);
   }
+
 
   private AStarNode search(AStarNode start, AStarNode goal) {
     startTime = new DateTime();
@@ -65,19 +70,18 @@ public class AStar implements Runnable {
         return current;
       }
 
-      for (AStarNode child : current.getSuccessors()) {
+      for (AStarNode succsessor : current.getSuccessors()) {
         // if child has already been generated, use that child
-        if (generated.containsKey(child.getState())) {
-          child = generated.get(child.getState());
+        if (generated.containsKey(succsessor.getState())) {
+          succsessor = generated.get(succsessor.getState());
         }
-//        child.addParent(current);
-        current.addChild(child);
+        current.addChild(succsessor);
 
         // if child is new
-        if (!generated.containsKey(child.getState())) {
-          generated.put(child.getState(), child);
-          attachAndEvaluate(child, current, goal);
-          child.setCount(count);
+        if (!generated.containsKey(succsessor.getState())) {
+          generated.put(succsessor.getState(), succsessor);
+          attachAndEvaluate(succsessor, current, goal);
+          succsessor.setCount(count);
 
 //          if (dfs) {
 //            count -= 1;
@@ -85,14 +89,14 @@ public class AStar implements Runnable {
 //            count += 1;
 //          }
 
-          opened.add(child);
+          opened.add(succsessor);
         }
 
         // else if child has previously been generated, see if it is better
-        else if (current.g() + child.costFrom(current) < child.g()) {
-          attachAndEvaluate(child, current, goal);
-          if (child.isClosed()) {
-            propagatePathImprovement(child);
+        else if (succsessor.hasBetter(current)) {
+          attachAndEvaluate(succsessor, current, goal);
+          if (succsessor.isClosed()) {
+            propagatePathImprovement(succsessor);
           }
         }
       }
@@ -106,7 +110,7 @@ public class AStar implements Runnable {
     try {
       Log.v(TAG, "waiting...");
       setStatus(Status.PAUSED);
-      wait(100);
+      wait(stepTime);
       node.devisualize();
       Log.v(TAG, "continuing!");
     } catch (InterruptedException e) {
@@ -115,17 +119,17 @@ public class AStar implements Runnable {
   }
 
   private void attachAndEvaluate(AStarNode child, AStarNode parent, AStarNode goal) {
-    child.addParent(parent);
-    child.setG(parent.g() + child.costFrom(parent));
+    child.setParent(parent);
     child.generateHeuristic(goal);
   }
 
   private void propagatePathImprovement(AStarNode parent) {
+    Log.v(TAG, "Propagate path improvement: " + parent);
     for (AStarNode child : parent.getChildren()) {
-      if (parent.g() + child.costFrom(parent) < child.g()) {
-        child.addParent(parent);
-        child.setG(parent.g() + child.costFrom(parent));
-        Log.v(TAG, child);
+      if (child.hasBetter(parent)) {
+        Log.v(TAG, "path length: " + child.getPathLength());
+        child.setParent(parent);
+        Log.v(TAG, "new length: " + child.getPathLength() + "\n--------------");
         propagatePathImprovement(child);
       }
     }
@@ -142,6 +146,11 @@ public class AStar implements Runnable {
       callback.finished(best);
       setStatus(Status.FINISHED);
     }
+  }
+
+
+  public void setStepTime(int stepTime) {
+    this.stepTime = stepTime;
   }
 
 

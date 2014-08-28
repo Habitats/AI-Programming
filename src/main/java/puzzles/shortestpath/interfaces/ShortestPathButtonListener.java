@@ -16,4 +16,6 @@ public interface ShortestPathButtonListener {
   void bfsClicked();
 
   void stepClicked();
+
+  void stepChanged(int value);
 }

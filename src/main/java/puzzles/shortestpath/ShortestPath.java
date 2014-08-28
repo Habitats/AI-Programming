@@ -1,13 +1,13 @@
 package puzzles.shortestpath;
 
+import ai.Log;
+import ai.models.Board;
 import algorithms.a_star.AStar;
 import algorithms.a_star.AStarCallback;
 import algorithms.a_star.AStarNode;
 import puzzles.shortestpath.gui.BoardGridBag;
 import puzzles.shortestpath.interfaces.ShortestPathButtonListener;
-import ai.models.Board;
 import puzzles.shortestpath.utils.InputUtils;
-import ai.Log;
 
 /**
  * Created by Patrick on 24.08.2014.
@@ -83,5 +83,10 @@ public class ShortestPath implements ShortestPathButtonListener {
     synchronized (astar) {
       astar.notify();
     }
+  }
+
+  @Override
+  public void stepChanged(int value) {
+    astar.setStepTime(value);
   }
 }

@@ -12,5 +12,4 @@ public class AIPanel extends JPanel {
 
     setBackground(Theme.getBackground());
   }
-
 }

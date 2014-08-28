@@ -19,6 +19,7 @@ public class AICanvas extends JPanel implements BoardListener {
   private int tileHeight;
   private int tileWidth;
   private Board adapter;
+  private boolean drawLabels;
 
   public AICanvas() {
     setBackground(Color.BLACK);
@@ -83,7 +84,9 @@ public class AICanvas extends JPanel implements BoardListener {
         g.setColor(Color.MAGENTA);
         g.fillRect(x, y, tileWidth, tileHeight);
     }
-    drawStringCenter(g, tile.getText(), x, y);
+    if (drawLabels) {
+      drawStringCenter(g, tile.getText(), x, y);
+    }
     drawOutline(g, x, y);
   }
 
@@ -118,5 +121,9 @@ public class AICanvas extends JPanel implements BoardListener {
   public void setAdapter(Board board) {
     this.board = board;
     board.setListener(this);
+  }
+
+  public void drawLabels(boolean selected) {
+    this.drawLabels = selected;
   }
 }
