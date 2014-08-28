@@ -5,9 +5,9 @@ import java.awt.*;
 import javax.swing.*;
 
 import ai.Log;
-import puzzles.shortestpath.interfaces.BoardListener;
 import ai.models.Board;
 import ai.models.Tile;
+import puzzles.shortestpath.interfaces.BoardListener;
 
 /**
  * Created by Patrick on 24.08.2014.
@@ -79,6 +79,9 @@ public class AICanvas extends JPanel implements BoardListener {
         g.setColor(Theme.getButtonHover());
         g.fillRect(x, y, tileWidth, tileHeight);
         break;
+      case CURRENT:
+        g.setColor(Color.MAGENTA);
+        g.fillRect(x, y, tileWidth, tileHeight);
     }
     drawStringCenter(g, tile.getText(), x, y);
     drawOutline(g, x, y);

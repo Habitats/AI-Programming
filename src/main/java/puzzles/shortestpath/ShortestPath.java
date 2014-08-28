@@ -12,20 +12,20 @@ import ai.Log;
 /**
  * Created by Patrick on 24.08.2014.
  */
-public class ShortestPathController implements ShortestPathButtonListener {
+public class ShortestPath implements ShortestPathButtonListener {
 
-  private static final String TAG = ShortestPathController.class.getSimpleName();
+  private static final String TAG = ShortestPath.class.getSimpleName();
   private BoardGridBag gui;
   private Board board;
   private AStar astar;
 
   public static void main(String args[]) {
-    new ShortestPathController();
+    new ShortestPath();
   }
 
-  public ShortestPathController() {
+  public ShortestPath() {
     gui = new BoardGridBag();
-    gui.setListener(ShortestPathController.this);
+    gui.setListener(ShortestPath.this);
   }
 
   private void initializeBoard() {

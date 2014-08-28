@@ -6,13 +6,16 @@ package ai.models;
 public class Tile {
 
 
+  private State previousState;
+
   public enum State {
-    OBSTICLE("x"), OUTLINE("."), EMPTY("_"), START("@"), GOAL("$"), PATH("o"), CHILDREN("c");
+    OBSTICLE("x"), OUTLINE("."), EMPTY("_"), START("@"), GOAL("$"), PATH("o"), CHILDREN("c"), CURRENT("*");
     private final String state;
 
     State(String state) {
       this.state = state;
     }
+
 
     @Override
     public String toString() {
@@ -42,7 +45,14 @@ public class Tile {
     return text;
   }
 
+  public State getPreviousState() {
+    return previousState;
+  }
+
   public void setState(State state) {
+    if (this.state != state) {
+      previousState = this.state;
+    }
     this.state = state;
   }
 

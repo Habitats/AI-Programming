@@ -3,9 +3,9 @@ package puzzles.shortestpath;
 import java.util.ArrayList;
 import java.util.List;
 
-import algorithms.a_star.AStarNode;
 import ai.models.Board;
 import ai.models.Tile;
+import algorithms.a_star.AStarNode;
 
 /**
  * Created by Patrick on 24.08.2014.
@@ -15,6 +15,7 @@ public class BoardNode extends AStarNode {
   private static final String TAG = BoardNode.class.getSimpleName();
   private Tile tile;
   private Board board;
+  private int accuracyMultiplier = 10;
 
   public BoardNode(Tile tile, Board board) {
     super();
@@ -28,12 +29,12 @@ public class BoardNode extends AStarNode {
 
   @Override
   public int costFrom(AStarNode parent) {
-    return 30;
+    return (int) (.5 * accuracyMultiplier);
   }
 
   @Override
-  protected void generateChildren() {
-    List<AStarNode> children = new ArrayList<AStarNode>();
+  protected void generateSuccessors() {
+    List<AStarNode> successors = new ArrayList<AStarNode>();
     for (int x = tile.x - 1; x <= tile.x + 1; x++) {
       for (int y = tile.y - 1; y <= tile.y + 1; y++) {
         // do not add self to its own children
@@ -45,12 +46,12 @@ public class BoardNode extends AStarNode {
           continue;
         }
         if (board.hasTile(x, y)) {
-          children.add(new BoardNode(board.get(x, y), board));
+          successors.add(new BoardNode(board.get(x, y), board));
         }
       }
     }
 
-    setChildren(children);
+    setSuccsessors(successors);
 
   }
 
@@ -63,7 +64,7 @@ public class BoardNode extends AStarNode {
     int k1 = goal.getTile().y - start.getTile().y;
     int k2 = goal.getTile().x - start.getTile().x;
     double h = Math.sqrt(Math.pow(k1, 2) + Math.pow(k2, 2));
-    return (int) Math.round(h * 100);
+    return (int) Math.round(h * accuracyMultiplier);
   }
 
   @Override
@@ -79,17 +80,35 @@ public class BoardNode extends AStarNode {
   public synchronized void visualize() {
     if (isSolution()) {
       drawPath();
+//      board.set(this.getTile());
     } else {
       drawChildren();
+      drawPath();
+      board.set(this.getTile());
     }
+    board.setStart(board.getStart());
+    board.setGoal(board.getGoal());
+  }
+
+  @Override
+  public void devisualize() {
+    erasePath();
+  }
+
+  private void erasePath() {
+    drawPath(getTile().getPreviousState());
   }
 
   private void drawPath() {
+    drawPath(Tile.State.PATH);
+  }
+
+  private void drawPath(Tile.State state) {
     AStarNode node = this;
     while (node.hasParent()) {
       Tile tile = ((BoardNode) node).getTile();
-      tile.setState(Tile.State.PATH);
-      tile.setText(toStringShort());
+      tile.setState(state);
+      tile.setText(node.toStringShort());
       board.set(tile);
       node = node.getParent();
     }
@@ -100,7 +119,7 @@ public class BoardNode extends AStarNode {
     for (AStarNode node : getChildren()) {
       Tile tile = ((BoardNode) node).getTile();
       tile.setState(Tile.State.CHILDREN);
-      tile.setText(toStringShort());
+//      tile.setText(node.toStringShort());
       board.set(tile);
     }
     board.notifyDataChanged();

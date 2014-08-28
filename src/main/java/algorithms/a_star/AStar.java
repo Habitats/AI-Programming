@@ -65,12 +65,13 @@ public class AStar implements Runnable {
         return current;
       }
 
-      for (AStarNode child : current.getChildren()) {
-        child.addParent(current);
+      for (AStarNode child : current.getSuccessors()) {
         // if child has already been generated, use that child
         if (generated.containsKey(child.getState())) {
           child = generated.get(child.getState());
         }
+//        child.addParent(current);
+        current.addChild(child);
 
         // if child is new
         if (!generated.containsKey(child.getState())) {
@@ -78,11 +79,11 @@ public class AStar implements Runnable {
           attachAndEvaluate(child, current, goal);
           child.setCount(count);
 
-          if (dfs) {
-            count -= 1;
-          } else if (bfs) {
-            count += 1;
-          }
+//          if (dfs) {
+//            count -= 1;
+//          } else if (bfs) {
+//            count += 1;
+//          }
 
           opened.add(child);
         }
@@ -100,16 +101,13 @@ public class AStar implements Runnable {
     return null;
   }
 
-  private void visualize(AStarNode node) {
-    node.visualize();
-  }
-
   private synchronized void visualizeAndWait(AStarNode node) {
     node.visualize();
     try {
       Log.v(TAG, "waiting...");
       setStatus(Status.PAUSED);
       wait();
+      node.devisualize();
       Log.v(TAG, "continuing!");
     } catch (InterruptedException e) {
       e.printStackTrace();

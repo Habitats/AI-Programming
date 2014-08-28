@@ -1,5 +1,6 @@
 package algorithms.a_star;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -11,9 +12,9 @@ public abstract class AStarNode implements Comparable<AStarNode> {
 
   private int h;
   private int g;
-  private AStarNode goal;
   private Queue<AStarNode> parents;
   private List<AStarNode> children;
+  private List<AStarNode> successors;
   private String state;
   private int count;
   private boolean closed;
@@ -21,10 +22,7 @@ public abstract class AStarNode implements Comparable<AStarNode> {
   public AStarNode() {
     closed = false;
     parents = new PriorityQueue<AStarNode>();
-  }
-
-  protected void setChildren(List<AStarNode> children) {
-    this.children = children;
+    children = new ArrayList<AStarNode>();
   }
 
   protected void setState(String state) {
@@ -38,6 +36,10 @@ public abstract class AStarNode implements Comparable<AStarNode> {
   public AStarNode addParent(AStarNode parent) {
     parents.add(parent);
     return this;
+  }
+
+  protected void addChild(AStarNode child) {
+    children.add(child);
   }
 
   public String getState() {
@@ -64,10 +66,18 @@ public abstract class AStarNode implements Comparable<AStarNode> {
   }
 
   public List<AStarNode> getChildren() {
-    if (children == null) {
-      generateChildren();
-    }
     return children;
+  }
+
+  public void setSuccsessors(List<AStarNode> successors) {
+    this.successors = successors;
+  }
+
+  public List<AStarNode> getSuccessors() {
+    if (successors == null) {
+      generateSuccessors();
+    }
+    return successors;
   }
 
   public AStarNode setG(int g) {
@@ -95,15 +105,17 @@ public abstract class AStarNode implements Comparable<AStarNode> {
     return closed;
   }
 
-  public abstract int costFrom(AStarNode parent);
+  protected abstract int costFrom(AStarNode parent);
 
-  protected abstract void generateChildren();
+  protected abstract void generateSuccessors();
 
   protected abstract void generateState();
 
-  public abstract void generateHeuristic(AStarNode goal);
+  protected abstract void generateHeuristic(AStarNode goal);
 
   public abstract void visualize();
+
+  public abstract void devisualize();
 
   @Override
   public int compareTo(AStarNode o) {
@@ -112,11 +124,22 @@ public abstract class AStarNode implements Comparable<AStarNode> {
 
   @Override
   public String toString() {
-    return String.format("H: %d - G: %d - F: %d - State: %s", h(), g(), f(), getState());
+    return ""//
+           + "H: " + h() //
+           + "  - G: " + g() //
+           + " - F: " + f() //
+           + " - Closed: " + closed //
+           + " - State: " + getState();
   }
 
-  public String toStringShort(){
-    return String.format("H: %d - G: %d - F: %d", h(), g(), f());
+  public String toStringShort() {
+//    return String.format("H: %d - G: %d - F: %d", h(), g(), f());
+    return ""//
+//           + "H: " + h() //
+           + " G: " + g() //
+//           + " - F: " + f()  //
+           + " C: " + isClosed() //
+        ;
   }
 
   public boolean isSolution() {
