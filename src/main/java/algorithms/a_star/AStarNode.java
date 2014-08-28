@@ -13,11 +13,14 @@ public abstract class AStarNode implements Comparable<AStarNode> {
   private int h;
   private int g;
   private Queue<AStarNode> parents;
+  private AStarNode parent;
   private List<AStarNode> children;
   private List<AStarNode> successors;
   private String state;
   private int count;
   private boolean closed;
+
+  private static boolean SINGLE_PARENT = true;
 
   public AStarNode() {
     closed = false;
@@ -31,10 +34,12 @@ public abstract class AStarNode implements Comparable<AStarNode> {
 
   public boolean hasParent() {
     return parents.size() > 0;
+//    return parent != null;
   }
 
   public AStarNode addParent(AStarNode parent) {
     parents.add(parent);
+//    this.parent = parent;
     return this;
   }
 
@@ -51,6 +56,7 @@ public abstract class AStarNode implements Comparable<AStarNode> {
 
   public AStarNode getParent() {
     return parents.peek();
+//    return parent;
   }
 
   public void setHeuristic(int h) {
