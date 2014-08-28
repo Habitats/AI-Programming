@@ -106,7 +106,7 @@ public class AStar implements Runnable {
     try {
       Log.v(TAG, "waiting...");
       setStatus(Status.PAUSED);
-      wait();
+      wait(100);
       node.devisualize();
       Log.v(TAG, "continuing!");
     } catch (InterruptedException e) {
@@ -122,9 +122,10 @@ public class AStar implements Runnable {
 
   private void propagatePathImprovement(AStarNode parent) {
     for (AStarNode child : parent.getChildren()) {
-      if (child.costFrom(parent) < child.g()) {
+      if (parent.g() + child.costFrom(parent) < child.g()) {
         child.addParent(parent);
         child.setG(parent.g() + child.costFrom(parent));
+        Log.v(TAG, child);
         propagatePathImprovement(child);
       }
     }
