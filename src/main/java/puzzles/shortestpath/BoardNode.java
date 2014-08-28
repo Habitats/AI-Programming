@@ -69,10 +69,7 @@ public class BoardNode extends AStarNode {
 
   @Override
   protected void generateState() {
-    String id = "" + getTile().x + getTile().y;
-//    if (hasParent()) {
-//      id += getParent().getState();
-//    }
+    String id = "x:" + getTile().x + "y:" + getTile().y;
     setState(id);
   }
 
