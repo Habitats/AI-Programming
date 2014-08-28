@@ -16,19 +16,24 @@ import ai.Log;
 public class AStar implements Runnable {
 
 
+  private boolean terminate;
+
   private enum Status {
     RUNNING, PAUSED, FINISHED, NO_SOLUTION;
+  }
+
+  public enum Traversal {
+    DEPTH_FIRST, BREATH_FIRST, BEST_FIRST
   }
 
   private static final String TAG = AStar.class.getSimpleName();
   private final AStarNode start;
   private final AStarNode goal;
+  private final Traversal traversal;
   private final AStarCallback callback;
   private Queue<AStarNode> opened;
   private int count;
   private Map<String, AStarNode> generated;
-  private boolean dfs = false;
-  private boolean bfs = false;
   private DateTime startTime;
   private Status status;
 
@@ -36,9 +41,10 @@ public class AStar implements Runnable {
   private int stepTime = 100;
 
 
-  public AStar(AStarNode start, AStarNode goal, AStarCallback callback) {
+  public AStar(AStarNode start, AStarNode goal, Traversal traversal, AStarCallback callback) {
     this.start = start;
     this.goal = goal;
+    this.traversal = traversal;
     this.callback = callback;
     setStatus(Status.PAUSED);
   }
@@ -66,7 +72,7 @@ public class AStar implements Runnable {
 
       current.setClosed();
 
-      if (current.isSolution()) {
+      if (current.isSolution() || shouldTerminate()) {
         return current;
       }
 
@@ -81,13 +87,12 @@ public class AStar implements Runnable {
         if (!generated.containsKey(succsessor.getState())) {
           generated.put(succsessor.getState(), succsessor);
           attachAndEvaluate(succsessor, current, goal);
-          succsessor.setCount(count);
 
-//          if (dfs) {
-//            count -= 1;
-//          } else if (bfs) {
-//            count += 1;
-//          }
+          if (traversal == Traversal.DEPTH_FIRST) {
+            succsessor.setCount(count--);
+          } else if (traversal == Traversal.BREATH_FIRST) {
+            succsessor.setCount(count++);
+          }
 
           opened.add(succsessor);
         }
@@ -103,6 +108,10 @@ public class AStar implements Runnable {
     }
 
     return null;
+  }
+
+  private boolean shouldTerminate() {
+    return terminate;
   }
 
   private synchronized void visualizeAndWait(AStarNode node) {
@@ -135,6 +144,9 @@ public class AStar implements Runnable {
     }
   }
 
+  public void terminate() {
+    terminate = true;
+  }
 
   @Override
   public void run() {

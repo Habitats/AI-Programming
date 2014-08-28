@@ -14,7 +14,7 @@ public abstract class AStarNode implements Comparable<AStarNode> {
   private List<AStarNode> children;
   private List<AStarNode> successors;
   private String state;
-  private int count;
+  private Integer count = null;
   private boolean closed;
 
   public AStarNode() {
@@ -94,7 +94,11 @@ public abstract class AStarNode implements Comparable<AStarNode> {
   }
 
   public int f() {
-    return h() + g();
+    if (count == null) {
+      return h() + g();
+    } else {
+      return count;
+    }
   }
 
   public int g() {

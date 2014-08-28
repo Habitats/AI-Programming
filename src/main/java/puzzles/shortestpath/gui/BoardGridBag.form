@@ -134,8 +134,8 @@
             </constraints>
             <properties>
               <majorTickSpacing value="100"/>
-              <maximum value="1000"/>
-              <minimum value="0"/>
+              <maximum value="500"/>
+              <minimum value="1"/>
               <minorTickSpacing value="50"/>
               <paintLabels value="false"/>
               <paintTrack value="true"/>

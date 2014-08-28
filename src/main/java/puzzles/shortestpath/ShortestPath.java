@@ -1,5 +1,8 @@
 package puzzles.shortestpath;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ai.Log;
 import ai.models.Board;
 import algorithms.a_star.AStar;
@@ -18,6 +21,7 @@ public class ShortestPath implements ShortestPathButtonListener {
   private BoardGridBag gui;
   private Board board;
   private AStar astar;
+  private List<AStar> searches;
 
   public static void main(String args[]) {
     new ShortestPath();
@@ -26,6 +30,7 @@ public class ShortestPath implements ShortestPathButtonListener {
   public ShortestPath() {
     gui = new BoardGridBag();
     gui.setListener(ShortestPath.this);
+    searches = new ArrayList<AStar>();
   }
 
   private void initializeBoard() {
@@ -41,9 +46,14 @@ public class ShortestPath implements ShortestPathButtonListener {
 
   @Override
   public void astarClicked() {
+    startSearch(AStar.Traversal.BEST_FIRST);
+
+  }
+
+  private void startSearch(AStar.Traversal traversal) {
     AStarNode start = new BoardNode(board.getStart(), board);
     AStarNode goal = new BoardNode(board.getGoal(), board);
-    astar = new AStar(start, goal, new AStarCallback() {
+    astar = new AStar(start, goal, traversal, new AStarCallback() {
       @Override
       public void finished(AStarNode best) {
         best.visualize();
@@ -54,12 +64,15 @@ public class ShortestPath implements ShortestPathButtonListener {
 
       }
     });
-
+    searches.add(astar);
     new Thread(astar).start();
   }
 
   @Override
   public void resetClicked() {
+    for (AStar astar : searches) {
+      astar.terminate();
+    }
     initializeBoard();
   }
 
@@ -70,23 +83,27 @@ public class ShortestPath implements ShortestPathButtonListener {
 
   @Override
   public void dfsClicked() {
-    Log.v(TAG, "DFS not implemented!");
+    startSearch(AStar.Traversal.DEPTH_FIRST);
   }
 
   @Override
   public void bfsClicked() {
-    Log.v(TAG, "BFS not implemented!");
+    startSearch(AStar.Traversal.BREATH_FIRST);
   }
 
   @Override
   public void stepClicked() {
     synchronized (astar) {
-      astar.notify();
+      for (AStar astar : searches) {
+        astar.notify();
+      }
     }
   }
 
   @Override
   public void stepChanged(int value) {
-    astar.setStepTime(value);
+    for (AStar astar : searches) {
+      astar.setStepTime(value);
+    }
   }
 }
