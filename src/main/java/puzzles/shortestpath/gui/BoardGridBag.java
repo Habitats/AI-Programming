@@ -13,6 +13,7 @@ import ai.gui.AIButton;
 import ai.gui.AICanvas;
 import ai.gui.AICheckBox;
 import ai.gui.AIComboBox;
+import ai.gui.AIContiniousScrollPane;
 import ai.gui.AISlider;
 import ai.gui.AITextArea;
 import ai.gui.AITextField;
@@ -43,6 +44,8 @@ public class BoardGridBag {
   private AIComboBox comboBox1;
   private AISlider stepSlider;
   private AICheckBox labelsCheckbox;
+  private AIButton simulationButton;
+  private AIContiniousScrollPane log;
 
   private ShortestPathButtonListener listener;
 
@@ -57,7 +60,7 @@ public class BoardGridBag {
     mainPanel.setPreferredSize(new Dimension(500, 300));
     inputField.setPreferredSize(new Dimension(100, 0));
     inputField.setLineWrap(true);
-    Log.setLogField(logField);
+    Log.setLogField(log);
     Log.setStatusField(statusField);
     frame.add(mainPanel);
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -127,6 +130,12 @@ public class BoardGridBag {
         drawingCanvas.drawLabels(checkbox.isSelected());
       }
     });
+    simulationButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        listener.simulationClicked();
+      }
+    });
   }
 
   public void setAdapter(Board adapter) {
@@ -140,5 +149,9 @@ public class BoardGridBag {
 
   public void setListener(ShortestPathButtonListener listener) {
     this.listener = listener;
+  }
+
+  private void createUIComponents() {
+    // TODO: place custom component creation code here
   }
 }

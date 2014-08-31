@@ -18,4 +18,6 @@ public interface ShortestPathButtonListener {
   void stepClicked();
 
   void stepChanged(int value);
+
+  void simulationClicked();
 }

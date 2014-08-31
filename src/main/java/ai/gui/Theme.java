@@ -7,9 +7,9 @@ import java.awt.*;
  */
 public class Theme {
 
-  public static final Color BACKGROUND = new Color(144, 150, 165);
+  public static final Color BACKGROUND = new Color(208, 216, 231);
   public static final Color BACKGROUND_DARK = new Color(67, 70, 77);
-  public static final Color BACKGROUND_INTERACTIVE = new Color(210, 219, 241);
+  public static final Color BACKGROUND_INTERACTIVE = new Color(253, 253, 254);
 
   public static final Color TEXT = new Color(36, 36, 36);
 

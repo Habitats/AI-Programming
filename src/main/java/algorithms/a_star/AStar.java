@@ -1,7 +1,6 @@
 package algorithms.a_star;
 
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
+import org.joda.time.Duration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +16,10 @@ public class AStar implements Runnable {
 
 
   private boolean terminate;
+
+  public Traversal getTraversal() {
+    return traversal;
+  }
 
   private enum Status {
     RUNNING, PAUSED, FINISHED, NO_SOLUTION;
@@ -34,7 +37,8 @@ public class AStar implements Runnable {
   private Queue<AStarNode> opened;
   private int count;
   private Map<String, AStarNode> generated;
-  private DateTime startTime;
+  private long startTime;
+  private long endTime;
   private Status status;
 
   // step time in ms
@@ -46,20 +50,19 @@ public class AStar implements Runnable {
     this.goal = goal;
     this.traversal = traversal;
     this.callback = callback;
+    // using a hash of all generated id's for faster lookup
+    generated = new HashMap<String, AStarNode>();
     setStatus(Status.PAUSED);
   }
 
 
   private AStarNode search(AStarNode start, AStarNode goal) {
-    startTime = new DateTime();
+    startTime = System.currentTimeMillis();
     start.generateHeuristic(goal);
     setStatus(Status.RUNNING);
 
     opened = new PriorityQueue<AStarNode>();
     opened.add(start);
-
-    // using a hash of all generated id's for faster lookup
-    generated = new HashMap<String, AStarNode>();
 
     // this is used for BFS/DFS
     count = 0;
@@ -68,7 +71,7 @@ public class AStar implements Runnable {
     while ((current = opened.poll()) != null) {
 
       visualizeAndWait(current);
-      Log.v(TAG, current);
+//      Log.v(TAG, current);
 
       current.setClosed();
 
@@ -107,6 +110,8 @@ public class AStar implements Runnable {
       }
     }
 
+    endTime = System.currentTimeMillis() - startTime;
+
     return null;
   }
 
@@ -117,11 +122,11 @@ public class AStar implements Runnable {
   private synchronized void visualizeAndWait(AStarNode node) {
     node.visualize();
     try {
-      Log.v(TAG, "waiting...");
+//      Log.v(TAG, "waiting...");
       setStatus(Status.PAUSED);
       wait(stepTime);
       node.devisualize();
-      Log.v(TAG, "continuing!");
+//      Log.v(TAG, "continuing!");
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
@@ -155,9 +160,11 @@ public class AStar implements Runnable {
       callback.error();
       setStatus(Status.NO_SOLUTION);
     } else {
-      callback.finished(best);
+      callback.finished(best, this);
       setStatus(Status.FINISHED);
     }
+    Log.i(TAG,
+          getTraversal() + " - generated nodes: " + getGeneratedSize() + " - solution lenght: " + best.getPathLength());
   }
 
 
@@ -168,22 +175,41 @@ public class AStar implements Runnable {
 
   public void setStatus(Status status) {
     this.status = status;
-    Log.s(TAG, toString());
+//    Log.s(TAG, status.name());
   }
 
   public Status getStatus() {
     return status;
   }
 
-  private String getElapsedTime() {
-    return new Interval(startTime, DateTime.now()).toDuration().toString();
+  private org.joda.time.Duration getElapsedTime() {
+    return new Duration((status == Status.FINISHED ? endTime : System.currentTimeMillis()) - startTime);
   }
 
   @Override
   public String toString() {
-    return "A* search -- Status: " + getStatus() //
+    return traversal + " search -- Status: " + getStatus() //
            + " - Start: " + start  //
            + " - Goal: " + goal  //
+           + " - Generated: " + getGeneratedSize() //
+           + " - Closed: " + getClosedSize() //
+           + " - Opened: " + getOpenedSize() //
            + " - Elapsed time: " + getElapsedTime();
+  }
+
+  private int getClosedSize() {
+    int count = 0;
+    for (AStarNode node : generated.values()) {
+      count = node.isClosed() ? count + 1 : count;
+    }
+    return count;
+  }
+
+  private int getOpenedSize() {
+    return getGeneratedSize() - getClosedSize();
+  }
+
+  public int getGeneratedSize() {
+    return generated.size();
   }
 }

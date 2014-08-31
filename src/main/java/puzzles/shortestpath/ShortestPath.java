@@ -51,11 +51,9 @@ public class ShortestPath implements ShortestPathButtonListener {
   }
 
   private void startSearch(AStar.Traversal traversal) {
-    AStarNode start = new BoardNode(board.getStart(), board);
-    AStarNode goal = new BoardNode(board.getGoal(), board);
-    astar = new AStar(start, goal, traversal, new AStarCallback() {
+    AStarCallback callback = new AStarCallback() {
       @Override
-      public void finished(AStarNode best) {
+      public void finished(AStarNode best, AStar aStar) {
         best.visualize();
       }
 
@@ -63,7 +61,14 @@ public class ShortestPath implements ShortestPathButtonListener {
       public void error() {
 
       }
-    });
+    };
+    startSearch(traversal, callback);
+  }
+
+  private void startSearch(AStar.Traversal traversal, AStarCallback callback) {
+    AStarNode start = new BoardNode(board.getStart(), board);
+    AStarNode goal = new BoardNode(board.getGoal(), board);
+    astar = new AStar(start, goal, traversal, callback);
     searches.add(astar);
     new Thread(astar).start();
   }
@@ -105,5 +110,16 @@ public class ShortestPath implements ShortestPathButtonListener {
     for (AStar astar : searches) {
       astar.setStepTime(value);
     }
+  }
+
+  @Override
+  public void simulationClicked() {
+    runSimulation();
+  }
+
+  private void runSimulation() {
+    startSearch(AStar.Traversal.BEST_FIRST);
+    startSearch(AStar.Traversal.DEPTH_FIRST);
+    startSearch(AStar.Traversal.BREATH_FIRST);
   }
 }

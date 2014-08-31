@@ -5,7 +5,7 @@ package algorithms.a_star;
  */
 public interface AStarCallback {
 
-  void finished(AStarNode best);
+  void finished(AStarNode best, AStar aStar);
 
   void error();
 }

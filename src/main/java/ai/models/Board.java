@@ -102,12 +102,6 @@ public class Board implements Iterable<List<Tile>> {
 
   @Override
   public String toString() {
-    StringBuilder mapAsString = new StringBuilder();
-    for (int x = 0; x < width; x++) {
-      for (int y = 0; y < height; y++) {
-        mapAsString.append(board.get(x).get(y).getState());
-      }
-    }
-    return mapAsString.toString();
+    return "Width: " + width + " Height: " + height;
   }
 }
