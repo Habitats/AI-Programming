@@ -147,7 +147,7 @@ public abstract class AStarNode implements Comparable<AStarNode> {
   public String toStringShort() {
 //    return String.format("H: %d - G: %d - F: %d", h(), g(), f());
     return ""//
-//           + "H: " + h() //
+           + "H: " + h() //
            + " G: " + g() //
            + " - F: " + f()  //
 //           + " C: " + isClosed() //

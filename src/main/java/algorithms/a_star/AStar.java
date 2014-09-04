@@ -15,6 +15,8 @@ import ai.Log;
 public class AStar implements Runnable {
 
 
+  public static boolean MANUAL_STEP = false;
+  public static boolean SHUFFLE_CHILDREN = true;
   private boolean terminate;
 
   public Traversal getTraversal() {
@@ -124,7 +126,11 @@ public class AStar implements Runnable {
     try {
 //      Log.v(TAG, "waiting...");
       setStatus(Status.PAUSED);
-      wait(stepTime);
+      if (MANUAL_STEP) {
+        wait();
+      } else {
+        wait(stepTime);
+      }
       node.devisualize();
 //      Log.v(TAG, "continuing!");
     } catch (InterruptedException e) {

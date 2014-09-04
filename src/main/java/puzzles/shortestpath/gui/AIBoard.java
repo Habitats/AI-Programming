@@ -18,15 +18,18 @@ import ai.gui.AISlider;
 import ai.gui.AITextArea;
 import ai.gui.AITextField;
 import ai.models.Board;
+import algorithms.a_star.AStar;
 import puzzles.shortestpath.Samples;
 import puzzles.shortestpath.interfaces.ShortestPathButtonListener;
 
 /**
  * Created by Patrick on 23.08.2014.
  */
-public class BoardGridBag {
+public class AIBoard {
 
-  private static final String TAG = BoardGridBag.class.getSimpleName();
+  private static final String TAG = AIBoard.class.getSimpleName();
+  public static boolean DRAW_OUTLINES = true;
+  public static boolean DRAW_CHILDREN = true;
   private AIButton astarButton;
   private AIButton resetButton;
   private AIButton BFSButton;
@@ -46,6 +49,10 @@ public class BoardGridBag {
   private AICheckBox labelsCheckbox;
   private AIButton simulationButton;
   private AIContiniousScrollPane log;
+  private AICheckBox shuffleChildrenCheckBox;
+  private AICheckBox drawChildrenCheckBox;
+  private AICheckBox drawOutlinesCheckBox;
+  private AICheckBox stepCheckBox;
 
   private ShortestPathButtonListener listener;
 
@@ -69,7 +76,7 @@ public class BoardGridBag {
     frame.setVisible(true);
   }
 
-  public BoardGridBag() {
+  public AIBoard() {
     astarButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -136,6 +143,36 @@ public class BoardGridBag {
         listener.simulationClicked();
       }
     });
+    shuffleChildrenCheckBox.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        AICheckBox checkbox = (AICheckBox) e.getSource();
+        AStar.SHUFFLE_CHILDREN = checkbox.isSelected();
+      }
+    });
+    drawChildrenCheckBox.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        AICheckBox checkbox = (AICheckBox) e.getSource();
+        DRAW_CHILDREN = checkbox.isSelected();
+      }
+    });
+    drawOutlinesCheckBox.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        AICheckBox checkbox = (AICheckBox) e.getSource();
+        AIBoard.DRAW_OUTLINES = checkbox.isSelected();
+
+      }
+    });
+    stepCheckBox.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        AICheckBox checkbox = (AICheckBox) e.getSource();
+        AStar.MANUAL_STEP = checkbox.isSelected();
+
+      }
+    });
   }
 
   public void setAdapter(Board adapter) {
@@ -151,7 +188,4 @@ public class BoardGridBag {
     this.listener = listener;
   }
 
-  private void createUIComponents() {
-    // TODO: place custom component creation code here
-  }
 }

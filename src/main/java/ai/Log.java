@@ -21,27 +21,44 @@ public class Log {
     return format.print(new DateTime());
   }
 
-  public static void v(String tag, String msg, Exception e) {
+  /**
+   * Verbose logging. Visible in the standard output only
+   */
+  public static void v(String tag, Object msg, Exception e) {
     log(String.format("%s > %s > %s", getPrettyDate(), tag, msg));
   }
 
+  /**
+   * Verbose logging. Visible in the standard output only
+   */
   public static void v(String tag, Object msg) {
     log(String.format("%s > %s > %s", getPrettyDate(), tag, msg.toString()));
   }
 
-  public static void i(String tag, String msg, Exception e) {
-    log(String.format("%s > %s > %s", getPrettyDate(), tag, msg));
+  /**
+   * Important logging. Visible in the GUI feed and in the standard output
+   */
+  public static void i(String tag, Object msg, Exception e) {
+    v(tag, msg, e);
+    logInGui(msg.toString());
   }
 
+  /**
+   * Important logging. Visible in the GUI feed and in the standard output
+   */
   public static void i(String tag, Object msg) {
-    log(String.format("%s > %s > %s", getPrettyDate(), tag, msg.toString()));
+    v(tag, msg);
+    logInGui(msg.toString());
+  }
+
+  public static void logInGui(String msg) {
+    if (logField != null) {
+      logField.append(msg + "\n");
+    }
   }
 
   private static void log(String msg) {
     System.out.println(msg);
-    if (logField != null) {
-      logField.append(msg + "\n");
-    }
   }
 
   private static void status(String tag, String status) {

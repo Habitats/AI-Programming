@@ -7,6 +7,7 @@ import javax.swing.*;
 import ai.Log;
 import ai.models.Board;
 import ai.models.Tile;
+import puzzles.shortestpath.gui.AIBoard;
 import puzzles.shortestpath.interfaces.BoardListener;
 
 /**
@@ -87,7 +88,9 @@ public class AICanvas extends JPanel implements BoardListener {
     if (drawLabels) {
       drawStringCenter(g, tile.getText(), x, y);
     }
-    drawOutline(g, x, y);
+    if (AIBoard.DRAW_OUTLINES) {
+      drawOutline(g, x, y);
+    }
   }
 
   private void drawOutline(Graphics g, int x, int y) {
