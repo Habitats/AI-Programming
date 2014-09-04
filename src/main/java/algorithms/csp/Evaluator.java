@@ -35,11 +35,11 @@ public class Evaluator {
     variables.put(a.getId(), a);
     variables.put(b.getId(), b);
 
-    String expression = "(x == y < z) or z == 4 and b < 0";
+    String expression = "((x == y < z) or z == 4) or ( b < 0 and (x is not y))";
+    Function function = new Function().setVariables(variables).setExpression(expression);
 
-    Log.v(TAG, evaluateExpression(variables, expression));
-    y.setValue(2);
-    Log.v(TAG, evaluateExpression(variables, expression));
+    String expression2 = "x == y == z and (a > b)";
+    Function function2 = new Function().setVariables(variables).setExpression(expression2);
 
     for (Integer zv : z.getDomain()) {
       for (Integer xv : x.getDomain()) {
@@ -51,9 +51,14 @@ public class Evaluator {
               y.setValue(yv);
               a.setValue(av);
               b.setValue(bv);
-              boolean ans = evaluateExpression(variables, expression);
+              boolean ans = function.call(variables);
               if (ans) {
-                Log.v(TAG, x + ", " + y + ", " + z + ", " + ans);
+                Log.v(TAG, "1 --- " + x + ", " + y + ", " + z + ", " + ans);
+              }
+
+              boolean ans2 = function2.call(variables);
+              if (ans2) {
+                Log.v(TAG, "2 --- " + x + ", " + y + ", " + z + ", " + ans2);
               }
             }
           }
