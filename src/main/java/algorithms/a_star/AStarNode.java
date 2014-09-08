@@ -1,17 +1,16 @@
 package algorithms.a_star;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import ai.models.Node;
 
 /**
  * Created by Patrick on 24.08.2014.
  */
-public abstract class AStarNode implements Comparable<AStarNode> {
+public abstract class AStarNode extends Node {
 
   private int h;
   private int g;
-  private AStarNode parent;
-  private List<AStarNode> children;
   private List<AStarNode> successors;
   private String state;
   private Integer count = null;
@@ -19,25 +18,10 @@ public abstract class AStarNode implements Comparable<AStarNode> {
 
   public AStarNode() {
     closed = false;
-    children = new ArrayList<AStarNode>();
   }
 
   protected void setState(String state) {
     this.state = state;
-  }
-
-  public boolean hasParent() {
-    return parent != null;
-  }
-
-  public AStarNode setParent(AStarNode parent) {
-    this.parent = parent;
-    setG(parent.g() + costFrom(parent));
-    return this;
-  }
-
-  protected void addChild(AStarNode child) {
-    children.add(child);
   }
 
   public String getState() {
@@ -47,8 +31,11 @@ public abstract class AStarNode implements Comparable<AStarNode> {
     return state;
   }
 
-  public AStarNode getParent() {
-    return parent;
+  @Override
+  public Node setParent(Node parent) {
+    super.setParent(parent);
+    setG(((AStarNode) parent).g() + costFrom((AStarNode) parent));
+    return this;
   }
 
   public void setHeuristic(int h) {
@@ -61,10 +48,6 @@ public abstract class AStarNode implements Comparable<AStarNode> {
 
   public int getCount() {
     return count;
-  }
-
-  public List<AStarNode> getChildren() {
-    return children;
   }
 
   public void setSuccsessors(List<AStarNode> successors) {
@@ -86,6 +69,10 @@ public abstract class AStarNode implements Comparable<AStarNode> {
       node = node.getParent();
     }
     return count;
+  }
+
+  public AStarNode getParent() {
+    return (AStarNode) getParents().get(0);
   }
 
   public AStarNode setG(int g) {

@@ -6,15 +6,15 @@ import javax.swing.event.ChangeListener;
 
 import ai.Log;
 import ai.gui.AIButton;
-import ai.gui.AICanvas;
 import ai.gui.AICheckBox;
 import ai.gui.AIComboBox;
 import ai.gui.AIContiniousScrollPane;
+import ai.gui.AIGraphCanvas;
 import ai.gui.AIGui;
 import ai.gui.AISlider;
 import ai.gui.AITextArea;
 import ai.gui.AITextField;
-import ai.models.Board;
+import ai.models.AIAdapter;
 import algorithms.a_star.AStar;
 import puzzles.graph_coloring.interfaces.GraphColoringButtonListener;
 import puzzles.shortestpath.Samples;
@@ -33,7 +33,7 @@ public class GraphColoringGui extends AIGui {
 
   private JPanel mainPanel;
 
-  private AICanvas drawingCanvas;
+  private AIGraphCanvas drawingCanvas;
   private AITextArea inputField;
   private AITextField logField;
   private AITextField statusField;
@@ -80,7 +80,7 @@ public class GraphColoringGui extends AIGui {
     });
   }
 
-  public void setAdapter(Board adapter) {
+  public void setAdapter(AIAdapter adapter) {
     drawingCanvas.setAdapter(adapter);
     mainPanel.repaint();
   }

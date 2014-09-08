@@ -44,7 +44,9 @@ public class InputUtils {
   }
 
   public Board getBoard() {
-    Board board = new Board(inputList.get(0).get(0), inputList.get(0).get(1));
+    Board board = new Board();
+    board.setWidth(inputList.get(0).get(0));
+    board.setHeight(inputList.get(0).get(1));
     board.clear();
     for (int i = 3; i < inputList.size(); i++) {
       int x = inputList.get(i).get(0);

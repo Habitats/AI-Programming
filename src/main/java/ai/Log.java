@@ -26,6 +26,7 @@ public class Log {
    */
   public static void v(String tag, Object msg, Exception e) {
     log(String.format("%s > %s > %s", getPrettyDate(), tag, msg));
+    e.printStackTrace();
   }
 
   /**

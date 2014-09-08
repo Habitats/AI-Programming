@@ -180,14 +180,12 @@
             <border type="none"/>
             <children/>
           </scrollpane>
-          <grid id="a0c39" class="ai.gui.AICanvas" binding="drawingCanvas" layout-manager="GridBagLayout">
+          <component id="cb55c" class="ai.gui.AIGraphCanvas" binding="drawingCanvas">
             <constraints>
               <splitpane position="left"/>
             </constraints>
             <properties/>
-            <border type="none"/>
-            <children/>
-          </grid>
+          </component>
         </children>
       </splitpane>
     </children>

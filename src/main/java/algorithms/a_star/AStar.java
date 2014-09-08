@@ -145,7 +145,8 @@ public class AStar implements Runnable {
 
   private void propagatePathImprovement(AStarNode parent) {
     Log.v(TAG, "Propagate path improvement: " + parent);
-    for (AStarNode child : parent.getChildren()) {
+    for (int i = 0; i < parent.getChildren().size(); i++) {
+      AStarNode child = (AStarNode) parent.getChildren().get(i);
       if (child.hasBetter(parent)) {
         Log.v(TAG, "path length: " + child.getPathLength());
         child.setParent(parent);

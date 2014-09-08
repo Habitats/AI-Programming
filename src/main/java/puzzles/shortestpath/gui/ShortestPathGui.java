@@ -6,10 +6,10 @@ import javax.swing.event.ChangeListener;
 
 import ai.Log;
 import ai.gui.AIButton;
-import ai.gui.AICanvas;
 import ai.gui.AICheckBox;
 import ai.gui.AIComboBox;
 import ai.gui.AIContiniousScrollPane;
+import ai.gui.AIGridCanvas;
 import ai.gui.AIGui;
 import ai.gui.AISlider;
 import ai.gui.AITextArea;
@@ -27,6 +27,7 @@ public class ShortestPathGui extends AIGui {
   private static final String TAG = ShortestPathGui.class.getSimpleName();
   public static boolean DRAW_OUTLINES = true;
   public static boolean DRAW_CHILDREN = true;
+  private AIGridCanvas drawingCanvas;
   private AIButton astarButton;
   private AIButton resetButton;
   private AIButton BFSButton;
@@ -36,7 +37,6 @@ public class ShortestPathGui extends AIGui {
 
   private JPanel mainPanel;
 
-  private AICanvas drawingCanvas;
   private AITextArea inputField;
   private AITextField statusField;
   private AITextField logField;
@@ -112,4 +112,7 @@ public class ShortestPathGui extends AIGui {
     this.listener = listener;
   }
 
+  private void createUIComponents() {
+    // TODO: place custom component creation code here
+  }
 }

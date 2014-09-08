@@ -7,19 +7,11 @@ import java.util.List;
 /**
  * Created by Patrick on 24.08.2014.
  */
-public class Board implements Iterable<List<Tile>> {
+public class Board extends AIAdapter implements Iterable<List<Tile>> {
 
-  public final int width;
-  public final int height;
-  private BoardListener listener;
-  private List<List<Tile>> board;
+  private List<List<Tile>> tiles;
   private Tile start;
   private Tile goal;
-
-  public Board(int width, int height) {
-    this.width = width;
-    this.height = height;
-  }
 
   public void set(int x, int y, int width, int height, Tile.State state) {
     for (int w = 0; w < width; w++) {
@@ -30,28 +22,30 @@ public class Board implements Iterable<List<Tile>> {
     }
   }
 
-  private void initEmptyBoard(int width, int height) {
-    board = new ArrayList<>();
+  public void initEmptyBoard(int width, int height) {
+    setWidth(width);
+    setHeight(height);
+    tiles = new ArrayList<>();
     for (int x = 0; x < width; x++) {
       List<Tile> column = new ArrayList<>();
       for (int y = 0; y < height; y++) {
         column.add(new Tile(x, y, Drawable.State.EMPTY));
       }
-      board.add(column);
+      tiles.add(column);
     }
     notifyDataChanged();
   }
 
   public void clear() {
-    initEmptyBoard(width, height);
+    initEmptyBoard(getWidth(), getHeight());
   }
 
   public Tile get(int x, int y) {
-    return board.get(x).get(y);
+    return tiles.get(x).get(y);
   }
 
   public void set(Tile tile) {
-    board.get(tile.x).get(tile.y).setState(tile.getState());
+    tiles.get(tile.x).get(tile.y).setState(tile.getState());
   }
 
   public void notifyDataChanged() {
@@ -60,13 +54,9 @@ public class Board implements Iterable<List<Tile>> {
     }
   }
 
-  public void setListener(BoardListener listener) {
-    this.listener = listener;
-  }
-
   @Override
   public Iterator<List<Tile>> iterator() {
-    return board.iterator();
+    return tiles.iterator();
   }
 
   public Board setGoal(Tile goal) {
@@ -91,7 +81,7 @@ public class Board implements Iterable<List<Tile>> {
 
   public boolean hasTile(int x, int y) {
     try {
-      Tile tile = board.get(x).get(y);
+      Tile tile = tiles.get(x).get(y);
       return tile.getState() != Drawable.State.OBSTICLE;
     } catch (IndexOutOfBoundsException e) {
       return false;
@@ -100,6 +90,6 @@ public class Board implements Iterable<List<Tile>> {
 
   @Override
   public String toString() {
-    return "Width: " + width + " Height: " + height;
+    return "Width: " + getWidth() + " Height: " + getHeight();
   }
 }

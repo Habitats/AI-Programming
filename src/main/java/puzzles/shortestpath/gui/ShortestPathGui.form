@@ -220,7 +220,7 @@
             <border type="none"/>
             <children/>
           </scrollpane>
-          <grid id="a0c39" class="ai.gui.AICanvas" binding="drawingCanvas" layout-manager="GridBagLayout">
+          <grid id="e6f08" class="ai.gui.AIGridCanvas" binding="drawingCanvas" layout-manager="GridBagLayout">
             <constraints>
               <splitpane position="left"/>
             </constraints>

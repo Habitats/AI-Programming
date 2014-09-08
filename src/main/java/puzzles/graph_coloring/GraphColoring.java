@@ -1,5 +1,10 @@
 package puzzles.graph_coloring;
 
+import ai.models.Board;
+import ai.models.ColorNode;
+import ai.models.Drawable;
+import ai.models.Graph;
+import ai.models.Tile;
 import puzzles.graph_coloring.gui.GraphColoringGui;
 import puzzles.graph_coloring.interfaces.GraphColoringButtonListener;
 
@@ -15,6 +20,9 @@ public class GraphColoring implements GraphColoringButtonListener {
     // initialize the GUI
     gui = new GraphColoringGui();
     gui.setListener(this);
+
+    Graph<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(6));
+    gui.setAdapter(graph);
   }
 
   @Override

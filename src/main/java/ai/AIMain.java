@@ -9,12 +9,6 @@ public class AIMain {
 
   public static void main(String[] args) {
     new ShortestPath();
-////    new CSP().test();
-//    Runnable r2 = () -> funBitch();
-//    r2.run();
-  }
-
-  private static void funBitch() {
-    System.out.println("ad");
+//    new GraphColoring();
   }
 }
