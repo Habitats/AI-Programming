@@ -1,5 +1,7 @@
 package ai.gui;
 
+import java.awt.*;
+
 import javax.swing.*;
 
 /**
@@ -11,5 +13,6 @@ public class AITextField extends JTextField {
     setBackground(Theme.getBackgroundInteractive());
     setForeground(Theme.getForeground());
     setBorder(BorderFactory.createEmptyBorder());
+
   }
 }

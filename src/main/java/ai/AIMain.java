@@ -1,6 +1,6 @@
 package ai;
 
-import algorithms.csp.Evaluator;
+import puzzles.shortestpath.ShortestPath;
 
 /**
  * Created by Patrick on 24.08.2014.
@@ -8,7 +8,13 @@ import algorithms.csp.Evaluator;
 public class AIMain {
 
   public static void main(String[] args) {
-//    new ShortestPath();
-    new Evaluator().test();
+    new ShortestPath();
+////    new CSP().test();
+//    Runnable r2 = () -> funBitch();
+//    r2.run();
+  }
+
+  private static void funBitch() {
+    System.out.println("ad");
   }
 }

@@ -5,10 +5,11 @@ import java.util.Collections;
 import java.util.List;
 
 import ai.models.Board;
+import ai.models.Drawable;
 import ai.models.Tile;
 import algorithms.a_star.AStar;
 import algorithms.a_star.AStarNode;
-import puzzles.shortestpath.gui.AIBoard;
+import puzzles.shortestpath.gui.ShortestPathGui;
 
 /**
  * Created by Patrick on 24.08.2014.
@@ -32,12 +33,7 @@ public class BoardNode extends AStarNode {
 
   @Override
   public int costFrom(AStarNode parent) {
-    BoardNode node = (BoardNode) parent;
-    if (node.getTile().x != getTile().x && node.getTile().y != getTile().y) {
-      return (int) (Math.sqrt(2) * accuracyMultiplier);
-    } else {
-      return (int) (1 * accuracyMultiplier);
-    }
+    return (int) (.5 * accuracyMultiplier);
   }
 
   @Override
@@ -50,9 +46,9 @@ public class BoardNode extends AStarNode {
           continue;
         }
         // disallow diagonal moves
-//        if (tile.x != x && tile.y != y) {
-//          continue;
-//        }
+        if (tile.x != x && tile.y != y) {
+          continue;
+        }
         // check if coordinates for the specified successor are valid on the board.
         // ie. if the coordinates is an obstacle, or are out of bounds, it will return false
         if (board.hasTile(x, y)) {
@@ -99,7 +95,7 @@ public class BoardNode extends AStarNode {
       drawPath();
 //      board.set(this.getTile());
     } else {
-      if (AIBoard.DRAW_CHILDREN) {
+      if (ShortestPathGui.DRAW_CHILDREN) {
         drawChildren();
       }
       drawPath();
@@ -119,7 +115,7 @@ public class BoardNode extends AStarNode {
   }
 
   private void drawPath() {
-    drawPath(Tile.State.PATH);
+    drawPath(Drawable.State.PATH);
   }
 
   private void drawPath(Tile.State state) {
@@ -139,7 +135,7 @@ public class BoardNode extends AStarNode {
   private void drawChildren() {
     for (AStarNode node : getSuccessors()) {
       Tile tile = ((BoardNode) node).getTile();
-      tile.setState(Tile.State.CHILDREN);
+      tile.setState(Drawable.State.CHILDREN);
 //      tile.setText(node.toStringShort());
       board.set(tile);
     }

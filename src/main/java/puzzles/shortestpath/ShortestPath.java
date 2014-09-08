@@ -9,7 +9,7 @@ import ai.models.Board;
 import algorithms.a_star.AStar;
 import algorithms.a_star.AStarCallback;
 import algorithms.a_star.AStarNode;
-import puzzles.shortestpath.gui.AIBoard;
+import puzzles.shortestpath.gui.ShortestPathGui;
 import puzzles.shortestpath.interfaces.ShortestPathButtonListener;
 import puzzles.shortestpath.utils.InputUtils;
 
@@ -19,14 +19,14 @@ import puzzles.shortestpath.utils.InputUtils;
 public class ShortestPath implements ShortestPathButtonListener {
 
   private static final String TAG = AIMain.class.getSimpleName();
-  private AIBoard gui;
+  private ShortestPathGui gui;
   private Board board;
   private AStar astar;
   private List<AStar> searches;
 
   public ShortestPath() {
     // initialize the GUI
-    gui = new AIBoard();
+    gui = new ShortestPathGui();
     gui.setListener(ShortestPath.this);
 
     // since it's possible to run multiple searches in parallel, let's store each instance in a list to keep track of them

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import puzzles.shortestpath.interfaces.BoardListener;
-
 /**
  * Created by Patrick on 24.08.2014.
  */
@@ -33,11 +31,11 @@ public class Board implements Iterable<List<Tile>> {
   }
 
   private void initEmptyBoard(int width, int height) {
-    board = new ArrayList<List<Tile>>();
+    board = new ArrayList<>();
     for (int x = 0; x < width; x++) {
-      List<Tile> column = new ArrayList<Tile>();
+      List<Tile> column = new ArrayList<>();
       for (int y = 0; y < height; y++) {
-        column.add(new Tile(x, y, Tile.State.EMPTY));
+        column.add(new Tile(x, y, Drawable.State.EMPTY));
       }
       board.add(column);
     }
@@ -94,7 +92,7 @@ public class Board implements Iterable<List<Tile>> {
   public boolean hasTile(int x, int y) {
     try {
       Tile tile = board.get(x).get(y);
-      return tile.getState() != Tile.State.OBSTICLE;
+      return tile.getState() != Drawable.State.OBSTICLE;
     } catch (IndexOutOfBoundsException e) {
       return false;
     }

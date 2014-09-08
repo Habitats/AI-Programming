@@ -7,8 +7,8 @@ import javax.swing.*;
 import ai.Log;
 import ai.models.Board;
 import ai.models.Tile;
-import puzzles.shortestpath.gui.AIBoard;
-import puzzles.shortestpath.interfaces.BoardListener;
+import puzzles.shortestpath.gui.ShortestPathGui;
+import ai.models.BoardListener;
 
 /**
  * Created by Patrick on 24.08.2014.
@@ -88,7 +88,7 @@ public class AICanvas extends JPanel implements BoardListener {
     if (drawLabels) {
       drawStringCenter(g, tile.getText(), x, y);
     }
-    if (AIBoard.DRAW_OUTLINES) {
+    if (ShortestPathGui.DRAW_OUTLINES) {
       drawOutline(g, x, y);
     }
   }

@@ -1,4 +1,4 @@
-package puzzles.shortestpath.interfaces;
+package ai.models;
 
 /**
  * Created by Patrick on 24.08.2014.
