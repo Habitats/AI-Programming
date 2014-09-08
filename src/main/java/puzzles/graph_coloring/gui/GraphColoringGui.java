@@ -27,10 +27,7 @@ public class GraphColoringGui extends AIGui {
   private static final String TAG = GraphColoringGui.class.getSimpleName();
   public static boolean DRAW_OUTLINES = true;
   public static boolean DRAW_CHILDREN = true;
-  private AIButton astarButton;
   private AIButton resetButton;
-  private AIButton BFSButton;
-  private AIButton DFSButton;
   private AIButton loadButton;
   private AIButton stepButton;
 
@@ -45,8 +42,6 @@ public class GraphColoringGui extends AIGui {
   private AICheckBox labelsCheckbox;
   private AIButton simulationButton;
   private AIContiniousScrollPane log;
-  private AICheckBox shuffleChildrenCheckBox;
-  private AICheckBox drawChildrenCheckBox;
   private AICheckBox drawOutlinesCheckBox;
   private AICheckBox stepCheckBox;
 
@@ -73,14 +68,6 @@ public class GraphColoringGui extends AIGui {
     labelsCheckbox.addActionListener(e -> {
       AICheckBox checkbox = (AICheckBox) e.getSource();
       drawingCanvas.drawLabels(checkbox.isSelected());
-    });
-    shuffleChildrenCheckBox.addActionListener(e -> {
-      AICheckBox checkbox = (AICheckBox) e.getSource();
-      AStar.SHUFFLE_CHILDREN = checkbox.isSelected();
-    });
-    drawChildrenCheckBox.addActionListener(e -> {
-      AICheckBox checkbox = (AICheckBox) e.getSource();
-      DRAW_CHILDREN = checkbox.isSelected();
     });
     drawOutlinesCheckBox.addActionListener(e -> {
       AICheckBox checkbox = (AICheckBox) e.getSource();
