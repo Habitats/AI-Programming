@@ -1,7 +1,5 @@
 package ai.gui;
 
-import java.awt.*;
-
 import javax.swing.*;
 
 /**

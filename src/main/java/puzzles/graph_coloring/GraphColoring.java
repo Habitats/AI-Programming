@@ -1,10 +1,7 @@
 package puzzles.graph_coloring;
 
-import ai.models.Board;
 import ai.models.ColorNode;
-import ai.models.Drawable;
 import ai.models.Graph;
-import ai.models.Tile;
 import puzzles.graph_coloring.gui.GraphColoringGui;
 import puzzles.graph_coloring.interfaces.GraphColoringButtonListener;
 

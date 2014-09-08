@@ -43,7 +43,7 @@ public class ShortestPath implements ShortestPathButtonListener {
       Log.v(TAG, board);
       Log.v(TAG, "Successfully loaded input!");
     } catch (Exception e) {
-      Log.v(TAG, "Unable to parse input!",e);
+      Log.v(TAG, "Unable to parse input!", e);
     }
   }
 

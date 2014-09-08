@@ -34,11 +34,11 @@ public class Graph<T extends Node> extends AIAdapter implements Iterable<T> {
   }
 
   public int getWidth() {
-    return width +1;
+    return width + 1;
   }
 
   public int getHeight() {
-    return height +1;
+    return height + 1;
   }
 
   public T get(int i) {

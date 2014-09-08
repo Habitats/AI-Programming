@@ -5,8 +5,8 @@ package ai.models;
  */
 public class Drawable {
 
-public final int x;
-public final int y;
+  public final int x;
+  public final int y;
   protected State state;
   private State previousState;
   private String text;

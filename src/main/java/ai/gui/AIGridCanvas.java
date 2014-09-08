@@ -14,7 +14,7 @@ public class AIGridCanvas extends AICanvas {
   private int tileHeight = 20;
   private int tileWidth = 20;
 
-  public AIGridCanvas(){
+  public AIGridCanvas() {
     setBackground(Color.BLACK);
   }
 

@@ -11,8 +11,7 @@ import ai.Log;
  */
 public class AIGui {
 
-  protected void buildFrame(JPanel mainPanel, AIContiniousScrollPane log,
-                            AITextField statusField) {
+  protected void buildFrame(JPanel mainPanel, AIContiniousScrollPane log, AITextField statusField) {
 //    JFrame.setDefaultLookAndFeelDecorated(true);
 //    try {
 //      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -28,6 +27,6 @@ public class AIGui {
     frame.pack();
     frame.setLocationRelativeTo(frame.getRootPane());
     frame.setVisible(true);
-    
+
   }
 }
