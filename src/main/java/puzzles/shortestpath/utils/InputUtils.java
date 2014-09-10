@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ai.models.Board;
-import ai.models.Drawable;
 import ai.models.Tile;
 
 /**
@@ -33,13 +32,13 @@ public class InputUtils {
 
   public Tile getStart() {
     List<Integer> params = getInputList().get(1);
-    Tile tile = new Tile(params.get(0), params.get(1), Drawable.State.START);
+    Tile tile = new Tile(params.get(0), params.get(1), Tile.State.START);
     return tile;
   }
 
   public Tile getGoal() {
     List<Integer> params = getInputList().get(2);
-    Tile tile = new Tile(params.get(0), params.get(1), Drawable.State.GOAL);
+    Tile tile = new Tile(params.get(0), params.get(1), Tile.State.GOAL);
     return tile;
   }
 
@@ -53,7 +52,7 @@ public class InputUtils {
       int y = inputList.get(i).get(1);
       int width = inputList.get(i).get(2);
       int height = inputList.get(i).get(3);
-      board.set(x, y, width, height, Drawable.State.OBSTICLE);
+      board.set(x, y, width, height, Tile.State.OBSTICLE);
     }
     board.setStart(getStart());
     board.setGoal(getGoal());

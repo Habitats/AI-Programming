@@ -30,7 +30,7 @@ public class Board extends AIAdapter<Tile> implements Iterable<List<Tile>> {
     for (int x = 0; x < width; x++) {
       List<Tile> column = new ArrayList<>();
       for (int y = 0; y < height; y++) {
-        column.add(new Tile(x, y, Drawable.State.EMPTY));
+        column.add(new Tile(x, y, Tile.State.EMPTY));
       }
       tiles.add(column);
     }
@@ -83,7 +83,7 @@ public class Board extends AIAdapter<Tile> implements Iterable<List<Tile>> {
   public boolean hasTile(int x, int y) {
     try {
       Tile tile = tiles.get(x).get(y);
-      return tile.getState() != Drawable.State.OBSTICLE;
+      return tile.getState() != Tile.State.OBSTICLE;
     } catch (IndexOutOfBoundsException e) {
       return false;
     }

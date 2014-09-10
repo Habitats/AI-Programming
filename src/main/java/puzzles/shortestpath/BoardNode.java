@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 import ai.models.Board;
-import ai.models.Drawable;
 import ai.models.Tile;
 import algorithms.a_star.AStar;
 import algorithms.a_star.AStarNode;
@@ -115,7 +114,7 @@ public class BoardNode extends AStarNode {
   }
 
   private void drawPath() {
-    drawPath(Drawable.State.PATH);
+    drawPath(Tile.State.PATH);
   }
 
   private void drawPath(Tile.State state) {
@@ -135,7 +134,7 @@ public class BoardNode extends AStarNode {
   private void drawChildren() {
     for (AStarNode node : getSuccessors()) {
       Tile tile = ((BoardNode) node).getTile();
-      tile.setState(Drawable.State.CHILDREN);
+      tile.setState(Tile.State.CHILDREN);
 //      tile.setText(node.toStringShort());
       board.set(tile);
     }

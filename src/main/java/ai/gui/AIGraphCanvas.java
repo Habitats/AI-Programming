@@ -15,7 +15,7 @@ public class AIGraphCanvas extends AICanvas<ColorNode> {
   private int itemWidth = 20;
   private double horizontalScalingFactor;
   private double verticalScalingFactor;
-  private int padding = 40;
+  private int padding = 20;
 
 
   @Override
@@ -48,7 +48,7 @@ public class AIGraphCanvas extends AICanvas<ColorNode> {
     for (ColorNode item : getAdapter().getItems()) {
       int x = getX(item);
       int y = getY(item);
-      g.setColor(toHsv(Math.random() * 100));
+      g.setColor(toHsv(Math.random()));
       g.fillOval(x, y, getItemWidth(), getItemHeight());
       g.setColor(Color.black);
       g.drawOval(x, y, getItemWidth(), getItemHeight());
@@ -109,7 +109,7 @@ public class AIGraphCanvas extends AICanvas<ColorNode> {
   }
 
   public void setVerticalScalingFactor(double height, double adapterHeight) {
-    this.verticalScalingFactor = (height - (padding *2 + itemHeight)) / adapterHeight;
+    this.verticalScalingFactor = (height - (padding * 2 + itemHeight)) / adapterHeight;
   }
 
   public double getVerticalScalingFactor() {
