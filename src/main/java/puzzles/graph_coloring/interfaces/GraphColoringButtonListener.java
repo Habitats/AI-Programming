@@ -12,4 +12,6 @@ public interface GraphColoringButtonListener {
   void stepClicked();
 
   void stepChanged(int value);
+
+  void sampleSelected(int i);
 }

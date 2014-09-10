@@ -1,6 +1,6 @@
 package ai;
 
-import puzzles.shortestpath.ShortestPath;
+import puzzles.graph_coloring.GraphColoring;
 
 /**
  * Created by Patrick on 24.08.2014.
@@ -8,7 +8,7 @@ import puzzles.shortestpath.ShortestPath;
 public class AIMain {
 
   public static void main(String[] args) {
-    new ShortestPath();
-//    new GraphColoring();
+//    new ShortestPath();
+    new GraphColoring();
   }
 }

@@ -10,7 +10,7 @@ import ai.models.AIAdapterListener;
 /**
  * Created by Patrick on 24.08.2014.
  */
-public abstract class AICanvas extends JPanel implements AIAdapterListener {
+public abstract class AICanvas<T> extends JPanel implements AIAdapterListener {
 
   private static final String TAG = AICanvas.class.getSimpleName();
   private AIAdapter adapter;
@@ -23,12 +23,14 @@ public abstract class AICanvas extends JPanel implements AIAdapterListener {
   @Override
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
-    updateMetrics();
-    draw(g);
-
+    ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    if (getAdapter() != null) {
+      updateMetrics();
+      draw((Graphics2D) g);
+    }
   }
 
-  protected abstract void draw(Graphics g);
+  protected abstract void draw(Graphics2D g);
 
   protected abstract void drawOutline(Graphics g, int x, int y);
 
@@ -37,14 +39,14 @@ public abstract class AICanvas extends JPanel implements AIAdapterListener {
     g.setColor(Theme.getForeground());
     int stringLen = (int) g2d.getFontMetrics().getStringBounds(s, g2d).getWidth();
     int stringHeight = (int) g2d.getFontMetrics().getStringBounds(s, g2d).getHeight();
-    int offsetWidth = itemWidth() / 2 - stringLen / 2;
-    int offsetHeight = itemHeigth() / 2 - stringHeight / 2;
+    int offsetWidth = getItemWidth() / 2 - stringLen / 2;
+    int offsetHeight = getItemHeight() / 2 - stringHeight / 2;
     g2d.drawString(s, offsetWidth + XPos, offsetHeight + YPos);
   }
 
-  protected abstract int itemHeigth();
+  protected abstract int getItemHeight();
 
-  protected abstract int itemWidth();
+  protected abstract int getItemWidth();
 
   protected abstract void updateMetrics();
 
@@ -53,7 +55,7 @@ public abstract class AICanvas extends JPanel implements AIAdapterListener {
     repaint();
   }
 
-  public void setAdapter(AIAdapter adapter) {
+  public void setAdapter(AIAdapter<T> adapter) {
     this.adapter = adapter;
     adapter.setListener(this);
   }
@@ -62,7 +64,7 @@ public abstract class AICanvas extends JPanel implements AIAdapterListener {
     this.drawLabels = selected;
   }
 
-  public AIAdapter getAdapter() {
+  public AIAdapter<T> getAdapter() {
     return adapter;
   }
 }

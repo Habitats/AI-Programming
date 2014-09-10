@@ -1,13 +1,14 @@
 package ai.models;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 /**
  * Created by Patrick on 24.08.2014.
  */
-public class Board extends AIAdapter implements Iterable<List<Tile>> {
+public class Board extends AIAdapter<Tile> implements Iterable<List<Tile>> {
 
   private List<List<Tile>> tiles;
   private Tile start;
@@ -91,5 +92,22 @@ public class Board extends AIAdapter implements Iterable<List<Tile>> {
   @Override
   public String toString() {
     return "Width: " + getWidth() + " Height: " + getHeight();
+  }
+
+  @Override
+  public Tile getItem(int index) {
+    return null;
+  }
+
+  @Override
+  public int getSize() {
+    return getWidth() * getHeight();
+  }
+
+  @Override
+  public Collection getItems() {
+    List<Tile> items = new ArrayList<>();
+    tiles.forEach(items::addAll);
+    return items;
   }
 }

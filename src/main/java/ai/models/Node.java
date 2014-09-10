@@ -3,39 +3,37 @@ package ai.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import algorithms.a_star.AStarNode;
-
 /**
  * Created by Patrick on 08.09.2014.
  */
-public abstract class Node implements Comparable<AStarNode> {
+public abstract class Node<T extends Node> implements Comparable<T> {
 
-  private List<Node> children;
-  private List<Node> parents;
+  private List<T> children;
+  private List<T> parents;
 
   public boolean hasParent() {
     return getParents().size() != 0;
   }
 
-  public List<Node> getParents() {
+  public List<T> getParents() {
     if (parents == null) {
       parents = new ArrayList<>();
     }
     return parents;
   }
 
-  public Node setParent(Node parent) {
+  public Node setParent(T parent) {
     parents = new ArrayList<>();
     parents.add(parent);
     return this;
   }
 
-  public Node addParent(Node parent) {
+  public Node addParent(T parent) {
     getParents().add(parent);
     return this;
   }
 
-  public void addChild(Node child) {
+  public void addChild(T child) {
     getChildren().add(child);
     child.addParent(this);
   }
@@ -46,11 +44,11 @@ public abstract class Node implements Comparable<AStarNode> {
     }
   }
 
-  public void removeParent(Node node) {
+  public void removeParent(T node) {
     parents.remove(node);
   }
 
-  public List<Node> getChildren() {
+  public List<T> getChildren() {
     if (children == null) {
       children = new ArrayList<>();
     }

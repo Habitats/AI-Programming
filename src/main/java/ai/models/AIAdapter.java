@@ -1,13 +1,17 @@
 package ai.models;
 
+import java.util.Collection;
+
 /**
  * Created by Patrick on 08.09.2014.
  */
-public class AIAdapter {
+public abstract class AIAdapter<T> {
 
   private int width;
   private int height;
   protected AIAdapterListener listener;
+  private int minX;
+  private int minY;
 
 
   public void setListener(AIAdapterListener listener) {
@@ -22,11 +26,30 @@ public class AIAdapter {
     return height;
   }
 
+  public abstract T getItem(int index);
+
   public void setWidth(int width) {
     this.width = width;
   }
 
+  public abstract int getSize();
+
+  public abstract Collection<T> getItems();
+
   public void setHeight(int height) {
     this.height = height;
+  }
+
+  public void setOrigin(int minX, int minY) {
+    this.minX = minX;
+    this.minY = minY;
+  }
+
+  public int getOriginX() {
+    return minX;
+  }
+
+  public int getOriginY() {
+    return minY;
   }
 }

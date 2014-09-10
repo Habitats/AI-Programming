@@ -7,7 +7,7 @@ import ai.models.Node;
 /**
  * Created by Patrick on 24.08.2014.
  */
-public abstract class AStarNode extends Node {
+public abstract class AStarNode extends Node<AStarNode> {
 
   private int h;
   private int g;
@@ -32,9 +32,9 @@ public abstract class AStarNode extends Node {
   }
 
   @Override
-  public Node setParent(Node parent) {
+  public AStarNode setParent(AStarNode parent) {
     super.setParent(parent);
-    setG(((AStarNode) parent).g() + costFrom((AStarNode) parent));
+    setG(parent.g() + costFrom(parent));
     return this;
   }
 
@@ -72,7 +72,7 @@ public abstract class AStarNode extends Node {
   }
 
   public AStarNode getParent() {
-    return (AStarNode) getParents().get(0);
+    return getParents().get(0);
   }
 
   public AStarNode setG(int g) {

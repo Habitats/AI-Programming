@@ -1,5 +1,6 @@
 package puzzles.graph_coloring;
 
+import ai.models.AIAdapter;
 import ai.models.ColorNode;
 import ai.models.Graph;
 import puzzles.graph_coloring.gui.GraphColoringGui;
@@ -18,7 +19,7 @@ public class GraphColoring implements GraphColoringButtonListener {
     gui = new GraphColoringGui();
     gui.setListener(this);
 
-    Graph<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(6));
+    AIAdapter<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(0));
     gui.setAdapter(graph);
   }
 
@@ -40,5 +41,13 @@ public class GraphColoring implements GraphColoringButtonListener {
   @Override
   public void stepChanged(int value) {
 
+  }
+
+  @Override
+  public void sampleSelected(int i) {
+    if (GraphInputUtils.samples.size() > i) {
+      Graph<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(i));
+      gui.setAdapter(graph);
+    }
   }
 }

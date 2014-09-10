@@ -9,21 +9,10 @@ import java.util.List;
  */
 public class Graph<T extends Node> extends AIAdapter implements Iterable<T> {
 
-  private List<T> nodes;
-  private int width;
-  private int height;
+  private List<T> items;
 
   public Graph<T> addNode(T node) {
-    getNodes().add(node);
-    if (node instanceof ColorNode) {
-      ColorNode cNode = (ColorNode) node;
-      if (cNode.getX() > width) {
-        width = cNode.getX();
-      }
-      if (cNode.getY() > height) {
-        height = cNode.getY();
-      }
-    }
+    getItems().add(node);
     return this;
   }
 
@@ -33,36 +22,35 @@ public class Graph<T extends Node> extends AIAdapter implements Iterable<T> {
     return this;
   }
 
-  public int getWidth() {
-    return width + 1;
-  }
-
-  public int getHeight() {
-    return height + 1;
+  @Override
+  public T getItem(int index) {
+    return items.get(index);
   }
 
   public T get(int i) {
-    return getNodes().get(i);
+    return getItems().get(i);
   }
 
   public void addEdge(int vertexOne, int vertexTwo) {
-    getNodes().get(vertexOne).addChild(getNodes().get(vertexTwo));
-    getNodes().get(vertexTwo).addChild(getNodes().get(vertexOne));
+    getItems().get(vertexOne).addChild(getItems().get(vertexTwo));
+    getItems().get(vertexTwo).addChild(getItems().get(vertexOne));
   }
 
+  @Override
   public int getSize() {
-    return getNodes().size();
+    return getItems().size();
   }
 
-  public List<T> getNodes() {
-    if (nodes == null) {
-      nodes = new ArrayList<>();
+  @Override
+  public List<T> getItems() {
+    if (items == null) {
+      items = new ArrayList<>();
     }
-    return nodes;
+    return items;
   }
 
   @Override
   public Iterator<T> iterator() {
-    return nodes.iterator();
+    return items.iterator();
   }
 }

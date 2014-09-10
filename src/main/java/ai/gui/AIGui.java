@@ -11,6 +11,8 @@ import ai.Log;
  */
 public class AIGui {
 
+  private JFrame frame;
+
   protected void buildFrame(JPanel mainPanel, AIContiniousScrollPane log, AITextField statusField) {
 //    JFrame.setDefaultLookAndFeelDecorated(true);
 //    try {
@@ -18,7 +20,7 @@ public class AIGui {
 //    } catch (Exception e) {
 //      Log.v(TAG, "invalid look and feel");
 //    }
-    JFrame frame = new JFrame();
+    frame = new JFrame();
     mainPanel.setPreferredSize(new Dimension(700, 500));
     Log.setLogField(log);
     Log.setStatusField(statusField);
@@ -27,6 +29,9 @@ public class AIGui {
     frame.pack();
     frame.setLocationRelativeTo(frame.getRootPane());
     frame.setVisible(true);
+  }
 
+  public JFrame getFrame() {
+    return frame;
   }
 }

@@ -15,9 +15,10 @@ import ai.gui.AISlider;
 import ai.gui.AITextArea;
 import ai.gui.AITextField;
 import ai.models.AIAdapter;
+import ai.models.ColorNode;
 import algorithms.a_star.AStar;
+import puzzles.graph_coloring.GraphInputUtils;
 import puzzles.graph_coloring.interfaces.GraphColoringButtonListener;
-import puzzles.shortestpath.Samples;
 
 /**
  * Created by Patrick on 23.08.2014.
@@ -37,7 +38,7 @@ public class GraphColoringGui extends AIGui {
   private AITextArea inputField;
   private AITextField logField;
   private AITextField statusField;
-  private AIComboBox comboBox1;
+  private AIComboBox sampleComboBox;
   private AISlider stepSlider;
   private AICheckBox labelsCheckbox;
   private AIButton simulationButton;
@@ -51,10 +52,16 @@ public class GraphColoringGui extends AIGui {
     resetButton.addActionListener(e -> listener.resetClicked());
     loadButton.addActionListener(e -> listener.loadClicked());
     buildFrame(mainPanel, log, statusField);
-    comboBox1.addActionListener(e -> {
+    sampleComboBox.addActionListener(e -> {
       JComboBox cb = (JComboBox) e.getSource();
       int i = cb.getSelectedIndex();
-      inputField.setText(Samples.getAstarSample(i));
+      listener.sampleSelected(i);
+      try {
+        inputField.setText(GraphInputUtils.samples.get(i));
+      } catch (IndexOutOfBoundsException ex) {
+        Log.v(TAG, "no such sample!");
+      }
+
     });
     stepButton.addActionListener(e -> listener.stepClicked());
     stepSlider.addChangeListener(new ChangeListener() {
@@ -80,8 +87,12 @@ public class GraphColoringGui extends AIGui {
     });
   }
 
-  public void setAdapter(AIAdapter adapter) {
+  public void setAdapter(AIAdapter<ColorNode> adapter) {
+
+//    adapter.setOrigin(minX, minY);
+
     drawingCanvas.setAdapter(adapter);
+    Log.v(TAG, "setting adapter!" + adapter);
     mainPanel.repaint();
   }
 

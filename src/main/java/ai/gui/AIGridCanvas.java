@@ -18,6 +18,11 @@ public class AIGridCanvas extends AICanvas {
     setBackground(Color.BLACK);
   }
 
+  @Override
+  protected void draw(Graphics2D g) {
+    paintsBoard(g);
+  }
+
   private void paintsBoard(Graphics g) {
     if (getAdapter() != null) {
       for (int x = 0; x < getAdapter().getWidth(); x++) {
@@ -76,18 +81,13 @@ public class AIGridCanvas extends AICanvas {
   }
 
   @Override
-  protected int itemHeigth() {
+  protected int getItemHeight() {
     return tileHeight;
   }
 
   @Override
-  protected int itemWidth() {
+  protected int getItemWidth() {
     return tileWidth;
-  }
-
-  @Override
-  protected void draw(Graphics g) {
-    paintsBoard(g);
   }
 
   protected void drawOutline(Graphics g, int x, int y) {

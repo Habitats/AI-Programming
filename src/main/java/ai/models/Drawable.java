@@ -51,7 +51,6 @@ public class Drawable {
       this.state = state;
     }
 
-
     @Override
     public String toString() {
       return state;
