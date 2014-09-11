@@ -58,71 +58,24 @@ public class GAC implements Runnable {
    */
   private boolean revise(Variable focalVariable, Constraint constraint) {
     constraint.setFocalVariable(focalVariable);
-    Variable var1 = null;
-    Variable var2 = null;
-    Variable var3 = null;
-    Variable var4 = null;
-    Variable var5 = null;
-    if (constraint.hasNext() || var1 != null) {
-      if (var1 == null) {
-        var1 = constraint.getFocalVariable();
-      }
-      for (Integer val : var1.getDomain()) {
-        var1.setValue(val);
-
-        if (constraint.hasNext() || var2 != null) {
-          if (var2 == null) {
-            var2 = constraint.getNextVariable();
-          }
-          for (Integer val2 : var2.getDomain()) {
-            var2.setValue(val2);
-
-            if (constraint.hasNext() || var3 != null) {
-              if (var3 == null) {
-                var3 = constraint.getNextVariable();
-              }
-              for (Integer val3 : var3.getDomain()) {
-                var3.setValue(val3);
-
-                if (constraint.hasNext() || var4 != null) {
-                  if (var4 == null) {
-                    var4 = constraint.getNextVariable();
-                  }
-                  for (Integer val4 : var4.getDomain()) {
-                    var4.setValue(val4);
-
-                    var5 = getVariable(constraint, var5);
-                  }
-                } else {
-                  constraint.isSatisfied();
-                }
-              }
-            } else {
-              constraint.isSatisfied();
-            }
-          }
-        } else {
-          constraint.isSatisfied();
-        }
-      }
-    } else {
-      constraint.isSatisfied();
-    }
+    List<Variable> vars = new ArrayList<>();
+    vars.add(constraint.getFocalVariable());
+    check(constraint, 0, vars);
     return false;
   }
 
-  private Variable getVariable(Constraint constraint, Variable var5) {
-    if (constraint.hasNext() || var5 != null) {
-      if (var5 == null) {
-        var5 = constraint.getNextVariable();
+  private void check(Constraint constraint, int index, List<Variable> vars) {
+    if (constraint.hasNext() || vars.size() > index) {
+      if (vars.size() == index) {
+        vars.add(constraint.getNextVariable());
       }
-      for (Integer val5 : var5.getDomain()) {
-        var5.setValue(val5);
+      for (Integer val : vars.get(index).getDomain()) {
+        vars.get(index).setValue(val);
+        check(constraint, index + 1, vars);
       }
     } else {
       constraint.isSatisfied();
     }
-    return var5;
   }
 
   // QUEUE = {TODO-REVISE*(Xij, Ci) : for all i,j} where Xij = the jth variable in constraint Ci.
@@ -148,11 +101,11 @@ public class GAC implements Runnable {
 
     List<Variable> variables = new ArrayList<>();
     variables.add(x);
-//    variables.add(y);
+    variables.add(y);
     variables.add(z);
     variables.add(w);
 
-    Constraint c1 = new Constraint(variables, "x+w < z+1");
+    Constraint c1 = new Constraint(variables, "x+w +y< z+1");
     constraints.add(c1);
 
     revise(x, c1);
