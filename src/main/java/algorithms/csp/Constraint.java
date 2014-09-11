@@ -3,9 +3,9 @@ package algorithms.csp;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.Set;
 
 import ai.Log;
 
@@ -16,18 +16,18 @@ public class Constraint implements Iterable<Variable> {
 
   private static final String TAG = Constraint.class.getSimpleName();
   private final HashMap<String, Variable> variables;
-  private final Queue<String> variableList;
+  private final Set<String> variableList;
   private final Function function;
   private Variable focalVariable;
   private int index;
 
   public Constraint(List<Variable> variables, String expression) {
     this.variables = new HashMap<String, Variable>();
-    variableList = new PriorityQueue<>();
+    variableList = new LinkedHashSet<>();
     for (Variable var : variables) {
       this.variables.put(var.getId(), var);
-      variableList.add(var.getId());
     }
+    clearHasNext();
 
     function = new Function().setVariables(this.variables).setExpression(expression);
   }
@@ -46,25 +46,40 @@ public class Constraint implements Iterable<Variable> {
   }
 
   public Variable getFocalVariable() {
-    variableList.remove(focalVariable.getId());
     return focalVariable;
   }
 
   public void setFocalVariable(Variable focalVariable) {
+    variableList.remove(focalVariable.getId());
     this.focalVariable = focalVariable;
   }
 
   public boolean hasNext() {
-    return variableList.peek() != null;
+    return variableList.size() > 0;
   }
 
   public Variable getNextVariable() {
-    return variables.get(variableList.poll());
+    String next = variableList.iterator().next();
+    variableList.remove(next);
+    return variables.get(next);
+
   }
 
   public boolean isSatisfied() {
     boolean satisfied = function.call(this.variables);
-      Log.v(TAG, satisfied + ": " + function);
+    Log.v(TAG, satisfied + ": " + function);
     return satisfied;
+  }
+
+  public boolean isFocal(Variable variable) {
+    return variable.equals(focalVariable);
+  }
+
+  public void clearHasNext() {
+    for (Variable var : getVariables()) {
+      if (!var.equals(focalVariable)) {
+        variableList.add(var.getId());
+      }
+    }
   }
 }

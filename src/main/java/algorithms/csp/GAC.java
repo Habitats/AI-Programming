@@ -57,25 +57,38 @@ public class GAC implements Runnable {
    * @return return true if assumption satisfies constraint
    */
   private boolean revise(Variable focalVariable, Constraint constraint) {
+    int oldSize = focalVariable.getDomain().getSize();
     constraint.setFocalVariable(focalVariable);
-    List<Variable> vars = new ArrayList<>();
-    vars.add(constraint.getFocalVariable());
-    check(constraint, 0, vars);
-    return false;
+    for (Integer val : focalVariable.getDomain()) {
+      focalVariable.setValue(val);
+
+      List<Variable> vars = new ArrayList<>();
+      constraint.clearHasNext();
+      boolean satisfied = check(constraint, 0, vars);
+      if (!satisfied) {
+        focalVariable.getDomain().remove(val);
+      }
+    }
+    return oldSize > focalVariable.getDomain().getSize();
   }
 
-  private void check(Constraint constraint, int index, List<Variable> vars) {
+  private boolean check(Constraint constraint, int index, List<Variable> vars) {
     if (constraint.hasNext() || vars.size() > index) {
       if (vars.size() == index) {
         vars.add(constraint.getNextVariable());
       }
       for (Integer val : vars.get(index).getDomain()) {
         vars.get(index).setValue(val);
-        check(constraint, index + 1, vars);
+        if (check(constraint, index + 1, vars)) {
+          return true;
+        }
       }
     } else {
-      constraint.isSatisfied();
+      if (constraint.isSatisfied()) {
+        return true;
+      }
     }
+    return false;
   }
 
   // QUEUE = {TODO-REVISE*(Xij, Ci) : for all i,j} where Xij = the jth variable in constraint Ci.
