@@ -115,4 +115,5 @@ public class ShortestPathGui extends AIGui {
   private void createUIComponents() {
     // TODO: place custom component creation code here
   }
+
 }

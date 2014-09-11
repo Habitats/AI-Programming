@@ -1,5 +1,7 @@
 package algorithms.csp;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -13,19 +15,76 @@ public class GAC implements Runnable {
     domainFilter(queue);
   }
 
+  //
+  // While queue.hasItems() do:
+  //    reviseReq = pop(QUEUE)
+  //    focalVariable = reviseReq.x
+  //    currentConstraint = reviseReq.c
+  //    revise(focalVariable, currentConstraint)
+  //    If domain(focalVariable) was reduced:
+  //      for constrains in constraints:
+  //        if constraint == currentConstraint:
+  //          continue
+  //        if focalVariable not in constraint.variables:
+  //          continue
+  //        if constraint.focalVariable == focalVariable:
+  //          continue
+  //
+  //        queue.push new reviseReq(focalVariable,constraint)
+  //
   private void domainFilter(Queue<ReviseRequest> queue) {
-    boolean todoRevise;
-    while (todoRevise = queue.poll() != null) {
-      revise(todoRevise.getXStar, constraint(i));
+    ReviseRequest todoRevise;
+    while ((todoRevise = queue.poll()) != null) {
+      revise(todoRevise.getFocalVariable(), todoRevise.getConstraint());
       if (todoRevise.isReduced()) {
-        queue.add()
+        for (Constraint constraint : getConstraints()) {
+          if (constraint.equals(todoRevise.getConstraint())) {
+            continue;
+          } else if (!constraint.contains(todoRevise.getFocalVariable())) {
+            continue;
+          }
+          // nope, this is not right
+          else if (constraint.getFocalVariable().equals(todoRevise.getFocalVariable())) {
+            continue;
+          }
+          queue.add(new ReviseRequest(todoRevise.getFocalVariable(), constraint));
+        }
       }
     }
   }
 
+  /**
+   * @return return true if assumption satisfies constraint
+   */
+  private boolean revise(Variable focalVariable, Constraint constraint) {
+    constraint.setFocalVariable(focalVariable);
+    List<Variable> vars = new ArrayList<>();
+    vars.add(constraint.getFocalVariable());
+    check(constraint, 0, vars);
+    return false;
+  }
+
+  private void check(Constraint constraint, int index, List<Variable> vars) {
+    if (index > vars.size()) {
+      return;
+    }
+    if (constraint.hasNext() || index < vars.size() - 1) {
+      if (index > vars.size() - 1) {
+        vars.add(constraint.getNextVariable());
+      }
+      for (Integer val : vars.get(index).getDomain()) {
+        vars.get(index).setValue(val);
+        check(constraint, index + 1, vars);
+      }
+    } else {
+      constraint.isSatisfied();
+    }
+  }
+
+  // QUEUE = {TODO-REVISE*(Xij, Ci) : for all i,j} where Xij = the jth variable in constraint Ci.
   private ReviseQueue<ReviseRequest> initialize() {
     ReviseQueue<ReviseRequest> queue = new ReviseQueue<>();
-    Constraint constraints = getConstraints();
+    List<Constraint> constraints = getConstraints();
     for (Constraint c : constraints) {
       for (Variable x : c.getVariables()) {
         if (c.contains(x)) {
@@ -36,7 +95,24 @@ public class GAC implements Runnable {
     return queue;
   }
 
-  private Constraint getConstraints() {
-    return null;
+  private List<Constraint> getConstraints() {
+    List<Constraint> constraints = new ArrayList<>();
+    Variable x = new Variable("x", new Domain(1, 2, 3, 4, 5));
+//    Variable y = new Variable("y", new Domain(1, 2, 3, 4, 5));
+    Variable z = new Variable("z", new Domain(1, 2, 3, 4, 5));
+    Variable w = new Variable("w", new Domain(1, 2, 3, 4, 5));
+
+    List<Variable> variables = new ArrayList<>();
+    variables.add(x);
+//    variables.add(y);
+    variables.add(z);
+    variables.add(w);
+
+    Constraint c1 = new Constraint(variables, "x+w < z+1");
+    constraints.add(c1);
+
+    revise(x, c1);
+
+    return constraints;
   }
 }

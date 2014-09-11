@@ -103,4 +103,5 @@ public class GraphColoringGui extends AIGui {
   public void setListener(GraphColoringButtonListener listener) {
     this.listener = listener;
   }
+
 }

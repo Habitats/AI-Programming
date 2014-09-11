@@ -3,6 +3,7 @@ package puzzles.graph_coloring;
 import ai.models.AIAdapter;
 import ai.models.ColorNode;
 import ai.models.Graph;
+import algorithms.csp.GAC;
 import puzzles.graph_coloring.gui.GraphColoringGui;
 import puzzles.graph_coloring.interfaces.GraphColoringButtonListener;
 
@@ -21,6 +22,8 @@ public class GraphColoring implements GraphColoringButtonListener {
 
     AIAdapter<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(0));
     gui.setAdapter(graph);
+
+    new GAC().run();
   }
 
   @Override

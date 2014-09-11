@@ -20,6 +20,7 @@ public class Function {
   private ScriptEngine engine;
   private PyScriptEngineFactory factory;
   private Map<String, Variable> variables;
+  private String expression;
 
   public Function setVariables(Map<String, Variable> variables) {
     this.variables = variables;
@@ -28,7 +29,18 @@ public class Function {
 
   public Function setExpression(String expression) {
     factory = new PyScriptEngineFactory();
+    this.expression = expression;
     engine = factory.getScriptEngine();
+
+    String lambda = "(lambda " + getKeys() + ": " + expression + ")";
+    try {
+      function = (PyFunction) engine.eval(lambda);
+    } catch (ScriptException e) {
+    }
+    return this;
+  }
+
+  private String getKeys() {
     String keys = "";
     for (String key : variables.keySet()) {
       if (!variables.get(key).hasValue()) {
@@ -36,12 +48,7 @@ public class Function {
       }
     }
     keys = keys.substring(1);
-    String lambda = "(lambda " + keys + ": " + expression + ")";
-    try {
-      function = (PyFunction) engine.eval(lambda);
-    } catch (ScriptException e) {
-    }
-    return this;
+    return keys;
   }
 
   public boolean call(Map<String, Variable> variables) {
@@ -54,5 +61,18 @@ public class Function {
     // call the python function with args: x = 1, y = 2 etc, order is important
     PyBoolean ans = (PyBoolean) function.__call__(this.args);
     return ans.getBooleanValue();
+  }
+
+  public String getVariableValues() {
+    String vals = "";
+    for (Variable var : variables.values()) {
+      vals += var + ", ";
+    }
+    return vals;
+  }
+
+  @Override
+  public String toString() {
+    return "Values: " + getVariableValues() + " Expression: " + expression;
   }
 }

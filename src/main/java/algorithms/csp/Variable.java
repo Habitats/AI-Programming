@@ -43,6 +43,6 @@ public class Variable {
 
   @Override
   public String toString() {
-    return getId() + " " + (hasValue ? getValue() : "none");
+    return getId() + "=" + (hasValue ? getValue() : "none");
   }
 }
