@@ -13,7 +13,7 @@ public class Domain implements Iterable<Integer> {
   private int size;
 
   public Domain(int... args) {
-List<Integer> lst = new CopyOnWriteArrayList<Integer>();
+    List<Integer> lst = new CopyOnWriteArrayList<Integer>();
     for (int i = 0; i < args.length; i++) {
       lst.add(args[i]);
     }
@@ -28,11 +28,21 @@ List<Integer> lst = new CopyOnWriteArrayList<Integer>();
   public Iterator<Integer> iterator() {
     return args.iterator();
   }
-  public void remove(Integer val){
+
+  public void remove(Integer val) {
     args.remove(val);
   }
 
   public int getSize() {
     return args.size();
+  }
+
+  @Override
+  public String toString() {
+    String domain = "";
+    for (Integer i : args) {
+      domain += ", " + i;
+    }
+    return "Domain: " + domain.substring(2);
   }
 }

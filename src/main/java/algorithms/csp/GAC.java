@@ -2,17 +2,23 @@ package algorithms.csp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Queue;
+
+import ai.Log;
 
 /**
  * Created by Patrick on 04.09.2014.
  */
 public class GAC implements Runnable {
 
+  private static final String TAG = GAC.class.getSimpleName();
+
   @Override
   public void run() {
-    Queue<ReviseRequest> queue = initialize();
-    domainFilter(queue);
+//    Queue<ReviseRequest> queue = initialize();
+//    domainFilter(queue);
+    domainFilter2();
   }
 
   //
@@ -106,6 +112,33 @@ public class GAC implements Runnable {
   }
 
   private List<Constraint> getConstraints() {
+    List<Constraint> constraints = testProblem1();
+    return constraints;
+  }
+
+  public void domainFilter2() {
+    List<Constraint> constraints = testProblem2();
+    Queue<Variable> queue = new PriorityQueue<>();
+    queue.addAll(constraints.get(0).getVariables());
+    Variable var;
+    while ((var = queue.poll()) != null) {
+      Log.v(TAG, "before: " + var);
+      for (Constraint constraint : constraints) {
+        if (revise(var, constraint)) {
+          queue.add(var);
+        }
+      }
+
+      Log.v(TAG, "after: " + var);
+      Log.v(TAG, "------------------------------------");
+    }
+
+    for (Variable v : constraints.get(0).getVariables()) {
+      Log.v(TAG, v);
+    }
+  }
+
+  private List<Constraint> testProblem1() {
     List<Constraint> constraints = new ArrayList<>();
     Variable x = new Variable("x", new Domain(1, 2, 3, 4, 5));
     Variable y = new Variable("y", new Domain(1, 2, 3, 4, 5));
@@ -120,9 +153,26 @@ public class GAC implements Runnable {
 
     Constraint c1 = new Constraint(variables, "x+w +y< z+1");
     constraints.add(c1);
+    return constraints;
+  }
 
-    revise(x, c1);
+  private List<Constraint> testProblem2() {
+    List<Constraint> constraints = new ArrayList<>();
+    Variable x = new Variable("x", new Domain(0, 1, 2, 3, 4, 5, 6));
+    Variable y = new Variable("y", new Domain(0, 1, 2, 3, 4, 5, 6));
+    Variable z = new Variable("z", new Domain(0, 1, 2, 3, 4, 5, 6));
 
+    List<Variable> variables = new ArrayList<>();
+    variables.add(x);
+    variables.add(y);
+    variables.add(z);
+
+    Constraint c1 = new Constraint(variables, "x == 2*y");
+    Constraint c2 = new Constraint(variables, "x > z");
+    Constraint c3 = new Constraint(variables, "y < z");
+    constraints.add(c1);
+    constraints.add(c2);
+    constraints.add(c3);
     return constraints;
   }
 }
