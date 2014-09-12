@@ -20,7 +20,13 @@ public class GAC implements Runnable {
     CspPuzzle puzzle = new Sudoku();
 //    CspPuzzle puzzle = new TestGACProblem(1);
 //    CspPuzzle puzzle = new TestGACProblem(2);
-    domainFilter(puzzle);
+
+    if (domainFilter(puzzle)) {
+      Log.v(TAG, "success!");
+      puzzle.visualize();
+    } else {
+      Log.v(TAG, "fail!");
+    }
   }
 
   private boolean check(Constraint constraint, int index, List<Variable> vars) {
@@ -42,12 +48,15 @@ public class GAC implements Runnable {
     return false;
   }
 
-  public void domainFilter(CspPuzzle puzzle) {
+  public boolean domainFilter(CspPuzzle puzzle) {
     List<Constraint> constraints = puzzle.getConstraints();
     Queue<Variable> queue = new PriorityQueue<>();
     queue.addAll(puzzle.getVariables());
     Variable var;
     while ((var = queue.poll()) != null) {
+      if (var.getDomain().iEmpty()) {
+        return false;
+      }
       Log.v(TAG, "before: " + var);
       for (Constraint constraint : constraints) {
         if (revise(var, constraint)) {
@@ -62,7 +71,7 @@ public class GAC implements Runnable {
     for (Variable v : puzzle.getVariables()) {
       Log.v(TAG, v);
     }
-    puzzle.visualize();
+    return true;
   }
 
   /**

@@ -48,4 +48,8 @@ public class Domain implements Iterable<Integer> {
     }
     return "Domain: " + domain.substring(2);
   }
+
+  public boolean iEmpty() {
+    return args.isEmpty();
+  }
 }

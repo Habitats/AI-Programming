@@ -14,13 +14,17 @@ import algorithms.csp.Variable;
  */
 public class Sudoku implements CspPuzzle {
 
+  private enum Direction {
+    HORIZONTAL, VERTICAL
+  }
+
   private static final String TAG = Sudoku.class.getSimpleName();
   private List<Variable> variables;
   private List<Constraint> constraints;
 
   public Sudoku() {
     setVariables();
-    loadEasyBoard();
+    loadHardBoard();
     setConstraints();
     Log.v(TAG, "finished creating constraints");
   }
@@ -30,19 +34,40 @@ public class Sudoku implements CspPuzzle {
     for (Variable var : getVariables()) {
       String col = String.valueOf(var.getId().charAt(1));
       String row = String.valueOf(var.getId().charAt(2));
-      Constraint
-          c1 =
-          new Constraint(getVariables(), String.format(
+      String expression = "";
+
+      List<Variable> horizontal = new ArrayList<>();
+      Log.v(TAG, "horzontal: " + getHorizontalConstraintExpression(getVariables(), 0, col, Direction.HORIZONTAL));
+      Log.v(TAG, "horzontal: " + getHorizontalConstraintExpression(getVariables(), 0, row, Direction.VERTICAL));
+      expression =
+          String.format(
               "v%s1 != v%s2 and v%s1 != v%s3 and v%s1 != v%s4 and v%s3 != v%s4 and v%s2 != v%s3 and v%s2 != v%s4", //
-              col, col, col, col, col, col, col, col, col, col, col, col));
-      Constraint
-          c2 =
-          new Constraint(getVariables(), String.format(
+              col, col, col, col, col, col, col, col, col, col, col, col);
+      Constraint c1 = new Constraint(getVariables(), expression);
+
+      expression =
+          String.format(
               "v1%s != v2%s and v1%s != v3%s and v1%s != v4%s and v3%s != v4%s and v2%s != v3%s and v2%s != v4%s", //
-              row, row, row, row, row, row, row, row, row, row, row, row));
+              row, row, row, row, row, row, row, row, row, row, row, row);
+      Constraint c2 = new Constraint(getVariables(), expression);
       constraints.add(c1);
       constraints.add(c2);
     }
+  }
+
+  private String getHorizontalConstraintExpression(List<Variable> vars, int i, String rowOrCol, Direction dir) {
+    if (i == vars.size()) {
+      return "1";
+    }
+    Variable variable = vars.get(i);
+    String s = "";
+    int index = (dir == Direction.HORIZONTAL ? 1 : 2);
+    for (int j = i + 1; j < vars.size(); j++) {
+      if (String.valueOf(vars.get(j).getId().charAt(index)).equals(rowOrCol)) {
+        s += variable.getId() + " != " + vars.get(j).getId() + " and ";
+      }
+    }
+    return s + getHorizontalConstraintExpression(vars, i + 1, rowOrCol, dir);
   }
 
   private void setVariables() {
@@ -75,6 +100,7 @@ public class Sudoku implements CspPuzzle {
 
   private void loadHardBoard() {
     String board = "0200" + "1020" + "2030" + "0300";
+    board = "4000 0201 0402 2000";
     loadFromString(board);
 
     visualize();
