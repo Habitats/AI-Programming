@@ -7,42 +7,37 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import ai.Log;
-
 /**
  * Created by Patrick on 10.09.2014.
  */
 public class Constraint implements Iterable<Variable> {
 
   private static final String TAG = Constraint.class.getSimpleName();
-  private final HashMap<String, Variable> variables;
   private final Set<String> variableList;
   private final Function function;
   private Variable focalVariable;
-  private int index;
 
   public Constraint(List<Variable> variables, String expression) {
-    this.variables = new HashMap<String, Variable>();
+    HashMap<String, Variable> variableMap = new HashMap<>();
     variableList = new LinkedHashSet<>();
     for (Variable var : variables) {
-      this.variables.put(var.getId(), var);
+      if (expression.contains(var.getId())) {
+        variableMap.put(var.getId(), var);
+      }
     }
-    clearHasNext();
 
-    function = new Function().setVariables(this.variables).setExpression(expression);
+    function = new Function().setVariables(variableMap).setExpression(expression);
+    clearHasNext();
   }
 
+
   public boolean contains(Variable x) {
-    return variables.containsKey(x.getId());
+    return function.contains(x);
   }
 
   @Override
   public Iterator<Variable> iterator() {
-    return variables.values().iterator();
-  }
-
-  public Collection<Variable> getVariables() {
-    return variables.values();
+    return function.getVariables().values().iterator();
   }
 
   public Variable getFocalVariable() {
@@ -61,25 +56,27 @@ public class Constraint implements Iterable<Variable> {
   public Variable getNextVariable() {
     String next = variableList.iterator().next();
     variableList.remove(next);
-    return variables.get(next);
+    return function.getVariables().get(next);
 
   }
 
   public boolean isSatisfied() {
-    boolean satisfied = function.call(this.variables);
-    Log.v(TAG, satisfied + ": " + function);
+    boolean satisfied = function.call();
+    if (satisfied) {
+//      Log.v(TAG, satisfied + ": " + function);
+    }
     return satisfied;
   }
 
-  public boolean isFocal(Variable variable) {
-    return variable.equals(focalVariable);
-  }
-
   public void clearHasNext() {
-    for (Variable var : getVariables()) {
+    for (Variable var : function.getVariables().values()) {
       if (!var.equals(focalVariable)) {
         variableList.add(var.getId());
       }
     }
+  }
+
+  public Collection<Variable> getVariables() {
+    return function.getVariables().values();
   }
 }

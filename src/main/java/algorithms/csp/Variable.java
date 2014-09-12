@@ -3,7 +3,7 @@ package algorithms.csp;
 /**
  * Created by Patrick on 04.09.2014.
  */
-public class Variable implements Comparable<Variable>{
+public class Variable implements Comparable<Variable> {
 
   private final String id;
   private final Domain domain;
@@ -38,12 +38,14 @@ public class Variable implements Comparable<Variable>{
   }
 
   public boolean hasValue() {
-    return false;
+    return hasValue;
   }
 
   @Override
   public String toString() {
-    return getId() + "=" + (hasValue ? getValue() : "none") + " " + getDomain();
+    return getId() + "=" + (hasValue ? getValue() : "none") //
+           + " " + getDomain() //
+        ;
   }
 
   @Override

@@ -39,6 +39,9 @@ public class Domain implements Iterable<Integer> {
 
   @Override
   public String toString() {
+    if (args.size() <= 0) {
+      return "Empty";
+    }
     String domain = "";
     for (Integer i : args) {
       domain += ", " + i;

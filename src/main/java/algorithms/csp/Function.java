@@ -5,61 +5,81 @@ import org.python.core.PyFunction;
 import org.python.core.PyInteger;
 import org.python.jsr223.PyScriptEngineFactory;
 
+import java.util.Collection;
 import java.util.Map;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
+
+import ai.Log;
 
 /**
  * Created by Patrick on 04.09.2014.
  */
 public class Function {
 
+  private static final String TAG = Function.class.getSimpleName();
   private PyInteger[] args;
-  private PyFunction function;
-  private ScriptEngine engine;
-  private PyScriptEngineFactory factory;
+  private PyFunction lambda;
+  private static ScriptEngine engine = new PyScriptEngineFactory().getScriptEngine();
   private Map<String, Variable> variables;
   private String expression;
+  private String lambdaString;
 
   public Function setVariables(Map<String, Variable> variables) {
     this.variables = variables;
     return this;
   }
 
-  public Function setExpression(String expression) {
-    factory = new PyScriptEngineFactory();
-    this.expression = expression;
-    engine = factory.getScriptEngine();
+  private String setExpressionValues(String expression, Collection<Variable> variables) {
+    for (Variable var : variables) {
+      if (var.hasValue()) {
+        expression = expression.replaceAll(var.getId(), String.valueOf(var.getValue()));
+        Log.v(TAG, "modifying expression: " + expression);
+      }
+    }
+    return expression;
+  }
 
-    String lambda = "(lambda " + getKeys() + ": " + expression + ")";
+  public Function setExpression(String expression) {
+    expression = setExpressionValues(expression, variables.values());
+    lambda = generateLambda(expression);
+    this.expression = expression;
+    return this;
+  }
+
+  private PyFunction generateLambda(String expression) {
+
+    lambdaString = "(lambda " + getKeys() + ": " + expression + ")";
+    Log.v(TAG, "generating " + lambdaString);
     try {
-      function = (PyFunction) engine.eval(lambda);
+      this.lambda = (PyFunction) engine.eval(lambdaString);
     } catch (ScriptException e) {
     }
-    return this;
+    return this.lambda;
   }
 
   private String getKeys() {
     String keys = "";
     for (String key : variables.keySet()) {
-      if (!variables.get(key).hasValue()) {
-        keys += "," + key;
-      }
+//      if (!variables.get(key).hasValue()) {
+//      }
+      keys += "," + key;
     }
     keys = keys.substring(1);
     return keys;
   }
 
-  public boolean call(Map<String, Variable> variables) {
+  public boolean call() {
     args = new PyInteger[variables.size()];
     int i = 0;
     for (Variable var : variables.values()) {
       args[i++] = new PyInteger(var.getValue());
     }
 
-    // call the python function with args: x = 1, y = 2 etc, order is important
-    PyBoolean ans = (PyBoolean) function.__call__(this.args);
+    // call the python lambda with args: x = 1, y = 2 etc, order is important
+//    Log.v(TAG, "calling " + lambdaString);
+    PyBoolean ans = (PyBoolean) lambda.__call__(this.args);
     return ans.getBooleanValue();
   }
 
@@ -74,5 +94,13 @@ public class Function {
   @Override
   public String toString() {
     return "Values: " + getVariableValues() + " Expression: " + expression;
+  }
+
+  public boolean contains(Variable x) {
+    return variables.containsKey(x.getId());
+  }
+
+  public Map<String, Variable> getVariables() {
+    return variables;
   }
 }

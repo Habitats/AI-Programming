@@ -1,7 +1,6 @@
 package algorithms.csp;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import ai.Log;
 
@@ -12,10 +11,6 @@ public class Evaluator {
 
   private static final String TAG = Evaluator.class.getSimpleName();
 
-  private boolean evaluateExpression(Map<String, Variable> variables, String expression) {
-    Function function = new Function().setVariables(variables).setExpression(expression);
-    return function.call(variables);
-  }
 
   public void test() {
     Variable x = new Variable("x", new Domain(1, 3, 4, 2));
@@ -51,12 +46,12 @@ public class Evaluator {
               y.setValue(yv);
               a.setValue(av);
               b.setValue(bv);
-              boolean ans = function.call(variables);
+              boolean ans = function.call();
               if (ans) {
                 Log.v(TAG, "1 --- " + x + ", " + y + ", " + z + ", " + ans);
               }
 
-              boolean ans2 = function2.call(variables);
+              boolean ans2 = function2.call();
               if (ans2) {
                 Log.v(TAG, "2 --- " + x + ", " + y + ", " + z + ", " + ans2);
               }
