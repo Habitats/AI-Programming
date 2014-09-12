@@ -36,9 +36,8 @@ public class Sudoku implements CspPuzzle {
       String row = String.valueOf(var.getId().charAt(2));
       String expression = "";
 
-      List<Variable> horizontal = new ArrayList<>();
-      Log.v(TAG, "horzontal: " + getHorizontalConstraintExpression(getVariables(), 0, col, Direction.HORIZONTAL));
-      Log.v(TAG, "horzontal: " + getHorizontalConstraintExpression(getVariables(), 0, row, Direction.VERTICAL));
+//      Log.v(TAG, "horzontal: " + getHorizontalConstraintExpression(getVariables(), 0, row));
+//      Log.v(TAG, "vertical:  " + getVerticalConstraintExpression(getVariables(), 0, col));
       expression =
           String.format(
               "v%s1 != v%s2 and v%s1 != v%s3 and v%s1 != v%s4 and v%s3 != v%s4 and v%s2 != v%s3 and v%s2 != v%s4", //
@@ -55,19 +54,37 @@ public class Sudoku implements CspPuzzle {
     }
   }
 
-  private String getHorizontalConstraintExpression(List<Variable> vars, int i, String rowOrCol, Direction dir) {
+  private String getVerticalConstraintExpression(List<Variable> vars, int i, String col) {
     if (i == vars.size()) {
       return "1";
     }
     Variable variable = vars.get(i);
     String s = "";
-    int index = (dir == Direction.HORIZONTAL ? 1 : 2);
-    for (int j = i + 1; j < vars.size(); j++) {
-      if (String.valueOf(vars.get(j).getId().charAt(index)).equals(rowOrCol)) {
-        s += variable.getId() + " != " + vars.get(j).getId() + " and ";
+    int width = (int) Math.sqrt(vars.size());
+    for (int j = i + 1; j < vars.size(); j ++) {
+      Variable var = vars.get(j);
+      String toCheck = String.valueOf(var.getId().charAt(2));
+      if (toCheck.equals(col)) {
+        s += variable.getId() + " != " + var.getId() + " and ";
       }
     }
-    return s + getHorizontalConstraintExpression(vars, i + 1, rowOrCol, dir);
+    return s + getVerticalConstraintExpression(vars, i + width, col);
+  }
+
+  private String getHorizontalConstraintExpression(List<Variable> vars, int i, String row) {
+    if (i == vars.size()) {
+      return "1";
+    }
+    Variable variable = vars.get(i);
+    String s = "";
+    for (int j = i + 1; j < vars.size(); j++) {
+      Variable var = vars.get(j);
+      String toCheck = String.valueOf(var.getId().charAt(1));
+      if (toCheck.equals(row)) {
+        s += variable.getId() + " != " + var.getId() + " and ";
+      }
+    }
+    return s + getHorizontalConstraintExpression(vars, i + 1, row);
   }
 
   private void setVariables() {
