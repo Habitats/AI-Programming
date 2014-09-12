@@ -3,6 +3,7 @@ package algorithms.csp;
 import org.python.core.PyBoolean;
 import org.python.core.PyFunction;
 import org.python.core.PyInteger;
+import org.python.core.PyObject;
 import org.python.jsr223.PyScriptEngineFactory;
 
 import java.util.Collection;
@@ -78,9 +79,11 @@ public class Function {
     }
 
     // call the python lambda with args: x = 1, y = 2 etc, order is important
-//    Log.v(TAG, "calling " + lambdaString);
-    PyBoolean ans = (PyBoolean) lambda.__call__(this.args);
-    return ans.getBooleanValue();
+    Log.v(TAG, "calling " + lambdaString + " function: " + toString());
+    PyObject ans = lambda.__call__(this.args);
+
+
+    return ((PyBoolean)ans).getBooleanValue();
   }
 
   public String getVariableValues() {

@@ -1,6 +1,5 @@
 package algorithms.csp;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -10,7 +9,7 @@ public interface CspPuzzle {
 
   List<Constraint> getConstraints();
 
-  Collection<? extends Variable> getVariables();
+  List<Variable> getVariables();
 
   void visualize();
 }

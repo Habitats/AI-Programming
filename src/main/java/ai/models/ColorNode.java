@@ -24,6 +24,10 @@ public class ColorNode extends Node<ColorNode> {
     return (int) (x * 100);
   }
 
+  public String getId(){
+    return "n" + index;
+  }
+
   public int getY() {
     return (int) (y * 100);
   }

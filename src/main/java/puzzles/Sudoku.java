@@ -118,6 +118,7 @@ public class Sudoku implements CspPuzzle {
   private void loadHardBoard() {
     String board = "0200" + "1020" + "2030" + "0300";
     board = "4000 0201 0402 2000";
+    board = "0001001010020030";
     loadFromString(board);
 
     visualize();

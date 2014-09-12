@@ -6,7 +6,6 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 import ai.Log;
-import puzzles.Sudoku;
 
 /**
  * Created by Patrick on 04.09.2014.
@@ -14,11 +13,16 @@ import puzzles.Sudoku;
 public class GAC implements Runnable {
 
   private static final String TAG = GAC.class.getSimpleName();
+  private final CspPuzzle puzzle;
+
+  public GAC(CspPuzzle puzzle) {
+    this.puzzle = puzzle;
+  }
 
   @Override
   public void run() {
-    CspPuzzle puzzle = new Sudoku();
-//    CspPuzzle puzzle = new TestGACProblem(1);
+//    CspPuzzle puzzle = new Sudoku();
+//    csppuzzle puzzle = new testgacproblem(1);
 //    CspPuzzle puzzle = new TestGACProblem(2);
 
     if (domainFilter(puzzle)) {
@@ -70,6 +74,11 @@ public class GAC implements Runnable {
 
     for (Variable v : puzzle.getVariables()) {
       Log.v(TAG, v);
+    }
+    for(Variable var2 : puzzle.getVariables()){
+      if(var2.getDomain().getSize() > 1){
+        return false;
+      }
     }
     return true;
   }
