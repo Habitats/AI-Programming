@@ -21,6 +21,16 @@ public class Variable implements Comparable<Variable> {
     return this;
   }
 
+  public Variable setAssumption(int value) {
+    this.value = value;
+    for (Integer val : domain) {
+      if (val != value) {
+        domain.remove(val);
+      }
+    }
+    return this;
+  }
+
   public int getValue() {
     return value;
   }

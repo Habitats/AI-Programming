@@ -1,6 +1,5 @@
 package puzzles.graph_coloring;
 
-import ai.models.AIAdapter;
 import ai.models.ColorNode;
 import ai.models.Graph;
 import algorithms.csp.GAC;
@@ -13,15 +12,15 @@ import puzzles.graph_coloring.interfaces.GraphColoringButtonListener;
 public class GraphColoring implements GraphColoringButtonListener {
 
 
-  private final GraphColoringGui gui;
+  private  GraphColoringGui gui;
 
   public GraphColoring() {
     // initialize the GUI
-    gui = new GraphColoringGui();
-    gui.setListener(this);
-
-    AIAdapter<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(0));
-    gui.setAdapter(graph);
+//    gui = new GraphColoringGui();
+//    gui.setListener(this);
+//
+//    AIAdapter<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(0));
+//    gui.setAdapter(graph);
 
     new GAC().run();
   }

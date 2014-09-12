@@ -20,7 +20,7 @@ public class Sudoku implements CspPuzzle {
 
   public Sudoku() {
     setVariables();
-    loadBoard();
+    loadEasyBoard();
     setConstraints();
     Log.v(TAG, "finished creating constraints");
   }
@@ -59,16 +59,37 @@ public class Sudoku implements CspPuzzle {
     }
   }
 
-  private void loadBoard() {
-    getVariables().get(0).setValue(3);
-    getVariables().get(2).setValue(4);
-    getVariables().get(5).setValue(1);
-    getVariables().get(7).setValue(2);
-    getVariables().get(9).setValue(4);
-    getVariables().get(11).setValue(3);
-    getVariables().get(12).setValue(2);
-    getVariables().get(14).setValue(1);
-    getVariables().get(15).setValue(4);
+  private void loadEasyBoard() {
+    String board = "3040" + "0102" + "0403" + "2010";
+    loadFromString(board);
+
+    visualize();
+  }
+
+  private void loadMediumBoard() {
+    String board = "0130" + "0004" + "0001" + "0240";
+    loadFromString(board);
+
+    visualize();
+  }
+
+  private void loadHardBoard() {
+    String board = "0200" + "1020" + "2030" + "0300";
+    loadFromString(board);
+
+    visualize();
+  }
+
+  /**
+   * @param board in format: 0000 0000 0000 0000
+   */
+  private void loadFromString(String board) {
+    board = board.replaceAll("\\s", "");
+    for (int i = 0; i < getVariables().size(); i++) {
+      if (!String.valueOf(board.charAt(i)).equals("0")) {
+        getVariables().get(i).setAssumption(Integer.parseInt(String.valueOf(board.charAt(i))));
+      }
+    }
   }
 
   @Override

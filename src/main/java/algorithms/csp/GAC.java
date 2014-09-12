@@ -6,7 +6,7 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 import ai.Log;
-import puzzles.TestGACProblem;
+import puzzles.Sudoku;
 
 /**
  * Created by Patrick on 04.09.2014.
@@ -17,10 +17,10 @@ public class GAC implements Runnable {
 
   @Override
   public void run() {
-//    CspPuzzle puzzle = new Sudoku();
-    CspPuzzle puzzle = new TestGACProblem(1);
+    CspPuzzle puzzle = new Sudoku();
+//    CspPuzzle puzzle = new TestGACProblem(1);
 //    CspPuzzle puzzle = new TestGACProblem(2);
-    domainFilter2(puzzle);
+    domainFilter(puzzle);
   }
 
   private boolean check(Constraint constraint, int index, List<Variable> vars) {
@@ -42,7 +42,7 @@ public class GAC implements Runnable {
     return false;
   }
 
-  public void domainFilter2(CspPuzzle puzzle) {
+  public void domainFilter(CspPuzzle puzzle) {
     List<Constraint> constraints = puzzle.getConstraints();
     Queue<Variable> queue = new PriorityQueue<>();
     queue.addAll(puzzle.getVariables());
