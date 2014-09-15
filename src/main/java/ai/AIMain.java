@@ -5,7 +5,7 @@ import ai.models.graph.ColorNode;
 import algorithms.a_star.AStar;
 import algorithms.a_star.AStarCallback;
 import algorithms.a_star.AStarNode;
-import algorithms.a_star_csp.AStarConstraintSatisfactionNode;
+import algorithms.a_star_csp.AStarCspNode;
 import algorithms.csp.GeneralArchConsistency;
 import puzzles.graph_coloring.GraphColoring;
 import puzzles.graph_coloring.GraphInputUtils;
@@ -33,7 +33,7 @@ public class AIMain {
     puzzle.setAdapter(graph);
 
     GeneralArchConsistency gac = new GeneralArchConsistency(puzzle);
-    AStarNode start = new AStarConstraintSatisfactionNode(gac);
+    AStarNode start = new AStarCspNode(gac);
     AStar astar = new AStar(start, new AStarCallback() {
 
       @Override

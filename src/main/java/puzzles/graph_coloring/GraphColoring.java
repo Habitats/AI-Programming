@@ -24,11 +24,6 @@ public class GraphColoring implements GraphColoringButtonListener, CspPuzzle {
   private int K = 4;
   private AIAdapter adapter;
 
-  public GraphColoring() {
-    // initialize the GUI
-  }
-
-
   @Override
   public void setAdapter(AIAdapter graph) {
     this.adapter = graph;
@@ -122,21 +117,6 @@ public class GraphColoring implements GraphColoringButtonListener, CspPuzzle {
       sb.append(var.getId() + var.getDomain().toString());
     }
     return sb.toString();
-  }
-
-  @Override
-  public CspPuzzle duplicate() {
-    GraphColoring puzzle = new GraphColoring();
-    puzzle.setGui(gui);
-    puzzle.setAdapter(getAdapter());
-    for(int i =0; i < getVariables().size(); i++){
-      puzzle.getVariables().get(i).getDomain().setArgs(getVariables().get(i).getDomain());
-    }
-    return puzzle;
-  }
-
-  public AIAdapter getAdapter() {
-    return adapter;
   }
 
   public void setGui(GraphColoringGui gui) {

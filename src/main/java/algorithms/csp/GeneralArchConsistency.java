@@ -6,14 +6,14 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 import ai.Log;
-import algorithms.a_star_csp.AStarConstraintSatisfactionPuzzle;
+import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Variable;
 
 /**
  * Created by Patrick on 04.09.2014.
  */
-public class GeneralArchConsistency implements AStarConstraintSatisfactionPuzzle {
+public class GeneralArchConsistency implements AStarCspPuzzle {
 
 
   @Override
@@ -41,13 +41,6 @@ public class GeneralArchConsistency implements AStarConstraintSatisfactionPuzzle
       }
     }
     return maxVar;
-  }
-
-  @Override
-  public GeneralArchConsistency duplicate() {
-    GeneralArchConsistency dupe = new GeneralArchConsistency(puzzle.duplicate());
-
-    return dupe;
   }
 
   public int getNumVariables() {

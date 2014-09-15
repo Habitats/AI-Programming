@@ -2,7 +2,6 @@ package algorithms.csp;
 
 import java.util.List;
 
-import ai.models.AIAdapter;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Variable;
 
@@ -19,11 +18,5 @@ public interface CspPuzzle {
   void visualize();
 
   String getId();
-
-
-  CspPuzzle duplicate();
-
-  void setAdapter(AIAdapter graph);
-
 
 }
