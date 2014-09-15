@@ -32,7 +32,7 @@ public class AStarCspNode extends AStarNode {
 
   @Override
   protected void generateSuccessors() {
-    GeneralArchConsistency nextGac = gac.duplicate();
+    GeneralArchConsistency nextGac = null;
 
     doAssumption(nextGac);
     GeneralArchConsistency.Result domainFilteringResult = nextGac.domainFilter();

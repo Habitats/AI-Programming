@@ -85,10 +85,6 @@ public class TestGACProblem implements CspPuzzle {
     return null;
   }
 
-  @Override
-  public CspPuzzle duplicate() {
-    return null;
-  }
 
   @Override
   public void setAdapter(AIAdapter graph) {
