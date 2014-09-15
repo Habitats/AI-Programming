@@ -17,14 +17,9 @@ public class GraphColoring implements GraphColoringButtonListener, CspPuzzle {
 
 
   private GraphColoringGui gui;
-  private List<Variable> variables;
-  private List<Constraint> constraints;
-  private int K = 4;
-  private AIAdapter adapter;
 
   @Override
   public void setAdapter(AIAdapter graph) {
-    this.adapter = graph;
     ConstraintManager.getManager().initialize(graph);
     gui.setAdapter(graph);
   }
