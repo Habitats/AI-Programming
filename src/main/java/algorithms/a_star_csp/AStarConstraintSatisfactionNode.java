@@ -14,10 +14,15 @@ public class AStarConstraintSatisfactionNode extends AStarNode {
 
   private static final String TAG = AStarConstraintSatisfactionNode.class.getSimpleName();
   private final GeneralArchConsistency gac;
+  private  GeneralArchConsistency.Result res;
 
   public AStarConstraintSatisfactionNode(GeneralArchConsistency gac) {
     super();
     this.gac = gac;
+  }
+
+  public void setState(GeneralArchConsistency.Result res) {
+    this.res = res;
   }
 
   @Override
@@ -30,8 +35,9 @@ public class AStarConstraintSatisfactionNode extends AStarNode {
     GeneralArchConsistency nextGac = gac.duplicate();
 
     doAssumption(nextGac);
-    nextGac.domainFilter();
+    GeneralArchConsistency.Result domainFilteringResult = nextGac.domainFilter();
     AStarConstraintSatisfactionNode nextNode = new AStarConstraintSatisfactionNode(nextGac);
+    nextNode.setState(domainFilteringResult);
     List<AStarNode> succ = new ArrayList<>();
     succ.add(nextNode);
     setSuccsessors(succ);
@@ -51,7 +57,18 @@ public class AStarConstraintSatisfactionNode extends AStarNode {
 
   @Override
   protected void generateHeuristic() {
-    setHeuristic(gac.getDomainSize());
+    if (res == GeneralArchConsistency.Result.UNCHANGED_DOMAIN) {
+      setHeuristic(Integer.MAX_VALUE);
+    } else if (res == GeneralArchConsistency.Result.SOLUTION) {
+      setHeuristic(0);
+    } else if (res == GeneralArchConsistency.Result.UNCHANGED_DOMAIN) {
+      setHeuristic(Integer.MAX_VALUE);
+    } else if (res == GeneralArchConsistency.Result.EMPTY_DOMAIN) {
+      setHeuristic(Integer.MAX_VALUE);
+    } else {
+      int domainDelta = gac.getDomainSize() - gac.getNumVariables();
+      setHeuristic(domainDelta);
+    }
   }
 
   @Override

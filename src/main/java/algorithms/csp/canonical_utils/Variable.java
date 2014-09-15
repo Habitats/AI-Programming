@@ -71,4 +71,5 @@ public class Variable implements Comparable<Variable>, Serializable {
   public void setListener(VariableListener listener) {
     this.listener = listener;
   }
+
 }

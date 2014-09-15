@@ -52,7 +52,7 @@ public class Function {
   private PyFunction generateLambda(String expression) {
 
     lambdaString = "(lambda " + getKeys() + ": " + expression + ")";
-    Log.v(TAG, "generating " + lambdaString);
+//    Log.v(TAG, "generating " + lambdaString);
     try {
       this.lambda = (PyFunction) engine.eval(lambdaString);
     } catch (ScriptException e) {
@@ -79,7 +79,7 @@ public class Function {
     }
 
     // call the python lambda with args: x = 1, y = 2 etc, order is important
-    Log.v(TAG, "calling " + lambdaString + " function: " + toString());
+//    Log.v(TAG, "calling " + lambdaString + " function: " + toString());
     PyObject ans = lambda.__call__(this.args);
 
 

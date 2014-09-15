@@ -16,6 +16,8 @@ import puzzles.graph_coloring.gui.GraphColoringGui;
  */
 public class AIMain {
 
+  public static final String TAG = AIMain.class.getSimpleName();
+
   public static void main(String[] args) {
 //    new ShortestPath();
     astarCsp();
@@ -27,20 +29,21 @@ public class AIMain {
     GraphColoringGui gui = new GraphColoringGui();
     puzzle.setGui(gui);
 
-    AIAdapter<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(0));
+    AIAdapter<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(1));
     puzzle.setAdapter(graph);
 
     GeneralArchConsistency gac = new GeneralArchConsistency(puzzle);
     AStarNode start = new AStarConstraintSatisfactionNode(gac);
     AStar astar = new AStar(start, new AStarCallback() {
+
       @Override
       public void finished(AStarNode best, AStar aStar) {
-
+        Log.v(TAG, "success! " + best);
       }
 
       @Override
       public void error() {
-
+        Log.v(TAG, "fail!");
       }
     });
     astar.run();

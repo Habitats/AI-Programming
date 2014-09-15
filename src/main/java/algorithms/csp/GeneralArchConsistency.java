@@ -50,6 +50,10 @@ public class GeneralArchConsistency implements AStarConstraintSatisfactionPuzzle
     return dupe;
   }
 
+  public int getNumVariables() {
+    return puzzle.getVariables().size();
+  }
+
 
   public enum Result {
     EMPTY_DOMAIN, SHRUNK_DOMAIN, UNCHANGED_DOMAIN, SOLUTION;
@@ -61,7 +65,6 @@ public class GeneralArchConsistency implements AStarConstraintSatisfactionPuzzle
   public GeneralArchConsistency(CspPuzzle puzzle) {
     this.puzzle = puzzle;
   }
-
 
 
   private boolean check(Constraint constraint, int index, List<Variable> vars) {
@@ -96,7 +99,11 @@ public class GeneralArchConsistency implements AStarConstraintSatisfactionPuzzle
       Log.v(TAG, "before: " + var);
       for (Constraint constraint : constraints) {
         if (revise(var, constraint)) {
-          queue.addAll(constraint.getVariables());
+          for (Variable varInConstraint : constraint.getVariables()) {
+            if (varInConstraint.getId().equals(var.getId())) {
+              queue.add(varInConstraint);
+            }
+          }
         }
       }
 
@@ -130,6 +137,10 @@ public class GeneralArchConsistency implements AStarConstraintSatisfactionPuzzle
   private boolean revise(Variable focalVariable, Constraint constraint) {
     int oldSize = focalVariable.getDomain().getSize();
     constraint.setFocalVariable(focalVariable);
+
+    if (!constraint.contains(focalVariable)) {
+      return false;
+    }
     for (Integer val : focalVariable.getDomain()) {
       focalVariable.setValue(val);
 
@@ -140,6 +151,8 @@ public class GeneralArchConsistency implements AStarConstraintSatisfactionPuzzle
         focalVariable.getDomain().remove(val);
       }
     }
-    return oldSize > focalVariable.getDomain().getSize();
+    int newSize = focalVariable.getDomain().getSize();
+    Log.v(TAG, "old: " + oldSize + " new: " + newSize);
+    return oldSize > newSize;
   }
 }
