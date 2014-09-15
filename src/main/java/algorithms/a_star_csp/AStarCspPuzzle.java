@@ -5,7 +5,7 @@ import algorithms.csp.GeneralArchConsistency;
 /**
  * Created by Patrick on 15.09.2014.
  */
-public interface AStarConstraintSatisfactionPuzzle {
+public interface AStarCspPuzzle {
 
   String getId();
 

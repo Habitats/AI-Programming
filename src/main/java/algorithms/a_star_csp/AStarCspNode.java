@@ -10,13 +10,13 @@ import algorithms.csp.canonical_utils.Variable;
 /**
  * Created by Patrick on 15.09.2014.
  */
-public class AStarConstraintSatisfactionNode extends AStarNode {
+public class AStarCspNode extends AStarNode {
 
-  private static final String TAG = AStarConstraintSatisfactionNode.class.getSimpleName();
+  private static final String TAG = AStarCspNode.class.getSimpleName();
   private final GeneralArchConsistency gac;
   private  GeneralArchConsistency.Result res;
 
-  public AStarConstraintSatisfactionNode(GeneralArchConsistency gac) {
+  public AStarCspNode(GeneralArchConsistency gac) {
     super();
     this.gac = gac;
   }
@@ -36,7 +36,7 @@ public class AStarConstraintSatisfactionNode extends AStarNode {
 
     doAssumption(nextGac);
     GeneralArchConsistency.Result domainFilteringResult = nextGac.domainFilter();
-    AStarConstraintSatisfactionNode nextNode = new AStarConstraintSatisfactionNode(nextGac);
+    AStarCspNode nextNode = new AStarCspNode(nextGac);
     nextNode.setState(domainFilteringResult);
     List<AStarNode> succ = new ArrayList<>();
     succ.add(nextNode);
