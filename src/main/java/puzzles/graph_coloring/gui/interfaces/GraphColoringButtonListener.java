@@ -1,4 +1,4 @@
-package puzzles.graph_coloring.interfaces;
+package puzzles.graph_coloring.gui.interfaces;
 
 /**
  * Created by Patrick on 24.08.2014.

@@ -1,4 +1,4 @@
-package ai.models;
+package ai.models.grid;
 
 /**
  * Created by Patrick on 24.08.2014.

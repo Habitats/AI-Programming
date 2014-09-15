@@ -2,8 +2,8 @@ package ai.gui;
 
 import java.awt.*;
 
-import ai.models.Board;
-import ai.models.Tile;
+import ai.models.grid.Board;
+import ai.models.grid.Tile;
 import puzzles.shortestpath.gui.ShortestPathGui;
 
 /**

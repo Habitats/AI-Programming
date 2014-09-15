@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ai.models.Board;
-import ai.models.Tile;
+import ai.models.grid.Board;
+import ai.models.grid.Tile;
 import algorithms.a_star.AStar;
 import algorithms.a_star.AStarNode;
 import puzzles.shortestpath.gui.ShortestPathGui;
@@ -63,15 +63,19 @@ public class BoardNode extends AStarNode {
   }
 
   @Override
-  public void generateHeuristic(AStarNode goal) {
-    int distance = euclideanDistance(this, (BoardNode) goal);
+  public void generateHeuristic() {
+    int distance = euclideanDistance(this.getTile(),  board.getGoal());
 //    int distance = manhattanDistance(this, (BoardNode) goal);
     setHeuristic(distance);
   }
 
-  private int euclideanDistance(BoardNode start, BoardNode goal) {
-    double k1 = Math.pow(goal.getTile().y - start.getTile().y, 2);
-    double k2 = Math.pow(goal.getTile().x - start.getTile().x, 2);
+  private void getGoal() {
+
+  }
+
+  private int euclideanDistance(Tile start, Tile goal) {
+    double k1 = Math.pow(goal.y - start.y, 2);
+    double k2 = Math.pow(goal.x - start.x, 2);
     double h = Math.sqrt(k1 + k2);
     return (int) Math.round(h * accuracyMultiplier);
   }

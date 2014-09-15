@@ -1,8 +1,11 @@
-package ai.models;
+package ai.models.graph;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import ai.models.AIAdapter;
+import ai.models.Node;
 
 /**
  * Created by Patrick on 08.09.2014.

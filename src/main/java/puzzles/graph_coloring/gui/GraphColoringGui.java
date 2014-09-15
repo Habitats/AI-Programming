@@ -15,10 +15,10 @@ import ai.gui.AISlider;
 import ai.gui.AITextArea;
 import ai.gui.AITextField;
 import ai.models.AIAdapter;
-import ai.models.ColorNode;
+import ai.models.graph.ColorNode;
 import algorithms.a_star.AStar;
 import puzzles.graph_coloring.GraphInputUtils;
-import puzzles.graph_coloring.interfaces.GraphColoringButtonListener;
+import puzzles.graph_coloring.gui.interfaces.GraphColoringButtonListener;
 
 /**
  * Created by Patrick on 23.08.2014.
@@ -89,10 +89,10 @@ public class GraphColoringGui extends AIGui {
 
   public void setAdapter(AIAdapter<ColorNode> adapter) {
 
-//    adapter.setOrigin(minX, minY);
+//    setAdapter.setOrigin(minX, minY);
 
     drawingCanvas.setAdapter(adapter);
-    Log.v(TAG, "setting adapter!" + adapter);
+    Log.v(TAG, "setting setAdapter!" + adapter);
     mainPanel.repaint();
   }
 

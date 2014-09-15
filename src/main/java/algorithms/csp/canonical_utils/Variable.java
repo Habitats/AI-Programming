@@ -1,14 +1,17 @@
-package algorithms.csp;
+package algorithms.csp.canonical_utils;
+
+import java.io.Serializable;
 
 /**
  * Created by Patrick on 04.09.2014.
  */
-public class Variable implements Comparable<Variable> {
+public class Variable implements Comparable<Variable>, Serializable {
 
   private final String id;
   private final Domain domain;
   private int value;
   private boolean hasValue;
+  private VariableListener listener;
 
   public Variable(String id, Domain domain) {
     this.id = id;
@@ -18,6 +21,7 @@ public class Variable implements Comparable<Variable> {
   public Variable setValue(int value) {
     this.value = value;
     hasValue = true;
+    listener.onValueChanged(value);
     return this;
   }
 
@@ -28,6 +32,7 @@ public class Variable implements Comparable<Variable> {
         domain.remove(val);
       }
     }
+    listener.onAssumptionMade(value);
     return this;
   }
 
@@ -61,5 +66,9 @@ public class Variable implements Comparable<Variable> {
   @Override
   public int compareTo(Variable o) {
     return 0;
+  }
+
+  public void setListener(VariableListener listener) {
+    this.listener = listener;
   }
 }

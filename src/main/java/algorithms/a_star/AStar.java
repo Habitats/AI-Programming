@@ -33,7 +33,6 @@ public class AStar implements Runnable {
 
   private static final String TAG = AStar.class.getSimpleName();
   private final AStarNode start;
-  private final AStarNode goal;
   private final Traversal traversal;
   private final AStarCallback callback;
   private Queue<AStarNode> opened;
@@ -47,23 +46,25 @@ public class AStar implements Runnable {
   private int stepTime = 100;
 
 
-  public AStar(AStarNode start, AStarNode goal, Traversal traversal, AStarCallback callback) {
+  public AStar(AStarNode start, AStarCallback callback) {
+    this(start, Traversal.BEST_FIRST, callback);
+  }
+
+  public AStar(AStarNode start, Traversal traversal, AStarCallback callback) {
     this.start = start;
-    this.goal = goal;
     this.traversal = traversal;
     this.callback = callback;
     // using a hash of all generated id's for faster lookup
-    generated = new HashMap<String, AStarNode>();
+    generated = new HashMap<>();
     setStatus(Status.PAUSED);
   }
 
-
-  private AStarNode search(AStarNode start, AStarNode goal) {
+  private AStarNode search(AStarNode start) {
     startTime = System.currentTimeMillis();
-    start.generateHeuristic(goal);
+    start.generateHeuristic();
     setStatus(Status.RUNNING);
 
-    opened = new PriorityQueue<AStarNode>();
+    opened = new PriorityQueue<>();
     opened.add(start);
 
     // this is used for BFS/DFS
@@ -91,7 +92,7 @@ public class AStar implements Runnable {
         // if child is new
         if (!generated.containsKey(succsessor.getState())) {
           generated.put(succsessor.getState(), succsessor);
-          attachAndEvaluate(succsessor, current, goal);
+          attachAndEvaluate(succsessor, current);
 
           if (traversal == Traversal.DEPTH_FIRST) {
             succsessor.setCount(count--);
@@ -104,7 +105,7 @@ public class AStar implements Runnable {
 
         // else if child has previously been generated, see if it is better
         else if (succsessor.hasBetter(current)) {
-          attachAndEvaluate(succsessor, current, goal);
+          attachAndEvaluate(succsessor, current);
           if (succsessor.isClosed()) {
             propagatePathImprovement(succsessor);
           }
@@ -138,9 +139,9 @@ public class AStar implements Runnable {
     }
   }
 
-  private void attachAndEvaluate(AStarNode child, AStarNode parent, AStarNode goal) {
+  private void attachAndEvaluate(AStarNode child, AStarNode parent) {
     child.setParent(parent);
-    child.generateHeuristic(goal);
+    child.generateHeuristic();
   }
 
   private void propagatePathImprovement(AStarNode parent) {
@@ -162,16 +163,16 @@ public class AStar implements Runnable {
 
   @Override
   public void run() {
-    AStarNode best = search(start, goal);
+    AStarNode best = search(start);
     if (best == null) {
       callback.error();
       setStatus(Status.NO_SOLUTION);
     } else {
       callback.finished(best, this);
       setStatus(Status.FINISHED);
+      Log.i(TAG, getTraversal() + " - generated nodes: " + getGeneratedSize() + " - solution lenght: " + best
+          .getPathLength());
     }
-    Log.i(TAG,
-          getTraversal() + " - generated nodes: " + getGeneratedSize() + " - solution lenght: " + best.getPathLength());
   }
 
 
@@ -197,7 +198,6 @@ public class AStar implements Runnable {
   public String toString() {
     return traversal + " search -- Status: " + getStatus() //
            + " - Start: " + start  //
-           + " - Goal: " + goal  //
            + " - Generated: " + getGeneratedSize() //
            + " - Closed: " + getClosedSize() //
            + " - Opened: " + getOpenedSize() //

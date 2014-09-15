@@ -1,13 +1,14 @@
-package puzzles;
+package puzzles.gac;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ai.Log;
-import algorithms.csp.Constraint;
+import ai.models.AIAdapter;
+import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.CspPuzzle;
-import algorithms.csp.Domain;
-import algorithms.csp.Variable;
+import algorithms.csp.canonical_utils.Domain;
+import algorithms.csp.canonical_utils.Variable;
 
 /**
  * Created by Patrick on 12.09.2014.
@@ -149,6 +150,21 @@ public class Sudoku implements CspPuzzle {
   @Override
   public void visualize() {
     printSudoku();
+  }
+
+  @Override
+  public String getId() {
+    return null;
+  }
+
+  @Override
+  public CspPuzzle duplicate() {
+    return null;
+  }
+
+  @Override
+  public void setAdapter(AIAdapter graph) {
+
   }
 
   private void printSudoku() {

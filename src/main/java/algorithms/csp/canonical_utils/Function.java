@@ -1,4 +1,4 @@
-package algorithms.csp;
+package algorithms.csp.canonical_utils;
 
 import org.python.core.PyBoolean;
 import org.python.core.PyFunction;

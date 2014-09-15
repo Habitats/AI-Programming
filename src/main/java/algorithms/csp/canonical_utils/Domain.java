@@ -1,5 +1,6 @@
-package algorithms.csp;
+package algorithms.csp.canonical_utils;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -7,10 +8,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * Created by Patrick on 04.09.2014.
  */
-public class Domain implements Iterable<Integer> {
+public class Domain implements Iterable<Integer> ,Serializable{
 
   private final List<Integer> args;
-  private int size;
 
   public Domain(int... args) {
     List<Integer> lst = new CopyOnWriteArrayList<Integer>();

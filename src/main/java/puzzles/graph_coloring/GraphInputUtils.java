@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import ai.Log;
-import ai.models.ColorNode;
-import ai.models.Graph;
+import ai.models.graph.ColorNode;
+import ai.models.graph.Graph;
 
 //A graph is defined by its vertices and edges. The format is as
 //    follows:

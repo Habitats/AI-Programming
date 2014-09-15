@@ -3,8 +3,8 @@ package puzzles.shortestpath.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import ai.models.Board;
-import ai.models.Tile;
+import ai.models.grid.Board;
+import ai.models.grid.Tile;
 
 /**
  * Created by Patrick on 24.08.2014.

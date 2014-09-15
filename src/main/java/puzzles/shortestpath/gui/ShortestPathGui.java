@@ -14,7 +14,7 @@ import ai.gui.AIGui;
 import ai.gui.AISlider;
 import ai.gui.AITextArea;
 import ai.gui.AITextField;
-import ai.models.Board;
+import ai.models.grid.Board;
 import algorithms.a_star.AStar;
 import puzzles.shortestpath.Samples;
 import puzzles.shortestpath.interfaces.ShortestPathButtonListener;

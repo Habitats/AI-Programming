@@ -3,7 +3,7 @@ package ai.gui;
 import java.awt.*;
 import java.util.List;
 
-import ai.models.ColorNode;
+import ai.models.graph.ColorNode;
 
 /**
  * Created by Patrick on 08.09.2014.
@@ -48,7 +48,7 @@ public class AIGraphCanvas extends AICanvas<ColorNode> {
     for (ColorNode item : getAdapter().getItems()) {
       int x = getX(item);
       int y = getY(item);
-      g.setColor(toHsv(Math.random()));
+      g.setColor(item.getColor());
       g.fillOval(x, y, getItemWidth(), getItemHeight());
       g.setColor(Color.black);
       g.drawOval(x, y, getItemWidth(), getItemHeight());
@@ -71,13 +71,7 @@ public class AIGraphCanvas extends AICanvas<ColorNode> {
     return getX(item) + getItemWidth() / 2;
   }
 
-  private Color toHsv(double i) {
-    float hue = (float) ((i / 100.) * 360.);
-    float value = 0.93f;
-    float sat = 0.95f;
 
-    return Color.getHSBColor(hue, sat, value);
-  }
 
   @Override
   protected void drawOutline(Graphics g, int x, int y) {

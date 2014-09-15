@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ai.models.AIAdapter;
-import ai.models.ColorNode;
-import algorithms.csp.Constraint;
+import ai.models.graph.ColorNode;
+import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.CspPuzzle;
-import algorithms.csp.Domain;
-import algorithms.csp.GAC;
-import algorithms.csp.Variable;
+import algorithms.csp.canonical_utils.Domain;
+import algorithms.csp.canonical_utils.Variable;
 import puzzles.graph_coloring.gui.GraphColoringGui;
-import puzzles.graph_coloring.interfaces.GraphColoringButtonListener;
+import puzzles.graph_coloring.gui.interfaces.GraphColoringButtonListener;
 
 /**
  * Created by Patrick on 08.09.2014.
@@ -23,18 +22,19 @@ public class GraphColoring implements GraphColoringButtonListener, CspPuzzle {
   private List<Variable> variables;
   private List<Constraint> constraints;
   private int K = 4;
+  private AIAdapter adapter;
 
   public GraphColoring() {
     // initialize the GUI
-    gui = new GraphColoringGui();
-    gui.setListener(this);
+  }
 
-    AIAdapter<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(0));
+
+  @Override
+  public void setAdapter(AIAdapter graph) {
+    this.adapter = graph;
     generateVariables(graph);
     generateConstraints(graph);
     gui.setAdapter(graph);
-
-    new GAC(this).run();
   }
 
   @Override
@@ -96,9 +96,8 @@ public class GraphColoring implements GraphColoringButtonListener, CspPuzzle {
     for (ColorNode node : graph.getItems()) {
       Variable var = new Variable(node.getId(), getDomain());
       variables.add(var);
+      var.setListener(node);
     }
-    variables.get(0).setAssumption(1);
-    variables.get(1).setAssumption(2);
     this.variables = variables;
   }
 
@@ -114,6 +113,31 @@ public class GraphColoring implements GraphColoringButtonListener, CspPuzzle {
 
   @Override
   public void visualize() {
+  }
 
+  @Override
+  public String getId() {
+    StringBuilder sb = new StringBuilder();
+    for (Variable var : getVariables()) {
+      sb.append(var.getId() + getDomain().toString());
+    }
+    return sb.toString();
+  }
+
+  @Override
+  public CspPuzzle duplicate() {
+    GraphColoring puzzle = new GraphColoring();
+    puzzle.setGui(gui);
+    puzzle.setAdapter(getAdapter());
+    return puzzle;
+  }
+
+  public AIAdapter getAdapter() {
+    return adapter;
+  }
+
+  public void setGui(GraphColoringGui gui) {
+    this.gui = gui;
+    gui.setListener(this);
   }
 }

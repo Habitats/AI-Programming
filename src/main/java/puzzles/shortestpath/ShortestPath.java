@@ -5,7 +5,7 @@ import java.util.List;
 
 import ai.AIMain;
 import ai.Log;
-import ai.models.Board;
+import ai.models.grid.Board;
 import algorithms.a_star.AStar;
 import algorithms.a_star.AStarCallback;
 import algorithms.a_star.AStarNode;
@@ -76,8 +76,7 @@ public class ShortestPath implements ShortestPathButtonListener {
    */
   private void startSearch(AStar.Traversal traversal, AStarCallback callback) {
     AStarNode start = new BoardNode(board.getStart(), board);
-    AStarNode goal = new BoardNode(board.getGoal(), board);
-    astar = new AStar(start, goal, traversal, callback);
+    astar = new AStar(start, traversal, callback);
     searches.add(astar);
     new Thread(astar).start();
   }

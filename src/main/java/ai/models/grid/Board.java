@@ -1,9 +1,11 @@
-package ai.models;
+package ai.models.grid;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
+import ai.models.AIAdapter;
 
 /**
  * Created by Patrick on 24.08.2014.
@@ -49,11 +51,7 @@ public class Board extends AIAdapter<Tile> implements Iterable<List<Tile>> {
     tiles.get(tile.x).get(tile.y).setState(tile.getState());
   }
 
-  public void notifyDataChanged() {
-    if (listener != null) {
-      listener.notifyDataChanged();
-    }
-  }
+
 
   @Override
   public Iterator<List<Tile>> iterator() {

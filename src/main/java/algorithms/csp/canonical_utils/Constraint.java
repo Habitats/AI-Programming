@@ -1,4 +1,4 @@
-package algorithms.csp;
+package algorithms.csp.canonical_utils;
 
 import java.util.Collection;
 import java.util.HashMap;

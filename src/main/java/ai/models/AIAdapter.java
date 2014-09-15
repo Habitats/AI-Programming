@@ -26,6 +26,12 @@ public abstract class AIAdapter<T> {
     return height;
   }
 
+  public void notifyDataChanged() {
+    if (listener != null) {
+      listener.notifyDataChanged();
+    }
+  }
+
   public abstract T getItem(int index);
 
   public void setWidth(int width) {

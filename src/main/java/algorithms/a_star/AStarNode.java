@@ -110,7 +110,7 @@ public abstract class AStarNode extends Node<AStarNode> {
 
   protected abstract void generateState();
 
-  protected abstract void generateHeuristic(AStarNode goal);
+  protected abstract void generateHeuristic();
 
   public abstract void visualize();
 
