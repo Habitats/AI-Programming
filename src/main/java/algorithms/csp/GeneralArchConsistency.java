@@ -13,7 +13,7 @@ import algorithms.csp.canonical_utils.Variable;
 /**
  * Created by Patrick on 04.09.2014.
  */
-public class GeneralArchConsistency implements Runnable, AStarConstraintSatisfactionPuzzle {
+public class GeneralArchConsistency implements AStarConstraintSatisfactionPuzzle {
 
 
   @Override
@@ -46,10 +46,7 @@ public class GeneralArchConsistency implements Runnable, AStarConstraintSatisfac
   @Override
   public GeneralArchConsistency duplicate() {
     GeneralArchConsistency dupe = new GeneralArchConsistency(puzzle.duplicate());
-    dupe.puzzle.getVariables().get(0).setValue(3);
 
-    Log.v(TAG, "new: " + dupe.puzzle.getVariables().get(0).getValue());
-    Log.v(TAG, "old: " + puzzle.getVariables().get(0).getValue());
     return dupe;
   }
 
@@ -65,15 +62,7 @@ public class GeneralArchConsistency implements Runnable, AStarConstraintSatisfac
     this.puzzle = puzzle;
   }
 
-  @Override
-  public void run() {
-//    CspPuzzle puzzle = new Sudoku();
-//    csppuzzle puzzle = new testgacproblem(1);
-//    CspPuzzle puzzle = new TestGACProblem(2);
 
-    Result result = domainFilter(puzzle);
-    Log.v(TAG, result.name());
-  }
 
   private boolean check(Constraint constraint, int index, List<Variable> vars) {
     if (constraint.hasNext() || vars.size() > index) {
@@ -94,7 +83,7 @@ public class GeneralArchConsistency implements Runnable, AStarConstraintSatisfac
     return false;
   }
 
-  public Result domainFilter(CspPuzzle puzzle) {
+  public Result domainFilter() {
     List<Constraint> constraints = puzzle.getConstraints();
     Queue<Variable> queue = new PriorityQueue<>();
     queue.addAll(puzzle.getVariables());

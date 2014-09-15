@@ -27,7 +27,7 @@ public class AIMain {
     GraphColoringGui gui = new GraphColoringGui();
     puzzle.setGui(gui);
 
-    AIAdapter<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(1));
+    AIAdapter<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(0));
     puzzle.setAdapter(graph);
 
     GeneralArchConsistency gac = new GeneralArchConsistency(puzzle);

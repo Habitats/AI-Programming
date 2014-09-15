@@ -12,9 +12,11 @@ import algorithms.csp.canonical_utils.Variable;
  */
 public class AStarConstraintSatisfactionNode extends AStarNode {
 
+  private static final String TAG = AStarConstraintSatisfactionNode.class.getSimpleName();
   private final GeneralArchConsistency gac;
 
   public AStarConstraintSatisfactionNode(GeneralArchConsistency gac) {
+    super();
     this.gac = gac;
   }
 
@@ -26,15 +28,20 @@ public class AStarConstraintSatisfactionNode extends AStarNode {
   @Override
   protected void generateSuccessors() {
     GeneralArchConsistency nextGac = gac.duplicate();
-    Variable variable = nextGac.getSuccessor();
-    Integer valueToAssume = variable.getDomain().iterator().next();
-    variable.setAssumption(valueToAssume);
+
+    doAssumption(nextGac);
+    nextGac.domainFilter();
     AStarConstraintSatisfactionNode nextNode = new AStarConstraintSatisfactionNode(nextGac);
     List<AStarNode> succ = new ArrayList<>();
     succ.add(nextNode);
     setSuccsessors(succ);
 
-    nextGac.run();
+  }
+
+  private void doAssumption(GeneralArchConsistency nextGac) {
+    Variable variable = nextGac.getSuccessor();
+    Integer valueToAssume = variable.getDomain().iterator().next();
+    variable.setAssumption(valueToAssume);
   }
 
   @Override

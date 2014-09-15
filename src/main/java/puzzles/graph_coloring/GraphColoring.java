@@ -83,7 +83,7 @@ public class GraphColoring implements GraphColoringButtonListener, CspPuzzle {
     this.constraints = constraints;
   }
 
-  private Domain getDomain() {
+  private Domain getInitialDomain() {
     int[] domain = new int[K];
     for (int i = 0; i < K; i++) {
       domain[i] = i;
@@ -94,7 +94,7 @@ public class GraphColoring implements GraphColoringButtonListener, CspPuzzle {
   private void generateVariables(AIAdapter<ColorNode> graph) {
     List<Variable> variables = new ArrayList<>();
     for (ColorNode node : graph.getItems()) {
-      Variable var = new Variable(node.getId(), getDomain());
+      Variable var = new Variable(node.getId(), getInitialDomain());
       variables.add(var);
       var.setListener(node);
     }
@@ -119,7 +119,7 @@ public class GraphColoring implements GraphColoringButtonListener, CspPuzzle {
   public String getId() {
     StringBuilder sb = new StringBuilder();
     for (Variable var : getVariables()) {
-      sb.append(var.getId() + getDomain().toString());
+      sb.append(var.getId() + var.getDomain().toString());
     }
     return sb.toString();
   }
