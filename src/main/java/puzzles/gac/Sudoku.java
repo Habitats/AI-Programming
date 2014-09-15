@@ -148,6 +148,11 @@ public class Sudoku implements CspPuzzle {
   }
 
   @Override
+  public int getDomainSize() {
+    return 0;
+  }
+
+  @Override
   public void visualize() {
     printSudoku();
   }

@@ -18,6 +18,9 @@ public interface CspPuzzle {
 
   List<Variable> getVariables();
 
+  int getDomainSize();
+
+
   void visualize();
 
   String getId();

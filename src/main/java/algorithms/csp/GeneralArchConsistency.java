@@ -6,46 +6,17 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 import ai.Log;
-import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Variable;
 
 /**
  * Created by Patrick on 04.09.2014.
  */
-public class GeneralArchConsistency implements AStarCspPuzzle {
+public class GeneralArchConsistency  {
 
-
-  @Override
-  public String getId() {
-    return puzzle.getId();
+  private GeneralArchConsistency() {
   }
 
-  @Override
-  public void visualize() {
-    puzzle.visualize();
-  }
-
-  @Override
-  public void devisualize() {
-
-  }
-
-  public Variable getSuccessor() {
-    int max = Integer.MIN_VALUE;
-    Variable maxVar = null;
-    for (Variable var : puzzle.getVariables()) {
-      if (var.getDomain().getSize() > max) {
-        max = var.getDomain().getSize();
-        maxVar = var;
-      }
-    }
-    return maxVar;
-  }
-
-  public int getNumVariables() {
-    return puzzle.getVariables().size();
-  }
 
 
   public enum Result {
@@ -53,14 +24,9 @@ public class GeneralArchConsistency implements AStarCspPuzzle {
   }
 
   private static final String TAG = GeneralArchConsistency.class.getSimpleName();
-  private final CspPuzzle puzzle;
-
-  public GeneralArchConsistency(CspPuzzle puzzle) {
-    this.puzzle = puzzle;
-  }
 
 
-  private boolean check(Constraint constraint, int index, List<Variable> vars) {
+  private static boolean check(Constraint constraint, int index, List<Variable> vars) {
     if (constraint.hasNext() || vars.size() > index) {
       if (vars.size() == index) {
         vars.add(constraint.getNextVariable());
@@ -72,18 +38,18 @@ public class GeneralArchConsistency implements AStarCspPuzzle {
         }
       }
     } else {
-      if (constraint.isSatisfied()) {
+      if (constraint.isSatisfied(vars)) {
         return true;
       }
     }
     return false;
   }
 
-  public Result domainFilter() {
+  public static Result domainFilter(CspPuzzle puzzle) {
     List<Constraint> constraints = puzzle.getConstraints();
     Queue<Variable> queue = new PriorityQueue<>();
     queue.addAll(puzzle.getVariables());
-    int initialDomainSize = getDomainSize();
+    int initialDomainSize = puzzle.getDomainSize();
     Variable var;
     while ((var = queue.poll()) != null) {
       if (var.getDomain().iEmpty()) {
@@ -107,27 +73,20 @@ public class GeneralArchConsistency implements AStarCspPuzzle {
     for (Variable v : puzzle.getVariables()) {
       Log.v(TAG, v);
     }
-    if (getDomainSize() == initialDomainSize) {
+    if (puzzle.getDomainSize() == initialDomainSize) {
       return Result.UNCHANGED_DOMAIN;
-    } else if (getDomainSize() == puzzle.getVariables().size()) {
+    } else if (puzzle.getDomainSize() == puzzle.getVariables().size()) {
       return Result.SOLUTION;
     } else {
       return Result.SHRUNK_DOMAIN;
     }
   }
 
-  public int getDomainSize() {
-    int size = 0;
-    for (Variable variable : puzzle.getVariables()) {
-      size += variable.getDomain().getSize();
-    }
-    return size;
-  }
 
   /**
    * @return return true if assumption satisfies constraint
    */
-  private boolean revise(Variable focalVariable, Constraint constraint) {
+  private static boolean revise(Variable focalVariable, Constraint constraint) {
     int oldSize = focalVariable.getDomain().getSize();
     constraint.setFocalVariable(focalVariable);
 

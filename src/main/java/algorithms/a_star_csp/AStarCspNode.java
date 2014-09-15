@@ -13,12 +13,12 @@ import algorithms.csp.canonical_utils.Variable;
 public class AStarCspNode extends AStarNode {
 
   private static final String TAG = AStarCspNode.class.getSimpleName();
-  private final GeneralArchConsistency gac;
-  private  GeneralArchConsistency.Result res;
+  private final AStarCspPuzzle puzzle;
+  private GeneralArchConsistency.Result res;
 
-  public AStarCspNode(GeneralArchConsistency gac) {
+  public AStarCspNode(AStarCspPuzzle puzzle) {
     super();
-    this.gac = gac;
+    this.puzzle = puzzle;
   }
 
   public void setState(GeneralArchConsistency.Result res) {
@@ -32,27 +32,27 @@ public class AStarCspNode extends AStarNode {
 
   @Override
   protected void generateSuccessors() {
-    GeneralArchConsistency nextGac = null;
 
-    doAssumption(nextGac);
-    GeneralArchConsistency.Result domainFilteringResult = nextGac.domainFilter();
-    AStarCspNode nextNode = new AStarCspNode(nextGac);
-    nextNode.setState(domainFilteringResult);
     List<AStarNode> succ = new ArrayList<>();
-    succ.add(nextNode);
+    Variable successorVariable = puzzle.getSuccessor();
+    for(Integer value : successorVariable.getDomain()){
+
+      AStarCspPuzzle next = puzzle.duplicate();
+      Variable variable = next.getSuccessor();
+      variable.setAssumption(value);
+
+      GeneralArchConsistency.Result domainFilteringResult = GeneralArchConsistency.domainFilter(next);
+      AStarCspNode nextNode = new AStarCspNode(next);
+      nextNode.setState(domainFilteringResult);
+      succ.add(nextNode);
+    }
     setSuccsessors(succ);
 
   }
 
-  private void doAssumption(GeneralArchConsistency nextGac) {
-    Variable variable = nextGac.getSuccessor();
-    Integer valueToAssume = variable.getDomain().iterator().next();
-    variable.setAssumption(valueToAssume);
-  }
-
   @Override
   protected void generateState() {
-    setState(gac.getId());
+    setState(puzzle.getId());
   }
 
   @Override
@@ -66,18 +66,17 @@ public class AStarCspNode extends AStarNode {
     } else if (res == GeneralArchConsistency.Result.EMPTY_DOMAIN) {
       setHeuristic(Integer.MAX_VALUE);
     } else {
-      int domainDelta = gac.getDomainSize() - gac.getNumVariables();
+      int domainDelta = puzzle.getDomainSize() - puzzle.getVariables().size();
       setHeuristic(domainDelta);
     }
   }
 
   @Override
   public void visualize() {
-    gac.visualize();
+    puzzle.visualize();
   }
 
   @Override
   public void devisualize() {
-    gac.devisualize();
   }
 }

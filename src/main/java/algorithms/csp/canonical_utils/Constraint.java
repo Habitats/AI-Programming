@@ -60,8 +60,8 @@ public class Constraint implements Iterable<Variable> {
 
   }
 
-  public boolean isSatisfied() {
-    boolean satisfied = function.call();
+  public boolean isSatisfied(List<Variable> variables) {
+    boolean satisfied = function.call(variables);
     if (satisfied) {
 //      Log.v(TAG, satisfied + ": " + function);
     }

@@ -76,6 +76,11 @@ public class TestGACProblem implements CspPuzzle {
   }
 
   @Override
+  public int getDomainSize() {
+    return 0;
+  }
+
+  @Override
   public void visualize() {
 
   }

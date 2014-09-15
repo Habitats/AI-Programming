@@ -7,6 +7,7 @@ import org.python.core.PyObject;
 import org.python.jsr223.PyScriptEngineFactory;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import javax.script.ScriptEngine;
@@ -71,10 +72,10 @@ public class Function {
     return keys;
   }
 
-  public boolean call() {
+  public boolean call(List<Variable> variables) {
     args = new PyInteger[variables.size()];
     int i = 0;
-    for (Variable var : variables.values()) {
+    for (Variable var : variables) {
       args[i++] = new PyInteger(var.getValue());
     }
 
@@ -82,8 +83,7 @@ public class Function {
 //    Log.v(TAG, "calling " + lambdaString + " function: " + toString());
     PyObject ans = lambda.__call__(this.args);
 
-
-    return ((PyBoolean)ans).getBooleanValue();
+    return ((PyBoolean) ans).getBooleanValue();
   }
 
   public String getVariableValues() {

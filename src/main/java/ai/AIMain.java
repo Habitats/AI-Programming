@@ -6,7 +6,7 @@ import algorithms.a_star.AStar;
 import algorithms.a_star.AStarCallback;
 import algorithms.a_star.AStarNode;
 import algorithms.a_star_csp.AStarCspNode;
-import algorithms.csp.GeneralArchConsistency;
+import puzzles.graph_coloring.ConstraintManager;
 import puzzles.graph_coloring.GraphColoring;
 import puzzles.graph_coloring.GraphInputUtils;
 import puzzles.graph_coloring.gui.GraphColoringGui;
@@ -29,11 +29,12 @@ public class AIMain {
     GraphColoringGui gui = new GraphColoringGui();
     puzzle.setGui(gui);
 
-    AIAdapter<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(1));
+    AIAdapter<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(0));
     puzzle.setAdapter(graph);
+    puzzle.setVariables(puzzle.generateVariables());
+    ConstraintManager.getManager().initialize(graph, puzzle.getVariables());
 
-    GeneralArchConsistency gac = new GeneralArchConsistency(puzzle);
-    AStarNode start = new AStarCspNode(gac);
+    AStarNode start = new AStarCspNode(puzzle);
     AStar astar = new AStar(start, new AStarCallback() {
 
       @Override
