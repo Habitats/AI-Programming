@@ -24,21 +24,13 @@ public class AIMain {
   public static void main(String[] args) {
 //    new ShortestPath();
     astarCsp();
-//    gac();
+//    sudokuGac();
+//    graphcColoringGac();
   }
 
   private static void astarCsp() {
-    GraphColoring puzzle = new GraphColoring();
 
-    GraphColoringGui gui = new GraphColoringGui();
-    puzzle.setGui(gui);
-
-    AIAdapter<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(1));
-    puzzle.setAdapter(graph);
-    puzzle.setVariables(puzzle.generateVariables());
-    ConstraintManager.getManager().initialize(graph, puzzle.getVariables());
-
-    AStarNode start = new AStarCspNode(puzzle);
+    AStarNode start = new AStarCspNode(getGraphColoringInstance());
     AStar astar = new AStar(start, new AStarCallback() {
 
       @Override
@@ -53,11 +45,47 @@ public class AIMain {
     });
     astar.run();
   }
-  private static void gac(){
+
+  private static void sudokuGac() {
     CspPuzzle sudoku = new Sudoku();
 
     GeneralArchConsistency.domainFilter(sudoku);
 
     sudoku.visualize();
+  }
+
+  private static void graphcColoringGac() {
+    CspPuzzle graphColoring = getGraphColoringInstance();
+    GeneralArchConsistency.Result res;
+
+    graphColoring.getVariables().get(0).setAssumption(0);
+    res = GeneralArchConsistency.domainFilter(graphColoring);
+    Log.v(TAG, res.name());
+
+    graphColoring.getVariables().get(1).setAssumption(1);
+    res = GeneralArchConsistency.domainFilter(graphColoring);
+    Log.v(TAG, res.name());
+
+    graphColoring.getVariables().get(3).setAssumption(3);
+    res = GeneralArchConsistency.domainFilter(graphColoring);
+    Log.v(TAG, res.name());
+    graphColoring.getVariables().get(8).setAssumption(3);
+    graphColoring.getVariables().get(7).setAssumption(1);
+    graphColoring.getVariables().get(6).setAssumption(2);
+
+  }
+
+  private static GraphColoring getGraphColoringInstance() {
+    GraphColoring puzzle = new GraphColoring();
+
+    GraphColoringGui gui = new GraphColoringGui();
+    puzzle.setGui(gui);
+
+    AIAdapter<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(1));
+    puzzle.setAdapter(graph);
+    puzzle.setVariables(puzzle.generateVariables());
+    ConstraintManager.getManager().initialize(graph, puzzle.getVariables());
+
+    return puzzle;
   }
 }
