@@ -43,7 +43,7 @@ public class AStar implements Runnable {
   private Status status;
 
   // step time in ms
-  private int stepTime = 100;
+  private int stepTime = 1;
 
 
   public AStar(AStarNode start, AStarCallback callback) {

@@ -6,6 +6,9 @@ import algorithms.a_star.AStar;
 import algorithms.a_star.AStarCallback;
 import algorithms.a_star.AStarNode;
 import algorithms.a_star_csp.AStarCspNode;
+import algorithms.csp.CspPuzzle;
+import algorithms.csp.GeneralArchConsistency;
+import puzzles.gac.Sudoku;
 import puzzles.graph_coloring.ConstraintManager;
 import puzzles.graph_coloring.GraphColoring;
 import puzzles.graph_coloring.GraphInputUtils;
@@ -20,7 +23,8 @@ public class AIMain {
 
   public static void main(String[] args) {
 //    new ShortestPath();
-    astarCsp();
+//    astarCsp();
+    gac();
   }
 
   private static void astarCsp() {
@@ -29,7 +33,7 @@ public class AIMain {
     GraphColoringGui gui = new GraphColoringGui();
     puzzle.setGui(gui);
 
-    AIAdapter<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(0));
+    AIAdapter<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(1));
     puzzle.setAdapter(graph);
     puzzle.setVariables(puzzle.generateVariables());
     ConstraintManager.getManager().initialize(graph, puzzle.getVariables());
@@ -48,5 +52,10 @@ public class AIMain {
       }
     });
     astar.run();
+  }
+  private static void gac(){
+    CspPuzzle sudoku = new Sudoku();
+
+    GeneralArchConsistency.domainFilter(sudoku);
   }
 }

@@ -21,7 +21,7 @@ public class Variable implements Comparable<Variable>, Serializable {
   public Variable setValue(int value) {
     this.value = value;
     hasValue = true;
-    listener.onValueChanged(value);
+    getListener().onValueChanged(value);
     return this;
   }
 
@@ -32,8 +32,15 @@ public class Variable implements Comparable<Variable>, Serializable {
         domain.remove(val);
       }
     }
-    listener.onAssumptionMade(value);
+    getListener().onAssumptionMade(value);
     return this;
+  }
+
+  public VariableListener getListener() {
+    if (listener == null) {
+      throw new IllegalArgumentException(VariableListener.class.getSimpleName() + " may not be null!");
+    }
+    return listener;
   }
 
   public int getValue() {
