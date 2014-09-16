@@ -23,9 +23,9 @@ public class AIMain {
 
   public static void main(String[] args) {
 //    new ShortestPath();
-    astarCsp();
+//    astarCsp();
 //    sudokuGac();
-//    graphcColoringGac();
+    graphcColoringGac();
   }
 
   private static void astarCsp() {
@@ -69,9 +69,9 @@ public class AIMain {
     graphColoring.getVariables().get(3).setAssumption(3);
     res = GeneralArchConsistency.domainFilter(graphColoring);
     Log.v(TAG, res.name());
-    graphColoring.getVariables().get(8).setAssumption(3);
-    graphColoring.getVariables().get(7).setAssumption(1);
-    graphColoring.getVariables().get(6).setAssumption(2);
+//    graphColoring.getVariables().get(8).setAssumption(3);
+    graphColoring.getVariables().get(16).setAssumption(0);
+//    graphColoring.getVariables().get(6).setAssumption(2);
 
   }
 

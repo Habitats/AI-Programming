@@ -13,13 +13,12 @@ import java.util.Set;
 public class Constraint implements Iterable<Variable> {
 
   private static final String TAG = Constraint.class.getSimpleName();
-  private final Set<String> variableList;
+  private final Set<String> variableIdsToCheck;
   private final Function function;
-  private Variable focalVariable;
 
   public Constraint(List<Variable> variables, String expression) {
     HashMap<String, Variable> variableMap = new HashMap<>();
-    variableList = new LinkedHashSet<>();
+    variableIdsToCheck = new LinkedHashSet<>();
     for (Variable var : variables) {
       if (expression.contains(var.getId())) {
         variableMap.put(var.getId(), var);
@@ -30,6 +29,14 @@ public class Constraint implements Iterable<Variable> {
     clearHasNext();
   }
 
+  public void removeFocalvariableFromTodo(Variable focalVariable) {
+    for (String id : variableIdsToCheck) {
+      if (focalVariable.getId().equals(id)) {
+        variableIdsToCheck.remove(id);
+        break;
+      }
+    }
+  }
 
   public boolean contains(Variable x) {
     return function.contains(x);
@@ -40,28 +47,19 @@ public class Constraint implements Iterable<Variable> {
     return function.getVariables().values().iterator();
   }
 
-  public Variable getFocalVariable() {
-    return focalVariable;
-  }
-
-  public void setFocalVariable(Variable focalVariable) {
-    variableList.remove(focalVariable.getId());
-    this.focalVariable = focalVariable;
-  }
-
   public boolean hasNext() {
-    return variableList.size() > 0;
+    return variableIdsToCheck.size() > 0;
   }
 
   public Variable getNextVariable() {
-    String next = variableList.iterator().next();
-    variableList.remove(next);
+    String next = variableIdsToCheck.iterator().next();
+    variableIdsToCheck.remove(next);
     return function.getVariables().get(next);
 
   }
 
   public boolean isSatisfied(List<Variable> variables, Variable focalVariable) {
-    boolean satisfied = function.call(variables,focalVariable);
+    boolean satisfied = function.call(variables, focalVariable);
     if (satisfied) {
 //      Log.v(TAG, satisfied + ": " + function);
     }
@@ -70,9 +68,7 @@ public class Constraint implements Iterable<Variable> {
 
   public void clearHasNext() {
     for (Variable var : function.getVariables().values()) {
-      if (!var.equals(focalVariable)) {
-        variableList.add(var.getId());
-      }
+      variableIdsToCheck.add(var.getId());
     }
   }
 

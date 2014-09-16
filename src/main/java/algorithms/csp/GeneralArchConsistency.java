@@ -98,7 +98,6 @@ public class GeneralArchConsistency {
    */
   private static boolean revise(Variable focalVariable, Constraint constraint) {
     int oldSize = focalVariable.getDomain().getSize();
-    constraint.setFocalVariable(focalVariable);
 
     if (!constraint.contains(focalVariable)) {
       return false;
@@ -108,6 +107,7 @@ public class GeneralArchConsistency {
 
       List<Variable> vars = new ArrayList<>();
       constraint.clearHasNext();
+      constraint.removeFocalvariableFromTodo(focalVariable);
       boolean satisfied = check(constraint, 0, vars,focalVariable);
       if (!satisfied) {
         Log.v(TAG, "reducing the domain of " + focalVariable + " by removing: " + val + ". Violating: " + constraint);
