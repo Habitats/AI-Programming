@@ -12,11 +12,10 @@ import algorithms.csp.canonical_utils.Variable;
 /**
  * Created by Patrick on 04.09.2014.
  */
-public class GeneralArchConsistency  {
+public class GeneralArchConsistency {
 
   private GeneralArchConsistency() {
   }
-
 
 
   public enum Result {
@@ -26,19 +25,30 @@ public class GeneralArchConsistency  {
   private static final String TAG = GeneralArchConsistency.class.getSimpleName();
 
 
-  private static boolean check(Constraint constraint, int index, List<Variable> vars) {
-    if (constraint.hasNext() || vars.size() > index) {
-      if (vars.size() == index) {
+  /**
+   * Check all permutations of variables and values and check if the expression is satisfied.
+   *
+   * @return true on the first satisfied occurrence, false is no combination satisfies expression
+   */
+  private static boolean check(Constraint constraint, int focalVariableIndex, List<Variable> vars,
+                               Variable focalVariable) {
+    boolean hasMoreVariables = constraint.hasNext() || vars.size() > focalVariableIndex;
+    if (hasMoreVariables) {
+      // check if it's the first time we see this variable. If yes, add it to current variables
+      if (vars.size() == focalVariableIndex) {
         vars.add(constraint.getNextVariable());
       }
-      for (Integer val : vars.get(index).getDomain()) {
-        vars.get(index).setValue(val);
-        if (check(constraint, index + 1, vars)) {
+      // iterate over all possible values for this variable
+      for (Integer val : vars.get(focalVariableIndex).getDomain()) {
+        // set a value, and recursively combine it with the possible combinations of the remaining variables
+        vars.get(focalVariableIndex).setValue(val);
+        if (check(constraint, focalVariableIndex + 1, vars, focalVariable)) {
           return true;
         }
       }
     } else {
-      if (constraint.isSatisfied(vars)) {
+      // return on the first satisfied occurrence
+      if (constraint.isSatisfied(vars,focalVariable)) {
         return true;
       }
     }
@@ -98,7 +108,7 @@ public class GeneralArchConsistency  {
 
       List<Variable> vars = new ArrayList<>();
       constraint.clearHasNext();
-      boolean satisfied = check(constraint, 0, vars);
+      boolean satisfied = check(constraint, 0, vars,focalVariable);
       if (!satisfied) {
         focalVariable.getDomain().remove(val);
       }

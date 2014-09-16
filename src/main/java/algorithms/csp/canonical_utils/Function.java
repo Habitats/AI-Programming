@@ -72,15 +72,16 @@ public class Function {
     return keys;
   }
 
-  public boolean call(List<Variable> variables) {
-    args = new PyInteger[variables.size()];
-    int i = 0;
+  public boolean call(List<Variable> variables, Variable focalVariable) {
+    args = new PyInteger[variables.size()+1];
+    args[0] = new PyInteger(focalVariable.getValue());
+    int i = 1;
     for (Variable var : variables) {
       args[i++] = new PyInteger(var.getValue());
     }
 
     // call the python lambda with args: x = 1, y = 2 etc, order is important
-//    Log.v(TAG, "calling " + lambdaString + " function: " + toString());
+    Log.v(TAG, "calling " + lambdaString + " values: " + getVariableValues());
     PyObject ans = lambda.__call__(this.args);
 
     return ((PyBoolean) ans).getBooleanValue();
@@ -88,8 +89,8 @@ public class Function {
 
   public String getVariableValues() {
     String vals = "";
-    for (Variable var : variables.values()) {
-      vals += var + ", ";
+    for (PyInteger var : args) {
+      vals += var.toString() + ", ";
     }
     return vals;
   }

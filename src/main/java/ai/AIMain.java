@@ -23,8 +23,8 @@ public class AIMain {
 
   public static void main(String[] args) {
 //    new ShortestPath();
-//    astarCsp();
-    gac();
+    astarCsp();
+//    gac();
   }
 
   private static void astarCsp() {
@@ -57,5 +57,7 @@ public class AIMain {
     CspPuzzle sudoku = new Sudoku();
 
     GeneralArchConsistency.domainFilter(sudoku);
+
+    sudoku.visualize();
   }
 }
