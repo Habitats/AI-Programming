@@ -5,10 +5,11 @@ import java.util.List;
 
 import ai.Log;
 import ai.models.AIAdapter;
-import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.CspPuzzle;
+import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Domain;
 import algorithms.csp.canonical_utils.Variable;
+import algorithms.csp.canonical_utils.VariableListener;
 
 /**
  * Created by Patrick on 12.09.2014.
@@ -62,7 +63,7 @@ public class Sudoku implements CspPuzzle {
     Variable variable = vars.get(i);
     String s = "";
     int width = (int) Math.sqrt(vars.size());
-    for (int j = i + 1; j < vars.size(); j ++) {
+    for (int j = i + 1; j < vars.size(); j++) {
       Variable var = vars.get(j);
       String toCheck = String.valueOf(var.getId().charAt(2));
       if (toCheck.equals(col)) {
@@ -96,7 +97,18 @@ public class Sudoku implements CspPuzzle {
     variables = new ArrayList<>();
     for (int x = 1; x <= domain.length; x++) {
       for (int y = 1; y <= domain.length; y++) {
-        Variable var = new Variable("v" + x + y, new Domain(domain));
+        final Variable var = new Variable("v" + x + y, new Domain(domain));
+        var.setListener(new VariableListener() {
+          @Override
+          public void onValueChanged(int value) {
+            Log.v(TAG, "value of: " + var.getId() + ", changed to: " + value);
+          }
+
+          @Override
+          public void onAssumptionMade(int value) {
+            Log.v(TAG, "assumption of: " + var.getId() + ", changed to: " + value);
+          }
+        });
         getVariables().add(var);
       }
     }
