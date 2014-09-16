@@ -26,15 +26,15 @@ public class GeneralArchConsistency {
 
 
   /**
-   * Check all permutations of variables and values and check if the expression is satisfied.
+   * Check all permutations of variables and values and isSatisfiable if the expression is isSatisfiable.
    *
-   * @return true on the first satisfied occurrence, false is no combination satisfies expression
+   * @return true on the first isSatisfiable occurrence, false is no combination satisfies expression
    */
-  private static boolean check(Constraint constraint, int focalVariableIndex, List<Variable> vars,
-                               Variable focalVariable) {
+  private static boolean isSatisfiable(Constraint constraint, int focalVariableIndex, List<Variable> vars,
+                                       Variable focalVariable) {
     boolean hasMoreVariables = constraint.hasNext() || vars.size() > focalVariableIndex;
     if (hasMoreVariables) {
-      // check if it's the first time we see this variable. If yes, add it to current variables
+      // isSatisfiable if it's the first time we see this variable. If yes, add it to current variables
       if (vars.size() == focalVariableIndex) {
         vars.add(constraint.getNextVariable());
       }
@@ -42,13 +42,13 @@ public class GeneralArchConsistency {
       for (Integer val : vars.get(focalVariableIndex).getDomain()) {
         // set a value, and recursively combine it with the possible combinations of the remaining variables
         vars.get(focalVariableIndex).setValue(val);
-        if (check(constraint, focalVariableIndex + 1, vars, focalVariable)) {
+        if (isSatisfiable(constraint, focalVariableIndex + 1, vars, focalVariable)) {
           return true;
         }
       }
     } else {
-      // return on the first satisfied occurrence
-      if (constraint.isSatisfied(vars,focalVariable)) {
+      // return on the first isSatisfiable occurrence
+      if (constraint.isSatisfied(vars, focalVariable)) {
         return true;
       }
     }
@@ -67,6 +67,12 @@ public class GeneralArchConsistency {
       }
 //      Log.v(TAG, "before: " + var);
       for (Constraint constraint : constraints) {
+
+        // if focalvariable isn't present in the constraint, there is no way it can directly affect it either
+        if (!constraint.contains(var)) {
+          continue;
+        }
+
         if (revise(var, constraint)) {
           for (Variable varInConstraint : constraint.getVariables()) {
             if (varInConstraint.getId().equals(var.getId())) {
@@ -94,22 +100,23 @@ public class GeneralArchConsistency {
 
 
   /**
-   * @return return true if assumption satisfies constraint
+   * Remove all values from focalVariables' domain if no combination of non-focalVariables satisfy the constraint
+   *
+   * @return return true if domain is reduced by assumption
    */
   private static boolean revise(Variable focalVariable, Constraint constraint) {
     int oldSize = focalVariable.getDomain().getSize();
 
-    if (!constraint.contains(focalVariable)) {
-      return false;
-    }
+    // iterate over all the values of the focalDomain
     for (Integer val : focalVariable.getDomain()) {
       focalVariable.setValue(val);
 
       List<Variable> vars = new ArrayList<>();
       constraint.clearHasNext();
       constraint.removeFocalvariableFromTodo(focalVariable);
-      boolean satisfied = check(constraint, 0, vars,focalVariable);
-      if (!satisfied) {
+      boolean satisfiable = isSatisfiable(constraint, 0, vars, focalVariable);
+      if (!satisfiable) {
+        // if constraint is impossible to satisfy with the given value, remove the value from the domain
         Log.v(TAG, "reducing the domain of " + focalVariable + " by removing: " + val + ". Violating: " + constraint);
         focalVariable.getDomain().remove(val);
       }
