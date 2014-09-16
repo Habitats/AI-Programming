@@ -24,12 +24,12 @@ public class Function {
   private PyInteger[] args;
   private PyFunction lambda;
   private static ScriptEngine engine = new PyScriptEngineFactory().getScriptEngine();
-  private Map<String, Variable> variables;
+  private Map<String, Variable> variablesMap;
   private String expression;
   private String lambdaString;
 
-  public Function setVariables(Map<String, Variable> variables) {
-    this.variables = variables;
+  public Function setVariablesMap(Map<String, Variable> variablesMap) {
+    this.variablesMap = variablesMap;
     return this;
   }
 
@@ -44,7 +44,7 @@ public class Function {
   }
 
   public Function setExpression(String expression) {
-    expression = setExpressionValues(expression, variables.values());
+    expression = setExpressionValues(expression, variablesMap.values());
     lambda = generateLambda(expression);
     this.expression = expression;
     return this;
@@ -63,8 +63,8 @@ public class Function {
 
   private String getKeys() {
     String keys = "";
-    for (String key : variables.keySet()) {
-//      if (!variables.get(key).hasValue()) {
+    for (String key : variablesMap.keySet()) {
+//      if (!variablesMap.get(key).hasValue()) {
 //      }
       keys += "," + key;
     }
@@ -73,11 +73,18 @@ public class Function {
   }
 
   public boolean call(List<Variable> variables, Variable focalVariable) {
-    args = new PyInteger[variables.size()+1];
-    args[0] = new PyInteger(focalVariable.getValue());
-    int i = 1;
+
+    // set all the right values in the valuesMap
+    variablesMap.get(focalVariable.getId()).setValue(focalVariable.getValue());
     for (Variable var : variables) {
-      args[i++] = new PyInteger(var.getValue());
+      variablesMap.get(var.getId()).setValue(var.getValue());
+    }
+
+    // put the values in the right order according to how the parameters for the lambda was created
+    args = new PyInteger[variables.size() + 1];
+    int i = 0;
+    for(String key: variablesMap.keySet()){
+      args[i++] = new PyInteger(variablesMap.get(key).getValue());
     }
 
     // call the python lambda with args: x = 1, y = 2 etc, order is important
@@ -89,8 +96,10 @@ public class Function {
 
   public String getVariableValues() {
     String vals = "";
-    for (PyInteger var : args) {
-      vals += var.toString() + ", ";
+    if (args != null) {
+      for (PyInteger var : args) {
+        vals += var.toString() + ", ";
+      }
     }
     return vals;
   }
@@ -101,10 +110,10 @@ public class Function {
   }
 
   public boolean contains(Variable x) {
-    return variables.containsKey(x.getId());
+    return variablesMap.containsKey(x.getId());
   }
 
-  public Map<String, Variable> getVariables() {
-    return variables;
+  public Map<String, Variable> getVariablesMap() {
+    return variablesMap;
   }
 }

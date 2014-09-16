@@ -121,6 +121,16 @@ public class GraphColoring implements GraphColoringButtonListener, CspPuzzle, AS
   }
 
   @Override
+  public Variable getVariable(String id) {
+    for (Variable var : getVariables()) {
+      if (var.getId().equals(id)) {
+        return var;
+      }
+    }
+    return null;
+  }
+
+  @Override
   public String getId() {
     StringBuilder sb = new StringBuilder();
     for (Variable var : getVariables()) {

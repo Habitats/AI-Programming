@@ -120,6 +120,9 @@ public class GeneralArchConsistency {
         Log.v(TAG, "reducing the domain of " + focalVariable + " by removing: " + val + ". Violating: " + constraint);
         focalVariable.getDomain().remove(val);
       }
+      else{
+        Log.v(TAG, "unable to reduce the domain of " + focalVariable + " with values:  " + val + " and constraint: " + constraint);
+      }
     }
     int newSize = focalVariable.getDomain().getSize();
 //    Log.v(TAG, "old: " + oldSize + " new: " + newSize);

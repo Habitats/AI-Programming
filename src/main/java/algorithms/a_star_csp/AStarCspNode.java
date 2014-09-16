@@ -34,11 +34,13 @@ public class AStarCspNode extends AStarNode {
   protected void generateSuccessors() {
 
     List<AStarNode> succ = new ArrayList<>();
+
+    // retrieve the variable with the biggest domain
     Variable successorVariable = puzzle.getSuccessor();
     for(Integer value : successorVariable.getDomain()){
 
       AStarCspPuzzle next = puzzle.duplicate();
-      Variable variable = next.getSuccessor();
+      Variable variable = next.getVariable(successorVariable.getId());
       variable.setAssumption(value);
 
       GeneralArchConsistency.Result domainFilteringResult = GeneralArchConsistency.domainFilter(next);

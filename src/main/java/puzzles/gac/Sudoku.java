@@ -38,8 +38,8 @@ public class Sudoku implements CspPuzzle {
       String row = String.valueOf(var.getId().charAt(2));
       String expression = "";
 
-//      Log.v(TAG, "horzontal: " + getHorizontalConstraintExpression(getVariables(), 0, row));
-//      Log.v(TAG, "vertical:  " + getVerticalConstraintExpression(getVariables(), 0, col));
+//      Log.v(TAG, "horzontal: " + getHorizontalConstraintExpression(getVariablesMap(), 0, row));
+//      Log.v(TAG, "vertical:  " + getVerticalConstraintExpression(getVariablesMap(), 0, col));
       expression =
           String.format(
               "v%s1 != v%s2 and v%s1 != v%s3 and v%s1 != v%s4 and v%s3 != v%s4 and v%s2 != v%s3 and v%s2 != v%s4", //

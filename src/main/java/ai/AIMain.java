@@ -23,9 +23,9 @@ public class AIMain {
 
   public static void main(String[] args) {
 //    new ShortestPath();
-//    astarCsp();
+    astarCsp();
 //    sudokuGac();
-    graphcColoringGac();
+//    graphcColoringGac();
   }
 
   private static void astarCsp() {
@@ -55,23 +55,44 @@ public class AIMain {
   }
 
   private static void graphcColoringGac() {
-    CspPuzzle graphColoring = getGraphColoringInstance();
+    CspPuzzle puzzle = getGraphColoringInstance();
     GeneralArchConsistency.Result res;
 
-    graphColoring.getVariables().get(0).setAssumption(0);
-    res = GeneralArchConsistency.domainFilter(graphColoring);
+    puzzle.getVariables().get(0).setAssumption(0);
+    res = GeneralArchConsistency.domainFilter(puzzle);
     Log.v(TAG, res.name());
 
-    graphColoring.getVariables().get(1).setAssumption(1);
-    res = GeneralArchConsistency.domainFilter(graphColoring);
+    puzzle.getVariables().get(1).setAssumption(1);
+    res = GeneralArchConsistency.domainFilter(puzzle);
     Log.v(TAG, res.name());
 
-    graphColoring.getVariables().get(3).setAssumption(3);
-    res = GeneralArchConsistency.domainFilter(graphColoring);
+    puzzle.getVariables().get(2).setAssumption(2);
+    res = GeneralArchConsistency.domainFilter(puzzle);
     Log.v(TAG, res.name());
-//    graphColoring.getVariables().get(8).setAssumption(3);
-    graphColoring.getVariables().get(16).setAssumption(0);
-//    graphColoring.getVariables().get(6).setAssumption(2);
+
+    puzzle.getVariables().get(3).setAssumption(3);
+    res = GeneralArchConsistency.domainFilter(puzzle);
+    Log.v(TAG, res.name());
+
+    puzzle.getVariables().get(4).setAssumption(2);
+    res = GeneralArchConsistency.domainFilter(puzzle);
+    Log.v(TAG, res.name());
+
+    puzzle.getVariables().get(5).setAssumption(1);
+    res = GeneralArchConsistency.domainFilter(puzzle);
+    Log.v(TAG, res.name());
+
+    puzzle.getVariables().get(6).setAssumption(0);
+    res = GeneralArchConsistency.domainFilter(puzzle);
+    Log.v(TAG, res.name());
+
+    puzzle.getVariables().get(7).setAssumption(3);
+    res = GeneralArchConsistency.domainFilter(puzzle);
+    Log.v(TAG, res.name());
+
+    puzzle.getVariables().get(8).setAssumption(2);
+    res = GeneralArchConsistency.domainFilter(puzzle);
+    Log.v(TAG, res.name());
 
   }
 

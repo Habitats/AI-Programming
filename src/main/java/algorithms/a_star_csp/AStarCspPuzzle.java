@@ -10,7 +10,8 @@ public interface AStarCspPuzzle extends CspPuzzle{
 
   String getId();
 
-
   Variable getSuccessor();
   AStarCspPuzzle duplicate();
+
+  Variable getVariable(String id);
 }

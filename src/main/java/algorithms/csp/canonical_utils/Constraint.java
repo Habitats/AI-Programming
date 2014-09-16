@@ -25,7 +25,7 @@ public class Constraint implements Iterable<Variable> {
       }
     }
 
-    function = new Function().setVariables(variableMap).setExpression(expression);
+    function = new Function().setVariablesMap(variableMap).setExpression(expression);
     clearHasNext();
   }
 
@@ -44,7 +44,7 @@ public class Constraint implements Iterable<Variable> {
 
   @Override
   public Iterator<Variable> iterator() {
-    return function.getVariables().values().iterator();
+    return function.getVariablesMap().values().iterator();
   }
 
   public boolean hasNext() {
@@ -54,7 +54,7 @@ public class Constraint implements Iterable<Variable> {
   public Variable getNextVariable() {
     String next = variableIdsToCheck.iterator().next();
     variableIdsToCheck.remove(next);
-    return function.getVariables().get(next);
+    return function.getVariablesMap().get(next);
 
   }
 
@@ -67,7 +67,7 @@ public class Constraint implements Iterable<Variable> {
   }
 
   public void clearHasNext() {
-    for (Variable var : function.getVariables().values()) {
+    for (Variable var : function.getVariablesMap().values()) {
       variableIdsToCheck.add(var.getId());
     }
   }
@@ -78,6 +78,6 @@ public class Constraint implements Iterable<Variable> {
   }
 
   public Collection<Variable> getVariables() {
-    return function.getVariables().values();
+    return function.getVariablesMap().values();
   }
 }

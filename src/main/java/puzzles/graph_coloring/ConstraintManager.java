@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ai.Log;
 import ai.models.AIAdapter;
 import ai.models.graph.ColorNode;
 import algorithms.csp.canonical_utils.Constraint;
@@ -15,6 +16,7 @@ import algorithms.csp.canonical_utils.Variable;
  */
 public class ConstraintManager {
 
+  private static final String TAG = ConstraintManager.class.getSimpleName();
   private static ConstraintManager instance;
   private List<Constraint> constraints;
   private Map<String, List<Variable>> variableMap;
@@ -31,20 +33,25 @@ public class ConstraintManager {
   }
 
   private void generateConstraints(AIAdapter<ColorNode> graph, List<Variable> variables) {
+    Log.v(TAG, "Generating constraints ...");
     List<Constraint> constraints = new ArrayList<>();
     for (ColorNode node : graph.getItems()) {
       String id = node.getId();
       String expression = "";
       for (ColorNode child : node.getChildren()) {
         String cId = child.getId();
-        expression += id + " != " + cId + " and ";
+        expression += " and " + id + " != " + cId;
       }
-      expression += "1 < 2";
+      expression = expression.substring(5);
       Constraint constraint = new Constraint(variables, expression);
       constraints.add(constraint);
+      Log.v(TAG,constraint);
     }
     this.constraints = constraints;
+
+    Log.v(TAG, "... finished generating " + constraints.size() + " constraints!");
   }
+
 
   public List<Constraint> getConstraints() {
     return constraints;
