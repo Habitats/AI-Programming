@@ -11,8 +11,8 @@ import ai.models.graph.ColorNode;
 public class AIGraphCanvas extends AICanvas<ColorNode> {
 
   private static final String TAG = AIGraphCanvas.class.getSimpleName();
-  private int itemHeight = 20;
-  private int itemWidth = 20;
+  private int itemHeight = 30;
+  private int itemWidth = 30;
   private double horizontalScalingFactor;
   private double verticalScalingFactor;
   private int padding = 20;
@@ -52,6 +52,8 @@ public class AIGraphCanvas extends AICanvas<ColorNode> {
       g.fillOval(x, y, getItemWidth(), getItemHeight());
       g.setColor(Color.black);
       g.drawOval(x, y, getItemWidth(), getItemHeight());
+
+      drawStringCenter(g,item.getId(),x,y);
     }
   }
 

@@ -40,7 +40,7 @@ public abstract class AICanvas<T> extends JPanel implements AIAdapterListener {
     int stringLen = (int) g2d.getFontMetrics().getStringBounds(s, g2d).getWidth();
     int stringHeight = (int) g2d.getFontMetrics().getStringBounds(s, g2d).getHeight();
     int offsetWidth = getItemWidth() / 2 - stringLen / 2;
-    int offsetHeight = getItemHeight() / 2 - stringHeight / 2;
+    int offsetHeight = getItemHeight()  - stringHeight / 2;
     g2d.drawString(s, offsetWidth + XPos, offsetHeight + YPos);
   }
 

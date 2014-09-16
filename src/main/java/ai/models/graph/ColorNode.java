@@ -14,7 +14,7 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
   private double x;
   private double y;
   private final int index;
-  private Color color;
+  private Color color = Color.white;
   private Variable variable;
 
   public ColorNode(double x, double y, int index) {
@@ -47,8 +47,8 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
 
   private Color toHsv(double i) {
     float hue = (float) ((i / 100.) * 360.);
-    float value = 0.93f;
-    float sat = 0.95f;
+    float value = 1f;
+    float sat = 0.45f;
 
     return Color.getHSBColor(hue, sat, value);
   }
@@ -59,12 +59,12 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
 
   @Override
   public void onValueChanged(int value) {
-    setColor(toHsv(value));
+
   }
 
   @Override
   public void onAssumptionMade(int value) {
-
+    setColor(toHsv(value));
   }
 
   public void setColor(Color color) {

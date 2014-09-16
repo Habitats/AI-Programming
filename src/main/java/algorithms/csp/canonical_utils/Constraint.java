@@ -76,6 +76,11 @@ public class Constraint implements Iterable<Variable> {
     }
   }
 
+  @Override
+  public String toString() {
+    return function.toString();
+  }
+
   public Collection<Variable> getVariables() {
     return function.getVariables().values();
   }
