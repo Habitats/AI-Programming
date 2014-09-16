@@ -65,7 +65,7 @@ public class GeneralArchConsistency {
       if (var.getDomain().iEmpty()) {
         return Result.EMPTY_DOMAIN;
       }
-      Log.v(TAG, "before: " + var);
+//      Log.v(TAG, "before: " + var);
       for (Constraint constraint : constraints) {
         if (revise(var, constraint)) {
           for (Variable varInConstraint : constraint.getVariables()) {
@@ -76,8 +76,8 @@ public class GeneralArchConsistency {
         }
       }
 
-      Log.v(TAG, "after: " + var);
-      Log.v(TAG, "------------------------------------");
+//      Log.v(TAG, "after: " + var);
+//      Log.v(TAG, "------------------------------------");
     }
 
     for (Variable v : puzzle.getVariables()) {
@@ -110,11 +110,12 @@ public class GeneralArchConsistency {
       constraint.clearHasNext();
       boolean satisfied = check(constraint, 0, vars,focalVariable);
       if (!satisfied) {
+        Log.v(TAG, "reducing the domain of " + focalVariable + " by removing: " + val + ". Violating: " + constraint);
         focalVariable.getDomain().remove(val);
       }
     }
     int newSize = focalVariable.getDomain().getSize();
-    Log.v(TAG, "old: " + oldSize + " new: " + newSize);
+//    Log.v(TAG, "old: " + oldSize + " new: " + newSize);
     return oldSize > newSize;
   }
 }
