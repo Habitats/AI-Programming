@@ -59,18 +59,19 @@ public class AIMain {
     AStarCspPuzzle puzzle = getGraphColoringInstance();
     GeneralArchConsistency.Result res;
 
+    puzzle = puzzle;
+
     puzzle.getVariables().get(0).setAssumption(0);
     res = GeneralArchConsistency.domainFilter(puzzle);
     Log.v(TAG, res.name());
 
-    AStarCspPuzzle dupe = puzzle.duplicate();
-    dupe.getVariables().get(1).setAssumption(1);
-    res = GeneralArchConsistency.domainFilter(dupe);
-    Log.v(TAG, res.name());
+//    dupe.getVariables().get(0).setAssumption(0);
+//    res = GeneralArchConsistency.domainFilter(dupe);
+//    Log.v(TAG, res.name());
 
-    puzzle.getVariables().get(1).setAssumption(1);
-    res = GeneralArchConsistency.domainFilter(puzzle);
-    Log.v(TAG, res.name());
+//    puzzle.getVariables().get(1).setAssumption(1);
+//    res = GeneralArchConsistency.domainFilter(puzzle);
+//    Log.v(TAG, res.name());
 
 //    puzzle = puzzle.duplicate();
 //    puzzle.getVariables().get(2).setAssumption(2);

@@ -25,7 +25,7 @@ public class Constraint implements Iterable<Variable> {
       }
     }
 
-    function = new Function(variableMap,expression);
+    function = new Function(variableMap, expression);
     clearHasNext();
   }
 
