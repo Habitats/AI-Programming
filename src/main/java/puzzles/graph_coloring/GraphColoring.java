@@ -117,6 +117,10 @@ public class GraphColoring implements GraphColoringButtonListener, CspPuzzle, AS
     dupe.setGui(gui);
     dupe.setAdapter(adapter);
     dupe.setVariables(dupe.generateVariables());
+    for(int i = 0; i < getVariables().size();i++){
+      dupe.getVariables().get(i).copyDomain(this.getVariables().get(i));
+      dupe.getVariables().get(i).setValue(this.getVariables().get(i).getValue());
+    }
     return dupe;
   }
 

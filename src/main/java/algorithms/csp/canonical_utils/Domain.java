@@ -58,4 +58,9 @@ public class Domain implements Iterable<Integer>, Serializable {
     this.args.clear();
     this.args.addAll(domain.args);
   }
+
+  public void setDomain(Domain domain) {
+    args.clear();
+    args.addAll(domain.args);
+  }
 }

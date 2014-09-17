@@ -43,6 +43,10 @@ public class Variable implements Comparable<Variable>, Serializable {
     return listener;
   }
 
+  public void copyDomain(Variable other) {
+    this.domain.setDomain(other.domain);
+  }
+
   public int getValue() {
     return value;
   }
