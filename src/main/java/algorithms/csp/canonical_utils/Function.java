@@ -75,8 +75,10 @@ public class Function {
 
     // set all the right values in the valuesMap
     variablesMap.get(focalVariable.getId()).setValue(focalVariable.getValue());
+    variablesMap.get(focalVariable.getId()).copyDomain(focalVariable);
     for (Variable var : variables) {
       variablesMap.get(var.getId()).setValue(var.getValue());
+      variablesMap.get(var.getId()).copyDomain(var);
     }
 
     // put the values in the right order according to how the parameters for the lambda was created

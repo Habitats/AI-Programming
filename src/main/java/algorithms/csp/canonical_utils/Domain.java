@@ -60,6 +60,9 @@ public class Domain implements Iterable<Integer>, Serializable {
   }
 
   public void setDomain(Domain domain) {
+    if (domain.equals(this)) {
+      return;
+    }
     args.clear();
     args.addAll(domain.args);
   }
