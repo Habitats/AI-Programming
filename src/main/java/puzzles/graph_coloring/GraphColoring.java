@@ -145,15 +145,15 @@ public class GraphColoring implements GraphColoringButtonListener, CspPuzzle, AS
 
   @Override
   public Variable getSuccessor() {
-    int max = Integer.MIN_VALUE;
-    Variable maxVar = null;
+    int min = Integer.MAX_VALUE;
+    Variable minVar = null;
     for (Variable var : getVariables()) {
-      if (var.getDomain().getSize() > max) {
-        max = var.getDomain().getSize();
-        maxVar = var;
+      if (var.getDomain().getSize() < min) {
+        min = var.getDomain().getSize();
+        minVar = var;
       }
     }
-    return maxVar;
+    return minVar;
   }
 
   public void setVariables(List<Variable> variables) {
