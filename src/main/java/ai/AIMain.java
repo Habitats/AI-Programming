@@ -6,6 +6,7 @@ import algorithms.a_star.AStar;
 import algorithms.a_star.AStarCallback;
 import algorithms.a_star.AStarNode;
 import algorithms.a_star_csp.AStarCspNode;
+import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.CspPuzzle;
 import algorithms.csp.GeneralArchConsistency;
 import puzzles.gac.Sudoku;
@@ -23,9 +24,9 @@ public class AIMain {
 
   public static void main(String[] args) {
 //    new ShortestPath();
-    astarCsp();
+//    astarCsp();
 //    sudokuGac();
-//    graphcColoringGac();
+    graphcColoringGac();
   }
 
   private static void astarCsp() {
@@ -55,42 +56,58 @@ public class AIMain {
   }
 
   private static void graphcColoringGac() {
-    CspPuzzle puzzle = getGraphColoringInstance();
+    AStarCspPuzzle puzzle = getGraphColoringInstance();
     GeneralArchConsistency.Result res;
 
     puzzle.getVariables().get(0).setAssumption(0);
     res = GeneralArchConsistency.domainFilter(puzzle);
     Log.v(TAG, res.name());
 
+//    AStarCspPuzzle dupe = puzzle.duplicate();
+//    dupe.getVariables().get(1).setAssumption(1);
+//    res = GeneralArchConsistency.domainFilter(dupe);
+//    Log.v(TAG, res.name());
+
     puzzle.getVariables().get(1).setAssumption(1);
     res = GeneralArchConsistency.domainFilter(puzzle);
     Log.v(TAG, res.name());
 
+//    puzzle = puzzle.duplicate();
     puzzle.getVariables().get(2).setAssumption(2);
     res = GeneralArchConsistency.domainFilter(puzzle);
     Log.v(TAG, res.name());
-
+//
+//    puzzle = puzzle.duplicate();
     puzzle.getVariables().get(3).setAssumption(3);
     res = GeneralArchConsistency.domainFilter(puzzle);
     Log.v(TAG, res.name());
+//
+//    puzzle = puzzle.duplicate();
+//    puzzle.getVariables().get(4).setAssumption(2);
+//    res = GeneralArchConsistency.domainFilter(puzzle);
+//    Log.v(TAG, res.name());
+//
+//    puzzle = puzzle.duplicate();
+//    puzzle.getVariables().get(5).setAssumption(1);
+//    res = GeneralArchConsistency.domainFilter(puzzle);
+//    Log.v(TAG, res.name());
+//
+//    puzzle = puzzle.duplicate();
+//    puzzle.getVariables().get(6).setAssumption(0);
+//    res = GeneralArchConsistency.domainFilter(puzzle);
+//    Log.v(TAG, res.name());
+//
+//    puzzle = puzzle.duplicate();
+//    puzzle.getVariables().get(7).setAssumption(3);
+//    res = GeneralArchConsistency.domainFilter(puzzle);
+//    Log.v(TAG, res.name());
+//
+//    puzzle = puzzle.duplicate();
+//    puzzle.getVariables().get(8).setAssumption(2);
+//    res = GeneralArchConsistency.domainFilter(puzzle);
+//    Log.v(TAG, res.name());
 
-    puzzle.getVariables().get(4).setAssumption(2);
-    res = GeneralArchConsistency.domainFilter(puzzle);
-    Log.v(TAG, res.name());
-
-    puzzle.getVariables().get(5).setAssumption(1);
-    res = GeneralArchConsistency.domainFilter(puzzle);
-    Log.v(TAG, res.name());
-
-    puzzle.getVariables().get(6).setAssumption(0);
-    res = GeneralArchConsistency.domainFilter(puzzle);
-    Log.v(TAG, res.name());
-
-    puzzle.getVariables().get(7).setAssumption(3);
-    res = GeneralArchConsistency.domainFilter(puzzle);
-    Log.v(TAG, res.name());
-
-    puzzle.getVariables().get(8).setAssumption(2);
+    puzzle.getVariables().get(30).setAssumption(2);
     res = GeneralArchConsistency.domainFilter(puzzle);
     Log.v(TAG, res.name());
 
