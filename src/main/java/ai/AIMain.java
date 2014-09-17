@@ -63,24 +63,24 @@ public class AIMain {
     res = GeneralArchConsistency.domainFilter(puzzle);
     Log.v(TAG, res.name());
 
-//    AStarCspPuzzle dupe = puzzle.duplicate();
-//    dupe.getVariables().get(1).setAssumption(1);
-//    res = GeneralArchConsistency.domainFilter(dupe);
-//    Log.v(TAG, res.name());
+    AStarCspPuzzle dupe = puzzle.duplicate();
+    dupe.getVariables().get(1).setAssumption(1);
+    res = GeneralArchConsistency.domainFilter(dupe);
+    Log.v(TAG, res.name());
 
     puzzle.getVariables().get(1).setAssumption(1);
     res = GeneralArchConsistency.domainFilter(puzzle);
     Log.v(TAG, res.name());
 
 //    puzzle = puzzle.duplicate();
-    puzzle.getVariables().get(2).setAssumption(2);
-    res = GeneralArchConsistency.domainFilter(puzzle);
-    Log.v(TAG, res.name());
+//    puzzle.getVariables().get(2).setAssumption(2);
+//    res = GeneralArchConsistency.domainFilter(puzzle);
+//    Log.v(TAG, res.name());
 //
 //    puzzle = puzzle.duplicate();
-    puzzle.getVariables().get(3).setAssumption(3);
-    res = GeneralArchConsistency.domainFilter(puzzle);
-    Log.v(TAG, res.name());
+//    puzzle.getVariables().get(3).setAssumption(3);
+//    res = GeneralArchConsistency.domainFilter(puzzle);
+//    Log.v(TAG, res.name());
 //
 //    puzzle = puzzle.duplicate();
 //    puzzle.getVariables().get(4).setAssumption(2);
@@ -107,9 +107,9 @@ public class AIMain {
 //    res = GeneralArchConsistency.domainFilter(puzzle);
 //    Log.v(TAG, res.name());
 
-    puzzle.getVariables().get(30).setAssumption(2);
-    res = GeneralArchConsistency.domainFilter(puzzle);
-    Log.v(TAG, res.name());
+//    puzzle.getVariables().get(30).setAssumption(2);
+//    res = GeneralArchConsistency.domainFilter(puzzle);
+//    Log.v(TAG, res.name());
 
   }
 

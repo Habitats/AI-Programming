@@ -37,7 +37,7 @@ public class AStarCspNode extends AStarNode {
 
     // retrieve the variable with the biggest domain
     Variable successorVariable = puzzle.getSuccessor();
-    for(Integer value : successorVariable.getDomain()){
+    for (Integer value : successorVariable.getDomain()) {
 
       AStarCspPuzzle next = puzzle.duplicate();
       Variable variable = next.getVariable(successorVariable.getId());
@@ -47,7 +47,16 @@ public class AStarCspNode extends AStarNode {
       AStarCspNode nextNode = new AStarCspNode(next);
       nextNode.setState(domainFilteringResult);
       succ.add(nextNode);
+
     }
+//    AStarCspPuzzle next = puzzle;
+//    Variable variable = next.getVariable(successorVariable.getId());
+//    variable.setAssumption(successorVariable.getDomain().iterator().next());
+//
+//    GeneralArchConsistency.Result domainFilteringResult = GeneralArchConsistency.domainFilter(next);
+//    AStarCspNode nextNode = new AStarCspNode(next);
+//    nextNode.setState(domainFilteringResult);
+//    succ.add(nextNode);
     setSuccsessors(succ);
 
   }
