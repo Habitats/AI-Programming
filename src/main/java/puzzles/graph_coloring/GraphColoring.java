@@ -15,7 +15,7 @@ import puzzles.graph_coloring.gui.GraphColoringGui;
 /**
  * Created by Patrick on 08.09.2014.
  */
-public class GraphColoring implements  CspPuzzle, AStarCspPuzzle {
+public class GraphColoring implements CspPuzzle, AStarCspPuzzle {
 
 
   private GraphColoringGui gui;
@@ -55,7 +55,6 @@ public class GraphColoring implements  CspPuzzle, AStarCspPuzzle {
   }
 
 
-
   // CspPuzzle /////////////////////////////////////////////////////////////
   @Override
   public List<Constraint> getConstraints() {
@@ -80,20 +79,6 @@ public class GraphColoring implements  CspPuzzle, AStarCspPuzzle {
   public void visualize() {
   }
 
-  // AStarCspPuzzle /////////////////////////////////////////////////////////////////
-
-  @Override
-  public AStarCspPuzzle duplicate() {
-    GraphColoring dupe = new GraphColoring();
-    dupe.setGui(gui);
-    dupe.setAdapter(adapter);
-    dupe.setVariables(dupe.generateVariables());
-    for(int i = 0; i < getVariables().size();i++){
-      dupe.getVariables().set(i, getVariables().get(i).copy());
-    }
-    return dupe;
-  }
-
   @Override
   public Variable getVariable(String id) {
     for (Variable var : getVariables()) {
@@ -104,21 +89,42 @@ public class GraphColoring implements  CspPuzzle, AStarCspPuzzle {
     return null;
   }
 
+  // AStarCspPuzzle /////////////////////////////////////////////////////////////////
+
+  @Override
+  public AStarCspPuzzle duplicate() {
+    GraphColoring dupe = new GraphColoring();
+    dupe.setGui(gui);
+    dupe.setAdapter(adapter);
+    dupe.setVariables(dupe.generateVariables());
+    for (int i = 0; i < getVariables().size(); i++) {
+      dupe.getVariables().set(i, getVariables().get(i).copy());
+    }
+    return dupe;
+  }
+
   @Override
   public String getId() {
     StringBuilder sb = new StringBuilder();
     for (Variable var : getVariables()) {
-      sb.append(var.getId() + var.getDomain().toString());
+      sb.append(var.getId() + ":" + var.getDomain().getId() + " ");
     }
     return sb.toString();
   }
 
   @Override
   public Variable getSuccessor() {
+    Variable successor;
+//    successor = getMostConstrained();
+    successor = getMinimalDomain();
+    return successor;
+  }
+
+  private Variable getMinimalDomain() {
     int min = Integer.MAX_VALUE;
     Variable minVar = null;
     for (Variable var : getVariables()) {
-      if(var.getDomain().getSize() == 1){
+      if (var.getDomain().getSize() == 1) {
         continue;
       }
       if (var.getDomain().getSize() < min) {
@@ -127,6 +133,22 @@ public class GraphColoring implements  CspPuzzle, AStarCspPuzzle {
       }
     }
     return minVar;
+  }
+
+  private Variable getMostConstrained() {
+    int max = Integer.MIN_VALUE;
+    Variable maxConstrained = null;
+    for (Variable var : getVariables()) {
+      if (var.getDomain().getSize() == 1) {
+        continue;
+      }
+      int constrainedCount = ConstraintManager.getManager().getConstrainedCount(var);
+      if (constrainedCount > max) {
+        max = constrainedCount;
+        maxConstrained = var;
+      }
+    }
+    return maxConstrained;
   }
 
   public void setVariables(List<Variable> variables) {

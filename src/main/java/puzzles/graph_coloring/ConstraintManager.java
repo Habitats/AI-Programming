@@ -18,6 +18,7 @@ public class ConstraintManager {
 
   private static final String TAG = ConstraintManager.class.getSimpleName();
   private static ConstraintManager instance;
+  private final HashMap<String, Integer> variableCountMap;
   private List<Constraint> constraints;
   private Map<String, List<Variable>> variableMap;
 
@@ -30,6 +31,7 @@ public class ConstraintManager {
 
   private ConstraintManager() {
     variableMap = new HashMap<>();
+    variableCountMap = new HashMap<>();
   }
 
   private void generateConstraints(AIAdapter<ColorNode> graph, List<Variable> variables) {
@@ -45,11 +47,29 @@ public class ConstraintManager {
       expression = expression.substring(5);
       Constraint constraint = new Constraint(variables, expression);
       constraints.add(constraint);
-      Log.v(TAG,constraint);
+      Log.v(TAG, constraint);
     }
     this.constraints = constraints;
 
     Log.v(TAG, "... finished generating " + constraints.size() + " constraints!");
+
+    generateVariableCounts();
+  }
+
+  private void generateVariableCounts() {
+    for (Constraint constraint : this.constraints) {
+      for (Variable variable : constraint.getVariables()) {
+        if (variableCountMap.containsKey(variable.getId())) {
+          variableCountMap.put(variable.getId(), variableCountMap.get(variable.getId()) + 1);
+        } else {
+          variableCountMap.put(variable.getId(), 1);
+        }
+      }
+    }
+  }
+
+  public int getConstrainedCount(Variable var) {
+    return variableCountMap.get(var.getId());
   }
 
 
@@ -59,6 +79,6 @@ public class ConstraintManager {
 
 
   public void initialize(AIAdapter graph, List<Variable> variables) {
-    generateConstraints(graph,variables);
+    generateConstraints(graph, variables);
   }
 }

@@ -31,18 +31,24 @@ public class GeneralArchConsistency {
    * @return true on the first isSatisfiable occurrence, false is no combination satisfies expression
    */
   private static boolean isSatisfiable(Constraint constraint, int focalVariableIndex, List<Variable> vars,
-                                       Variable focalVariable) {
+                                       Variable focalVariable, List<Variable> variables) {
     boolean hasMoreVariables = constraint.hasNext() || vars.size() > focalVariableIndex;
     if (hasMoreVariables) {
       // isSatisfiable if it's the first time we see this variable. If yes, add it to current variables
       if (vars.size() == focalVariableIndex) {
-        vars.add(constraint.getNextVariable());
+        String id = constraint.getNextVariableId();
+        for (Variable var : variables) {
+          if (id.equals(var.getId())) {
+            vars.add(var);
+            break;
+          }
+        }
       }
       // iterate over all possible values for this variable
       for (Integer val : vars.get(focalVariableIndex).getDomain()) {
         // set a value, and recursively combine it with the possible combinations of the remaining variables
         vars.get(focalVariableIndex).setValue(val);
-        if (isSatisfiable(constraint, focalVariableIndex + 1, vars, focalVariable)) {
+        if (isSatisfiable(constraint, focalVariableIndex + 1, vars, focalVariable, variables)) {
           return true;
         }
       }
@@ -73,11 +79,15 @@ public class GeneralArchConsistency {
           continue;
         }
 
-        if (revise(var, constraint)) {
+        if (revise(var, constraint, puzzle.getVariables())) {
+          // push all other variables in this constraint onto the queue
           for (Variable varInConstraint : constraint.getVariables()) {
-            if (varInConstraint.getId().equals(var.getId())) {
-              queue.add(varInConstraint);
+            String variableId = varInConstraint.getId();
+            // if it's 'this' variable, do nothing
+            if (variableId.equals(var.getId())) {
+              continue;
             }
+            queue.add(puzzle.getVariable(variableId));
           }
         }
       }
@@ -89,10 +99,10 @@ public class GeneralArchConsistency {
     for (Variable v : puzzle.getVariables()) {
       Log.v(TAG, v);
     }
-    if (puzzle.getDomainSize() == initialDomainSize) {
-      return Result.UNCHANGED_DOMAIN;
-    } else if (puzzle.getDomainSize() == puzzle.getVariables().size()) {
+    if (puzzle.getDomainSize() == puzzle.getVariables().size()) {
       return Result.SOLUTION;
+    } else if (puzzle.getDomainSize() == initialDomainSize) {
+      return Result.UNCHANGED_DOMAIN;
     } else {
       return Result.SHRUNK_DOMAIN;
     }
@@ -104,7 +114,7 @@ public class GeneralArchConsistency {
    *
    * @return return true if domain is reduced by assumption
    */
-  private static boolean revise(Variable focalVariable, Constraint constraint) {
+  private static boolean revise(Variable focalVariable, Constraint constraint, List<Variable> variables) {
     int oldSize = focalVariable.getDomain().getSize();
 
     // iterate over all the values of the focalDomain
@@ -114,7 +124,7 @@ public class GeneralArchConsistency {
       List<Variable> vars = new ArrayList<>();
       constraint.clearHasNext();
       constraint.removeFocalvariableFromTodo(focalVariable);
-      boolean satisfiable = isSatisfiable(constraint, 0, vars, focalVariable);
+      boolean satisfiable = isSatisfiable(constraint, 0, vars, focalVariable, variables);
       if (!satisfiable) {
         // if constraint is impossible to satisfy with the given value, remove the value from the domain
         Log.v(TAG, "reducing the domain of " + focalVariable + " by removing: " + val + ". Violating: " + constraint);

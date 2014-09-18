@@ -25,4 +25,6 @@ public interface CspPuzzle {
 
   String getId();
 
+  Variable getVariable(String id);
+
 }

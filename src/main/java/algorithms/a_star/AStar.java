@@ -74,7 +74,7 @@ public class AStar implements Runnable {
     while ((current = opened.poll()) != null) {
 
       visualizeAndWait(current);
-//      Log.v(TAG, current);
+      Log.v(TAG, toString());
 
       current.setClosed();
 

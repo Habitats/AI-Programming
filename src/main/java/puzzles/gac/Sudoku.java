@@ -179,6 +179,11 @@ public class Sudoku implements CspPuzzle {
     return null;
   }
 
+  @Override
+  public Variable getVariable(String id) {
+    return null;
+  }
+
 
   @Override
   public void setAdapter(AIAdapter graph) {

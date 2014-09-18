@@ -7,8 +7,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import ai.Log;
-
 /**
  * Created by Patrick on 10.09.2014.
  */
@@ -53,10 +51,10 @@ public class Constraint implements Iterable<Variable> {
     return variableIdsToCheck.size() > 0;
   }
 
-  public Variable getNextVariable() {
+  public String getNextVariableId() {
     String next = variableIdsToCheck.iterator().next();
     variableIdsToCheck.remove(next);
-    return function.getVariablesMap().get(next);
+    return function.getVariablesMap().get(next).getId();
 
   }
 
@@ -64,7 +62,7 @@ public class Constraint implements Iterable<Variable> {
     boolean satisfied = function.call(variables, focalVariable);
 //    if (satisfied) {
 //    }
-    Log.v(TAG, satisfied + ": " + function);
+//    Log.v(TAG, satisfied + ": " + function);
     return satisfied;
   }
 

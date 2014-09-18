@@ -55,6 +55,7 @@ public class AIMain implements GraphColoringButtonListener {
       }
     });
     astar.run();
+    Log.v(TAG, astar);
   }
 
   private void sudokuGac() {
@@ -69,7 +70,7 @@ public class AIMain implements GraphColoringButtonListener {
     GeneralArchConsistency.Result res;
 
 //    gacFilteringDupeTest(puzzle);
-    gacFilteringTest(puzzle);
+//    gacFilteringTest(puzzle);
   }
 
   private void gacFilteringDupeTest(AStarCspPuzzle puzzle) {
@@ -90,7 +91,7 @@ public class AIMain implements GraphColoringButtonListener {
     Log.v(TAG, res.name());
 
     AStarCspPuzzle dupe3 = dupe2.duplicate();
-    dupe3.getVariables().get(3).setAssumption(1);
+    dupe3.getVariables().get(3).setAssumption(3);
     res = GeneralArchConsistency.domainFilter(dupe3);
     Log.v(TAG, res.name());
   }
@@ -103,9 +104,7 @@ public class AIMain implements GraphColoringButtonListener {
 
     List<Constraint> c = puzzle.getConstraints();
     puzzle.getVariables().get(1).setAssumption(1);
-    c = puzzle.getConstraints();
     res = GeneralArchConsistency.domainFilter(puzzle);
-    c = puzzle.getConstraints();
     Log.v(TAG, res.name());
 
     puzzle.getVariables().get(2).setAssumption(2);
@@ -142,9 +141,9 @@ public class AIMain implements GraphColoringButtonListener {
   @Override
   public void loadClicked() {
     //    new ShortestPath();
-//    astarCsp();
+    astarCsp();
 //    sudokuGac();
-    graphcColoringGac();
+//    graphcColoringGac();
   }
 
   @Override
@@ -154,7 +153,6 @@ public class AIMain implements GraphColoringButtonListener {
 
   @Override
   public void stepChanged(int value) {
-
   }
 
   @Override

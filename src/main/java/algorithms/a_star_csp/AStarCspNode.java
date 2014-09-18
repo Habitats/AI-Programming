@@ -27,7 +27,7 @@ public class AStarCspNode extends AStarNode {
 
   @Override
   protected int costFrom(AStarNode parent) {
-    return 1;
+    return 0;
   }
 
   @Override
@@ -37,18 +37,20 @@ public class AStarCspNode extends AStarNode {
 
     // retrieve the variable with the biggest domain
     Variable successorVariable = puzzle.getSuccessor();
-    for (Integer value : successorVariable.getDomain()) {
+    if (!(successorVariable == null)) {
+      for (Integer value : successorVariable.getDomain()) {
 
-      AStarCspPuzzle next = puzzle.duplicate();
-      Variable variable = next.getVariable(successorVariable.getId());
+        AStarCspPuzzle next = puzzle.duplicate();
+        Variable variable = next.getVariable(successorVariable.getId());
 
-      variable.setAssumption(value);
+        variable.setAssumption(value);
 
-      GeneralArchConsistency.Result domainFilteringResult = GeneralArchConsistency.domainFilter(next);
-      AStarCspNode nextNode = new AStarCspNode(next);
-      nextNode.setState(domainFilteringResult);
-      succ.add(nextNode);
+        GeneralArchConsistency.Result domainFilteringResult = GeneralArchConsistency.domainFilter(next);
+        AStarCspNode nextNode = new AStarCspNode(next);
+        nextNode.setState(domainFilteringResult);
+        succ.add(nextNode);
 
+      }
     }
 //    AStarCspPuzzle next = puzzle;
 //    Variable variable = next.getVariable(successorVariable.getId());
@@ -69,12 +71,8 @@ public class AStarCspNode extends AStarNode {
 
   @Override
   protected void generateHeuristic() {
-    if (res == GeneralArchConsistency.Result.UNCHANGED_DOMAIN) {
-      setHeuristic(Integer.MAX_VALUE);
-    } else if (res == GeneralArchConsistency.Result.SOLUTION) {
+    if (res == GeneralArchConsistency.Result.SOLUTION) {
       setHeuristic(0);
-    } else if (res == GeneralArchConsistency.Result.UNCHANGED_DOMAIN) {
-      setHeuristic(Integer.MAX_VALUE);
     } else if (res == GeneralArchConsistency.Result.EMPTY_DOMAIN) {
       setHeuristic(Integer.MAX_VALUE);
     } else {

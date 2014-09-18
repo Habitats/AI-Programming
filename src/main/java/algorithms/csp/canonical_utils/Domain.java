@@ -78,4 +78,12 @@ public class Domain implements Iterable<Integer>, Serializable {
     }
     return true;
   }
+
+  public String getId() {
+    StringBuilder sb = new StringBuilder();
+    for (Integer i : args) {
+      sb.append(i + "");
+    }
+    return sb.toString();
+  }
 }
