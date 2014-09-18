@@ -49,8 +49,6 @@ public class GraphColoringGui extends AIGui {
   private GraphColoringButtonListener listener;
 
   public GraphColoringGui() {
-    resetButton.addActionListener(e -> listener.resetClicked());
-    loadButton.addActionListener(e -> listener.loadClicked());
     buildFrame(mainPanel, log, statusField);
     sampleComboBox.addActionListener(e -> {
       JComboBox cb = (JComboBox) e.getSource();
@@ -84,6 +82,10 @@ public class GraphColoringGui extends AIGui {
     stepCheckBox.addActionListener(e -> {
       AICheckBox checkbox = (AICheckBox) e.getSource();
       AStar.MANUAL_STEP = checkbox.isSelected();
+    });
+    resetButton.addActionListener(e -> listener.resetClicked());
+    loadButton.addActionListener(e -> {
+      listener.loadClicked();
     });
   }
 

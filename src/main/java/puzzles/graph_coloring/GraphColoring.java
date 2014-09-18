@@ -11,12 +11,11 @@ import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Domain;
 import algorithms.csp.canonical_utils.Variable;
 import puzzles.graph_coloring.gui.GraphColoringGui;
-import puzzles.graph_coloring.gui.interfaces.GraphColoringButtonListener;
 
 /**
  * Created by Patrick on 08.09.2014.
  */
-public class GraphColoring implements GraphColoringButtonListener, CspPuzzle, AStarCspPuzzle {
+public class GraphColoring implements  CspPuzzle, AStarCspPuzzle {
 
 
   private GraphColoringGui gui;
@@ -27,7 +26,6 @@ public class GraphColoring implements GraphColoringButtonListener, CspPuzzle, AS
 
   public void setGui(GraphColoringGui gui) {
     this.gui = gui;
-    gui.setListener(this);
   }
 
   public List<Variable> generateVariables() {
@@ -56,33 +54,6 @@ public class GraphColoring implements GraphColoringButtonListener, CspPuzzle, AS
     gui.setAdapter(graph);
   }
 
-  @Override
-  public void resetClicked() {
-
-  }
-
-  @Override
-  public void loadClicked() {
-
-  }
-
-  @Override
-  public void stepClicked() {
-
-  }
-
-  @Override
-  public void stepChanged(int value) {
-
-  }
-
-  @Override
-  public void sampleSelected(int i) {
-    if (GraphInputUtils.samples.size() > i) {
-      AIAdapter<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(i));
-      gui.setAdapter(graph);
-    }
-  }
 
 
   // CspPuzzle /////////////////////////////////////////////////////////////

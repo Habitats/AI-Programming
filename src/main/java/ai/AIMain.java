@@ -14,24 +14,30 @@ import puzzles.graph_coloring.ConstraintManager;
 import puzzles.graph_coloring.GraphColoring;
 import puzzles.graph_coloring.GraphInputUtils;
 import puzzles.graph_coloring.gui.GraphColoringGui;
+import puzzles.graph_coloring.gui.interfaces.GraphColoringButtonListener;
 
 /**
  * Created by Patrick on 24.08.2014.
  */
-public class AIMain {
+public class AIMain implements GraphColoringButtonListener {
 
   public static final String TAG = AIMain.class.getSimpleName();
+  private final GraphColoringGui gui;
+  private GraphColoring puzzle;
 
   public static void main(String[] args) {
-//    new ShortestPath();
-//    astarCsp();
-//    sudokuGac();
-    graphcColoringGac();
+    new AIMain();
   }
 
-  private static void astarCsp() {
+  public AIMain() {
+    gui = new GraphColoringGui();
+    gui.setListener(this);
+    getGraphColoringInstance(0);
+  }
 
-    AStarNode start = new AStarCspNode(getGraphColoringInstance());
+  private void astarCsp() {
+
+    AStarNode start = new AStarCspNode(puzzle);
     AStar astar = new AStar(start, new AStarCallback() {
 
       @Override
@@ -47,7 +53,7 @@ public class AIMain {
     astar.run();
   }
 
-  private static void sudokuGac() {
+  private void sudokuGac() {
     CspPuzzle sudoku = new Sudoku();
 
     GeneralArchConsistency.domainFilter(sudoku);
@@ -55,15 +61,14 @@ public class AIMain {
     sudoku.visualize();
   }
 
-  private static void graphcColoringGac() {
-    AStarCspPuzzle puzzle = getGraphColoringInstance();
+  private void graphcColoringGac() {
     GeneralArchConsistency.Result res;
 
     gacFilteringDupeTest(puzzle);
-    gacFilteringTest(puzzle);
+//    gacFilteringTest(puzzle);
   }
 
-  private static void gacFilteringDupeTest(AStarCspPuzzle puzzle) {
+  private void gacFilteringDupeTest(AStarCspPuzzle puzzle) {
     GeneralArchConsistency.Result res;
     puzzle.getVariables().get(0).setAssumption(0);
     res = GeneralArchConsistency.domainFilter(puzzle);
@@ -85,7 +90,7 @@ public class AIMain {
     Log.v(TAG, res.name());
   }
 
-  private static void gacFilteringTest(AStarCspPuzzle puzzle) {
+  private void gacFilteringTest(AStarCspPuzzle puzzle) {
     GeneralArchConsistency.Result res;
     puzzle.getVariables().get(0).setAssumption(0);
     res = GeneralArchConsistency.domainFilter(puzzle);
@@ -105,17 +110,47 @@ public class AIMain {
 
   }
 
-  private static GraphColoring getGraphColoringInstance() {
+  private void getGraphColoringInstance(int i) {
+    if (i >= GraphInputUtils.samples.size()) {
+      return;
+    }
     GraphColoring puzzle = new GraphColoring();
 
-    GraphColoringGui gui = new GraphColoringGui();
     puzzle.setGui(gui);
 
-    AIAdapter<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(0));
+    AIAdapter<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(i));
     puzzle.setAdapter(graph);
     puzzle.setVariables(puzzle.generateVariables());
     ConstraintManager.getManager().initialize(graph, puzzle.getVariables());
 
-    return puzzle;
+    this.puzzle = puzzle;
+  }
+
+  @Override
+  public void resetClicked() {
+
+  }
+
+  @Override
+  public void loadClicked() {
+    //    new ShortestPath();
+//    astarCsp();
+//    sudokuGac();
+    graphcColoringGac();
+  }
+
+  @Override
+  public void stepClicked() {
+
+  }
+
+  @Override
+  public void stepChanged(int value) {
+
+  }
+
+  @Override
+  public void sampleSelected(int i) {
+    getGraphColoringInstance(i);
   }
 }
