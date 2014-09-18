@@ -103,7 +103,9 @@ public class AIMain implements GraphColoringButtonListener {
 
     List<Constraint> c = puzzle.getConstraints();
     puzzle.getVariables().get(1).setAssumption(1);
+    c = puzzle.getConstraints();
     res = GeneralArchConsistency.domainFilter(puzzle);
+    c = puzzle.getConstraints();
     Log.v(TAG, res.name());
 
     puzzle.getVariables().get(2).setAssumption(2);

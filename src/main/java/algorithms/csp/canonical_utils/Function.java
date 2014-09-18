@@ -30,11 +30,10 @@ public class Function {
   private String variableValues;
 
   public Function(HashMap<String, Variable> variablesMap, String expression) {
-    this.variablesMap =new HashMap<>();
-    for(Variable var: variablesMap.values()){
+    this.variablesMap = new HashMap<>();
+    for (Variable var : variablesMap.values()) {
       this.variablesMap.put(var.getId(), var.copy());
     }
-
 
     // set expression
     expression = setExpressionValues(expression, this.variablesMap.values());
@@ -78,9 +77,9 @@ public class Function {
   public boolean call(List<Variable> variables, Variable focalVariable) {
 
     // set all the right values in the valuesMap
-    variablesMap.put(focalVariable.getId(),focalVariable.copy());
+    variablesMap.put(focalVariable.getId(), focalVariable.copy());
     for (Variable var : variables) {
-      variablesMap.put(var.getId(),var.copy());
+      variablesMap.put(var.getId(), var.copy());
     }
 
     // put the values in the right order according to how the parameters for the lambda was created
@@ -94,22 +93,15 @@ public class Function {
 //    Log.v(TAG, "calling " + lambdaString + " values: " + getVariableValues());
     PyObject ans = lambda.__call__(args);
 
-    setVariableValues(args);
     return ((PyBoolean) ans).getBooleanValue();
   }
 
-  public void setVariableValues(PyInteger[] args) {
-    String vals = "";
-    if (args != null) {
-      for (PyInteger var : args) {
-        vals += var.toString() + ", ";
-      }
-    }
-    this.variableValues = vals;
-  }
-
   public String getVariableValues() {
-    return variableValues;
+    String variableValues = "";
+    for (Variable var : variablesMap.values()) {
+      variableValues += ", " + var.getId() + "=" + var.getValue();
+    }
+    return variableValues.substring(2);
   }
 
   @Override
