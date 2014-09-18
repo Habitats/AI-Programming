@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Domain implements Iterable<Integer>, Serializable {
 
   private static final String TAG = Domain.class.getSimpleName();
-  private List<Integer> args;
+  private final List<Integer> args;
 
   public Domain(int... args) {
     List<Integer> lst = new CopyOnWriteArrayList<Integer>();
@@ -52,11 +52,6 @@ public class Domain implements Iterable<Integer>, Serializable {
 
   public boolean iEmpty() {
     return args.isEmpty();
-  }
-
-  public void setArgs(Domain domain) {
-    this.args.clear();
-    this.args.addAll(domain.args);
   }
 
   public void setDomain(Domain domain) {

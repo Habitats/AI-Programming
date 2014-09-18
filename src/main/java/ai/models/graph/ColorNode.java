@@ -3,7 +3,7 @@ package ai.models.graph;
 import java.awt.*;
 
 import ai.models.Node;
-import algorithms.csp.canonical_utils.Variable;
+import algorithms.csp.canonical_utils.Domain;
 import algorithms.csp.canonical_utils.VariableListener;
 
 /**
@@ -15,7 +15,7 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
   private double y;
   private final int index;
   private Color color = Color.white;
-  private Variable variable;
+  private String desc = "";
 
   public ColorNode(double x, double y, int index) {
     this.x = x;
@@ -45,9 +45,9 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
     y -= minY / 100.;
   }
 
-  private Color toHsv(double i) {
+  private Color toHsv(double i, double brightness) {
     float hue = (float) ((i / 100.) * 360.);
-    float value = 1f;
+    float value = (float) (1f * brightness);
     float sat = 0.45f;
 
     return Color.getHSBColor(hue, sat, value);
@@ -59,12 +59,21 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
 
   @Override
   public void onValueChanged(int value) {
+    setColor(toHsv(value, 1));
+  }
 
+  public String getDescription() {
+    return desc;
   }
 
   @Override
   public void onAssumptionMade(int value) {
-    setColor(toHsv(value));
+    setColor(toHsv(value, .5));
+  }
+
+  @Override
+  public void onDomainChanged(Domain domain) {
+    desc = domain.toString();
   }
 
   public void setColor(Color color) {

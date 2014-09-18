@@ -15,7 +15,7 @@ public class AIGraphCanvas extends AICanvas<ColorNode> {
   private int itemWidth = 30;
   private double horizontalScalingFactor;
   private double verticalScalingFactor;
-  private int padding = 20;
+  private int padding = 30;
 
 
   @Override
@@ -37,7 +37,7 @@ public class AIGraphCanvas extends AICanvas<ColorNode> {
         int endX = getCenterX(child);
         int endY = getCenterY(child);
 
-        g.setColor(Color.black);
+        g.setColor(Color.white);
         g.drawLine(startX, startY, endX, endY);
       }
     }
@@ -54,6 +54,7 @@ public class AIGraphCanvas extends AICanvas<ColorNode> {
       g.drawOval(x, y, getItemWidth(), getItemHeight());
 
       drawStringCenter(g,item.getId(),x,y);
+      drawStringCenter(g,item.getDescription(),x,y+20);
     }
   }
 

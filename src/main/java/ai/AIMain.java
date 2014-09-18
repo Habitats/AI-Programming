@@ -59,58 +59,49 @@ public class AIMain {
     AStarCspPuzzle puzzle = getGraphColoringInstance();
     GeneralArchConsistency.Result res;
 
-    puzzle = puzzle;
+    gacFilteringDupeTest(puzzle);
+    gacFilteringTest(puzzle);
+  }
 
+  private static void gacFilteringDupeTest(AStarCspPuzzle puzzle) {
+    GeneralArchConsistency.Result res;
     puzzle.getVariables().get(0).setAssumption(0);
     res = GeneralArchConsistency.domainFilter(puzzle);
     Log.v(TAG, res.name());
 
-//    dupe.getVariables().get(0).setAssumption(0);
-//    res = GeneralArchConsistency.domainFilter(dupe);
-//    Log.v(TAG, res.name());
+    AStarCspPuzzle dupe = puzzle.duplicate();
+    dupe.getVariables().get(1).setAssumption(1);
+    res = GeneralArchConsistency.domainFilter(dupe);
+    Log.v(TAG, res.name());
 
-//    puzzle.getVariables().get(1).setAssumption(1);
-//    res = GeneralArchConsistency.domainFilter(puzzle);
-//    Log.v(TAG, res.name());
+    AStarCspPuzzle dupe2 = dupe.duplicate();
+    dupe2.getVariables().get(2).setAssumption(2);
+    res = GeneralArchConsistency.domainFilter(dupe2);
+    Log.v(TAG, res.name());
 
-//    puzzle = puzzle.duplicate();
-//    puzzle.getVariables().get(2).setAssumption(2);
-//    res = GeneralArchConsistency.domainFilter(puzzle);
-//    Log.v(TAG, res.name());
-//
-//    puzzle = puzzle.duplicate();
-//    puzzle.getVariables().get(3).setAssumption(3);
-//    res = GeneralArchConsistency.domainFilter(puzzle);
-//    Log.v(TAG, res.name());
-//
-//    puzzle = puzzle.duplicate();
-//    puzzle.getVariables().get(4).setAssumption(2);
-//    res = GeneralArchConsistency.domainFilter(puzzle);
-//    Log.v(TAG, res.name());
-//
-//    puzzle = puzzle.duplicate();
-//    puzzle.getVariables().get(5).setAssumption(1);
-//    res = GeneralArchConsistency.domainFilter(puzzle);
-//    Log.v(TAG, res.name());
-//
-//    puzzle = puzzle.duplicate();
-//    puzzle.getVariables().get(6).setAssumption(0);
-//    res = GeneralArchConsistency.domainFilter(puzzle);
-//    Log.v(TAG, res.name());
-//
-//    puzzle = puzzle.duplicate();
-//    puzzle.getVariables().get(7).setAssumption(3);
-//    res = GeneralArchConsistency.domainFilter(puzzle);
-//    Log.v(TAG, res.name());
-//
-//    puzzle = puzzle.duplicate();
-//    puzzle.getVariables().get(8).setAssumption(2);
-//    res = GeneralArchConsistency.domainFilter(puzzle);
-//    Log.v(TAG, res.name());
+    AStarCspPuzzle dupe3 = dupe2.duplicate();
+    dupe3.getVariables().get(3).setAssumption(1);
+    res = GeneralArchConsistency.domainFilter(dupe3);
+    Log.v(TAG, res.name());
+  }
 
-//    puzzle.getVariables().get(30).setAssumption(2);
-//    res = GeneralArchConsistency.domainFilter(puzzle);
-//    Log.v(TAG, res.name());
+  private static void gacFilteringTest(AStarCspPuzzle puzzle) {
+    GeneralArchConsistency.Result res;
+    puzzle.getVariables().get(0).setAssumption(0);
+    res = GeneralArchConsistency.domainFilter(puzzle);
+    Log.v(TAG, res.name());
+
+    puzzle.getVariables().get(1).setAssumption(1);
+    res = GeneralArchConsistency.domainFilter(puzzle);
+    Log.v(TAG, res.name());
+
+    puzzle.getVariables().get(2).setAssumption(2);
+    res = GeneralArchConsistency.domainFilter(puzzle);
+    Log.v(TAG, res.name());
+
+    puzzle.getVariables().get(3).setAssumption(3);
+    res = GeneralArchConsistency.domainFilter(puzzle);
+    Log.v(TAG, res.name());
 
   }
 
@@ -120,7 +111,7 @@ public class AIMain {
     GraphColoringGui gui = new GraphColoringGui();
     puzzle.setGui(gui);
 
-    AIAdapter<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(1));
+    AIAdapter<ColorNode> graph = GraphInputUtils.generateGraph(GraphInputUtils.samples.get(0));
     puzzle.setAdapter(graph);
     puzzle.setVariables(puzzle.generateVariables());
     ConstraintManager.getManager().initialize(graph, puzzle.getVariables());

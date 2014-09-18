@@ -76,8 +76,8 @@ public class GraphInputUtils {
       minY = node.getY() < minY ? node.getY() : minY;
       maxY = node.getY() > maxY ? node.getY() : maxY;
     }
-    for(ColorNode node: graph.getItems()){
-      node.normalize(minX,minY);
+    for (ColorNode node : graph.getItems()) {
+      node.normalize(minX, minY);
     }
     int height = maxY - minY;
     int width = maxX - minX;
@@ -89,8 +89,35 @@ public class GraphInputUtils {
 
   public static List<String> samples = new ArrayList<>();
 
+  // The format:
+//  A graph is defined by its vertices and edges. The format is as
+//  follows:
+//  Line 1:
+//  NV NE
+//  NV = number of vertices
+//      NE = number of edges
+//  Lines 2 to NV+1:
+//  I X Y
+//      I = index of the vertex
+//      X,Y = cartesian coordinates of the vertex (since you will
+//      probably want to display the graph) - these may
+//  be integers or reals.
+//  Lines NV+2 to NV+2+NE-1
+//  I1 I2
+//  I1 = index of the vertex on one end of the edge
+//  I2 = index of the vertex on the other end of the edge
+//  Simple Example of a graph with 3 vertices connected in a
+//  triangle.
+//      3 3
+//      0 2.5 1.5
+//      1 4.0 4.0
+//      2 5.5 1.5
+//      0 1
+//      0 2
+//      1 2
   static {
-    samples.add("3 3 0 2.5 1.5 1 4.0 4.0 2 5.5 1.5 0 1 0 2 1 2");
+    samples.add(
+        "5 7 " + "0 2.5 1.5 " + "1 4.0 4.0 " + "2 5.5 1.5 " + "3 5.5 4.5 " + "4 6.5 6.5 " + "0 1 " + "0 2 " + "2 3 " + "1 3 " + "1 2 " + "4 3 " + "4 2");
     samples.add(
         "40 94 0 0 5 1 3 3 2 3 7 3 4 5 4 5 4 5 5 6 6 6 5 7 7 3  8 7 7 9 10 5 10 0 25 11 3 23 12 3 27 13 4 25 14 5 24 15 5 26  16 6 25 17 7 23 18 7 27 19 10 25 20 20 5 21 23 3 22 23 7 23 24 5  24 25 4 25 25 6 26 26 5 27 27 3 28 27 7 29 30 5 30 20 25  31 23 23 32 23 27 33 24 25 34 25 24 35 25 26 36 26 25 37 27 23  38 27 27 39 30 25 0 1 0 2 1 2 2 8 1 7 7 8 8 9 7 9  3 4 3 5 3 6 4 5 4 6 5 6 4 7 6 7 5 8 6 8 2 3  2 5 1 3 1 4 10 11 10 12 11 12 12 18 11 17 17 18  18 19 17 19 13 14 13 15 13 16 14 15 14 16 15 16 14 17  16 17 15 18 16 18 12 13 12 15 11 13 11 14 20 21 20 22  21 22 22 28 21 27 27 28 28 29 27 29 23 24 23 25 23 26  24 25 24 26 25 26 24 27 26 27 25 28 26 28 22 23 22 25  21 23 21 24 30 31 30 32 31 32 32 38 31 37 37 38 38 39  37 39 33 34 33 35 33 36 34 35 34 36 35 36 34 37 36 37  35 38 36 38 32 33 32 35 31 33 31 34 9 19 9 20 9 30  19 20 19 30 20 30");
     samples.add(

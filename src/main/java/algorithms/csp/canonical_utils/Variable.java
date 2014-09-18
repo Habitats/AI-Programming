@@ -26,10 +26,12 @@ public class Variable implements Comparable<Variable>, Serializable {
   }
 
   public Variable setAssumption(int value) {
+    //TODO: this can't remove from domain, since empty domain == bad!
     this.value = value;
     for (Integer val : domain) {
       if (val != value) {
         domain.remove(val);
+        listener.onDomainChanged(domain);
       }
     }
     getListener().onAssumptionMade(value);
@@ -45,6 +47,7 @@ public class Variable implements Comparable<Variable>, Serializable {
 
   public void copyDomain(Variable other) {
     this.domain.setDomain(other.domain);
+    listener.onDomainChanged(this.domain);
   }
 
   public int getValue() {

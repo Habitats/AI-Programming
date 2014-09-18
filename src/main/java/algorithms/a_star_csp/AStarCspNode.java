@@ -41,6 +41,7 @@ public class AStarCspNode extends AStarNode {
 
       AStarCspPuzzle next = puzzle.duplicate();
       Variable variable = next.getVariable(successorVariable.getId());
+
       variable.setAssumption(value);
 
       GeneralArchConsistency.Result domainFilteringResult = GeneralArchConsistency.domainFilter(next);

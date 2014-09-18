@@ -108,6 +108,11 @@ public class Sudoku implements CspPuzzle {
           public void onAssumptionMade(int value) {
             Log.v(TAG, "assumption of: " + var.getId() + ", changed to: " + value);
           }
+
+          @Override
+          public void onDomainChanged(Domain domain) {
+
+          }
         });
         getVariables().add(var);
       }
