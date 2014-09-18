@@ -21,7 +21,9 @@ public class Variable implements Comparable<Variable>, Serializable {
   public Variable setValue(int value) {
     this.value = value;
     hasValue = true;
-    getListener().onValueChanged(value);
+    if (listener != null) {
+      getListener().onValueChanged(value);
+    }
     return this;
   }
 
@@ -31,24 +33,21 @@ public class Variable implements Comparable<Variable>, Serializable {
     for (Integer val : domain) {
       if (val != value) {
         domain.remove(val);
-        listener.onDomainChanged(domain);
+        if (listener != null) {
+          listener.onDomainChanged(domain);
+        }
       }
     }
-    getListener().onAssumptionMade(value);
+    if (listener != null) {
+      getListener().onAssumptionMade(value);
+    }
     return this;
   }
 
   public VariableListener getListener() {
-    if (listener == null) {
-      throw new IllegalArgumentException(VariableListener.class.getSimpleName() + " may not be null!");
-    }
     return listener;
   }
 
-  public void copyDomain(Variable other) {
-    this.domain.setDomain(other.domain);
-    listener.onDomainChanged(this.domain);
-  }
 
   public int getValue() {
     return value;
@@ -86,4 +85,32 @@ public class Variable implements Comparable<Variable>, Serializable {
     this.listener = listener;
   }
 
+  public Variable copy() {
+    Variable var = new Variable(id, domain.copy());
+    var.value = value;
+    var.hasValue = hasValue;
+    var.listener = listener;
+    return var;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    Variable other = (Variable) obj;
+    if (!id.equals(id)) {
+      return false;
+    }
+    if (!domain.equals(other.getDomain())) {
+      return false;
+    }
+    if (hasValue != other.hasValue) {
+      return false;
+    }
+    if (listener != other.listener) {
+      return false;
+    }
+    if (value != other.value) {
+      return false;
+    }
+    return true;
+  }
 }

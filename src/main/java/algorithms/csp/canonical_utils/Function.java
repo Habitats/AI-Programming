@@ -30,7 +30,11 @@ public class Function {
   private String variableValues;
 
   public Function(HashMap<String, Variable> variablesMap, String expression) {
-    this.variablesMap = variablesMap;
+    this.variablesMap =new HashMap<>();
+    for(Variable var: variablesMap.values()){
+      this.variablesMap.put(var.getId(), var.copy());
+    }
+
 
     // set expression
     expression = setExpressionValues(expression, this.variablesMap.values());
@@ -74,11 +78,9 @@ public class Function {
   public boolean call(List<Variable> variables, Variable focalVariable) {
 
     // set all the right values in the valuesMap
-    variablesMap.get(focalVariable.getId()).setValue(focalVariable.getValue());
-    variablesMap.get(focalVariable.getId()).copyDomain(focalVariable);
+    variablesMap.put(focalVariable.getId(),focalVariable.copy());
     for (Variable var : variables) {
-      variablesMap.get(var.getId()).setValue(var.getValue());
-      variablesMap.get(var.getId()).copyDomain(var);
+      variablesMap.put(var.getId(),var.copy());
     }
 
     // put the values in the right order according to how the parameters for the lambda was created

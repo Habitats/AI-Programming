@@ -15,7 +15,7 @@ public class Domain implements Iterable<Integer>, Serializable {
   private final List<Integer> args;
 
   public Domain(int... args) {
-    List<Integer> lst = new CopyOnWriteArrayList<Integer>();
+    List<Integer> lst = new CopyOnWriteArrayList<>();
     for (int i = 0; i < args.length; i++) {
       lst.add(args[i]);
     }
@@ -23,7 +23,8 @@ public class Domain implements Iterable<Integer>, Serializable {
   }
 
   public Domain(List<Integer> args) {
-    this.args = args;
+    this.args = new CopyOnWriteArrayList<>();
+    this.args.addAll(args);
   }
 
   @Override
@@ -62,5 +63,19 @@ public class Domain implements Iterable<Integer>, Serializable {
 
     this.args.clear();
     this.args.addAll(args);
+  }
+
+  public Domain copy() {
+    return new Domain(args);
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    for (int i = 0; i < args.size(); i++) {
+      if (((Domain) other).args.get(i) != args.get(i)) {
+        return false;
+      }
+    }
+    return true;
   }
 }

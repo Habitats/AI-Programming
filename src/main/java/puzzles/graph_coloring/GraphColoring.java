@@ -89,8 +89,7 @@ public class GraphColoring implements  CspPuzzle, AStarCspPuzzle {
     dupe.setAdapter(adapter);
     dupe.setVariables(dupe.generateVariables());
     for(int i = 0; i < getVariables().size();i++){
-      dupe.getVariables().get(i).copyDomain(this.getVariables().get(i));
-      dupe.getVariables().get(i).setValue(this.getVariables().get(i).getValue());
+      dupe.getVariables().set(i, getVariables().get(i).copy());
     }
     return dupe;
   }
