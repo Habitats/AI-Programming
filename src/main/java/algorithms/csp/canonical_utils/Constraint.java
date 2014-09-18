@@ -7,6 +7,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import ai.Log;
+
 /**
  * Created by Patrick on 10.09.2014.
  */
@@ -60,9 +62,9 @@ public class Constraint implements Iterable<Variable> {
 
   public boolean isSatisfied(List<Variable> variables, Variable focalVariable) {
     boolean satisfied = function.call(variables, focalVariable);
-    if (satisfied) {
-//      Log.v(TAG, satisfied + ": " + function);
-    }
+//    if (satisfied) {
+//    }
+    Log.v(TAG, satisfied + ": " + function);
     return satisfied;
   }
 

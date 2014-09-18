@@ -1,5 +1,7 @@
 package ai;
 
+import java.util.List;
+
 import ai.models.AIAdapter;
 import ai.models.graph.ColorNode;
 import algorithms.a_star.AStar;
@@ -9,6 +11,7 @@ import algorithms.a_star_csp.AStarCspNode;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.CspPuzzle;
 import algorithms.csp.GeneralArchConsistency;
+import algorithms.csp.canonical_utils.Constraint;
 import puzzles.gac.Sudoku;
 import puzzles.graph_coloring.ConstraintManager;
 import puzzles.graph_coloring.GraphColoring;
@@ -33,6 +36,7 @@ public class AIMain implements GraphColoringButtonListener {
     gui = new GraphColoringGui();
     gui.setListener(this);
     getGraphColoringInstance(0);
+    graphcColoringGac();
   }
 
   private void astarCsp() {
@@ -64,8 +68,8 @@ public class AIMain implements GraphColoringButtonListener {
   private void graphcColoringGac() {
     GeneralArchConsistency.Result res;
 
-    gacFilteringDupeTest(puzzle);
-//    gacFilteringTest(puzzle);
+//    gacFilteringDupeTest(puzzle);
+    gacFilteringTest(puzzle);
   }
 
   private void gacFilteringDupeTest(AStarCspPuzzle puzzle) {
@@ -75,6 +79,7 @@ public class AIMain implements GraphColoringButtonListener {
     Log.v(TAG, res.name());
 
     AStarCspPuzzle dupe = puzzle.duplicate();
+    List<Constraint> c = dupe.getConstraints();
     dupe.getVariables().get(1).setAssumption(1);
     res = GeneralArchConsistency.domainFilter(dupe);
     Log.v(TAG, res.name());
@@ -96,6 +101,7 @@ public class AIMain implements GraphColoringButtonListener {
     res = GeneralArchConsistency.domainFilter(puzzle);
     Log.v(TAG, res.name());
 
+    List<Constraint> c = puzzle.getConstraints();
     puzzle.getVariables().get(1).setAssumption(1);
     res = GeneralArchConsistency.domainFilter(puzzle);
     Log.v(TAG, res.name());
