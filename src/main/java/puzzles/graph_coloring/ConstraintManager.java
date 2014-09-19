@@ -1,6 +1,8 @@
 package puzzles.graph_coloring;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,24 +36,38 @@ public class ConstraintManager {
     variableCountMap = new HashMap<>();
   }
 
-  private void generateConstraints(AIAdapter<ColorNode> graph, List<Variable> variables) {
+  //  generate constraints with the following format
+  //  c1: a != b
+  //  c2: a != c
+  //  c3: a != d
+  private void generateSimpleConstraints(AIAdapter<ColorNode> graph, List<Variable> variables) {
     Log.v(TAG, "Generating constraints ...");
-    List<Constraint> constraints = new ArrayList<>();
+    HashMap<String, Constraint> constraints = new HashMap<>();
+    int count = 0;
     for (ColorNode node : graph.getItems()) {
       String id = node.getId();
-      String expression = "";
       for (ColorNode child : node.getChildren()) {
         String cId = child.getId();
-        expression += " and " + id + " != " + cId;
-      }
-      expression = expression.substring(5);
-      Constraint constraint = new Constraint(variables, expression);
-      constraints.add(constraint);
-      Log.v(TAG, constraint);
-    }
-    this.constraints = constraints;
+        int res = String.CASE_INSENSITIVE_ORDER.compare(id, cId);
 
-    Log.v(TAG, "... finished generating " + constraints.size() + " constraints!");
+        // remove duplicate constraints, but first we need to order the id's
+        // duplication is handled automatically by using a hashmap on the Id
+        String id1 = res < 0 ? id : cId;
+        String id2 = id1 == id ? cId : id;
+        String expression = id1 + " != " + id2;
+
+        Constraint constraint = new Constraint(variables, expression);
+        constraints.put(expression, constraint);
+        Log.v(TAG, constraint);
+        count++;
+      }
+    }
+
+    this.constraints = new ArrayList<>(constraints.values());
+
+    Log.v(TAG,
+          "... finished generating " + constraints.size() + " constraints and removed " + (count - constraints.size())
+          + " duplicates!");
 
     generateVariableCounts();
   }
@@ -79,6 +95,33 @@ public class ConstraintManager {
 
 
   public void initialize(AIAdapter graph, List<Variable> variables) {
-    generateConstraints(graph, variables);
+    generateSimpleConstraints(graph, variables);
+
+
+  }
+
+  private class SortedVariableList extends ArrayList<String> {
+
+    private final Comparator<String> comparator;
+
+    public SortedVariableList() {
+      comparator = new Comparator<String>() {
+        @Override
+        public int compare(String o1, String o2) {
+          int res = String.CASE_INSENSITIVE_ORDER.compare(o1, o2);
+          if (res == 0) {
+            res = o1.compareTo(o2);
+          }
+          return res;
+        }
+      };
+    }
+
+    @Override
+    public boolean add(String s) {
+      super.add(s);
+      Collections.sort(this, comparator);
+      return true;
+    }
   }
 }
