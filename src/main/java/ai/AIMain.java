@@ -25,6 +25,7 @@ import puzzles.graph_coloring.gui.interfaces.GraphColoringButtonListener;
 public class AIMain implements GraphColoringButtonListener {
 
   public static final String TAG = AIMain.class.getSimpleName();
+  public static int count = 0;
   private final GraphColoringGui gui;
   private GraphColoring puzzle;
 
@@ -54,8 +55,9 @@ public class AIMain implements GraphColoringButtonListener {
         Log.v(TAG, "fail!");
       }
     });
-    astar.run();
+    new Thread(astar).start();
     Log.v(TAG, astar);
+    Log.v(TAG, "call was called " + count + " times ...");
   }
 
   private void sudokuGac() {
