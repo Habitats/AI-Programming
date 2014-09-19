@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
+import ai.AIMain;
 import ai.Log;
 
 /**
@@ -79,7 +80,7 @@ public class Function {
     // set all the right values in the valuesMap
     variablesMap.put(focalVariable.getId(), focalVariable.copy());
     for (Variable var : variables) {
-      variablesMap.put(var.getId(), var.copy());
+      variablesMap.put(var.getId(), variablesMap.get(var.getId()).copy(var));
     }
 
     // put the values in the right order according to how the parameters for the lambda was created
@@ -93,6 +94,7 @@ public class Function {
 //    Log.v(TAG, "calling " + lambdaString + " values: " + getVariableValues());
     PyObject ans = lambda.__call__(args);
 
+    AIMain.count++;
     return ((PyBoolean) ans).getBooleanValue();
   }
 
