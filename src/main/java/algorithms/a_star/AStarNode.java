@@ -128,7 +128,8 @@ public abstract class AStarNode extends Node<AStarNode> {
            + "  - G: " + g() //
            + " - F: " + f() //
            + " - Closed: " + closed //
-           + " - State: " + getState();
+//           + " - State: " + getState()//
+        ;
   }
 
   public String toStringShort() {
