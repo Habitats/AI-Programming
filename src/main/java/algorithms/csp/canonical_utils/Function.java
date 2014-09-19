@@ -14,7 +14,6 @@ import java.util.Map;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
-import ai.AIMain;
 import ai.Log;
 
 /**
@@ -28,7 +27,6 @@ public class Function {
   private final Map<String, Variable> variablesMap;
   private final String expression;
   private final PyFunction lambda;
-  private String variableValues;
 
   public Function(HashMap<String, Variable> variablesMap, String expression) {
     this.variablesMap = new HashMap<>();
@@ -67,8 +65,6 @@ public class Function {
   private String getKeys() {
     String keys = "";
     for (String key : variablesMap.keySet()) {
-//      if (!variablesMap.get(key).hasValue()) {
-//      }
       keys += "," + key;
     }
     keys = keys.substring(1);
@@ -94,7 +90,6 @@ public class Function {
 //    Log.v(TAG, "calling " + lambdaString + " values: " + getVariableValues());
     PyObject ans = lambda.__call__(args);
 
-    AIMain.count++;
     return ((PyBoolean) ans).getBooleanValue();
   }
 
