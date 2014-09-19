@@ -19,7 +19,7 @@ public class GraphColoring implements CspPuzzle, AStarCspPuzzle {
 
 
   private GraphColoringGui gui;
-  private int K = 4;
+  private int K = 10;
   private List<Variable> variables;
   private AIAdapter<ColorNode> adapter;
 
