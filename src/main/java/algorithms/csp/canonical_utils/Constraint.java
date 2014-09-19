@@ -1,6 +1,6 @@
 package algorithms.csp.canonical_utils;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -77,7 +77,7 @@ public class Constraint implements Iterable<Variable> {
     return function.toString();
   }
 
-  public Collection<Variable> getVariables() {
-    return function.getVariablesMap().values();
+  public List<Variable> getVariables() {
+    return new ArrayList<>(function.getVariablesMap().values());
   }
 }
