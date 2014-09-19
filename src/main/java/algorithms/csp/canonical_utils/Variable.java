@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class Variable implements Comparable<Variable>, Serializable {
 
   private final String id;
-  private Domain domain;
+  private final Domain domain;
   private int value;
   private boolean hasValue;
   private VariableListener listener;
@@ -21,10 +21,8 @@ public class Variable implements Comparable<Variable>, Serializable {
   public Variable setValue(int value) {
     this.value = value;
     hasValue = true;
-    if (domain.getSize() == 1) {
-      if (listener != null) {
-        getListener().onValueChanged(value);
-      }
+    if (listener != null) {
+      getListener().onValueChanged(value);
     }
     return this;
   }
@@ -114,12 +112,5 @@ public class Variable implements Comparable<Variable>, Serializable {
       return false;
     }
     return true;
-  }
-
-  public Variable copy(Variable var) {
-    this.domain = var.domain.copy();
-    this.value = var.value;
-    this.hasValue = var.hasValue;
-    return this;
   }
 }
