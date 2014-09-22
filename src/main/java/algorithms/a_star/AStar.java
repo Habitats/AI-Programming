@@ -23,6 +23,10 @@ public class AStar implements Runnable {
     return traversal;
   }
 
+  public void runInBackground() {
+    new Thread(this).start();
+  }
+
   private enum Status {
     RUNNING, PAUSED, FINISHED, NO_SOLUTION
   }

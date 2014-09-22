@@ -3,7 +3,7 @@ package puzzles.graph_coloring.gui.interfaces;
 /**
  * Created by Patrick on 24.08.2014.
  */
-public interface GraphColoringButtonListener {
+public interface CspButtonListener {
 
   void resetClicked();
 

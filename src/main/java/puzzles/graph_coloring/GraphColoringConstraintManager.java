@@ -1,11 +1,8 @@
 package puzzles.graph_coloring;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import ai.Log;
 import ai.models.AIAdapter;
@@ -16,31 +13,31 @@ import algorithms.csp.canonical_utils.Variable;
 /**
  * Created by Patrick on 15.09.2014.
  */
-public class ConstraintManager {
+public class GraphColoringConstraintManager {
 
-  private static final String TAG = ConstraintManager.class.getSimpleName();
-  private static ConstraintManager instance;
+  private static final String TAG = GraphColoringConstraintManager.class.getSimpleName();
+  private static GraphColoringConstraintManager instance;
+
   private final HashMap<String, Integer> variableCountMap;
-  private List<Constraint> constraints;
-  private Map<String, List<Variable>> variableMap;
+  private final List<Constraint> constraints;
 
-  public static ConstraintManager getManager() {
+  public static GraphColoringConstraintManager getManager() {
     if (instance == null) {
-      instance = new ConstraintManager();
+      instance = new GraphColoringConstraintManager();
     }
     return instance;
   }
 
-  private ConstraintManager() {
-    variableMap = new HashMap<>();
+  private GraphColoringConstraintManager() {
     variableCountMap = new HashMap<>();
+    constraints = new ArrayList<>();
   }
 
   //  generate constraints with the following format
   //  c1: a != b
   //  c2: a != c
   //  c3: a != d
-  private void generateSimpleConstraints(AIAdapter<ColorNode> graph, List<Variable> variables) {
+  private void generateConstraints(AIAdapter<ColorNode> graph, List<Variable> variables) {
     Log.v(TAG, "Generating constraints ...");
     HashMap<String, Constraint> constraints = new HashMap<>();
     int count = 0;
@@ -63,7 +60,7 @@ public class ConstraintManager {
       }
     }
 
-    this.constraints = new ArrayList<>(constraints.values());
+    setConstraints(new ArrayList<>(constraints.values()));
 
     Log.v(TAG,
           "... finished generating " + constraints.size() + " constraints and removed " + (count - constraints.size())
@@ -95,33 +92,12 @@ public class ConstraintManager {
 
 
   public void initialize(AIAdapter graph, List<Variable> variables) {
-    generateSimpleConstraints(graph, variables);
-
-
+    generateConstraints(graph, variables);
   }
 
-  private class SortedVariableList extends ArrayList<String> {
-
-    private final Comparator<String> comparator;
-
-    public SortedVariableList() {
-      comparator = new Comparator<String>() {
-        @Override
-        public int compare(String o1, String o2) {
-          int res = String.CASE_INSENSITIVE_ORDER.compare(o1, o2);
-          if (res == 0) {
-            res = o1.compareTo(o2);
-          }
-          return res;
-        }
-      };
-    }
-
-    @Override
-    public boolean add(String s) {
-      super.add(s);
-      Collections.sort(this, comparator);
-      return true;
-    }
+  public void setConstraints(ArrayList<Constraint> constraints) {
+    this.constraints.clear();
+    this.constraints.addAll(constraints);
   }
+
 }

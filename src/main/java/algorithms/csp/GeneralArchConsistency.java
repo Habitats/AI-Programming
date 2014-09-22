@@ -17,7 +17,6 @@ public class GeneralArchConsistency {
   private GeneralArchConsistency() {
   }
 
-
   public enum Result {
     EMPTY_DOMAIN, SHRUNK_DOMAIN, UNCHANGED_DOMAIN, SOLUTION;
   }

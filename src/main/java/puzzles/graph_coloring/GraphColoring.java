@@ -6,7 +6,6 @@ import java.util.List;
 import ai.models.AIAdapter;
 import ai.models.graph.ColorNode;
 import algorithms.a_star_csp.AStarCspPuzzle;
-import algorithms.csp.CspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Domain;
 import algorithms.csp.canonical_utils.Variable;
@@ -15,11 +14,11 @@ import puzzles.graph_coloring.gui.GraphColoringGui;
 /**
  * Created by Patrick on 08.09.2014.
  */
-public class GraphColoring implements CspPuzzle, AStarCspPuzzle {
+public class GraphColoring implements AStarCspPuzzle {
 
 
   private GraphColoringGui gui;
-  private int K = 10;
+  private int K = 6;
   private List<Variable> variables;
   private AIAdapter<ColorNode> adapter;
 
@@ -46,6 +45,41 @@ public class GraphColoring implements CspPuzzle, AStarCspPuzzle {
     return new Domain(domain);
   }
 
+  private Variable getMinimalDomain() {
+    int min = Integer.MAX_VALUE;
+    Variable minVar = null;
+    for (Variable var : getVariables()) {
+      if (var.getDomain().getSize() == 1) {
+        continue;
+      }
+      if (var.getDomain().getSize() < min) {
+        min = var.getDomain().getSize();
+        minVar = var;
+      }
+    }
+    return minVar;
+  }
+
+  private Variable getMostConstrained() {
+    int max = Integer.MIN_VALUE;
+    Variable maxConstrained = null;
+    for (Variable var : getVariables()) {
+      if (var.getDomain().getSize() == 1) {
+        continue;
+      }
+      int constrainedCount = GraphColoringConstraintManager.getManager().getConstrainedCount(var);
+      if (constrainedCount > max) {
+        max = constrainedCount;
+        maxConstrained = var;
+      }
+    }
+    return maxConstrained;
+  }
+
+  public void setVariables(List<Variable> variables) {
+    this.variables = variables;
+  }
+
   // GraphColoringButtonListener ///////////////////////
 
   @Override
@@ -58,7 +92,7 @@ public class GraphColoring implements CspPuzzle, AStarCspPuzzle {
   // CspPuzzle /////////////////////////////////////////////////////////////
   @Override
   public List<Constraint> getConstraints() {
-    return ConstraintManager.getManager().getConstraints();
+    return GraphColoringConstraintManager.getManager().getConstraints();
   }
 
   @Override
@@ -77,6 +111,7 @@ public class GraphColoring implements CspPuzzle, AStarCspPuzzle {
 
   @Override
   public void visualize() {
+    adapter.notifyDataChanged();
   }
 
   @Override
@@ -120,38 +155,5 @@ public class GraphColoring implements CspPuzzle, AStarCspPuzzle {
     return successor;
   }
 
-  private Variable getMinimalDomain() {
-    int min = Integer.MAX_VALUE;
-    Variable minVar = null;
-    for (Variable var : getVariables()) {
-      if (var.getDomain().getSize() == 1) {
-        continue;
-      }
-      if (var.getDomain().getSize() < min) {
-        min = var.getDomain().getSize();
-        minVar = var;
-      }
-    }
-    return minVar;
-  }
 
-  private Variable getMostConstrained() {
-    int max = Integer.MIN_VALUE;
-    Variable maxConstrained = null;
-    for (Variable var : getVariables()) {
-      if (var.getDomain().getSize() == 1) {
-        continue;
-      }
-      int constrainedCount = ConstraintManager.getManager().getConstrainedCount(var);
-      if (constrainedCount > max) {
-        max = constrainedCount;
-        maxConstrained = var;
-      }
-    }
-    return maxConstrained;
-  }
-
-  public void setVariables(List<Variable> variables) {
-    this.variables = variables;
-  }
 }

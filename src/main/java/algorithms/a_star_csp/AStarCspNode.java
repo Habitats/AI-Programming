@@ -52,16 +52,8 @@ public class AStarCspNode extends AStarNode {
 
       }
     }
-//    AStarCspPuzzle next = puzzle;
-//    Variable variable = next.getVariable(successorVariable.getId());
-//    variable.setAssumption(successorVariable.getDomain().iterator().next());
-//
-//    GeneralArchConsistency.Result domainFilteringResult = GeneralArchConsistency.domainFilter(next);
-//    AStarCspNode nextNode = new AStarCspNode(next);
-//    nextNode.setState(domainFilteringResult);
-//    succ.add(nextNode);
-    setSuccsessors(succ);
 
+    setSuccsessors(succ);
   }
 
   @Override

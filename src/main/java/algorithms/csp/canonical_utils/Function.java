@@ -76,7 +76,7 @@ public class Function {
     // set all the right values in the valuesMap
     variablesMap.put(focalVariable.getId(), focalVariable.copy());
     for (Variable var : variables) {
-      variablesMap.put(var.getId(), variablesMap.get(var.getId()).copy(var));
+      variablesMap.put(var.getId(), var.copy());
     }
 
     // put the values in the right order according to how the parameters for the lambda was created

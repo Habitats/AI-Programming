@@ -21,10 +21,8 @@ public class Variable implements Comparable<Variable>, Serializable {
   public Variable setValue(int value) {
     this.value = value;
     hasValue = true;
-    if (domain.getSize() == 1) {
-      if (listener != null) {
-        getListener().onValueChanged(value);
-      }
+    if (listener != null) {
+      getListener().onValueChanged(value, domain.getSize());
     }
     return this;
   }
@@ -116,10 +114,4 @@ public class Variable implements Comparable<Variable>, Serializable {
     return true;
   }
 
-  public Variable copy(Variable var) {
-    this.domain = var.domain.copy();
-    this.value = var.value;
-    this.hasValue = var.hasValue;
-    return this;
-  }
 }

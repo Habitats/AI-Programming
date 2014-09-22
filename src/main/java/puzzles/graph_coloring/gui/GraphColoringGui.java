@@ -17,8 +17,8 @@ import ai.gui.AITextField;
 import ai.models.AIAdapter;
 import ai.models.graph.ColorNode;
 import algorithms.a_star.AStar;
-import puzzles.graph_coloring.GraphInputUtils;
-import puzzles.graph_coloring.gui.interfaces.GraphColoringButtonListener;
+import puzzles.graph_coloring.GraphColoringUtils;
+import puzzles.graph_coloring.gui.interfaces.CspButtonListener;
 
 /**
  * Created by Patrick on 23.08.2014.
@@ -46,7 +46,7 @@ public class GraphColoringGui extends AIGui {
   private AICheckBox drawOutlinesCheckBox;
   private AICheckBox stepCheckBox;
 
-  private GraphColoringButtonListener listener;
+  private CspButtonListener listener;
 
   public GraphColoringGui() {
     buildFrame(mainPanel, log, statusField);
@@ -55,7 +55,7 @@ public class GraphColoringGui extends AIGui {
       int i = cb.getSelectedIndex();
       listener.sampleSelected(i);
       try {
-        inputField.setText(GraphInputUtils.samples.get(i));
+        inputField.setText(GraphColoringUtils.samples.get(i));
       } catch (IndexOutOfBoundsException ex) {
         Log.v(TAG, "no such sample!");
       }
@@ -102,7 +102,7 @@ public class GraphColoringGui extends AIGui {
     return inputField.getText().trim();
   }
 
-  public void setListener(GraphColoringButtonListener listener) {
+  public void setListener(CspButtonListener listener) {
     this.listener = listener;
   }
 

@@ -58,8 +58,12 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
   }
 
   @Override
-  public void onValueChanged(int value) {
-    setColor(toHsv(value, 1));
+  public void onValueChanged(int value, int size) {
+    if (size == 1) {
+      setColor(toHsv(value, 1));
+    } else {
+      setColor(toHsv(100, .7));
+    }
   }
 
   public String getDescription() {

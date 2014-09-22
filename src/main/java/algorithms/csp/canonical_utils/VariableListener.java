@@ -5,7 +5,7 @@ package algorithms.csp.canonical_utils;
  */
 public interface VariableListener {
 
-  void onValueChanged(int value);
+  void onValueChanged(int value, int size);
 
   void onAssumptionMade(int value);
   void onDomainChanged(Domain domain);
