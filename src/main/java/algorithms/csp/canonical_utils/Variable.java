@@ -23,6 +23,7 @@ public class Variable implements Comparable<Variable>, Serializable {
     hasValue = true;
     if (listener != null) {
       getListener().onValueChanged(value, domain.getSize());
+      getListener().onDomainChanged(domain);
     }
     return this;
   }

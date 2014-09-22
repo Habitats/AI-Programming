@@ -1,7 +1,6 @@
 package algorithms.csp.canonical_utils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -56,14 +55,6 @@ public class Domain implements Iterable<Integer>, Serializable {
     return args.isEmpty();
   }
 
-  public void setDomain(Domain domain) {
-    // create a copy, just to be sure
-    List<Integer> args = new ArrayList<>();
-    args.addAll(domain.args);
-
-    this.args.clear();
-    this.args.addAll(args);
-  }
 
   public Domain copy() {
     return new Domain(args);

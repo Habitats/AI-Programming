@@ -11,6 +11,7 @@ import algorithms.csp.canonical_utils.VariableListener;
  */
 public class ColorNode extends Node<ColorNode> implements VariableListener {
 
+  private static final String TAG = ColorNode.class.getSimpleName();
   private double x;
   private double y;
   private final int index;
@@ -72,7 +73,6 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
 
   @Override
   public void onAssumptionMade(int value) {
-    setColor(toHsv(value, .5));
   }
 
   @Override
