@@ -7,5 +7,5 @@ public interface AStarCallback {
 
   void finished(AStarNode best, AStar aStar);
 
-  void error(AStarNode best);
+  void error();
 }

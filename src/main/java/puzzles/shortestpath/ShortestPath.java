@@ -61,7 +61,7 @@ public class ShortestPath implements ShortestPathButtonListener {
       }
 
       @Override
-      public void error(AStarNode best) {
+      public void error() {
 
       }
     };

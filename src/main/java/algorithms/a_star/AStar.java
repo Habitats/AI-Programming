@@ -171,7 +171,7 @@ public class AStar implements Runnable {
     AStarNode best = search(start);
     best.onPostSearch();
     if (best == null) {
-      callback.error(best);
+      callback.error();
       setStatus(Status.NO_SOLUTION);
     } else {
       callback.finished(best, this);
