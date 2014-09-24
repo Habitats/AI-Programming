@@ -3,7 +3,6 @@ package puzzles.graph_coloring;
 import java.util.ArrayList;
 import java.util.List;
 
-import ai.models.AIAdapter;
 import ai.models.graph.ColorNode;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
@@ -17,10 +16,14 @@ import puzzles.graph_coloring.gui.GraphColoringGui;
 public class GraphColoringPuzzle implements AStarCspPuzzle {
 
 
+  private final GraphColoring graphColoring;
   private GraphColoringGui gui;
-public static int K = 6;
+  public static int K = 6;
   private List<Variable> variables;
-  private AIAdapter<ColorNode> adapter;
+
+  public GraphColoringPuzzle(GraphColoring graphColoring) {
+    this.graphColoring = graphColoring;
+  }
 
 
   public void setGui(GraphColoringGui gui) {
@@ -29,7 +32,7 @@ public static int K = 6;
 
   public List<Variable> generateVariables() {
     List<Variable> variables = new ArrayList<>();
-    for (ColorNode node : adapter.getItems()) {
+    for (ColorNode node : graphColoring.getAdapter().getItems()) {
       Variable var = new Variable(node.getId(), getInitialDomain());
       variables.add(var);
       var.setListener(node);
@@ -82,12 +85,6 @@ public static int K = 6;
 
   // GraphColoringButtonListener ///////////////////////
 
-  @Override
-  public void setAdapter(AIAdapter graph) {
-    this.adapter = graph;
-    gui.setAdapter(graph);
-  }
-
 
   // CspPuzzle /////////////////////////////////////////////////////////////
   @Override
@@ -111,7 +108,7 @@ public static int K = 6;
 
   @Override
   public void visualize() {
-    adapter.notifyDataChanged();
+    graphColoring.getAdapter().notifyDataChanged();
   }
 
   @Override
@@ -128,9 +125,7 @@ public static int K = 6;
 
   @Override
   public AStarCspPuzzle duplicate() {
-    GraphColoringPuzzle dupe = new GraphColoringPuzzle();
-    dupe.setGui(gui);
-    dupe.setAdapter(adapter);
+    GraphColoringPuzzle dupe = new GraphColoringPuzzle(graphColoring);
     dupe.setVariables(dupe.generateVariables());
     for (int i = 0; i < getVariables().size(); i++) {
       dupe.getVariables().set(i, getVariables().get(i).copy());

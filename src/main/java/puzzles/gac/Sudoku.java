@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ai.Log;
-import ai.models.AIAdapter;
 import algorithms.csp.CspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Domain;
@@ -185,10 +184,6 @@ public class Sudoku implements CspPuzzle {
   }
 
 
-  @Override
-  public void setAdapter(AIAdapter graph) {
-
-  }
 
   private void printSudoku() {
     String row = "";

@@ -3,9 +3,8 @@ package puzzles.gac;
 import java.util.ArrayList;
 import java.util.List;
 
-import ai.models.AIAdapter;
-import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.CspPuzzle;
+import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Domain;
 import algorithms.csp.canonical_utils.Variable;
 
@@ -96,8 +95,4 @@ public class TestGACProblem implements CspPuzzle {
   }
 
 
-  @Override
-  public void setAdapter(AIAdapter graph) {
-
-  }
 }

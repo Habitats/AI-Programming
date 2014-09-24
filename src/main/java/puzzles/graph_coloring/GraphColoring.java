@@ -24,12 +24,17 @@ public class GraphColoring implements CspButtonListener {
   private GraphColoringPuzzle puzzle;
   public static int assumption_count;
   private AStar astar;
+  private AIAdapter adapter;
 
 
   public GraphColoring() {
     gui = new GraphColoringGui();
     gui.setListener(this);
+  }
 
+  public void setAdapter(AIAdapter graph) {
+    this.adapter = graph;
+    gui.setAdapter(graph);
   }
 
   private void astarCsp() {
@@ -79,11 +84,11 @@ public class GraphColoring implements CspButtonListener {
   }
 
   private GraphColoringPuzzle getPuzzleFromInput(String input) {
-    GraphColoringPuzzle puzzle = new GraphColoringPuzzle();
+    GraphColoringPuzzle puzzle = new GraphColoringPuzzle(this);
     puzzle.setGui(gui);
 
     AIAdapter<ColorNode> graph = GraphColoringUtils.generateGraph(input);
-    puzzle.setAdapter(graph);
+    setAdapter(graph);
     puzzle.setVariables(puzzle.generateVariables());
     GraphColoringConstraintManager.getManager().initialize(graph, puzzle.getVariables());
 
@@ -109,5 +114,9 @@ public class GraphColoring implements CspButtonListener {
   @Override
   public void sampleSelected(int i) {
 //    this.puzzle = getSamplePuzzle(i);
+  }
+
+  public AIAdapter<ColorNode> getAdapter() {
+    return adapter;
   }
 }
