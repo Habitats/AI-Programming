@@ -38,6 +38,7 @@ public class GraphColoringGui extends AIGui {
   private AITextArea inputField;
   private AITextField logField;
   private AITextField statusField;
+  private AITextField kField;
   private AIComboBox sampleComboBox;
   private AISlider stepSlider;
   private AICheckBox labelsCheckbox;
@@ -100,6 +101,9 @@ public class GraphColoringGui extends AIGui {
 
   public String getInput() {
     return inputField.getText().trim();
+  }
+  public String getK(){
+    return kField.getText().trim();
   }
 
   public void setListener(CspButtonListener listener) {

@@ -1,6 +1,6 @@
 package ai;
 
-import puzzles.graph_coloring.GraphColoringMain;
+import puzzles.graph_coloring.GraphColoring;
 import puzzles.shortestpath.ShortestPath;
 
 /**
@@ -20,6 +20,6 @@ public class AIMain {
   }
 
   public static void graphColoring() {
-    new GraphColoringMain();
+    new GraphColoring();
   }
 }

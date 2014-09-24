@@ -1,159 +1,113 @@
 package puzzles.graph_coloring;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import ai.AIMain;
+import ai.Log;
 import ai.models.AIAdapter;
 import ai.models.graph.ColorNode;
-import algorithms.a_star_csp.AStarCspPuzzle;
-import algorithms.csp.canonical_utils.Constraint;
-import algorithms.csp.canonical_utils.Domain;
-import algorithms.csp.canonical_utils.Variable;
+import algorithms.a_star.AStar;
+import algorithms.a_star.AStarCallback;
+import algorithms.a_star.AStarNode;
+import algorithms.a_star_csp.AStarCspNode;
+import algorithms.csp.CspPuzzle;
+import algorithms.csp.GeneralArchConsistency;
+import puzzles.gac.Sudoku;
 import puzzles.graph_coloring.gui.GraphColoringGui;
+import puzzles.graph_coloring.gui.interfaces.CspButtonListener;
 
 /**
- * Created by Patrick on 08.09.2014.
+ * Created by anon on 22.09.2014.
  */
-public class GraphColoring implements AStarCspPuzzle {
+public class GraphColoring implements CspButtonListener {
+
+  public static final String TAG = AIMain.class.getSimpleName();
+  private final GraphColoringGui gui;
+  private GraphColoringPuzzle puzzle;
+  public static int assumption_count;
+  private AStar astar;
 
 
-  private GraphColoringGui gui;
-  private int K = 6;
-  private List<Variable> variables;
-  private AIAdapter<ColorNode> adapter;
+  public GraphColoring() {
+    gui = new GraphColoringGui();
+    gui.setListener(this);
 
-
-  public void setGui(GraphColoringGui gui) {
-    this.gui = gui;
   }
 
-  public List<Variable> generateVariables() {
-    List<Variable> variables = new ArrayList<>();
-    for (ColorNode node : adapter.getItems()) {
-      Variable var = new Variable(node.getId(), getInitialDomain());
-      variables.add(var);
-      var.setListener(node);
-    }
-    return variables;
-  }
+  private void astarCsp() {
 
-  private Domain getInitialDomain() {
-    int[] domain = new int[K];
-    for (int i = 0; i < K; i++) {
-      domain[i] = i;
-    }
-    return new Domain(domain);
-  }
+    AStarNode start = new AStarCspNode(puzzle);
+    astar = new AStar(start, new AStarCallback() {
 
-  private Variable getMinimalDomain() {
-    int min = Integer.MAX_VALUE;
-    Variable minVar = null;
-    for (Variable var : getVariables()) {
-      if (var.getDomain().getSize() == 1) {
-        continue;
+      @Override
+      public void finished(AStarNode best, AStar aStar) {
+        Log.v(TAG, "success! " + best);
+        Log.i(TAG, "Assumptions made: " + assumption_count);
       }
-      if (var.getDomain().getSize() < min) {
-        min = var.getDomain().getSize();
-        minVar = var;
+
+      @Override
+      public void error() {
+        Log.v(TAG, "fail!");
       }
+    });
+    astar.runInBackground();
+    Log.i(TAG, astar);
+  }
+
+  private void sudokuGac() {
+    CspPuzzle sudoku = new Sudoku();
+
+    GeneralArchConsistency.domainFilter(sudoku);
+
+    sudoku.visualize();
+  }
+
+  @Override
+  public void resetClicked() {
+    astar.terminate();
+  }
+
+  @Override
+  public void loadClicked() {
+    //    new ShortestPath();
+    assumption_count = 0;
+    GraphColoringPuzzle.K = Integer.parseInt(gui.getK());
+    String input = gui.getInput();
+    puzzle = getPuzzleFromInput(input);
+    astarCsp();
+
+//    sudokuGac();
+//    graphcColoringGac();
+  }
+
+  private GraphColoringPuzzle getPuzzleFromInput(String input) {
+    GraphColoringPuzzle puzzle = new GraphColoringPuzzle();
+    puzzle.setGui(gui);
+
+    AIAdapter<ColorNode> graph = GraphColoringUtils.generateGraph(input);
+    puzzle.setAdapter(graph);
+    puzzle.setVariables(puzzle.generateVariables());
+    GraphColoringConstraintManager.getManager().initialize(graph, puzzle.getVariables());
+
+    return puzzle;
+  }
+
+  public GraphColoringPuzzle getSamplePuzzle(int i) {
+    if (i >= GraphColoringUtils.samples.size()) {
+      return null;
     }
-    return minVar;
-  }
-
-  private Variable getMostConstrained() {
-    int max = Integer.MIN_VALUE;
-    Variable maxConstrained = null;
-    for (Variable var : getVariables()) {
-      if (var.getDomain().getSize() == 1) {
-        continue;
-      }
-      int constrainedCount = GraphColoringConstraintManager.getManager().getConstrainedCount(var);
-      if (constrainedCount > max) {
-        max = constrainedCount;
-        maxConstrained = var;
-      }
-    }
-    return maxConstrained;
-  }
-
-  public void setVariables(List<Variable> variables) {
-    this.variables = variables;
-  }
-
-  // GraphColoringButtonListener ///////////////////////
-
-  @Override
-  public void setAdapter(AIAdapter graph) {
-    this.adapter = graph;
-    gui.setAdapter(graph);
-  }
-
-
-  // CspPuzzle /////////////////////////////////////////////////////////////
-  @Override
-  public List<Constraint> getConstraints() {
-    return GraphColoringConstraintManager.getManager().getConstraints();
+    return getPuzzleFromInput(GraphColoringUtils.samples.get(i));
   }
 
   @Override
-  public List<Variable> getVariables() {
-    return variables;
+  public void stepClicked() {
+
   }
 
   @Override
-  public int getDomainSize() {
-    int size = 0;
-    for (Variable variable : getVariables()) {
-      size += variable.getDomain().getSize();
-    }
-    return size;
+  public void stepChanged(int value) {
   }
 
   @Override
-  public void visualize() {
-    adapter.notifyDataChanged();
+  public void sampleSelected(int i) {
+//    this.puzzle = getSamplePuzzle(i);
   }
-
-  @Override
-  public Variable getVariable(String id) {
-    for (Variable var : getVariables()) {
-      if (var.getId().equals(id)) {
-        return var;
-      }
-    }
-    return null;
-  }
-
-  // AStarCspPuzzle /////////////////////////////////////////////////////////////////
-
-  @Override
-  public AStarCspPuzzle duplicate() {
-    GraphColoring dupe = new GraphColoring();
-    dupe.setGui(gui);
-    dupe.setAdapter(adapter);
-    dupe.setVariables(dupe.generateVariables());
-    for (int i = 0; i < getVariables().size(); i++) {
-      dupe.getVariables().set(i, getVariables().get(i).copy());
-    }
-    return dupe;
-  }
-
-  @Override
-  public String getId() {
-    StringBuilder sb = new StringBuilder();
-    for (Variable var : getVariables()) {
-      sb.append(var.getId() + ":" + var.getDomain().getId() + " ");
-    }
-    return sb.toString();
-  }
-
-  @Override
-  public Variable getSuccessor() {
-    Variable successor;
-//    successor = getMostConstrained();
-    successor = getMinimalDomain();
-    return successor;
-  }
-
-
 }

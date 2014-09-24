@@ -63,7 +63,7 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
     if (size == 1) {
       setColor(toHsv(value, 1));
     } else {
-      setColor(toHsv(100, .7));
+      setColor(Color.lightGray);
     }
   }
 

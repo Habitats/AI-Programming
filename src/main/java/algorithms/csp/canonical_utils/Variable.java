@@ -2,6 +2,8 @@ package algorithms.csp.canonical_utils;
 
 import java.io.Serializable;
 
+import puzzles.graph_coloring.GraphColoring;
+
 /**
  * Created by Patrick on 04.09.2014.
  */
@@ -29,7 +31,7 @@ public class Variable implements Comparable<Variable>, Serializable {
   }
 
   public Variable setAssumption(int value) {
-    //TODO: this can't remove from domain, since empty domain == bad!
+    GraphColoring.assumption_count++;
     this.value = value;
     for (Integer val : domain) {
       if (val != value) {
