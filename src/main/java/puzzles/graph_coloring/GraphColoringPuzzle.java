@@ -108,6 +108,9 @@ public class GraphColoringPuzzle implements AStarCspPuzzle {
 
   @Override
   public void visualize() {
+    for(Variable variable : variables){
+      variable.update();
+    }
     graphColoring.getAdapter().notifyDataChanged();
   }
 

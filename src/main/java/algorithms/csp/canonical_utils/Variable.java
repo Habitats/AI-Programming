@@ -14,6 +14,7 @@ public class Variable implements Comparable<Variable>, Serializable {
   private int value;
   private boolean hasValue;
   private VariableListener listener;
+  private boolean assumption = false;
 
   public Variable(String id, Domain domain) {
     this.id = id;
@@ -33,6 +34,7 @@ public class Variable implements Comparable<Variable>, Serializable {
   public Variable setAssumption(int value) {
     GraphColoring.assumption_count++;
     this.value = value;
+    assumption = true;
     for (Integer val : domain) {
       if (val != value) {
         domain.remove(val);
@@ -117,4 +119,10 @@ public class Variable implements Comparable<Variable>, Serializable {
     return true;
   }
 
+  public void update() {
+    setValue(getValue());
+    if (assumption) {
+      setAssumption(value);
+    }
+  }
 }

@@ -104,7 +104,9 @@ public class GraphColoring implements CspButtonListener {
 
   @Override
   public void stepClicked() {
-
+    synchronized (astar){
+      astar.notify();
+    }
   }
 
   @Override
