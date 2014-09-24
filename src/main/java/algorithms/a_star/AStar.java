@@ -74,8 +74,9 @@ public class AStar implements Runnable {
     // this is used for BFS/DFS
     count = 0;
 
-    AStarNode current;
-    while ((current = opened.poll()) != null) {
+    AStarNode current = null;
+    while (opened.size() > 0) {
+      current = opened.poll();
 
       visualizeAndWait(current);
       Log.v(TAG, toString());
@@ -119,7 +120,7 @@ public class AStar implements Runnable {
 
     endTime = System.currentTimeMillis() - startTime;
 
-    return null;
+    return current;
   }
 
   private boolean shouldTerminate() {
@@ -168,8 +169,9 @@ public class AStar implements Runnable {
   @Override
   public void run() {
     AStarNode best = search(start);
+    best.onPostSearch();
     if (best == null) {
-      callback.error();
+      callback.error(best);
       setStatus(Status.NO_SOLUTION);
     } else {
       callback.finished(best, this);

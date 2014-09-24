@@ -26,8 +26,6 @@ import puzzles.graph_coloring.gui.interfaces.CspButtonListener;
 public class GraphColoringGui extends AIGui {
 
   private static final String TAG = GraphColoringGui.class.getSimpleName();
-  public static boolean DRAW_OUTLINES = true;
-  public static boolean DRAW_CHILDREN = true;
   private AIButton resetButton;
   private AIButton loadButton;
   private AIButton stepButton;
@@ -42,9 +40,7 @@ public class GraphColoringGui extends AIGui {
   private AIComboBox sampleComboBox;
   private AISlider stepSlider;
   private AICheckBox labelsCheckbox;
-  private AIButton simulationButton;
   private AIContiniousScrollPane log;
-  private AICheckBox drawOutlinesCheckBox;
   private AICheckBox stepCheckBox;
 
   private CspButtonListener listener;
@@ -74,11 +70,6 @@ public class GraphColoringGui extends AIGui {
     labelsCheckbox.addActionListener(e -> {
       AICheckBox checkbox = (AICheckBox) e.getSource();
       drawingCanvas.drawLabels(checkbox.isSelected());
-    });
-    drawOutlinesCheckBox.addActionListener(e -> {
-      AICheckBox checkbox = (AICheckBox) e.getSource();
-      GraphColoringGui.DRAW_OUTLINES = checkbox.isSelected();
-
     });
     stepCheckBox.addActionListener(e -> {
       AICheckBox checkbox = (AICheckBox) e.getSource();

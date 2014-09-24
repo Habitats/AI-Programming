@@ -78,9 +78,21 @@ public class Function {
     for (Variable var : variables) {
       variablesMap.put(var.getId(), var.copy());
     }
+    return call(variables, variablesMap);
+  }
 
+  public boolean call(List<Variable> variables) {
+    for (Variable var : variables) {
+      if (variablesMap.containsKey(var.getId())) {
+        variablesMap.put(var.getId(), var.copy());
+      }
+    }
+    return call(variables, variablesMap);
+  }
+
+  private boolean call(List<Variable> variables, Map<String, Variable> variablesMap) {
     // put the values in the right order according to how the parameters for the lambda was created
-    PyInteger[] args = new PyInteger[variables.size() + 1];
+    PyInteger[] args = new PyInteger[variablesMap.size() ];
     int i = 0;
     for (String key : variablesMap.keySet()) {
       args[i++] = new PyInteger(variablesMap.get(key).getValue());
@@ -91,6 +103,8 @@ public class Function {
     PyObject ans = lambda.__call__(args);
 
     return ((PyBoolean) ans).getBooleanValue();
+
+
   }
 
   public String getVariableValues() {
@@ -113,4 +127,5 @@ public class Function {
   public Map<String, Variable> getVariablesMap() {
     return variablesMap;
   }
+
 }

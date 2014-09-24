@@ -14,6 +14,8 @@ import algorithms.csp.canonical_utils.Variable;
  */
 public class GeneralArchConsistency {
 
+  private static int numberOfSatisfiedConstraints;
+
   private GeneralArchConsistency() {
   }
 
@@ -136,5 +138,18 @@ public class GeneralArchConsistency {
     int newSize = focalVariable.getDomain().getSize();
 //    Log.v(TAG, "old: " + oldSize + " new: " + newSize);
     return oldSize > newSize;
+  }
+
+  public static int numberOfUnsatisfiedConstraints(CspPuzzle puzzle) {
+    int num = 0;
+    puzzle.visualize();
+    for (Constraint constraint : puzzle.getConstraints()) {
+      boolean satisfied = constraint.isSatisfied(puzzle.getVariables());
+      num += satisfied ? 0 : 1;
+      if (!satisfied) {
+        Log.v(TAG, constraint);
+      }
+    }
+    return num;
   }
 }

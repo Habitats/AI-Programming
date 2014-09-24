@@ -113,6 +113,11 @@ public class BoardNode extends AStarNode {
     erasePath();
   }
 
+  @Override
+  public void onPostSearch() {
+
+  }
+
   private void erasePath() {
     drawPath(getTile().getPreviousState());
   }

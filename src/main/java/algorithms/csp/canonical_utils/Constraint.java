@@ -15,6 +15,7 @@ public class Constraint implements Iterable<Variable> {
   private static final String TAG = Constraint.class.getSimpleName();
   private final Set<String> variableIdsToCheck;
   private final Function function;
+  private boolean satisfied;
 
   public Constraint(List<Variable> variables, String expression) {
     HashMap<String, Variable> variableMap = new HashMap<>();
@@ -79,5 +80,10 @@ public class Constraint implements Iterable<Variable> {
 
   public List<Variable> getVariables() {
     return new ArrayList<>(function.getVariablesMap().values());
+  }
+
+
+  public boolean isSatisfied(List<Variable> variables) {
+   return function.call(variables);
   }
 }

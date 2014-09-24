@@ -62,6 +62,7 @@ public abstract class AICanvas<T> extends JPanel implements AIAdapterListener {
 
   public void drawLabels(boolean selected) {
     this.drawLabels = selected;
+    repaint();
   }
 
   public AIAdapter<T> getAdapter() {

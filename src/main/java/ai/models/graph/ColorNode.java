@@ -17,6 +17,7 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
   private final int index;
   private Color color = Color.white;
   private String desc = "";
+  private Color outlineColor = Color.black;
 
   public ColorNode(double x, double y, int index) {
     this.x = x;
@@ -73,6 +74,7 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
 
   @Override
   public void onAssumptionMade(int value) {
+    setOutlineColor(toHsv(value, .7));
   }
 
   @Override
@@ -82,5 +84,13 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
 
   public void setColor(Color color) {
     this.color = color;
+  }
+
+  public void setOutlineColor(Color outlineColor) {
+    this.outlineColor = outlineColor;
+  }
+
+  public Color getOutlineColor() {
+    return outlineColor;
   }
 }

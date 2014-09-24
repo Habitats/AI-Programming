@@ -3,6 +3,7 @@ package algorithms.a_star_csp;
 import java.util.ArrayList;
 import java.util.List;
 
+import ai.Log;
 import algorithms.a_star.AStarNode;
 import algorithms.csp.GeneralArchConsistency;
 import algorithms.csp.canonical_utils.Variable;
@@ -69,7 +70,11 @@ public class AStarCspNode extends AStarNode {
       setHeuristic(Integer.MAX_VALUE);
     } else {
       int domainDelta = puzzle.getDomainSize() - puzzle.getVariables().size();
-      setHeuristic(domainDelta);
+      if (domainDelta < 0) {
+        setHeuristic(Integer.MAX_VALUE);
+      } else {
+        setHeuristic(domainDelta);
+      }
     }
   }
 
@@ -80,5 +85,10 @@ public class AStarCspNode extends AStarNode {
 
   @Override
   public void devisualize() {
+  }
+
+  @Override
+  public void onPostSearch() {
+    Log.i(TAG, "Number of unsatisfied constraints: " + GeneralArchConsistency.numberOfUnsatisfiedConstraints(puzzle));
   }
 }

@@ -9,7 +9,7 @@ import ai.models.Node;
  */
 public abstract class AStarNode extends Node<AStarNode> {
 
-  private int h;
+  private int h = Integer.MAX_VALUE;
   private int g;
   private List<AStarNode> successors;
   private String state;
@@ -149,4 +149,6 @@ public abstract class AStarNode extends Node<AStarNode> {
   public boolean hasBetter(AStarNode parent) {
     return parent.g() + costFrom(parent) < g();
   }
+
+  public abstract void onPostSearch();
 }

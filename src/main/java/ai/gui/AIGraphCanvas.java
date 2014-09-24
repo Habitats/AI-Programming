@@ -23,8 +23,10 @@ public class AIGraphCanvas extends AICanvas<ColorNode> {
     drawEdges(g);
     drawNodes(g);
 
-//    int border = 10;
-//    g.drawRect(border, border, getWidth() - border * 2, getHeight() - border * 2);
+    if (drawLabels) {
+      drawLables(g);
+    }
+
   }
 
   private void drawEdges(Graphics2D g) {
@@ -50,11 +52,25 @@ public class AIGraphCanvas extends AICanvas<ColorNode> {
       int y = getY(item);
       g.setColor(item.getColor());
       g.fillOval(x, y, getItemWidth(), getItemHeight());
-      g.setColor(Color.black);
-      g.drawOval(x, y, getItemWidth(), getItemHeight());
+      g.setColor(item.getOutlineColor());
 
-      drawStringCenter(g,item.getId(),x,y);
-      drawStringCenter(g,item.getDescription(),x,y+20);
+      // with thickness 3
+      drawOutline(g, x, y, 3);
+    }
+  }
+
+  private void drawLables(Graphics2D g) {
+    for (ColorNode item : getAdapter().getItems()) {
+      int x = getX(item);
+      int y = getY(item);
+      drawStringCenter(g, item.getId(), x, y);
+      drawStringCenter(g, item.getDescription(), x, y + 20);
+    }
+  }
+
+  private void drawOutline(Graphics2D g, int x, int y, int thickness) {
+    for (int i = 0; i < thickness; i++) {
+      g.drawOval(x + i, y + i, getItemWidth() - 2 * i, getItemHeight() - 2 * i);
     }
   }
 
@@ -73,7 +89,6 @@ public class AIGraphCanvas extends AICanvas<ColorNode> {
   private int getCenterX(ColorNode item) {
     return getX(item) + getItemWidth() / 2;
   }
-
 
 
   @Override
