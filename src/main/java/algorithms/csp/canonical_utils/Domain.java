@@ -48,7 +48,7 @@ public class Domain implements Iterable<Integer>, Serializable {
     for (Integer i : args) {
       domain += ", " + i;
     }
-    return "Domain: " + domain.substring(2);
+    return "D: " + domain.substring(2);
   }
 
   public boolean iEmpty() {

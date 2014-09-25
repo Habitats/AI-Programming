@@ -46,7 +46,8 @@ public class AStarCspNode extends AStarNode {
 
         variable.setAssumption(value);
 
-        GeneralArchConsistency.Result domainFilteringResult = GeneralArchConsistency.domainFilter(next);
+        GeneralArchConsistency.Result domainFilteringResult;
+        domainFilteringResult = GeneralArchConsistency.domainFilter(next);
         AStarCspNode nextNode = new AStarCspNode(next);
         nextNode.setState(domainFilteringResult);
         succ.add(nextNode);
@@ -90,7 +91,7 @@ public class AStarCspNode extends AStarNode {
   @Override
   public void onPostSearch() {
     Log.i(TAG, "Number of unsatisfied constraints: " + GeneralArchConsistency.numberOfUnsatisfiedConstraints(puzzle));
-    Log.i(TAG, "Number of nodes without color assigned: " + GeneralArchConsistency.numberOfNodesWithoutColorAssigned(
-        puzzle));
+    Log.i(TAG, "Number of nodes without color assigned: " + GeneralArchConsistency
+        .numberOfNodesWithoutColorAssigned(puzzle));
   }
 }

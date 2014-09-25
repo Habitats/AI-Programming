@@ -1,6 +1,7 @@
 package algorithms.csp;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -74,10 +75,15 @@ public class GeneralArchConsistency {
   public static Result domainFilter(CspPuzzle puzzle) {
     List<Constraint> constraints = puzzle.getConstraints();
     Queue<Variable> queue = new PriorityQueue<>();
+    HashMap<String, Variable> queueHash = new HashMap<>();
     queue.addAll(puzzle.getVariables());
+    for (Variable v : puzzle.getVariables()) {
+      queueHash.put(v.getId(), v);
+    }
     int initialDomainSize = puzzle.getDomainSize();
     Variable var;
     while ((var = queue.poll()) != null) {
+      queueHash.remove(var.getId());
       if (var.getDomain().iEmpty()) {
         return Result.EMPTY_DOMAIN;
       }
@@ -91,13 +97,16 @@ public class GeneralArchConsistency {
 
         if (revise(var, constraint, puzzle.getVariables())) {
           // push all other variables in this constraint onto the queue
-          for (Variable varInConstraint : constraint.getVariables()) {
-            String variableId = varInConstraint.getId();
+          for (Variable variable : puzzle.getVariables()) {
             // if it's 'this' variable, do nothing
 //            if (variableId.equals(var.getId())) {
 //              continue;
 //            }
-            queue.add(puzzle.getVariable(variableId));
+
+            if (!queueHash.containsKey(variable.getId())) {
+              queue.add(variable);
+              queueHash.put(variable.getId(), variable);
+            }
           }
         }
       }

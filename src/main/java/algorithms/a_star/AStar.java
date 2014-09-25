@@ -172,7 +172,7 @@ public class AStar implements Runnable {
   @Override
   public void run() {
     AStarNode best = search(start);
-    Log.i(TAG, "search finished:" + this);
+    Log.i(TAG, this);
     best.onPostSearch();
     if (status == Status.NO_SOLUTION) {
       callback.error();
@@ -198,8 +198,8 @@ public class AStar implements Runnable {
     return status;
   }
 
-  private org.joda.time.Duration getElapsedTime() {
-    return new Duration(startTime-System.currentTimeMillis());
+  private String getElapsedTime() {
+    return new Duration(System.currentTimeMillis() - startTime).toString().substring(2);
   }
 
   @Override
