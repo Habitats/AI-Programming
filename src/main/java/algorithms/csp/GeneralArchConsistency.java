@@ -6,6 +6,7 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 import ai.Log;
+import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Variable;
 
@@ -17,6 +18,14 @@ public class GeneralArchConsistency {
   private static int numberOfSatisfiedConstraints;
 
   private GeneralArchConsistency() {
+  }
+
+  public static int numberOfNodesWithoutColorAssigned(AStarCspPuzzle puzzle) {
+    int count = 0;
+    for (Variable var : puzzle.getVariables()) {
+      count += var.getDomain().getSize() == 1 ? 0 : 1;
+    }
+    return count;
   }
 
   public enum Result {
@@ -75,7 +84,7 @@ public class GeneralArchConsistency {
 //      Log.v(TAG, "before: " + var);
       for (Constraint constraint : constraints) {
 
-        // if focalvariable isn't present in the constraint, there is no way it can directly affect it either
+//        // if focalvariable isn't present in the constraint, there is no way it can directly affect it either
         if (!constraint.contains(var)) {
           continue;
         }
@@ -85,9 +94,9 @@ public class GeneralArchConsistency {
           for (Variable varInConstraint : constraint.getVariables()) {
             String variableId = varInConstraint.getId();
             // if it's 'this' variable, do nothing
-            if (variableId.equals(var.getId())) {
-              continue;
-            }
+//            if (variableId.equals(var.getId())) {
+//              continue;
+//            }
             queue.add(puzzle.getVariable(variableId));
           }
         }
