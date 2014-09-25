@@ -1,5 +1,9 @@
 package puzzles.shortestpath.gui;
 
+import java.awt.*;
+import java.io.File;
+import java.nio.charset.Charset;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -49,6 +53,7 @@ public class ShortestPathGui extends AIGui {
   private AICheckBox drawChildrenCheckBox;
   private AICheckBox drawOutlinesCheckBox;
   private AICheckBox stepCheckBox;
+  private AIButton fromFileButton;
 
   private ShortestPathButtonListener listener;
 
@@ -97,6 +102,12 @@ public class ShortestPathGui extends AIGui {
     });
 
     buildFrame(mainPanel, log, statusField);
+    fromFileButton.addActionListener(e -> {
+      JFileChooser chooser = new JFileChooser("C:\\Dropbox\\code\\projects\\ai_prog\\samples");
+      chooser.showOpenDialog(mainPanel);
+      File file = chooser.getSelectedFile();
+      inputField.setText(readFile(file.getPath(), Charset.defaultCharset()));
+    });
   }
 
   public void setAdapter(Board adapter) {
@@ -116,4 +127,13 @@ public class ShortestPathGui extends AIGui {
     // TODO: place custom component creation code here
   }
 
+  @Override
+  protected int getDefaultCloseOperation() {
+    return WindowConstants.DISPOSE_ON_CLOSE;
+  }
+
+  @Override
+  protected Dimension getPreferredSize() {
+    return new Dimension(900, 700);
+  }
 }

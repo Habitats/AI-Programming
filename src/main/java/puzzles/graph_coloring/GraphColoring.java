@@ -17,17 +17,18 @@ import puzzles.graph_coloring.gui.interfaces.CspButtonListener;
 /**
  * Created by anon on 22.09.2014.
  */
-public class GraphColoring implements CspButtonListener {
+public class GraphColoring implements CspButtonListener, Runnable {
 
   public static final String TAG = AIMain.class.getSimpleName();
-  private final GraphColoringGui gui;
+  private GraphColoringGui gui;
   private GraphColoringPuzzle puzzle;
   public static int assumption_count;
   private AStar astar;
   private AIAdapter adapter;
 
 
-  public GraphColoring() {
+  @Override
+  public void run() {
     gui = new GraphColoringGui();
     gui.setListener(this);
   }
@@ -44,17 +45,17 @@ public class GraphColoring implements CspButtonListener {
 
       @Override
       public void finished(AStarNode best, AStar aStar) {
-        Log.v(TAG, "success! " + best);
-        Log.i(TAG, "Assumptions made: " + assumption_count);
+        Log.i(TAG, "A* success! ");
+        Log.i(TAG, best);
+        Log.i(TAG, "Number of assumptions made: " + best.getPathLength());
       }
 
       @Override
       public void error() {
-        Log.v(TAG, "fail!");
+        Log.i(TAG, "A* failed to find a solution!");
       }
     });
     astar.runInBackground();
-    Log.i(TAG, astar);
   }
 
   private void sudokuGac() {
@@ -104,7 +105,7 @@ public class GraphColoring implements CspButtonListener {
 
   @Override
   public void stepClicked() {
-    synchronized (astar){
+    synchronized (astar) {
       astar.notify();
     }
   }

@@ -1,5 +1,9 @@
 package puzzles.graph_coloring.gui;
 
+import java.awt.*;
+import java.io.File;
+import java.nio.charset.Charset;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -42,6 +46,7 @@ public class GraphColoringGui extends AIGui {
   private AICheckBox labelsCheckbox;
   private AIContiniousScrollPane log;
   private AICheckBox stepCheckBox;
+  private AIButton readFromFileButton;
 
   private CspButtonListener listener;
 
@@ -79,7 +84,14 @@ public class GraphColoringGui extends AIGui {
     loadButton.addActionListener(e -> {
       listener.loadClicked();
     });
+    readFromFileButton.addActionListener(e -> {
+      JFileChooser chooser = new JFileChooser("C:\\Dropbox\\code\\projects\\ai_prog\\samples");
+      chooser.showOpenDialog(mainPanel);
+      File file = chooser.getSelectedFile();
+      inputField.setText(readFile(file.getPath(), Charset.defaultCharset()));
+    });
   }
+
 
   public void setAdapter(AIAdapter<ColorNode> adapter) {
 
@@ -93,7 +105,8 @@ public class GraphColoringGui extends AIGui {
   public String getInput() {
     return inputField.getText().trim();
   }
-  public String getK(){
+
+  public String getK() {
     return kField.getText().trim();
   }
 
@@ -101,4 +114,13 @@ public class GraphColoringGui extends AIGui {
     this.listener = listener;
   }
 
+  @Override
+  protected int getDefaultCloseOperation() {
+    return WindowConstants.DISPOSE_ON_CLOSE;
+  }
+
+  @Override
+  protected Dimension getPreferredSize() {
+    return new Dimension(900, 700);
+  }
 }

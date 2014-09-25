@@ -16,22 +16,13 @@ import puzzles.shortestpath.utils.InputUtils;
 /**
  * Created by Patrick on 04.09.2014.
  */
-public class ShortestPath implements ShortestPathButtonListener {
+public class ShortestPath implements ShortestPathButtonListener , Runnable{
 
   private static final String TAG = AIMain.class.getSimpleName();
   private ShortestPathGui gui;
   private Board board;
   private AStar astar;
   private List<AStar> searches;
-
-  public ShortestPath() {
-    // initialize the GUI
-    gui = new ShortestPathGui();
-    gui.setListener(ShortestPath.this);
-
-    // since it's possible to run multiple searches in parallel, let's store each instance in a list to keep track of them
-    searches = new ArrayList<AStar>();
-  }
 
   /**
    * Initialize the GUI based on the sample inputs found in InputUtils
@@ -134,4 +125,13 @@ public class ShortestPath implements ShortestPathButtonListener {
   }
 
 
+  @Override
+  public void run() {
+    // initialize the GUI
+    gui = new ShortestPathGui();
+    gui.setListener(ShortestPath.this);
+
+    // since it's possible to run multiple searches in parallel, let's store each instance in a list to keep track of them
+    searches = new ArrayList<AStar>();
+  }
 }

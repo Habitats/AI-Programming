@@ -84,6 +84,7 @@ public class AStar implements Runnable {
       current.setClosed();
 
       if (current.isSolution() || shouldTerminate()) {
+        setStatus(Status.FINISHED);
         return current;
       }
 
@@ -120,6 +121,7 @@ public class AStar implements Runnable {
 
     endTime = System.currentTimeMillis() - startTime;
 
+    setStatus(Status.NO_SOLUTION);
     return current;
   }
 
@@ -164,18 +166,18 @@ public class AStar implements Runnable {
 
   public void terminate() {
     terminate = true;
+    Log.i(TAG, "terminating A* search ...");
   }
 
   @Override
   public void run() {
     AStarNode best = search(start);
+    Log.i(TAG, "search finished:" + this);
     best.onPostSearch();
-    if (best == null) {
+    if (status == Status.NO_SOLUTION) {
       callback.error();
-      setStatus(Status.NO_SOLUTION);
-    } else {
+    } else if (status == Status.FINISHED) {
       callback.finished(best, this);
-      setStatus(Status.FINISHED);
       Log.i(TAG, getTraversal() + " - generated nodes: " + getGeneratedSize() + " - solution lenght: " + best
           .getPathLength());
     }
@@ -197,7 +199,7 @@ public class AStar implements Runnable {
   }
 
   private org.joda.time.Duration getElapsedTime() {
-    return new Duration((status == Status.FINISHED ? endTime : System.currentTimeMillis()) - startTime);
+    return new Duration(startTime-System.currentTimeMillis());
   }
 
   @Override

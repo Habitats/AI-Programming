@@ -90,5 +90,7 @@ public class AStarCspNode extends AStarNode {
   @Override
   public void onPostSearch() {
     Log.i(TAG, "Number of unsatisfied constraints: " + GeneralArchConsistency.numberOfUnsatisfiedConstraints(puzzle));
+    Log.i(TAG, "Number of nodes without color assigned: " + GeneralArchConsistency.numberOfNodesWithoutColorAssigned(
+        puzzle));
   }
 }

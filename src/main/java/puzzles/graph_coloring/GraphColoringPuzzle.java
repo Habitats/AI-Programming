@@ -49,9 +49,37 @@ public class GraphColoringPuzzle implements AStarCspPuzzle {
   }
 
   private Variable getMinimalDomain() {
+    return getMinimalDomain(getVariables());
+  }
+
+  private List<Variable> getMostConstrained() {
+    int max = Integer.MIN_VALUE;
+    for (Variable var : getVariables()) {
+      if (var.getDomain().getSize() == 1) {
+        continue;
+      }
+      int constrainedCount = GraphColoringConstraintManager.getManager().getConstrainedCount(var);
+      if (constrainedCount > max) {
+        max = constrainedCount;
+      }
+    }
+    List<Variable> mostContrained = new ArrayList<>();
+    for (Variable var : getVariables()) {
+      if (GraphColoringConstraintManager.getManager().getConstrainedCount(var) == max) {
+        mostContrained.add(var);
+      }
+    }
+    return mostContrained;
+  }
+
+  public void setVariables(List<Variable> variables) {
+    this.variables = variables;
+  }
+
+  private Variable getMinimalDomain(List<Variable> variables) {
     int min = Integer.MAX_VALUE;
     Variable minVar = null;
-    for (Variable var : getVariables()) {
+    for (Variable var : variables) {
       if (var.getDomain().getSize() == 1) {
         continue;
       }
@@ -61,26 +89,6 @@ public class GraphColoringPuzzle implements AStarCspPuzzle {
       }
     }
     return minVar;
-  }
-
-  private Variable getMostConstrained() {
-    int max = Integer.MIN_VALUE;
-    Variable maxConstrained = null;
-    for (Variable var : getVariables()) {
-      if (var.getDomain().getSize() == 1) {
-        continue;
-      }
-      int constrainedCount = GraphColoringConstraintManager.getManager().getConstrainedCount(var);
-      if (constrainedCount > max) {
-        max = constrainedCount;
-        maxConstrained = var;
-      }
-    }
-    return maxConstrained;
-  }
-
-  public void setVariables(List<Variable> variables) {
-    this.variables = variables;
   }
 
   // GraphColoringButtonListener ///////////////////////
@@ -108,7 +116,7 @@ public class GraphColoringPuzzle implements AStarCspPuzzle {
 
   @Override
   public void visualize() {
-    for(Variable variable : variables){
+    for (Variable variable : variables) {
       variable.update();
     }
     graphColoring.getAdapter().notifyDataChanged();
@@ -148,7 +156,7 @@ public class GraphColoringPuzzle implements AStarCspPuzzle {
   @Override
   public Variable getSuccessor() {
     Variable successor;
-//    successor = getMostConstrained();
+//    successor = getMinimalDomain(getMostConstrained());
     successor = getMinimalDomain();
     return successor;
   }

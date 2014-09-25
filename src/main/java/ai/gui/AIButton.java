@@ -1,5 +1,6 @@
 package ai.gui;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -10,8 +11,14 @@ import javax.swing.*;
  */
 public class AIButton extends JButton {
 
+  public AIButton(String name){
+    this();
+    setName(name);
+    setText(name);
+  }
   public AIButton() {
     super();
+    setPreferredSize(new Dimension(100,25));
     setBorder(BorderFactory.createEmptyBorder());
     setBackground(Theme.getButtonBackground());
     setForeground(Theme.getButtonForeground());
