@@ -14,21 +14,20 @@ import ai.gui.AICanvas;
 import ai.gui.AICheckBox;
 import ai.gui.AIComboBox;
 import ai.gui.AIContiniousScrollPane;
-import ai.gui.AIGraphCanvas;
 import ai.gui.AIGui;
 import ai.gui.AISlider;
 import ai.gui.AITextArea;
 import ai.gui.AITextField;
 import ai.models.AIAdapter;
-import ai.models.graph.ColorNode;
+import ai.models.grid.Tile;
 import algorithms.a_star.AStar;
 import algorithms.csp.CspButtonListener;
-import puzzles.graph_coloring.GraphColoringUtils;
+import puzzles.flow.FlowUtils;
 
 /**
  * Created by Patrick on 23.08.2014.
  */
-public class FlowGui extends AIGui {
+public class FlowGui extends AIGui<Tile> {
 
   private static final String TAG = FlowGui.class.getSimpleName();
   private AIButton resetButton;
@@ -37,11 +36,10 @@ public class FlowGui extends AIGui {
 
   private JPanel mainPanel;
 
-  private AIGraphCanvas drawingCanvas;
+  private ai.gui.AIGridCanvas drawingCanvas;
   private AITextArea inputField;
   private AITextField logField;
   private AITextField statusField;
-  private AITextField kField;
   private AIComboBox sampleComboBox;
   private AISlider stepSlider;
   private AICheckBox labelsCheckbox;
@@ -58,7 +56,7 @@ public class FlowGui extends AIGui {
       int i = cb.getSelectedIndex();
       listener.sampleSelected(i);
       try {
-        inputField.setText(GraphColoringUtils.samples.get(i));
+        inputField.setText(FlowUtils.samples.get(i));
       } catch (IndexOutOfBoundsException ex) {
         Log.v(TAG, "no such sample!");
       }
@@ -94,7 +92,7 @@ public class FlowGui extends AIGui {
   }
 
 
-  public void setAdapter(AIAdapter<ColorNode> adapter) {
+  public void setAdapter(AIAdapter<Tile> adapter) {
 
 //    setAdapter.setOrigin(minX, minY);
 
@@ -105,10 +103,6 @@ public class FlowGui extends AIGui {
 
   public String getInput() {
     return inputField.getText().trim();
-  }
-
-  public String getK() {
-    return kField.getText().trim();
   }
 
   public void setListener(CspButtonListener listener) {

@@ -11,8 +11,10 @@ import algorithms.csp.canonical_utils.Variable;
  */
 public class FlowCspPuzzle implements AStarCspPuzzle {
 
-  public FlowCspPuzzle(Flow flow) {
+  private final Flow flow;
 
+  public FlowCspPuzzle(Flow flow) {
+    this.flow = flow;
   }
 
   @Override

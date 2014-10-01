@@ -10,13 +10,13 @@ import javax.swing.*;
 
 import ai.Log;
 import ai.models.AIAdapter;
-import ai.models.graph.ColorNode;
+import ai.models.Node;
 import algorithms.csp.CspButtonListener;
 
 /**
  * Created by Patrick on 08.09.2014.
  */
-public abstract class AIGui {
+public abstract class AIGui<T extends Node> {
 
   private static final String TAG = AIGui.class.getSimpleName();
   protected CspButtonListener listener;
@@ -35,7 +35,7 @@ public abstract class AIGui {
     frame.setVisible(true);
   }
 
-  public void setAdapter(AIAdapter<ColorNode> adapter) {
+  public void setAdapter(AIAdapter<T> adapter) {
 
 //    setAdapter.setOrigin(minX, minY);
 

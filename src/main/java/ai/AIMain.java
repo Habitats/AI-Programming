@@ -9,7 +9,9 @@ import ai.gui.AICanvas;
 import ai.gui.AIGui;
 import ai.gui.AIPanel;
 import ai.gui.AITextArea;
+import puzzles.flow.Flow;
 import puzzles.graph_coloring.GraphColoring;
+import puzzles.nono.Nono;
 import puzzles.shortestpath.ShortestPath;
 
 /**
@@ -40,10 +42,16 @@ public class AIMain {
         panel.setPreferredSize(new Dimension(300, 200));
         AIButton shortestPathButton = new AIButton("Shortest Path");
         AIButton graphColoringButton = new AIButton("Graph Coloring");
+        AIButton flowButton = new AIButton("Flow Free");
+        AIButton nonoButton = new AIButton("Nonogram");
         shortestPathButton.addActionListener(e -> shortestPath());
         graphColoringButton.addActionListener(e -> graphColoring());
+        flowButton.addActionListener(e -> flow());
+        nonoButton.addActionListener(e -> nono());
         panel.add(shortestPathButton);
         panel.add(graphColoringButton);
+        panel.add(flowButton);
+        panel.add(nonoButton);
         super.buildFrame(panel, null, null);
       }
 
@@ -62,6 +70,14 @@ public class AIMain {
         return null;
       }
     }.init();
+  }
+
+  private static void nono() {
+    new Thread(new Nono()).start();
+  }
+
+  private static void flow() {
+    new Thread(new Flow()).start();
   }
 
   public static void shortestPath() {

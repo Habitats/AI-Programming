@@ -27,7 +27,7 @@ import puzzles.graph_coloring.GraphColoringUtils;
 /**
  * Created by Patrick on 23.08.2014.
  */
-public class GraphColoringGui extends AIGui {
+public class GraphColoringGui extends AIGui<ColorNode> {
 
   private static final String TAG = GraphColoringGui.class.getSimpleName();
   private AIButton resetButton;
