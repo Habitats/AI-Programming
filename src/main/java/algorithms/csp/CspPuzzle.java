@@ -2,7 +2,6 @@ package algorithms.csp;
 
 import java.util.List;
 
-import ai.gui.AIGui;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Variable;
 
@@ -25,8 +24,6 @@ public interface CspPuzzle {
   String getId();
 
   Variable getVariable(String id);
-
-  void setGui(AIGui gui);
 
   List<Variable> generateVariables();
 

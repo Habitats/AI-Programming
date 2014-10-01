@@ -87,7 +87,6 @@ public abstract class AStarCsp<T extends Node> implements CspButtonListener, Run
 
   protected AStarCspPuzzle getPuzzleFromInput(String input) {
     AStarCspPuzzle puzzle = generateCspPuzzle();
-    puzzle.setGui(getGui());
 
     AIAdapter<T> graph = generateAdapter(input);
     setAdapter(graph);

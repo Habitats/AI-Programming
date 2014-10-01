@@ -95,10 +95,7 @@ public class TestGACProblem implements CspPuzzle {
     return null;
   }
 
-  @Override
-  public void setGui(AIGui gui) {
 
-  }
 
   @Override
   public List<Variable> generateVariables() {

@@ -18,17 +18,11 @@ public class GraphColoringPuzzle implements AStarCspPuzzle {
 
 
   private final GraphColoring graphColoring;
-  private GraphColoringGui gui;
   public static int K = 6;
   private List<Variable> variables;
 
   public GraphColoringPuzzle(GraphColoring graphColoring) {
     this.graphColoring = graphColoring;
-  }
-
-
-  public void setGui(AIGui gui) {
-    this.gui = (GraphColoringGui) gui;
   }
 
   public List<Variable> generateVariables() {

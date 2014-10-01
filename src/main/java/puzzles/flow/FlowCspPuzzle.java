@@ -46,10 +46,7 @@ public class FlowCspPuzzle implements AStarCspPuzzle {
     return null;
   }
 
-  @Override
-  public void setGui(AIGui gui) {
 
-  }
 
   @Override
   public List<Variable> generateVariables() {
