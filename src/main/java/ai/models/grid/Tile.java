@@ -5,7 +5,7 @@ import ai.models.Node;
 /**
  * Created by Patrick on 24.08.2014.
  */
-public class Tile extends Node<Node>{
+public class Tile extends Node<Node> {
 
   public final int x;
   public final int y;

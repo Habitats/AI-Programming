@@ -21,8 +21,8 @@ import ai.gui.AITextField;
 import ai.models.AIAdapter;
 import ai.models.graph.ColorNode;
 import algorithms.a_star.AStar;
-import puzzles.graph_coloring.GraphColoringUtils;
 import algorithms.csp.CspButtonListener;
+import puzzles.graph_coloring.GraphColoringUtils;
 
 /**
  * Created by Patrick on 23.08.2014.

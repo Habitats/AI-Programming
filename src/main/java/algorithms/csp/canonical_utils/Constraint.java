@@ -84,6 +84,6 @@ public class Constraint implements Iterable<Variable> {
 
 
   public boolean isSatisfied(List<Variable> variables) {
-   return function.call(variables);
+    return function.call(variables);
   }
 }

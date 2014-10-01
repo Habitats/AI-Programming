@@ -64,7 +64,7 @@ public class BoardNode extends AStarNode {
 
   @Override
   public void generateHeuristic() {
-    int distance = euclideanDistance(this.getTile(),  board.getGoal());
+    int distance = euclideanDistance(this.getTile(), board.getGoal());
 //    int distance = manhattanDistance(this, (BoardNode) goal);
     setHeuristic(distance);
   }

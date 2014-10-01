@@ -62,9 +62,8 @@ public class GraphColoringConstraintManager {
 
     setConstraints(new ArrayList<>(constraints.values()));
 
-    Log.i(TAG,
-          "... finished generating " + constraints.size() + " constraints and filtered out " + (count - constraints.size())
-          + " duplicates!");
+    Log.i(TAG, "... finished generating " + constraints.size() + " constraints and filtered out " + (count - constraints
+              .size()) + " duplicates!");
 
     generateVariableCounts();
   }

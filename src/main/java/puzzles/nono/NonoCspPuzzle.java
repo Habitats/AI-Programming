@@ -2,7 +2,6 @@ package puzzles.nono;
 
 import java.util.List;
 
-import ai.gui.AIGui;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Variable;
@@ -45,7 +44,6 @@ public class NonoCspPuzzle implements AStarCspPuzzle {
   public Variable getVariable(String id) {
     return null;
   }
-
 
 
   @Override

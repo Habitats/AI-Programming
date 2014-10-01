@@ -8,5 +8,6 @@ public interface VariableListener {
   void onValueChanged(int value, int size);
 
   void onAssumptionMade(int value);
+
   void onDomainChanged(Domain domain);
 }

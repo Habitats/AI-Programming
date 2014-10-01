@@ -92,7 +92,7 @@ public class Function {
 
   private boolean call(List<Variable> variables, Map<String, Variable> variablesMap) {
     // put the values in the right order according to how the parameters for the lambda was created
-    PyInteger[] args = new PyInteger[variablesMap.size() ];
+    PyInteger[] args = new PyInteger[variablesMap.size()];
     int i = 0;
     for (String key : variablesMap.keySet()) {
       args[i++] = new PyInteger(variablesMap.get(key).getValue());

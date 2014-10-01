@@ -11,14 +11,15 @@ import javax.swing.*;
  */
 public class AIButton extends JButton {
 
-  public AIButton(String name){
+  public AIButton(String name) {
     this();
     setName(name);
     setText(name);
   }
+
   public AIButton() {
     super();
-    setPreferredSize(new Dimension(100,25));
+    setPreferredSize(new Dimension(100, 25));
     setBorder(BorderFactory.createEmptyBorder());
     setBackground(Theme.getButtonBackground());
     setForeground(Theme.getButtonForeground());

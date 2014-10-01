@@ -16,7 +16,7 @@ import puzzles.shortestpath.utils.InputUtils;
 /**
  * Created by Patrick on 04.09.2014.
  */
-public class ShortestPath implements ShortestPathButtonListener , Runnable{
+public class ShortestPath implements ShortestPathButtonListener, Runnable {
 
   private static final String TAG = AIMain.class.getSimpleName();
   private ShortestPathGui gui;

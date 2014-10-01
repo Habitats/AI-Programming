@@ -11,7 +11,6 @@ import algorithms.csp.canonical_utils.Variable;
 public interface CspPuzzle {
 
 
-
   List<Constraint> getConstraints();
 
   List<Variable> getVariables();

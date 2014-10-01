@@ -52,7 +52,6 @@ public class Board extends AIAdapter<Tile> implements Iterable<List<Tile>> {
   }
 
 
-
   @Override
   public Iterator<List<Tile>> iterator() {
     return tiles.iterator();

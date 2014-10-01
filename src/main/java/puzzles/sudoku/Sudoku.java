@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ai.Log;
-import ai.gui.AIGui;
 import algorithms.csp.CspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Domain;
@@ -183,7 +182,6 @@ public class Sudoku implements CspPuzzle {
   public Variable getVariable(String id) {
     return null;
   }
-
 
 
   @Override

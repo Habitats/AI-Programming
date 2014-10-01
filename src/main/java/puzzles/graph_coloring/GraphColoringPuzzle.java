@@ -3,13 +3,11 @@ package puzzles.graph_coloring;
 import java.util.ArrayList;
 import java.util.List;
 
-import ai.gui.AIGui;
 import ai.models.graph.ColorNode;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Domain;
 import algorithms.csp.canonical_utils.Variable;
-import puzzles.graph_coloring.gui.GraphColoringGui;
 
 /**
  * Created by Patrick on 08.09.2014.
