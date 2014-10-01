@@ -3,8 +3,7 @@ package algorithms.a_star_csp;
 import ai.Log;
 import ai.gui.AIGui;
 import ai.models.AIAdapter;
-import ai.models.graph.ColorNode;
-import ai.models.graph.Graph;
+import ai.models.Node;
 import algorithms.a_star.AStar;
 import algorithms.a_star.AStarCallback;
 import algorithms.a_star.AStarNode;
@@ -13,7 +12,7 @@ import algorithms.csp.CspButtonListener;
 /**
  * Created by Patrick on 01.10.2014.
  */
-public abstract class AStarCsp implements CspButtonListener, Runnable {
+public abstract class AStarCsp<T extends Node> implements CspButtonListener, Runnable {
 
   private static final String TAG = AStarCsp.class.getSimpleName();
   private AStar astar;
@@ -79,9 +78,9 @@ public abstract class AStarCsp implements CspButtonListener, Runnable {
 
   protected abstract AStarCspPuzzle generateCspPuzzle();
 
-  protected abstract void initializeAdapter(AStarCspPuzzle puzzle, AIAdapter<ColorNode> graph);
+  protected abstract void generateConstraints(AStarCspPuzzle puzzle, AIAdapter<T> graph);
 
-  protected abstract Graph<ColorNode> generateAdapter(String input);
+  protected abstract AIAdapter<T> generateAdapter(String input);
 
   abstract protected AStarCspPuzzle getSamplePuzzle(int i);
 
@@ -90,10 +89,10 @@ public abstract class AStarCsp implements CspButtonListener, Runnable {
     AStarCspPuzzle puzzle = generateCspPuzzle();
     puzzle.setGui(getGui());
 
-    AIAdapter<ColorNode> graph = generateAdapter(input);
+    AIAdapter<T> graph = generateAdapter(input);
     setAdapter(graph);
     puzzle.setVariables(puzzle.generateVariables());
-    initializeAdapter(puzzle, graph);
+    generateConstraints(puzzle, graph);
 
     return puzzle;
   }
@@ -115,7 +114,7 @@ public abstract class AStarCsp implements CspButtonListener, Runnable {
 //    this.puzzle = getSamplePuzzle(i);
   }
 
-  public AIAdapter<ColorNode> getAdapter() {
+  public AIAdapter<T> getAdapter() {
     return adapter;
   }
 }

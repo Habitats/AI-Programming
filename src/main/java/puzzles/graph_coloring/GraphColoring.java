@@ -3,7 +3,6 @@ package puzzles.graph_coloring;
 import ai.AIMain;
 import ai.models.AIAdapter;
 import ai.models.graph.ColorNode;
-import ai.models.graph.Graph;
 import algorithms.a_star_csp.AStarCsp;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import puzzles.graph_coloring.gui.GraphColoringGui;
@@ -27,11 +26,11 @@ public class GraphColoring extends AStarCsp {
 
   @Override
   protected void initializeAdapter(AStarCspPuzzle puzzle, AIAdapter<ColorNode> graph) {
-    GraphColoringConstraintManager.getManager().initialize(graph, puzzle.getVariables());
+    GraphColoringConstraintManager.getManager().generateConstraints(graph, puzzle.getVariables());
   }
 
   @Override
-  protected Graph<ColorNode> generateAdapter(String input) {
+  protected AIAdapter<ColorNode> generateAdapter(String input) {
     return GraphColoringUtils.generateGraph(input);
   }
 

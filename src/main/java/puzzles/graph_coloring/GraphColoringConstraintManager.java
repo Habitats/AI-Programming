@@ -91,7 +91,7 @@ public class GraphColoringConstraintManager {
   }
 
 
-  public void initialize(AIAdapter graph, List<Variable> variables) {
+  public void generateConstraints(AIAdapter graph, List<Variable> variables) {
     generateConstraints(graph, variables);
   }
 

@@ -127,7 +127,7 @@ public class ShortestPath implements ShortestPathButtonListener , Runnable{
 
   @Override
   public void run() {
-    // initialize the GUI
+    // generateConstraints the GUI
     gui = new ShortestPathGui();
     gui.setListener(ShortestPath.this);
 

@@ -1,9 +1,11 @@
 package ai.models.grid;
 
+import ai.models.Node;
+
 /**
  * Created by Patrick on 24.08.2014.
  */
-public class Tile {
+public class Tile extends Node<Node>{
 
   public final int x;
   public final int y;
@@ -46,6 +48,11 @@ public class Tile {
 
   public State getState() {
     return state;
+  }
+
+  @Override
+  public int compareTo(Node o) {
+    return 0;
   }
 
   public enum State {
