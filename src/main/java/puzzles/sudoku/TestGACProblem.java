@@ -1,4 +1,4 @@
-package puzzles.gac;
+package puzzles.sudoku;
 
 import java.util.ArrayList;
 import java.util.List;

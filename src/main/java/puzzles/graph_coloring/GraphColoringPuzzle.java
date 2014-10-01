@@ -3,6 +3,7 @@ package puzzles.graph_coloring;
 import java.util.ArrayList;
 import java.util.List;
 
+import ai.gui.AIGui;
 import ai.models.graph.ColorNode;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
@@ -26,8 +27,8 @@ public class GraphColoringPuzzle implements AStarCspPuzzle {
   }
 
 
-  public void setGui(GraphColoringGui gui) {
-    this.gui = gui;
+  public void setGui(AIGui gui) {
+    this.gui = (GraphColoringGui) gui;
   }
 
   public List<Variable> generateVariables() {

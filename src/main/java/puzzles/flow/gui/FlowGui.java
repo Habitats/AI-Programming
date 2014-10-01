@@ -1,4 +1,4 @@
-package puzzles.graph_coloring.gui;
+package puzzles.flow.gui;
 
 import java.awt.*;
 import java.io.File;
@@ -13,6 +13,7 @@ import ai.gui.AIButton;
 import ai.gui.AICheckBox;
 import ai.gui.AIComboBox;
 import ai.gui.AIContiniousScrollPane;
+import ai.gui.AIGraphCanvas;
 import ai.gui.AIGui;
 import ai.gui.AISlider;
 import ai.gui.AITextArea;
@@ -26,16 +27,16 @@ import algorithms.csp.CspButtonListener;
 /**
  * Created by Patrick on 23.08.2014.
  */
-public class GraphColoringGui extends AIGui {
+public class FlowGui extends AIGui {
 
-  private static final String TAG = GraphColoringGui.class.getSimpleName();
+  private static final String TAG = FlowGui.class.getSimpleName();
   private AIButton resetButton;
   private AIButton loadButton;
   private AIButton stepButton;
 
   private JPanel mainPanel;
 
-  private ai.gui.AIGridCanvas drawingCanvas;
+  private AIGraphCanvas drawingCanvas;
   private AITextArea inputField;
   private AITextField logField;
   private AITextField statusField;
@@ -49,7 +50,7 @@ public class GraphColoringGui extends AIGui {
 
   private CspButtonListener listener;
 
-  public GraphColoringGui() {
+  public FlowGui() {
     buildFrame(mainPanel, log, statusField);
     sampleComboBox.addActionListener(e -> {
       JComboBox cb = (JComboBox) e.getSource();

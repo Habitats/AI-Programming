@@ -1,4 +1,4 @@
-package puzzles.graph_coloring.gui;
+package puzzles.nono.gui;
 
 import java.awt.*;
 import java.io.File;
@@ -26,9 +26,9 @@ import algorithms.csp.CspButtonListener;
 /**
  * Created by Patrick on 23.08.2014.
  */
-public class GraphColoringGui extends AIGui {
+public class NonoGui extends AIGui {
 
-  private static final String TAG = GraphColoringGui.class.getSimpleName();
+  private static final String TAG = NonoGui.class.getSimpleName();
   private AIButton resetButton;
   private AIButton loadButton;
   private AIButton stepButton;
@@ -49,7 +49,7 @@ public class GraphColoringGui extends AIGui {
 
   private CspButtonListener listener;
 
-  public GraphColoringGui() {
+  public NonoGui() {
     buildFrame(mainPanel, log, statusField);
     sampleComboBox.addActionListener(e -> {
       JComboBox cb = (JComboBox) e.getSource();

@@ -1,4 +1,4 @@
-package puzzles.graph_coloring.gui.interfaces;
+package algorithms.csp;
 
 /**
  * Created by Patrick on 24.08.2014.

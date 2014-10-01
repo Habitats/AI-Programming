@@ -1,4 +1,4 @@
-package puzzles.graph_coloring;
+package puzzles.nono;
 
 import ai.AIMain;
 import ai.Log;
@@ -8,28 +8,24 @@ import algorithms.a_star.AStar;
 import algorithms.a_star.AStarCallback;
 import algorithms.a_star.AStarNode;
 import algorithms.a_star_csp.AStarCspNode;
-import algorithms.csp.CspPuzzle;
-import algorithms.csp.GeneralArchConsistency;
-import puzzles.sudoku.Sudoku;
-import puzzles.graph_coloring.gui.GraphColoringGui;
 import algorithms.csp.CspButtonListener;
+import puzzles.nono.gui.NonoGui;
 
 /**
- * Created by anon on 22.09.2014.
+ * Created by Patrick on 01.10.2014.
  */
-public class GraphColoring implements CspButtonListener, Runnable {
+public class Nono implements CspButtonListener, Runnable {
 
   public static final String TAG = AIMain.class.getSimpleName();
-  private GraphColoringGui gui;
-  private GraphColoringPuzzle puzzle;
-  public static int assumption_count;
+  private NonoGui gui;
+  private NonoCspPuzzle puzzle;
   private AStar astar;
   private AIAdapter adapter;
 
 
   @Override
   public void run() {
-    gui = new GraphColoringGui();
+    gui = new NonoGui();
     gui.setListener(this);
   }
 
@@ -58,14 +54,6 @@ public class GraphColoring implements CspButtonListener, Runnable {
     astar.runInBackground();
   }
 
-  private void sudokuGac() {
-    CspPuzzle sudoku = new Sudoku();
-
-    GeneralArchConsistency.domainFilter(sudoku);
-
-    sudoku.visualize();
-  }
-
   @Override
   public void resetClicked() {
     astar.terminate();
@@ -73,34 +61,25 @@ public class GraphColoring implements CspButtonListener, Runnable {
 
   @Override
   public void loadClicked() {
-    //    new ShortestPath();
-    assumption_count = 0;
-    GraphColoringPuzzle.K = Integer.parseInt(gui.getK());
     String input = gui.getInput();
     puzzle = getPuzzleFromInput(input);
     astarCsp();
-
-//    sudokuGac();
-//    graphcColoringGac();
   }
 
-  private GraphColoringPuzzle getPuzzleFromInput(String input) {
-    GraphColoringPuzzle puzzle = new GraphColoringPuzzle(this);
+  private NonoCspPuzzle getPuzzleFromInput(String input) {
+    NonoCspPuzzle puzzle = new NonoCspPuzzle(this);
     puzzle.setGui(gui);
 
-    AIAdapter<ColorNode> graph = GraphColoringUtils.generateGraph(input);
-    setAdapter(graph);
     puzzle.setVariables(puzzle.generateVariables());
-    GraphColoringConstraintManager.getManager().initialize(graph, puzzle.getVariables());
 
     return puzzle;
   }
 
-  public GraphColoringPuzzle getSamplePuzzle(int i) {
-    if (i >= GraphColoringUtils.samples.size()) {
+  public NonoCspPuzzle getSamplePuzzle(int i) {
+    if (i >= NonoUtils.samples.size()) {
       return null;
     }
-    return getPuzzleFromInput(GraphColoringUtils.samples.get(i));
+    return getPuzzleFromInput(NonoUtils.samples.get(i));
   }
 
   @Override
