@@ -37,7 +37,7 @@ public class GraphColoringConstraintManager {
   //  c1: a != b
   //  c2: a != c
   //  c3: a != d
-  private void generateConstraints(AIAdapter<ColorNode> graph, List<Variable> variables) {
+  public void generateConstraints(AIAdapter<ColorNode> graph, List<Variable> variables) {
     Log.v(TAG, "Generating constraints ...");
     HashMap<String, Constraint> constraints = new HashMap<>();
     int count = 0;
@@ -90,10 +90,6 @@ public class GraphColoringConstraintManager {
     return constraints;
   }
 
-
-  public void generateConstraints(AIAdapter graph, List<Variable> variables) {
-    generateConstraints(graph, variables);
-  }
 
   public void setConstraints(ArrayList<Constraint> constraints) {
     this.constraints.clear();

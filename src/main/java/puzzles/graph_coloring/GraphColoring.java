@@ -10,7 +10,7 @@ import puzzles.graph_coloring.gui.GraphColoringGui;
 /**
  * Created by anon on 22.09.2014.
  */
-public class GraphColoring extends AStarCsp {
+public class GraphColoring extends AStarCsp<ColorNode> {
 
   public static final String TAG = AIMain.class.getSimpleName();
 
@@ -25,8 +25,9 @@ public class GraphColoring extends AStarCsp {
   }
 
   @Override
-  protected void initializeAdapter(AStarCspPuzzle puzzle, AIAdapter<ColorNode> graph) {
+  protected void generateConstraints(AStarCspPuzzle puzzle, AIAdapter<ColorNode> graph) {
     GraphColoringConstraintManager.getManager().generateConstraints(graph, puzzle.getVariables());
+
   }
 
   @Override
