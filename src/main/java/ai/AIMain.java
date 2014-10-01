@@ -5,8 +5,10 @@ import java.awt.*;
 import javax.swing.*;
 
 import ai.gui.AIButton;
+import ai.gui.AICanvas;
 import ai.gui.AIGui;
 import ai.gui.AIPanel;
+import ai.gui.AITextArea;
 import puzzles.graph_coloring.GraphColoring;
 import puzzles.shortestpath.ShortestPath;
 
@@ -43,6 +45,21 @@ public class AIMain {
         panel.add(shortestPathButton);
         panel.add(graphColoringButton);
         super.buildFrame(panel, null, null);
+      }
+
+      @Override
+      public JPanel getMainPanel() {
+        return null;
+      }
+
+      @Override
+      public AICanvas getDrawingCanvas() {
+        return null;
+      }
+
+      @Override
+      public AITextArea getInputField() {
+        return null;
       }
     }.init();
   }

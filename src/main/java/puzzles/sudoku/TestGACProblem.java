@@ -3,6 +3,7 @@ package puzzles.sudoku;
 import java.util.ArrayList;
 import java.util.List;
 
+import ai.gui.AIGui;
 import algorithms.csp.CspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Domain;
@@ -92,6 +93,21 @@ public class TestGACProblem implements CspPuzzle {
   @Override
   public Variable getVariable(String id) {
     return null;
+  }
+
+  @Override
+  public void setGui(AIGui gui) {
+
+  }
+
+  @Override
+  public List<Variable> generateVariables() {
+    return null;
+  }
+
+  @Override
+  public void setVariables(List<Variable> aVoid) {
+
   }
 
 

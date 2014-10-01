@@ -10,6 +10,7 @@ import javax.swing.event.ChangeListener;
 
 import ai.Log;
 import ai.gui.AIButton;
+import ai.gui.AICanvas;
 import ai.gui.AICheckBox;
 import ai.gui.AIComboBox;
 import ai.gui.AIContiniousScrollPane;
@@ -35,7 +36,7 @@ public class GraphColoringGui extends AIGui {
 
   private JPanel mainPanel;
 
-  private ai.gui.AIGridCanvas drawingCanvas;
+  private ai.gui.AIGraphCanvas drawingCanvas;
   private AITextArea inputField;
   private AITextField logField;
   private AITextField statusField;
@@ -121,5 +122,24 @@ public class GraphColoringGui extends AIGui {
   @Override
   protected Dimension getPreferredSize() {
     return new Dimension(900, 700);
+  }
+
+  @Override
+  public JPanel getMainPanel() {
+    return mainPanel;
+  }
+
+  @Override
+  public AICanvas getDrawingCanvas() {
+    return drawingCanvas;
+  }
+
+  @Override
+  public AITextArea getInputField() {
+    return inputField;
+  }
+
+  private void createUIComponents() {
+    // TODO: place custom component creation code here
   }
 }

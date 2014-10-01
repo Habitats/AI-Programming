@@ -9,21 +9,21 @@ import java.nio.file.Paths;
 import javax.swing.*;
 
 import ai.Log;
+import ai.models.AIAdapter;
+import ai.models.graph.ColorNode;
+import algorithms.csp.CspButtonListener;
 
 /**
  * Created by Patrick on 08.09.2014.
  */
 public abstract class AIGui {
 
+  private static final String TAG = AIGui.class.getSimpleName();
+  protected CspButtonListener listener;
   private JFrame frame;
 
   protected void buildFrame(JPanel mainPanel, AIContiniousScrollPane log, AITextField statusField) {
-//    JFrame.setDefaultLookAndFeelDecorated(true);
-//    try {
-//      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//    } catch (Exception e) {
-//      Log.v(TAG, "invalid look and feel");
-//    }
+
     frame = new JFrame();
     mainPanel.setPreferredSize(getPreferredSize());
     Log.setLogField(log);
@@ -33,6 +33,23 @@ public abstract class AIGui {
     frame.pack();
     frame.setLocationRelativeTo(frame.getRootPane());
     frame.setVisible(true);
+  }
+
+  public void setAdapter(AIAdapter<ColorNode> adapter) {
+
+//    setAdapter.setOrigin(minX, minY);
+
+    getDrawingCanvas().setAdapter(adapter);
+    Log.v(TAG, "setting setAdapter!" + adapter);
+    getMainPanel().repaint();
+  }
+
+  public String getInput() {
+    return getInputField().getText().trim();
+  }
+
+  public void setListener(CspButtonListener listener) {
+    this.listener = listener;
   }
 
   protected abstract int getDefaultCloseOperation();
@@ -53,6 +70,12 @@ public abstract class AIGui {
     return frame;
   }
 
-protected void init() {
+  protected void init() {
   }
+
+  public abstract JPanel getMainPanel();
+
+  public abstract AICanvas getDrawingCanvas();
+
+  public abstract AITextArea getInputField();
 }

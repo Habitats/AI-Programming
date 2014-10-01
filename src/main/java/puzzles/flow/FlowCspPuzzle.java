@@ -2,6 +2,7 @@ package puzzles.flow;
 
 import java.util.List;
 
+import ai.gui.AIGui;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Variable;
@@ -43,6 +44,21 @@ public class FlowCspPuzzle implements AStarCspPuzzle {
   @Override
   public Variable getVariable(String id) {
     return null;
+  }
+
+  @Override
+  public void setGui(AIGui gui) {
+
+  }
+
+  @Override
+  public List<Variable> generateVariables() {
+    return null;
+  }
+
+  @Override
+  public void setVariables(List<Variable> aVoid) {
+
   }
 
   @Override

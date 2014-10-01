@@ -10,6 +10,7 @@ import javax.swing.event.ChangeListener;
 
 import ai.Log;
 import ai.gui.AIButton;
+import ai.gui.AICanvas;
 import ai.gui.AICheckBox;
 import ai.gui.AIComboBox;
 import ai.gui.AIContiniousScrollPane;
@@ -135,5 +136,20 @@ public class ShortestPathGui extends AIGui {
   @Override
   protected Dimension getPreferredSize() {
     return new Dimension(900, 700);
+  }
+
+  @Override
+  public JPanel getMainPanel() {
+    return mainPanel;
+  }
+
+  @Override
+  public AICanvas getDrawingCanvas() {
+    return drawingCanvas;
+  }
+
+  @Override
+  public AITextArea getInputField() {
+    return inputField;
   }
 }

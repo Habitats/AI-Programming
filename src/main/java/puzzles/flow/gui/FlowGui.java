@@ -10,6 +10,7 @@ import javax.swing.event.ChangeListener;
 
 import ai.Log;
 import ai.gui.AIButton;
+import ai.gui.AICanvas;
 import ai.gui.AICheckBox;
 import ai.gui.AIComboBox;
 import ai.gui.AIContiniousScrollPane;
@@ -21,8 +22,8 @@ import ai.gui.AITextField;
 import ai.models.AIAdapter;
 import ai.models.graph.ColorNode;
 import algorithms.a_star.AStar;
-import puzzles.graph_coloring.GraphColoringUtils;
 import algorithms.csp.CspButtonListener;
+import puzzles.graph_coloring.GraphColoringUtils;
 
 /**
  * Created by Patrick on 23.08.2014.
@@ -122,5 +123,20 @@ public class FlowGui extends AIGui {
   @Override
   protected Dimension getPreferredSize() {
     return new Dimension(900, 700);
+  }
+
+  @Override
+  public JPanel getMainPanel() {
+    return mainPanel;
+  }
+
+  @Override
+  public AICanvas getDrawingCanvas() {
+    return drawingCanvas;
+  }
+
+  @Override
+  public AITextArea getInputField() {
+    return inputField;
   }
 }
