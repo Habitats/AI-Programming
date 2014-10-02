@@ -1,4 +1,2 @@
 rootProject.name = 'ai_prog'
 
-include 'algorithms.a_star'
-

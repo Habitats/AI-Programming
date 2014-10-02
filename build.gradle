@@ -4,6 +4,8 @@ apply plugin: 'application'
 version = '1.0'
 mainClassName = "ai.AIMain"
 libsDirName = '../'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
