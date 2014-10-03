@@ -39,45 +39,19 @@ public class AIGridCanvas extends AICanvas {
     int x = tile.x * tileWidth;
     int y = getHeight() - tileHeight - tile.y * tileHeight;
 
-    switch (tile.getState()) {
-      case OBSTICLE:
-        g.setColor(Theme.getButtonBackground());
-        g.fillRect(x, y, tileWidth, tileHeight);
-        break;
-      case OUTLINE:
-        g.setColor(Color.RED);
-        g.drawRect(x, y, tileWidth, tileHeight);
-        break;
-      case EMPTY:
-        g.setColor(Theme.getBackground());
-        g.fillRect(x, y, tileWidth, tileHeight);
-        break;
-      case START:
-        g.setColor(Color.BLUE);
-        g.fillRect(x, y, tileWidth, tileHeight);
-        break;
-      case GOAL:
-        g.setColor(Color.ORANGE);
-        g.fillRect(x, y, tileWidth, tileHeight);
-        break;
-      case PATH:
-        g.setColor(Color.RED);
-        g.fillRect(x, y, tileWidth, tileHeight);
-        break;
-      case CHILDREN:
-        g.setColor(Theme.getButtonHover());
-        g.fillRect(x, y, tileWidth, tileHeight);
-        break;
-      case CURRENT:
-        g.setColor(Color.MAGENTA);
-        g.fillRect(x, y, tileWidth, tileHeight);
-    }
+    drawTile(g, tile, x, y);
+
     if (drawLabels) {
       drawStringCenter(g, tile.getText(), x, y);
     }
     if (ShortestPathGui.DRAW_OUTLINES) {
       drawOutline(g, x, y);
     }
+  }
+
+  private void drawTile(Graphics g, Tile tile, int x, int y) {
+    g.setColor(tile.getColor());
+    g.fillRect(x, y, tileWidth, tileHeight);
   }
 
   @Override

@@ -10,81 +10,72 @@ import ai.models.AIAdapter;
 /**
  * Created by Patrick on 24.08.2014.
  */
-public class Board extends AIAdapter<Tile> implements Iterable<List<Tile>> {
+public class Board<T extends Tile> extends AIAdapter<T> implements Iterable<List<T>> {
 
-  private List<List<Tile>> tiles;
-  private Tile start;
-  private Tile goal;
+  private List<List<T>> tiles;
+  private T start;
+  private T goal;
 
-  public void set(int x, int y, int widthSpan, int heightSpan, Tile.State state) {
-    for (int w = 0; w < widthSpan; w++) {
-      for (int h = 0; h < heightSpan; h++) {
-        set(x + w, y + h, state);
-      }
-    }
+  public Board(int width, int height) {
+    clear(width, height);
   }
 
-  public void set(int x, int y, Tile.State state) {
-    Tile tile = new Tile(x, y, state);
-    set(tile);
-  }
-
-  public void initEmptyBoard(int width, int height) {
+  private void clear(int width, int height) {
     setWidth(width);
     setHeight(height);
     tiles = new ArrayList<>();
-    for (int x = 0; x < width; x++) {
-      List<Tile> column = new ArrayList<>();
-      for (int y = 0; y < height; y++) {
-        column.add(new Tile(x, y));
+    for (int h = 0; h < height; h++) {
+      List<T> column = new ArrayList<>(width);
+      for (int w = 0; w < width; w++) {
+        column.add(w, null);
       }
       tiles.add(column);
     }
-    notifyDataChanged();
   }
 
-  public void clear() {
-    initEmptyBoard(getWidth(), getHeight());
-  }
-
-  public Tile get(int x, int y) {
+  public T get(int x, int y) {
     return tiles.get(x).get(y);
   }
 
-  public void set(Tile tile) {
-    tiles.get(tile.x).get(tile.y).setState(tile.getState());
+  public void set(T tile) {
+    if (hasAvailableTile(tile.x, tile.y)) {
+      tiles.get(tile.x).get(tile.y).update(tile);
+    } else {
+      tiles.get(tile.x).set(tile.y, tile);
+    }
   }
 
 
   @Override
-  public Iterator<List<Tile>> iterator() {
+  public Iterator<List<T>> iterator() {
     return tiles.iterator();
   }
 
-  public Board setGoal(Tile goal) {
+  public Board setGoal(T goal) {
     this.goal = goal;
     set(goal);
     return this;
   }
 
-  public Board setStart(Tile start) {
+  public Board setStart(T start) {
     this.start = start;
     set(start);
     return this;
   }
 
-  public Tile getStart() {
+  public T getStart() {
     return start;
   }
 
-  public Tile getGoal() {
+  public T getGoal() {
     return goal;
   }
 
-  public boolean hasTile(int x, int y) {
+  public boolean hasAvailableTile(int x, int y) {
     try {
       Tile tile = tiles.get(x).get(y);
-      return tile.isEmpty();
+      // if not null AND is empty, return true
+      return (tile != null && tile.isEmpty());
     } catch (IndexOutOfBoundsException e) {
       return false;
     }
@@ -96,7 +87,7 @@ public class Board extends AIAdapter<Tile> implements Iterable<List<Tile>> {
   }
 
   @Override
-  public Tile getItem(int index) {
+  public T getItem(int index) {
     return null;
   }
 
@@ -110,5 +101,9 @@ public class Board extends AIAdapter<Tile> implements Iterable<List<Tile>> {
     List<Tile> items = new ArrayList<>();
     tiles.forEach(items::addAll);
     return items;
+  }
+
+  public void clear() {
+    clear(getWidth(), getHeight());
   }
 }

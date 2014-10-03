@@ -47,18 +47,6 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
     y -= minY / 100.;
   }
 
-  private Color toHsv(double i, double brightness) {
-    float hue = (float) ((i / 100.) * 360.);
-    float value = (float) (1f * brightness);
-    float sat = 0.45f;
-
-    return Color.getHSBColor(hue, sat, value);
-  }
-
-  public Color getColor() {
-    return color;
-  }
-
   @Override
   public void onValueChanged(int value, int size) {
     if (size == 1) {
@@ -80,6 +68,18 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
   @Override
   public void onDomainChanged(Domain domain) {
     desc = domain.toString();
+  }
+
+  private Color toHsv(double i, double brightness) {
+    float hue = (float) ((i / 100.) * 360.);
+    float value = (float) (1f * brightness);
+    float sat = 0.45f;
+
+    return Color.getHSBColor(hue, sat, value);
+  }
+
+  public Color getColor() {
+    return color;
   }
 
   public void setColor(Color color) {

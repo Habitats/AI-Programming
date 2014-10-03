@@ -9,9 +9,9 @@ import puzzles.shortestpath.AStarTile;
 /**
  * Created by Patrick on 24.08.2014.
  */
-public class InputUtils {
+public class AStarInputUtils {
 
-  private static final String TAG = InputUtils.class.getSimpleName();
+  private static final String TAG = AStarInputUtils.class.getSimpleName();
   private ArrayList<List<Integer>> inputList;
   //  Input for A*
   //  Index Dimensions  Start   Goal      Barriers
@@ -22,12 +22,12 @@ public class InputUtils {
   //  4     (10, 10)    (0, 0)  (9, 9)    (3, 0, 2, 7) (6, 0, 4, 4) (6, 6, 2, 4)
   //  5     (20, 20)    (0, 0)  (19, 13)  (4, 0, 4, 16) (12, 4, 2, 16) (16, 8, 4, 4)
 
-  private InputUtils(String input) {
+  private AStarInputUtils(String input) {
     setInputList(input);
   }
 
-  public static InputUtils build(String input) {
-    return new InputUtils(input);
+  public static AStarInputUtils build(String input) {
+    return new AStarInputUtils(input);
   }
 
   public AStarTile getStart() {
@@ -43,19 +43,37 @@ public class InputUtils {
   }
 
   public Board getBoard() {
-    Board board = new Board();
-    board.setWidth(inputList.get(0).get(0));
-    board.setHeight(inputList.get(0).get(1));
-    board.clear();
+    Integer boardWidth = inputList.get(0).get(0);
+    Integer boardHeight = inputList.get(0).get(1);
+    Board<AStarTile> board = generateCleanBoard(boardWidth, boardHeight);
     for (int i = 3; i < inputList.size(); i++) {
       int x = inputList.get(i).get(0);
       int y = inputList.get(i).get(1);
       int width = inputList.get(i).get(2);
       int height = inputList.get(i).get(3);
-      board.set(x, y, width, height, AStarTile.State.OBSTICLE);
+      for (int w = 0; w < width; w++) {
+        for (int h = 0; h < height; h++) {
+          AStarTile astarTile = new AStarTile(x + w, y + h, AStarTile.State.OBSTICLE);
+          board.set(astarTile);
+        }
+      }
     }
     board.setStart(getStart());
     board.setGoal(getGoal());
+    board.notifyDataChanged();
+    return board;
+  }
+
+  private Board<AStarTile> generateCleanBoard(int width, int height) {
+    Board<AStarTile> board = new Board<>(width, height);
+    board.clear();
+    for (int x = 0; x < width; x++) {
+      for (int y = 0; y < height; y++) {
+        AStarTile tile = new AStarTile(x, y, AStarTile.State.EMPTY);
+        board.set(tile);
+      }
+    }
+    board.notifyDataChanged();
     return board;
   }
 

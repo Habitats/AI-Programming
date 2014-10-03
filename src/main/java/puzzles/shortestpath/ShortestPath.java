@@ -11,7 +11,7 @@ import algorithms.a_star.AStarCallback;
 import algorithms.a_star.AStarNode;
 import puzzles.shortestpath.gui.ShortestPathGui;
 import puzzles.shortestpath.interfaces.ShortestPathButtonListener;
-import puzzles.shortestpath.utils.InputUtils;
+import puzzles.shortestpath.utils.AStarInputUtils;
 
 /**
  * Created by Patrick on 04.09.2014.
@@ -20,7 +20,7 @@ public class ShortestPath implements ShortestPathButtonListener, Runnable {
 
   private static final String TAG = AIMain.class.getSimpleName();
   private ShortestPathGui gui;
-  private Board board;
+  private Board<AStarTile> board;
   private AStar astar;
   private List<AStar> searches;
 
@@ -29,7 +29,7 @@ public class ShortestPath implements ShortestPathButtonListener, Runnable {
    */
   private void initializeBoard() {
     try {
-      board = InputUtils.build(gui.getInput()).getBoard();
+      board = AStarInputUtils.build(gui.getInput()).getBoard();
       gui.setAdapter(board);
       Log.v(TAG, board);
       Log.v(TAG, "Successfully loaded input!");
@@ -66,7 +66,7 @@ public class ShortestPath implements ShortestPathButtonListener, Runnable {
    * @param callback  - Since a search can run asynch, a callback is required
    */
   private void startSearch(AStar.Traversal traversal, AStarCallback callback) {
-    AStarNode start = new BoardNode(board.getStart(), board);
+    AStarNode start = new AStarBoardNode(board.getStart(), board);
     astar = new AStar(start, traversal, callback);
     searches.add(astar);
     new Thread(astar).start();

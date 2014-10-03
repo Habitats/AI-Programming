@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 import ai.models.grid.Board;
-import ai.models.grid.Tile;
 import algorithms.a_star.AStar;
 import algorithms.a_star.AStarNode;
 import puzzles.shortestpath.gui.ShortestPathGui;
@@ -13,20 +12,20 @@ import puzzles.shortestpath.gui.ShortestPathGui;
 /**
  * Created by Patrick on 24.08.2014.
  */
-public class BoardNode extends AStarNode {
+public class AStarBoardNode extends AStarNode {
 
-  private static final String TAG = BoardNode.class.getSimpleName();
-  private Tile tile;
-  private Board board;
+  private static final String TAG = AStarBoardNode.class.getSimpleName();
+  private AStarTile tile;
+  private Board<AStarTile> board;
   private int accuracyMultiplier = 10;
 
-  public BoardNode(Tile tile, Board board) {
+  public AStarBoardNode(AStarTile tile, Board<AStarTile> board) {
     super();
     this.tile = tile;
     this.board = board;
   }
 
-  public Tile getTile() {
+  public AStarTile getTile() {
     return tile;
   }
 
@@ -50,9 +49,9 @@ public class BoardNode extends AStarNode {
         }
         // check if coordinates for the specified successor are valid on the board.
         // ie. if the coordinates is an obstacle, or are out of bounds, it will return false
-        if (board.hasTile(x, y)) {
+        if (board.hasAvailableTile(x, y)) {
           // finally, generate a new BoardNode with the new coordinates
-          successors.add(new BoardNode(board.get(x, y), board));
+          successors.add(new AStarBoardNode(board.get(x, y), board));
         }
       }
     }
@@ -73,14 +72,14 @@ public class BoardNode extends AStarNode {
 
   }
 
-  private int euclideanDistance(Tile start, Tile goal) {
+  private int euclideanDistance(AStarTile start, AStarTile goal) {
     double k1 = Math.pow(goal.y - start.y, 2);
     double k2 = Math.pow(goal.x - start.x, 2);
     double h = Math.sqrt(k1 + k2);
     return (int) Math.round(h * accuracyMultiplier);
   }
 
-  private int manhattanDistance(BoardNode start, BoardNode goal) {
+  private int manhattanDistance(AStarBoardNode start, AStarBoardNode goal) {
     int k1 = Math.abs(goal.getTile().y - start.getTile().y);
     int k2 = Math.abs(goal.getTile().x - start.getTile().x);
     return (k1 + k2) * accuracyMultiplier;
@@ -123,14 +122,14 @@ public class BoardNode extends AStarNode {
   }
 
   private void drawPath() {
-    drawPath(Tile.State.PATH);
+    drawPath(AStarTile.State.PATH);
   }
 
-  private void drawPath(Tile.State state) {
+  private void drawPath(AStarTile.State state) {
     synchronized (board) {
       AStarNode node = this;
       while (node.hasParent()) {
-        Tile tile = ((BoardNode) node).getTile();
+        AStarTile tile = ((AStarBoardNode) node).getTile();
         tile.setState(state);
         tile.setText(node.toStringShort());
         board.set(tile);
@@ -142,8 +141,8 @@ public class BoardNode extends AStarNode {
 
   private void drawChildren() {
     for (AStarNode node : getSuccessors()) {
-      Tile tile = ((BoardNode) node).getTile();
-      tile.setState(Tile.State.CHILDREN);
+      AStarTile tile = ((AStarBoardNode) node).getTile();
+      tile.setState(AStarTile.State.CHILDREN);
 //      tile.setText(node.toStringShort());
       board.set(tile);
     }
