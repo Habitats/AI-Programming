@@ -17,7 +17,7 @@ public class Constraint implements Iterable<Variable> {
   private final Function function;
   private boolean satisfied;
 
-  public Constraint(List<Variable> variables, String expression) {
+  public Constraint(VariableList variables, String expression) {
     HashMap<String, Variable> variableMap = new HashMap<>();
     variableIdsToCheck = new LinkedHashSet<>();
     for (Variable var : variables) {
@@ -83,7 +83,7 @@ public class Constraint implements Iterable<Variable> {
   }
 
 
-  public boolean isSatisfied(List<Variable> variables) {
+  public boolean isSatisfied(VariableList variables) {
     return function.call(variables);
   }
 }

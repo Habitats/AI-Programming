@@ -101,7 +101,7 @@ public class AIContiniousScrollPane extends JScrollPane {
     @Override
     public void insertUpdate(final DocumentEvent e) {
       // Changes to the Document can not be done within the listener
-      // so we need to add the processing to the end of the EDT
+      // so we need to put the processing to the end of the EDT
 
       SwingUtilities.invokeLater(new Runnable() {
         @Override

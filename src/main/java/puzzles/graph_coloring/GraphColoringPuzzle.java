@@ -1,6 +1,5 @@
 package puzzles.graph_coloring;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ai.models.graph.ColorNode;
@@ -8,6 +7,7 @@ import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Domain;
 import algorithms.csp.canonical_utils.Variable;
+import algorithms.csp.canonical_utils.VariableList;
 
 /**
  * Created by Patrick on 08.09.2014.
@@ -17,17 +17,17 @@ public class GraphColoringPuzzle implements AStarCspPuzzle {
 
   private final GraphColoring graphColoring;
   public static int K = 6;
-  private List<Variable> variables;
+  private VariableList variables;
 
   public GraphColoringPuzzle(GraphColoring graphColoring) {
     this.graphColoring = graphColoring;
   }
 
-  public List<Variable> generateVariables() {
-    List<Variable> variables = new ArrayList<>();
+  public VariableList generateVariables() {
+    VariableList variables = new VariableList();
     for (ColorNode node : graphColoring.getAdapter().getItems()) {
       Variable var = new Variable(node.getId(), getInitialDomain());
-      variables.add(var);
+      variables.put(var);
       var.setListener(node);
     }
     return variables;
@@ -45,7 +45,7 @@ public class GraphColoringPuzzle implements AStarCspPuzzle {
     return getMinimalDomain(getVariables());
   }
 
-  private List<Variable> getMostConstrained() {
+  private VariableList getMostConstrained() {
     int max = Integer.MIN_VALUE;
     for (Variable var : getVariables()) {
       if (var.getDomain().getSize() == 1) {
@@ -56,20 +56,20 @@ public class GraphColoringPuzzle implements AStarCspPuzzle {
         max = constrainedCount;
       }
     }
-    List<Variable> mostContrained = new ArrayList<>();
+    VariableList mostContrained = new VariableList();
     for (Variable var : getVariables()) {
       if (GraphColoringConstraintManager.getManager().getConstrainedCount(var) == max) {
-        mostContrained.add(var);
+        mostContrained.put(var);
       }
     }
     return mostContrained;
   }
 
-  public void setVariables(List<Variable> variables) {
+  public void setVariables(VariableList variables) {
     this.variables = variables;
   }
 
-  private Variable getMinimalDomain(List<Variable> variables) {
+  private Variable getMinimalDomain(VariableList variables) {
     int min = Integer.MAX_VALUE;
     Variable minVar = null;
     for (Variable var : variables) {
@@ -94,7 +94,7 @@ public class GraphColoringPuzzle implements AStarCspPuzzle {
   }
 
   @Override
-  public List<Variable> getVariables() {
+  public VariableList getVariables() {
     return variables;
   }
 
@@ -131,8 +131,8 @@ public class GraphColoringPuzzle implements AStarCspPuzzle {
   public AStarCspPuzzle duplicate() {
     GraphColoringPuzzle dupe = new GraphColoringPuzzle(graphColoring);
     dupe.setVariables(dupe.generateVariables());
-    for (int i = 0; i < getVariables().size(); i++) {
-      dupe.getVariables().set(i, getVariables().get(i).copy());
+    for (Variable variable : getVariables()) {
+      dupe.getVariables().put(variable.copy());
     }
     return dupe;
   }

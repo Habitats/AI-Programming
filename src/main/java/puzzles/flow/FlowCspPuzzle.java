@@ -5,6 +5,7 @@ import java.util.List;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Variable;
+import algorithms.csp.canonical_utils.VariableList;
 
 /**
  * Created by Patrick on 01.10.2014.
@@ -23,7 +24,7 @@ public class FlowCspPuzzle implements AStarCspPuzzle {
   }
 
   @Override
-  public List<Variable> getVariables() {
+  public VariableList getVariables() {
     return null;
   }
 
@@ -47,14 +48,13 @@ public class FlowCspPuzzle implements AStarCspPuzzle {
     return null;
   }
 
-
   @Override
-  public List<Variable> generateVariables() {
+  public VariableList generateVariables() {
     return null;
   }
 
   @Override
-  public void setVariables(List<Variable> aVoid) {
+  public void setVariables(VariableList aVoid) {
 
   }
 

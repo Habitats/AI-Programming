@@ -39,7 +39,7 @@ public class AStarBoardNode extends AStarNode {
     List<AStarNode> successors = new ArrayList<AStarNode>();
     for (int x = tile.x - 1; x <= tile.x + 1; x++) {
       for (int y = tile.y - 1; y <= tile.y + 1; y++) {
-        // do not add self to its own children
+        // do not put self to its own children
         if (x == tile.x && y == tile.y) {
           continue;
         }
@@ -95,7 +95,7 @@ public class AStarBoardNode extends AStarNode {
   public synchronized void visualize() {
     if (isSolution()) {
       drawPath();
-//      board.set(this.getTile());
+//      board.put(this.getTile());
     } else {
       if (ShortestPathGui.DRAW_CHILDREN) {
         drawChildren();

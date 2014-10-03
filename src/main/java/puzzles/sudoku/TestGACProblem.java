@@ -7,6 +7,7 @@ import algorithms.csp.CspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Domain;
 import algorithms.csp.canonical_utils.Variable;
+import algorithms.csp.canonical_utils.VariableList;
 
 /**
  * Created by Patrick on 12.09.2014.
@@ -15,7 +16,7 @@ public class TestGACProblem implements CspPuzzle {
 
   private final int i;
   private List<Constraint> constraints;
-  private List<Variable> variables;
+  private VariableList variables;
 
   public TestGACProblem(int i) {
     this.i = i;
@@ -25,7 +26,7 @@ public class TestGACProblem implements CspPuzzle {
 
 
   private void setVariables() {
-    variables = new ArrayList<>();
+    variables = new VariableList();
     if (i == 1) {
       Variable x = new Variable("x", new Domain(0, 1, 2, 3, 4, 5, 6));
       Variable y = new Variable("y", new Domain(0, 1, 2, 3, 4, 5, 6));
@@ -70,7 +71,7 @@ public class TestGACProblem implements CspPuzzle {
   }
 
   @Override
-  public List<Variable> getVariables() {
+  public algorithms.csp.canonical_utils.VariableList getVariables() {
     return variables;
   }
 
@@ -96,14 +97,13 @@ public class TestGACProblem implements CspPuzzle {
 
 
   @Override
-  public List<Variable> generateVariables() {
+  public algorithms.csp.canonical_utils.VariableList generateVariables() {
     return null;
   }
 
   @Override
-  public void setVariables(List<Variable> aVoid) {
+  public void setVariables(VariableList aVoid) {
 
   }
-
 
 }

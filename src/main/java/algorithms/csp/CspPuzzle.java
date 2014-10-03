@@ -4,6 +4,7 @@ import java.util.List;
 
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Variable;
+import algorithms.csp.canonical_utils.VariableList;
 
 /**
  * Created by Patrick on 12.09.2014.
@@ -13,7 +14,7 @@ public interface CspPuzzle {
 
   List<Constraint> getConstraints();
 
-  List<Variable> getVariables();
+  VariableList getVariables();
 
   int getDomainSize();
 
@@ -24,7 +25,7 @@ public interface CspPuzzle {
 
   Variable getVariable(String id);
 
-  List<Variable> generateVariables();
+  VariableList generateVariables();
 
-  void setVariables(List<Variable> aVoid);
+  void setVariables(VariableList aVoid);
 }

@@ -1,5 +1,7 @@
 package puzzles.sudoku;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import algorithms.csp.CspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Domain;
 import algorithms.csp.canonical_utils.Variable;
+import algorithms.csp.canonical_utils.VariableList;
 import algorithms.csp.canonical_utils.VariableListener;
 
 /**
@@ -20,7 +23,7 @@ public class Sudoku implements CspPuzzle {
   }
 
   private static final String TAG = Sudoku.class.getSimpleName();
-  private List<Variable> variables;
+  private VariableList variables;
   private List<Constraint> constraints;
 
   public Sudoku() {
@@ -93,7 +96,7 @@ public class Sudoku implements CspPuzzle {
     for (int i = 1; i <= domain.length; i++) {
       domain[i - 1] = i;
     }
-    variables = new ArrayList<>();
+    variables = new VariableList();
     for (int x = 1; x <= domain.length; x++) {
       for (int y = 1; y <= domain.length; y++) {
         final Variable var = new Variable("v" + x + y, new Domain(domain));
@@ -148,7 +151,7 @@ public class Sudoku implements CspPuzzle {
     board = board.replaceAll("\\s", "");
     for (int i = 0; i < getVariables().size(); i++) {
       if (!String.valueOf(board.charAt(i)).equals("0")) {
-        getVariables().get(i).setAssumption(Integer.parseInt(String.valueOf(board.charAt(i))));
+        throw new NotImplementedException();
       }
     }
   }
@@ -159,7 +162,7 @@ public class Sudoku implements CspPuzzle {
   }
 
   @Override
-  public List<Variable> getVariables() {
+  public VariableList getVariables() {
     return variables;
   }
 
@@ -185,24 +188,19 @@ public class Sudoku implements CspPuzzle {
 
 
   @Override
-  public List<Variable> generateVariables() {
+  public VariableList generateVariables() {
     return null;
   }
 
   @Override
-  public void setVariables(List<Variable> aVoid) {
+  public void setVariables(VariableList aVoid) {
 
   }
 
 
   private void printSudoku() {
     String row = "";
-    for (Variable v : getVariables()) {
-      row += v.getValue();
-      if (((getVariables().indexOf(v) + 1) % 4) == 0) {
-        Log.v(TAG, row);
-        row = "";
-      }
-    }
+    throw new NotImplementedException();
+
   }
 }

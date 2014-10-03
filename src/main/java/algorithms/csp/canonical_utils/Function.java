@@ -34,7 +34,7 @@ public class Function {
       this.variablesMap.put(var.getId(), var.copy());
     }
 
-    // set expression
+    // put expression
     expression = setExpressionValues(expression, this.variablesMap.values());
     lambda = generateLambda(expression);
     this.expression = expression;
@@ -73,7 +73,7 @@ public class Function {
 
   public boolean call(List<Variable> variables, Variable focalVariable) {
 
-    // set all the right values in the valuesMap
+    // put all the right values in the valuesMap
     variablesMap.put(focalVariable.getId(), focalVariable.copy());
     for (Variable var : variables) {
       variablesMap.put(var.getId(), var.copy());
@@ -81,7 +81,7 @@ public class Function {
     return call(variablesMap);
   }
 
-  public boolean call(List<Variable> variables) {
+  public boolean call(VariableList variables) {
     for (Variable var : variables) {
       if (variablesMap.containsKey(var.getId())) {
         variablesMap.put(var.getId(), var.copy());

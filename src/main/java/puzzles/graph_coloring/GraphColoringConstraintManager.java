@@ -9,6 +9,7 @@ import ai.models.AIAdapter;
 import ai.models.graph.ColorNode;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Variable;
+import algorithms.csp.canonical_utils.VariableList;
 
 /**
  * Created by Patrick on 15.09.2014.
@@ -37,7 +38,7 @@ public class GraphColoringConstraintManager {
   //  c1: a != b
   //  c2: a != c
   //  c3: a != d
-  public void generateConstraints(AIAdapter<ColorNode> graph, List<Variable> variables) {
+  public void generateConstraints(AIAdapter<ColorNode> graph, VariableList variables) {
     Log.v(TAG, "Generating constraints ...");
     HashMap<String, Constraint> constraints = new HashMap<>();
     int count = 0;

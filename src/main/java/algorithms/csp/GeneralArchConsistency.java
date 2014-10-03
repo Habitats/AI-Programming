@@ -10,6 +10,7 @@ import ai.Log;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Variable;
+import algorithms.csp.canonical_utils.VariableList;
 
 /**
  * Created by Patrick on 04.09.2014.
@@ -42,10 +43,10 @@ public class GeneralArchConsistency {
    * @return true on the first isSatisfiable occurrence, false is no combination satisfies expression
    */
   private static boolean isSatisfiable(Constraint constraint, int focalVariableIndex, List<Variable> vars,
-                                       Variable focalVariable, List<Variable> variables) {
+                                       Variable focalVariable, VariableList variables) {
     boolean hasMoreVariables = constraint.hasNext() || vars.size() > focalVariableIndex;
     if (hasMoreVariables) {
-      // isSatisfiable if it's the first time we see this variable. If yes, add it to current variables
+      // isSatisfiable if it's the first time we see this variable. If yes, put it to current variables
       if (vars.size() == focalVariableIndex) {
         String id = constraint.getNextVariableId();
         for (Variable var : variables) {
@@ -57,7 +58,7 @@ public class GeneralArchConsistency {
       }
       // iterate over all possible values for this variable
       for (Integer val : vars.get(focalVariableIndex).getDomain()) {
-        // set a value, and recursively combine it with the possible combinations of the remaining variables
+        // put a value, and recursively combine it with the possible combinations of the remaining variables
         vars.get(focalVariableIndex).setValue(val);
         if (isSatisfiable(constraint, focalVariableIndex + 1, vars, focalVariable, variables)) {
           return true;
@@ -133,7 +134,7 @@ public class GeneralArchConsistency {
    *
    * @return return true if domain is reduced by assumption
    */
-  private static boolean revise(Variable focalVariable, Constraint constraint, List<Variable> variables) {
+  private static boolean revise(Variable focalVariable, Constraint constraint, VariableList variables) {
     int oldSize = focalVariable.getDomain().getSize();
 
     // iterate over all the values of the focalDomain

@@ -35,7 +35,7 @@ public class AIGridCanvas extends AICanvas {
   }
 
   private void paintTile(Graphics g, Tile tile) {
-    // set origin to be the left bottom corner
+    // put origin to be the left bottom corner
     int x = tile.x * tileWidth;
     int y = getHeight() - tileHeight - tile.y * tileHeight;
 
