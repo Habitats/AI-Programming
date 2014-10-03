@@ -16,13 +16,17 @@ public class Board extends AIAdapter<Tile> implements Iterable<List<Tile>> {
   private Tile start;
   private Tile goal;
 
-  public void set(int x, int y, int width, int height, Tile.State state) {
-    for (int w = 0; w < width; w++) {
-      for (int h = 0; h < height; h++) {
-        Tile tile = new Tile(x + w, y + h, state);
-        set(tile);
+  public void set(int x, int y, int widthSpan, int heightSpan, TileState state) {
+    for (int w = 0; w < widthSpan; w++) {
+      for (int h = 0; h < heightSpan; h++) {
+        set(x + w, y + h, state);
       }
     }
+  }
+
+  public void set(int x, int y, TileState state) {
+    Tile tile = new Tile(x, y, state);
+    set(tile);
   }
 
   public void initEmptyBoard(int width, int height) {
@@ -80,7 +84,7 @@ public class Board extends AIAdapter<Tile> implements Iterable<List<Tile>> {
   public boolean hasTile(int x, int y) {
     try {
       Tile tile = tiles.get(x).get(y);
-      return tile.getState() != Tile.State.OBSTICLE;
+      return tile.isEmpty();
     } catch (IndexOutOfBoundsException e) {
       return false;
     }

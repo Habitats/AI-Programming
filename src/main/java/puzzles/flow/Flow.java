@@ -12,7 +12,6 @@ import algorithms.a_star_csp.AStarCsp;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.CspButtonListener;
 import puzzles.flow.gui.FlowGui;
-import puzzles.shortestpath.BoardNode;
 
 /**
  * Created by Patrick on 01.10.2014.
@@ -51,9 +50,10 @@ public class Flow extends AStarCsp<Tile> implements CspButtonListener, Runnable 
       int endX = Integer.parseInt(pairRow[3]);
       int endY = Integer.parseInt(pairRow[4]);
 
-      BoardNode start = new BoardNode(board.get(startX, startY), board);
-      BoardNode end = new BoardNode(board.get(endX, endY), board);
+      board.set(startX, startY, Tile.State.OBSTICLE);
+      board.set(endX, endY, Tile.State.CURRENT);
     }
+    board.notifyDataChanged();
     return board;
   }
 
