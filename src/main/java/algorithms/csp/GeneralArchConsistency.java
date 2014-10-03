@@ -78,7 +78,7 @@ public class GeneralArchConsistency {
     List<Constraint> constraints = puzzle.getConstraints();
     Queue<Variable> queue = new PriorityQueue<>();
     HashMap<String, Variable> queueHash = new HashMap<>();
-    queue.addAll(puzzle.getVariables());
+    queue.addAll(puzzle.getVariables().getAll());
     for (Variable v : puzzle.getVariables()) {
       queueHash.put(v.getId(), v);
     }
