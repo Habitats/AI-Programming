@@ -1,6 +1,7 @@
 package algorithms.csp.canonical_utils;
 
 import java.io.Serializable;
+import java.util.Iterator;
 
 /**
  * Created by Patrick on 04.09.2014.
@@ -32,8 +33,15 @@ public class Variable implements Comparable<Variable>, Serializable {
   public Variable setAssumption(int value) {
     this.value = value;
     assumption = true;
-    if (domain.remove(value)) {
-      listener.onDomainChanged(domain);
+    Iterator<Integer> iterator = domain.iterator();
+    while (iterator.hasNext()) {
+      Integer val = iterator.next();
+      if ((val) != value) {
+        iterator.remove();
+        if (listener != null) {
+          listener.onDomainChanged(domain);
+        }
+      }
     }
 
     if (listener != null) {
