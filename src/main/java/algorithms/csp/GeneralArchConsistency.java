@@ -2,6 +2,7 @@ package algorithms.csp;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -138,7 +139,9 @@ public class GeneralArchConsistency {
     int oldSize = focalVariable.getDomain().getSize();
 
     // iterate over all the values of the focalDomain
-    for (Integer val : focalVariable.getDomain()) {
+    Iterator<Integer> iterator =  focalVariable.getDomain().iterator();
+    while (iterator.hasNext()) {
+      Integer val = iterator.next();
       focalVariable.setValue(val);
 
       List<Variable> vars = new ArrayList<>();
@@ -148,7 +151,7 @@ public class GeneralArchConsistency {
       if (!satisfiable) {
         // if constraint is impossible to satisfy with the given value, remove the value from the domain
         Log.v(TAG, "reducing the domain of " + focalVariable + " by removing: " + val + ". Violating: " + constraint);
-        focalVariable.getDomain().remove(val);
+        iterator.remove();
       }
 //      else{
 //        Log.v(TAG, "unable to reduce the domain of " + focalVariable + " with values:  " + val + " and constraint: " + constraint);
