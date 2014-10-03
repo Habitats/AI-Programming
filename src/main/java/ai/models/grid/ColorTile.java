@@ -2,30 +2,27 @@ package ai.models.grid;
 
 import java.awt.*;
 
+import ai.Log;
+import ai.gui.ColorUtils;
+
 /**
  * Created by Patrick on 03.10.2014.
  */
 public class ColorTile extends Tile {
 
+  private static final Color EMPTY = Color.WHITE;
+  private static final String TAG = ColorTile.class.getSimpleName();
   private Color color;
   private Color outlineColor;
 
   public ColorTile(int x, int y) {
     super(x, y);
-    setColor(Color.lightGray);
-  }
-
-  private Color toHsv(double i, double brightness) {
-    float hue = (float) ((i / 100.) * 360.);
-    float value = (float) (1f * brightness);
-    float sat = 0.45f;
-
-    return Color.getHSBColor(hue, sat, value);
+    setColor(EMPTY);
   }
 
   @Override
   public boolean isEmpty() {
-    return color == Color.white;
+    return getColor() == EMPTY;
   }
 
   @Override
@@ -52,6 +49,7 @@ public class ColorTile extends Tile {
 
   public void setColor(int colorIndex, int numberOfColors) {
     double num = ((double) colorIndex) / numberOfColors * 100.;
-    setColor(toHsv(num, 0.7));
+    Log.v(TAG, "" + num);
+    setColor(ColorUtils.toHsv(num, 0.7));
   }
 }

@@ -37,7 +37,7 @@ public class FlowGui extends AIGui<Tile> {
 
   private static final String TAG = FlowGui.class.getSimpleName();
   private AIButton resetButton;
-  private AIButton loadButton;
+  private AIButton runButton;
   private AIButton stepButton;
 
   private JPanel mainPanel;
@@ -52,6 +52,7 @@ public class FlowGui extends AIGui<Tile> {
   private AIContiniousScrollPane log;
   private AICheckBox stepCheckBox;
   private AIButton readFromFileButton;
+  private AIButton loadButton;
 
   private CspButtonListener listener;
 
@@ -86,14 +87,17 @@ public class FlowGui extends AIGui<Tile> {
       AStar.MANUAL_STEP = checkbox.isSelected();
     });
     resetButton.addActionListener(e -> listener.resetClicked());
-    loadButton.addActionListener(e -> {
-      listener.loadClicked();
+    runButton.addActionListener(e -> {
+      listener.runClicked();
     });
     readFromFileButton.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser("C:\\Dropbox\\code\\projects\\ai_prog\\samples");
       chooser.showOpenDialog(mainPanel);
       File file = chooser.getSelectedFile();
       inputField.setText(readFile(file.getPath(), Charset.defaultCharset()));
+    });
+    loadButton.addActionListener(e -> {
+      listener.loadClicked();
     });
   }
 
@@ -177,7 +181,7 @@ public class FlowGui extends AIGui<Tile> {
                                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null,
                                    null, null, 0, false));
     final JPanel panel2 = new JPanel();
-    panel2.setLayout(new GridLayoutManager(11, 2, new Insets(0, 0, 0, 0), 0, -1));
+    panel2.setLayout(new GridLayoutManager(12, 2, new Insets(0, 0, 0, 0), 0, -1));
     mainPanel.add(panel2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                                               GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
                                               new Dimension(50, -1), new Dimension(140, -1), null, 0, false));
@@ -201,16 +205,16 @@ public class FlowGui extends AIGui<Tile> {
                new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
                                    GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null,
                                    null, 0, false));
-    loadButton = new AIButton();
-    loadButton.setText("Run");
-    panel2.add(loadButton,
-               new GridConstraints(9, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+    runButton = new AIButton();
+    runButton.setText("Run");
+    panel2.add(runButton,
+               new GridConstraints(10, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
                                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                                    GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     resetButton = new AIButton();
     resetButton.setText("Stop");
     panel2.add(resetButton,
-               new GridConstraints(10, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+               new GridConstraints(11, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
                                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                                    GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     final AIPanel aIPanel1 = new AIPanel();
@@ -257,6 +261,11 @@ public class FlowGui extends AIGui<Tile> {
                new GridConstraints(3, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
                                    GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null,
                                    null, 0, false));
+    loadButton = new AIButton();
+    loadButton.setText("Load");
+    panel2.add(loadButton, new GridConstraints(9, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+                                               GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED,
+                                               null, null, null, 0, false));
     final AISplitPane aISplitPane1 = new AISplitPane();
     aISplitPane1.setBackground(new Color(-12516858));
     aISplitPane1.setContinuousLayout(true);

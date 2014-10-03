@@ -55,6 +55,11 @@ public abstract class AStarCsp<T extends Node> implements CspButtonListener, Run
   }
 
   @Override
+  public void runClicked() {
+    astarCsp();
+  }
+
+  @Override
   public void resetClicked() {
     astar.terminate();
   }
@@ -64,8 +69,6 @@ public abstract class AStarCsp<T extends Node> implements CspButtonListener, Run
 
     String input = gui.getInput();
     puzzle = getPuzzleFromInput(input);
-    astarCsp();
-
   }
 
   @Override
@@ -88,10 +91,10 @@ public abstract class AStarCsp<T extends Node> implements CspButtonListener, Run
   protected AStarCspPuzzle getPuzzleFromInput(String input) {
     AStarCspPuzzle puzzle = generateCspPuzzle();
 
-    AIAdapter<T> graph = generateAdapter(input);
-    setAdapter(graph);
+    AIAdapter<T> adapter = generateAdapter(input);
+    setAdapter(adapter);
     puzzle.setVariables(puzzle.generateVariables());
-    generateConstraints(puzzle, graph);
+    generateConstraints(puzzle, adapter);
 
     return puzzle;
   }

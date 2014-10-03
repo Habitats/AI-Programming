@@ -42,6 +42,12 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
     int numberOfColors = Integer.parseInt(inputList.get(0).split("\\s+")[1]);
 
     Board<ColorTile> board = new Board(dimension, dimension);
+    for (int x = 0; x < dimension; x++) {
+      for (int y = 0; y < dimension; y++) {
+        board.set(new ColorTile(x, y));
+      }
+    }
+
     for (int i = 1; i < inputList.size(); i++) {
       String[] pairRow = inputList.get(i).split("\\s+");
       int startX = Integer.parseInt(pairRow[1]);
@@ -51,8 +57,8 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
 
       ColorTile start = new ColorTile(startX, startY);
       ColorTile end = new ColorTile(endX, endY);
-      start.setColor(i,numberOfColors);
-      end.setColor(i,numberOfColors);
+      start.setColor(i, numberOfColors);
+      end.setColor(i, numberOfColors);
       board.set(start);
       board.set(end);
     }

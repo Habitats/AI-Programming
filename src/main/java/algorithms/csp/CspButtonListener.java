@@ -14,4 +14,6 @@ public interface CspButtonListener {
   void stepChanged(int value);
 
   void sampleSelected(int i);
+
+  void runClicked();
 }
