@@ -2,7 +2,6 @@ package ai.models.grid;
 
 import java.awt.*;
 
-import ai.Log;
 import ai.gui.ColorUtils;
 
 /**
@@ -48,8 +47,6 @@ public class ColorTile extends Tile {
   }
 
   public void setColor(int colorIndex, int numberOfColors) {
-    double num = ((double) colorIndex) / numberOfColors * 100.;
-    Log.v(TAG, "" + num);
-    setColor(ColorUtils.toHsv(num, 0.7));
+    setColor(ColorUtils.toHsv(colorIndex, numberOfColors, 1));
   }
 }

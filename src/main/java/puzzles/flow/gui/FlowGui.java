@@ -193,13 +193,13 @@ public class FlowGui extends AIGui<Tile> {
                                    GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     sampleComboBox = new AIComboBox();
     final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
-    defaultComboBoxModel1.addElement("simple");
-    defaultComboBoxModel1.addElement("graph-color-1");
-    defaultComboBoxModel1.addElement("graph-color-2");
-    defaultComboBoxModel1.addElement("rand-50-4-color1");
-    defaultComboBoxModel1.addElement("rand-100-4-color1");
-    defaultComboBoxModel1.addElement("rand-100-6-color1");
-    defaultComboBoxModel1.addElement("spiral-500-4-color1");
+    defaultComboBoxModel1.addElement("flowspec-0");
+    defaultComboBoxModel1.addElement("flowspec-1");
+    defaultComboBoxModel1.addElement("flowspec-2");
+    defaultComboBoxModel1.addElement("flowspec-3");
+    defaultComboBoxModel1.addElement("flowspec-4");
+    defaultComboBoxModel1.addElement("flowspec-5");
+    defaultComboBoxModel1.addElement("flowspec-6");
     sampleComboBox.setModel(defaultComboBoxModel1);
     panel2.add(sampleComboBox,
                new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,

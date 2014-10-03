@@ -6,6 +6,7 @@ import ai.gui.ColorUtils;
 import ai.models.Node;
 import algorithms.csp.canonical_utils.Domain;
 import algorithms.csp.canonical_utils.VariableListener;
+import puzzles.graph_coloring.GraphColoringPuzzle;
 
 /**
  * Created by Patrick on 08.09.2014.
@@ -19,6 +20,7 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
   private Color color = Color.white;
   private String desc = "";
   private Color outlineColor = Color.black;
+  private int numberOfColors = GraphColoringPuzzle.K;
 
   public ColorNode(double x, double y, int index) {
     this.x = x;
@@ -51,7 +53,7 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
   @Override
   public void onValueChanged(int value, int size) {
     if (size == 1) {
-      setColor(ColorUtils.toHsv(value, 1));
+      setColor(ColorUtils.toHsv(value, numberOfColors, 1));
     } else {
       setColor(Color.white);
     }
@@ -63,7 +65,7 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
 
   @Override
   public void onAssumptionMade(int value) {
-    setOutlineColor(ColorUtils.toHsv(value, .7));
+    setOutlineColor(ColorUtils.toHsv(value, numberOfColors, .7));
   }
 
   @Override

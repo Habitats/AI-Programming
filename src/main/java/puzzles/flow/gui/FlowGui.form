@@ -63,13 +63,13 @@
             </constraints>
             <properties>
               <model>
-                <item value="simple"/>
-                <item value="graph-color-1"/>
-                <item value="graph-color-2"/>
-                <item value="rand-50-4-color1"/>
-                <item value="rand-100-4-color1"/>
-                <item value="rand-100-6-color1"/>
-                <item value="spiral-500-4-color1"/>
+                <item value="flowspec-0"/>
+                <item value="flowspec-1"/>
+                <item value="flowspec-2"/>
+                <item value="flowspec-3"/>
+                <item value="flowspec-4"/>
+                <item value="flowspec-5"/>
+                <item value="flowspec-6"/>
               </model>
             </properties>
           </component>
