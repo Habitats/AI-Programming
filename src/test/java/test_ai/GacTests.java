@@ -1,3 +1,5 @@
+package test_ai;
+
 import org.junit.Test;
 
 import algorithms.csp.canonical_utils.Domain;
