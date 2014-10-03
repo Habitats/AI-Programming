@@ -16,7 +16,7 @@ public class Board extends AIAdapter<Tile> implements Iterable<List<Tile>> {
   private Tile start;
   private Tile goal;
 
-  public void set(int x, int y, int widthSpan, int heightSpan, TileState state) {
+  public void set(int x, int y, int widthSpan, int heightSpan, Tile.State state) {
     for (int w = 0; w < widthSpan; w++) {
       for (int h = 0; h < heightSpan; h++) {
         set(x + w, y + h, state);
@@ -24,7 +24,7 @@ public class Board extends AIAdapter<Tile> implements Iterable<List<Tile>> {
     }
   }
 
-  public void set(int x, int y, TileState state) {
+  public void set(int x, int y, Tile.State state) {
     Tile tile = new Tile(x, y, state);
     set(tile);
   }

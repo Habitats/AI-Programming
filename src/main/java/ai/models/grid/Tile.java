@@ -55,6 +55,10 @@ public class Tile extends Node<Node> {
     return 0;
   }
 
+  public boolean isEmpty() {
+    return state != State.OBSTICLE;
+  }
+
   public enum State {
     OBSTICLE("x"), OUTLINE("."), EMPTY("_"), START("@"), GOAL("$"), PATH("o"), CHILDREN("c"), CURRENT("*");
     private final String state;
