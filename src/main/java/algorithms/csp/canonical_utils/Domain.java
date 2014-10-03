@@ -1,29 +1,31 @@
 package algorithms.csp.canonical_utils;
 
-import java.io.Serializable;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Set;
 
 /**
  * Created by Patrick on 04.09.2014.
  */
-public class Domain implements Iterable<Integer>, Serializable {
+public class Domain implements Iterable<Integer> {
 
   private static final String TAG = Domain.class.getSimpleName();
-  private final List<Integer> args;
+  private Set<Integer> args;
 
-  public Domain(int... args) {
-    List<Integer> lst = new CopyOnWriteArrayList<>();
-    for (int i = 0; i < args.length; i++) {
-      lst.add(args[i]);
-    }
-    this.args = lst;
+  public Domain(Integer... args) {
+    this.args = new HashSet(Arrays.asList(args));
   }
 
-  public Domain(List<Integer> args) {
-    this.args = new CopyOnWriteArrayList<>();
-    this.args.addAll(args);
+  public Domain(Set<Integer> args) {
+    this.args = new HashSet<>(args);
+  }
+
+  public Domain(int[] args) {
+    this.args = new HashSet<>();
+    for (int i = 0; i < args.length; i++) {
+      this.args.add(new Integer(args[i]));
+    }
   }
 
   @Override
@@ -31,8 +33,8 @@ public class Domain implements Iterable<Integer>, Serializable {
     return args.iterator();
   }
 
-  public void remove(Integer val) {
-    args.remove(val);
+  public boolean remove(Integer val) {
+    return args.remove(val);
   }
 
   public int getSize() {
@@ -62,12 +64,8 @@ public class Domain implements Iterable<Integer>, Serializable {
 
   @Override
   public boolean equals(Object other) {
-    for (int i = 0; i < args.size(); i++) {
-      if (((Domain) other).args.get(i) != args.get(i)) {
-        return false;
-      }
-    }
-    return true;
+    Set<Integer> otherArgs = ((Domain) other).args;
+    return (args.containsAll(otherArgs)) && otherArgs.containsAll(args);
   }
 
   public String getId() {

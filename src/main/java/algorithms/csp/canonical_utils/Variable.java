@@ -32,14 +32,10 @@ public class Variable implements Comparable<Variable>, Serializable {
   public Variable setAssumption(int value) {
     this.value = value;
     assumption = true;
-    for (Integer val : domain) {
-      if (val != value) {
-        domain.remove(val);
-        if (listener != null) {
-          listener.onDomainChanged(domain);
-        }
-      }
+    if (domain.remove(value)) {
+      listener.onDomainChanged(domain);
     }
+
     if (listener != null) {
       getListener().onAssumptionMade(value);
     }
