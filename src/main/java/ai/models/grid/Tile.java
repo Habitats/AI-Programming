@@ -19,6 +19,10 @@ public class Tile extends Node<Node> {
     this.y = y;
   }
 
+  public Tile(int x, int y) {
+    this(x, y, Tile.State.EMPTY);
+  }
+
   @Override
   public String toString() {
     return String.format("%s: %s, %s", Tile.class.getSimpleName(), x, y);

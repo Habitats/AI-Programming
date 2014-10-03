@@ -36,7 +36,7 @@ public class Board extends AIAdapter<Tile> implements Iterable<List<Tile>> {
     for (int x = 0; x < width; x++) {
       List<Tile> column = new ArrayList<>();
       for (int y = 0; y < height; y++) {
-        column.add(new Tile(x, y, Tile.State.EMPTY));
+        column.add(new Tile(x, y));
       }
       tiles.add(column);
     }
