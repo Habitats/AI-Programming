@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ai.models.grid.Board;
-import ai.models.grid.Tile;
+import puzzles.shortestpath.AStarTile;
 
 /**
  * Created by Patrick on 24.08.2014.
@@ -30,15 +30,15 @@ public class InputUtils {
     return new InputUtils(input);
   }
 
-  public Tile getStart() {
+  public AStarTile getStart() {
     List<Integer> params = getInputList().get(1);
-    Tile tile = new Tile(params.get(0), params.get(1), Tile.State.START);
+    AStarTile tile = new AStarTile(params.get(0), params.get(1), AStarTile.State.START);
     return tile;
   }
 
-  public Tile getGoal() {
+  public AStarTile getGoal() {
     List<Integer> params = getInputList().get(2);
-    Tile tile = new Tile(params.get(0), params.get(1), Tile.State.GOAL);
+    AStarTile tile = new AStarTile(params.get(0), params.get(1), AStarTile.State.GOAL);
     return tile;
   }
 
@@ -52,7 +52,7 @@ public class InputUtils {
       int y = inputList.get(i).get(1);
       int width = inputList.get(i).get(2);
       int height = inputList.get(i).get(3);
-      board.set(x, y, width, height, Tile.State.OBSTICLE);
+      board.set(x, y, width, height, AStarTile.State.OBSTICLE);
     }
     board.setStart(getStart());
     board.setGoal(getGoal());
@@ -64,10 +64,10 @@ public class InputUtils {
   }
 
   private void setInputList(String input) {
-    inputList = new ArrayList<List<Integer>>();
+    inputList = new ArrayList<>();
     for (String s : input.split("\\(")) {
       String stripped = s.split("\\)")[0].trim();
-      List<Integer> ints = new ArrayList<Integer>();
+      List<Integer> ints = new ArrayList<>();
       if (stripped.isEmpty()) {
         continue;
       }
