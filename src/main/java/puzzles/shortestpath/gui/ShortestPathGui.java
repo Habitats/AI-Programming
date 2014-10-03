@@ -1,5 +1,8 @@
 package puzzles.shortestpath.gui;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+
 import java.awt.*;
 import java.io.File;
 import java.nio.charset.Charset;
@@ -169,52 +172,37 @@ public class ShortestPathGui extends AIGui {
    */
   private void $$$setupUI$$$() {
     mainPanel = new JPanel();
-    mainPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), 0, 0));
+    mainPanel.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), 0, 0));
     final JPanel panel1 = new JPanel();
-    panel1.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), 0, 0));
-    mainPanel.add(panel1, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 2,
-                                                                           com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-                                                                           com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH,
-                                                                           com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-                                                                           | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-                                                                           com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED,
-                                                                           null, null, null, 0, false));
+    panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), 0, 0));
+    mainPanel.add(panel1, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+                                              GridConstraints.SIZEPOLICY_CAN_SHRINK
+                                              | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED,
+                                              null, null, null, 0, false));
     logField = new AITextField();
-    panel1.add(logField, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1,
-                                                                          com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST,
-                                                                          com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL,
-                                                                          com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED,
-                                                                          com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-                                                                          | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-                                                                          null, null, null, 0, false));
+    panel1.add(logField, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
+                                             GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_CAN_SHRINK
+                                                                               | GridConstraints.SIZEPOLICY_CAN_GROW,
+                                             null, null, null, 0, false));
     statusField = new AITextField();
     statusField.setHorizontalAlignment(4);
     statusField.setText("status");
-    panel1.add(statusField, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1,
-                                                                             com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-                                                                             com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL,
-                                                                             com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED,
-                                                                             com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-                                                                             | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-                                                                             null, null, null, 0, false));
+    panel1.add(statusField,
+               new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                                   GridConstraints.SIZEPOLICY_FIXED,
+                                   GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null,
+                                   null, null, 0, false));
     final JPanel panel2 = new JPanel();
-    panel2.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(19, 1, new Insets(0, 0, 0, 0), 0, -1));
-    mainPanel.add(panel2, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1,
-                                                                           com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-                                                                           com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH,
-                                                                           com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED,
-                                                                           com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED,
-                                                                           new Dimension(50, -1),
-                                                                           new Dimension(120, -1), null, 0, false));
+    panel2.setLayout(new GridLayoutManager(19, 1, new Insets(0, 0, 0, 0), 0, -1));
+    mainPanel.add(panel2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+                                              GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
+                                              new Dimension(50, -1), new Dimension(120, -1), null, 0, false));
     stepButton = new AIButton();
     stepButton.setText("Step");
-    panel2.add(stepButton, new com.intellij.uiDesigner.core.GridConstraints(9, 0, 1, 1,
-                                                                            com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-                                                                            com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL,
-                                                                            com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-                                                                            | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-                                                                            com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED,
-                                                                            null, null, null, 0, false));
+    panel2.add(stepButton,
+               new GridConstraints(9, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                                   GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                                   GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     comboBox1 = new AIComboBox();
     final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
     defaultComboBoxModel1.addElement("Grid 1");
@@ -227,76 +215,51 @@ public class ShortestPathGui extends AIGui {
     defaultComboBoxModel1.addElement("Grid 8");
     defaultComboBoxModel1.addElement("Grid 9");
     comboBox1.setModel(defaultComboBoxModel1);
-    panel2.add(comboBox1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1,
-                                                                           com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST,
-                                                                           com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL,
-                                                                           com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-                                                                           com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED,
-                                                                           null, null, null, 0, false));
+    panel2.add(comboBox1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
+                                              GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED,
+                                              null, null, null, 0, false));
     inputField = new AITextArea();
-    panel2.add(inputField, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 2, 1,
-                                                                            com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-                                                                            com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH,
-                                                                            com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW,
-                                                                            com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW,
-                                                                            null, null, null, 0, false));
+    panel2.add(inputField, new GridConstraints(1, 0, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+                                               GridConstraints.SIZEPOLICY_WANT_GROW,
+                                               GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
     astarButton = new AIButton();
     astarButton.setText("A*");
-    panel2.add(astarButton, new com.intellij.uiDesigner.core.GridConstraints(11, 0, 1, 1,
-                                                                             com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-                                                                             com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL,
-                                                                             com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-                                                                             | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-                                                                             com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED,
-                                                                             null, null, null, 0, false));
+    panel2.add(astarButton,
+               new GridConstraints(11, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                                   GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                                   GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     BFSButton = new AIButton();
     BFSButton.setText("BFS");
-    panel2.add(BFSButton, new com.intellij.uiDesigner.core.GridConstraints(12, 0, 1, 1,
-                                                                           com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-                                                                           com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL,
-                                                                           com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-                                                                           | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-                                                                           com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED,
-                                                                           null, null, null, 0, false));
+    panel2.add(BFSButton,
+               new GridConstraints(12, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                                   GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                                   GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     DFSButton = new AIButton();
     DFSButton.setText("DFS");
-    panel2.add(DFSButton, new com.intellij.uiDesigner.core.GridConstraints(13, 0, 1, 1,
-                                                                           com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-                                                                           com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL,
-                                                                           com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-                                                                           | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-                                                                           com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED,
-                                                                           null, null, null, 0, false));
+    panel2.add(DFSButton,
+               new GridConstraints(13, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                                   GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                                   GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     loadButton = new AIButton();
     loadButton.setText("Load");
-    panel2.add(loadButton, new com.intellij.uiDesigner.core.GridConstraints(16, 0, 1, 1,
-                                                                            com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-                                                                            com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL,
-                                                                            com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-                                                                            | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-                                                                            com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED,
-                                                                            null, null, null, 0, false));
+    panel2.add(loadButton,
+               new GridConstraints(16, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                                   GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                                   GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     resetButton = new AIButton();
     resetButton.setText("Reset");
-    panel2.add(resetButton, new com.intellij.uiDesigner.core.GridConstraints(18, 0, 1, 1,
-                                                                             com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-                                                                             com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL,
-                                                                             com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-                                                                             | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-                                                                             com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED,
-                                                                             null, null, null, 0, false));
+    panel2.add(resetButton,
+               new GridConstraints(18, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                                   GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                                   GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     final AIPanel aIPanel1 = new AIPanel();
-    panel2.add(aIPanel1, new com.intellij.uiDesigner.core.GridConstraints(10, 0, 1, 1,
-                                                                          com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-                                                                          com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH,
-                                                                          1, 1, null, new Dimension(-1, 10),
-                                                                          new Dimension(-1, 10), 0, false));
+    panel2.add(aIPanel1,
+               new GridConstraints(10, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, 1, 1, null,
+                                   new Dimension(-1, 10), new Dimension(-1, 10), 0, false));
     final AIPanel aIPanel2 = new AIPanel();
-    panel2.add(aIPanel2, new com.intellij.uiDesigner.core.GridConstraints(15, 0, 1, 1,
-                                                                          com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-                                                                          com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH,
-                                                                          1, 1, null, new Dimension(-1, 10),
-                                                                          new Dimension(-1, 10), 0, false));
+    panel2.add(aIPanel2,
+               new GridConstraints(15, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, 1, 1, null,
+                                   new Dimension(-1, 10), new Dimension(-1, 10), 0, false));
     stepSlider = new AISlider();
     stepSlider.setMajorTickSpacing(100);
     stepSlider.setMaximum(500);
@@ -306,91 +269,65 @@ public class ShortestPathGui extends AIGui {
     stepSlider.setPaintTrack(true);
     stepSlider.setSnapToTicks(true);
     stepSlider.setValueIsAdjusting(true);
-    panel2.add(stepSlider, new com.intellij.uiDesigner.core.GridConstraints(8, 0, 1, 1,
-                                                                            com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST,
-                                                                            com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL,
-                                                                            1,
-                                                                            com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED,
-                                                                            null, null, null, 0, false));
+    panel2.add(stepSlider,
+               new GridConstraints(8, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, 1,
+                                   GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     labelsCheckbox = new AICheckBox();
     labelsCheckbox.setSelected(false);
     labelsCheckbox.setText("Labels");
-    panel2.add(labelsCheckbox, new com.intellij.uiDesigner.core.GridConstraints(7, 0, 1, 1,
-                                                                                com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-                                                                                com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL,
-                                                                                1,
-                                                                                com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED,
-                                                                                null, null, null, 0, false));
+    panel2.add(labelsCheckbox,
+               new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, 1,
+                                   GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     simulationButton = new AIButton();
     simulationButton.setText("Simulation");
-    panel2.add(simulationButton, new com.intellij.uiDesigner.core.GridConstraints(14, 0, 1, 1,
-                                                                                  com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-                                                                                  com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL,
-                                                                                  com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-                                                                                  | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-                                                                                  com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED,
-                                                                                  null, null, null, 0, false));
+    panel2.add(simulationButton,
+               new GridConstraints(14, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                                   GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                                   GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     shuffleChildrenCheckBox = new AICheckBox();
     shuffleChildrenCheckBox.setText("Shuffle Children");
-    panel2.add(shuffleChildrenCheckBox, new com.intellij.uiDesigner.core.GridConstraints(6, 0, 1, 1,
-                                                                                         com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-                                                                                         com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH,
-                                                                                         com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-                                                                                         | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-                                                                                         com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-                                                                                         | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-                                                                                         null, null, null, 0, false));
+    panel2.add(shuffleChildrenCheckBox,
+               new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+                                   GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                                   GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null,
+                                   null, null, 0, false));
     drawChildrenCheckBox = new AICheckBox();
     drawChildrenCheckBox.setText("Draw Children");
-    panel2.add(drawChildrenCheckBox, new com.intellij.uiDesigner.core.GridConstraints(5, 0, 1, 1,
-                                                                                      com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-                                                                                      com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH,
-                                                                                      com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-                                                                                      | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-                                                                                      com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-                                                                                      | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-                                                                                      null, null, null, 0, false));
+    panel2.add(drawChildrenCheckBox,
+               new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+                                   GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                                   GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null,
+                                   null, null, 0, false));
     drawOutlinesCheckBox = new AICheckBox();
     drawOutlinesCheckBox.setText("Outlines");
-    panel2.add(drawOutlinesCheckBox, new com.intellij.uiDesigner.core.GridConstraints(4, 0, 1, 1,
-                                                                                      com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-                                                                                      com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH,
-                                                                                      com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-                                                                                      | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-                                                                                      com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-                                                                                      | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-                                                                                      null, null, null, 0, false));
+    panel2.add(drawOutlinesCheckBox,
+               new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+                                   GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                                   GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null,
+                                   null, null, 0, false));
     stepCheckBox = new AICheckBox();
     stepCheckBox.setText("Should step");
-    panel2.add(stepCheckBox, new com.intellij.uiDesigner.core.GridConstraints(3, 0, 1, 1,
-                                                                              com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-                                                                              com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH,
-                                                                              com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-                                                                              | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-                                                                              com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-                                                                              | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-                                                                              null, null, null, 0, false));
+    panel2.add(stepCheckBox, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+                                                 GridConstraints.SIZEPOLICY_CAN_SHRINK
+                                                 | GridConstraints.SIZEPOLICY_CAN_GROW,
+                                                 GridConstraints.SIZEPOLICY_CAN_SHRINK
+                                                 | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
     fromFileButton = new AIButton();
     fromFileButton.setText("From File");
-    panel2.add(fromFileButton, new com.intellij.uiDesigner.core.GridConstraints(17, 0, 1, 1,
-                                                                                com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-                                                                                com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH,
-                                                                                com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW,
-                                                                                com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED,
-                                                                                null, null, null, 0, false));
+    panel2.add(fromFileButton,
+               new GridConstraints(17, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+                                   GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null,
+                                   null, 0, false));
     final AISplitPane aISplitPane1 = new AISplitPane();
     aISplitPane1.setContinuousLayout(false);
     aISplitPane1.setOneTouchExpandable(true);
     aISplitPane1.setOrientation(0);
     aISplitPane1.setResizeWeight(0.8);
-    mainPanel.add(aISplitPane1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1,
-                                                                                 com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER,
-                                                                                 com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH,
-                                                                                 com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-                                                                                 | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-                                                                                 com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK
-                                                                                 | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW,
-                                                                                 null, null, null, 0, false));
+    mainPanel.add(aISplitPane1,
+                  new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+                                      GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                                      GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null,
+                                      null, null, 0, false));
     log = new AIContiniousScrollPane();
     aISplitPane1.setRightComponent(log);
     drawingCanvas = new AIGridCanvas();
