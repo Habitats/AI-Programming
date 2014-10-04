@@ -10,5 +10,6 @@ public interface VariableListener {
   void onAssumptionMade(int value);
 
   void onDomainChanged(Domain domain);
+
   boolean isEmpty();
 }

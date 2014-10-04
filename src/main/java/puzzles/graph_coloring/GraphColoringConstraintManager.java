@@ -66,11 +66,11 @@ public class GraphColoringConstraintManager {
     setConstraints(immutableConstraints);
 
     Log.i(TAG, "... finished generating " + constraints.size() + " constraints and filtered out " + (count - constraints
-              .size()) + " duplicates!");
+        .size()) + " duplicates!");
 
     generateVariableCounts();
 
-    for(Variable variable : variables){
+    for (Variable variable : variables) {
       variable.setConstraintsContainingVariable(immutableConstraints);
     }
   }
