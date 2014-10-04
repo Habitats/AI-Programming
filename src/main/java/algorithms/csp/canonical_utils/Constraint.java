@@ -31,12 +31,7 @@ public class Constraint implements Iterable<Variable> {
   }
 
   public void removeFocalvariableFromTodo(Variable focalVariable) {
-    for (String id : variableIdsToCheck) {
-      if (focalVariable.getId().equals(id)) {
-        variableIdsToCheck.remove(id);
-        break;
-      }
-    }
+    variableIdsToCheck.remove(focalVariable.getId());
   }
 
   public boolean contains(Variable x) {
@@ -55,7 +50,7 @@ public class Constraint implements Iterable<Variable> {
   public String getNextVariableId() {
     String next = variableIdsToCheck.iterator().next();
     variableIdsToCheck.remove(next);
-    return function.getVariablesMap().get(next).getId();
+    return next;
 
   }
 
@@ -82,6 +77,10 @@ public class Constraint implements Iterable<Variable> {
     return new ArrayList<>(function.getVariablesMap().values());
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    return obj instanceof Constraint && ((Constraint) obj).function.equals(function);
+  }
 
   public boolean isSatisfied(VariableList variables) {
     return function.call(variables);

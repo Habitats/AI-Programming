@@ -1,6 +1,7 @@
 package puzzles.graph_coloring;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -61,12 +62,17 @@ public class GraphColoringConstraintManager {
       }
     }
 
-    setConstraints(new ArrayList<>(constraints.values()));
+    List<Constraint> immutableConstraints = Collections.unmodifiableList(new ArrayList<>(constraints.values()));
+    setConstraints(immutableConstraints);
 
     Log.i(TAG, "... finished generating " + constraints.size() + " constraints and filtered out " + (count - constraints
               .size()) + " duplicates!");
 
     generateVariableCounts();
+
+    for(Variable variable : variables){
+      variable.setConstraintsContainingVariable(immutableConstraints);
+    }
   }
 
   private void generateVariableCounts() {
@@ -91,7 +97,7 @@ public class GraphColoringConstraintManager {
   }
 
 
-  public void setConstraints(ArrayList<Constraint> constraints) {
+  public void setConstraints(List<Constraint> constraints) {
     this.constraints.clear();
     this.constraints.addAll(constraints);
   }

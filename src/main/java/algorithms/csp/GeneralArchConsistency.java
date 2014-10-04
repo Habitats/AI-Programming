@@ -1,11 +1,12 @@
 package algorithms.csp;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Set;
 
 import ai.Log;
 import algorithms.a_star_csp.AStarCspPuzzle;
@@ -50,12 +51,7 @@ public class GeneralArchConsistency {
       // isSatisfiable if it's the first time we see this variable. If yes, put it to current variables
       if (vars.size() == focalVariableIndex) {
         String id = constraint.getNextVariableId();
-        for (Variable var : variables) {
-          if (id.equals(var.getId())) {
-            vars.add(var);
-            break;
-          }
-        }
+        vars.add(variables.getVariable(id));
       }
       // iterate over all possible values for this variable
       for (Integer val : vars.get(focalVariableIndex).getDomain()) {
@@ -77,10 +73,10 @@ public class GeneralArchConsistency {
   public static Result domainFilter(CspPuzzle puzzle) {
     List<Constraint> constraints = puzzle.getConstraints();
     Queue<Variable> queue = new PriorityQueue<>();
-    HashMap<String, Variable> queueHash = new HashMap<>();
+    Set<String> queueHash = new HashSet<>();
     queue.addAll(puzzle.getVariables().getAll());
     for (Variable v : puzzle.getVariables()) {
-      queueHash.put(v.getId(), v);
+      queueHash.add(v.getId());
     }
     int initialDomainSize = puzzle.getDomainSize();
     Variable var;
@@ -98,27 +94,13 @@ public class GeneralArchConsistency {
         }
 
         if (revise(var, constraint, puzzle.getVariables())) {
-          // push all other variables in this constraint onto the queue
-          for (Variable variable : puzzle.getVariables()) {
-            // if it's 'this' variable, do nothing
-//            if (variableId.equals(var.getId())) {
-//              continue;
-//            }
-
-            if (!queueHash.containsKey(variable.getId())) {
-              queue.add(variable);
-              queueHash.put(variable.getId(), variable);
-            }
-          }
+          addVariablesInConstraintsContainingCurrentVariable(puzzle, queue, queueHash, var, constraint);
+//          addVariablesInConstraintsContainingCurrentVariable2(puzzle, queue, queueHash, var);
         }
       }
 
 //      Log.v(TAG, "after: " + var);
 //      Log.v(TAG, "------------------------------------");
-    }
-
-    for (Variable v : puzzle.getVariables()) {
-      Log.v(TAG, v);
     }
     if (puzzle.getDomainSize() == puzzle.getVariables().size()) {
       return Result.SOLUTION;
@@ -129,17 +111,46 @@ public class GeneralArchConsistency {
     }
   }
 
+  private static void addVariablesInConstraintsContainingCurrentVariable2(CspPuzzle puzzle, Queue<Variable> queue,
+                                                                          Set<String> queueHash, Variable var) {
+    for (String variableId : var.getVariableIDsInConstraintsContainingVariable()) {
+      if (!queueHash.contains(variableId)) {
+        queue.add(puzzle.getVariable(variableId));
+        queueHash.add(variableId);
+      }
+    }
+  }
+
+  private static void addVariablesInConstraintsContainingCurrentVariable(CspPuzzle puzzle, Queue<Variable> queue,
+                                                                         Set<String> queueHash, Variable var,
+                                                                         Constraint constraint) {
+    for (Constraint constraintContainingVariable : var.getConstraintsContainingVariable()) {
+      if (constraintContainingVariable.equals(constraint)) {
+        continue;
+      }
+      for (Variable variableInConstraint : constraintContainingVariable) {
+        if (variableInConstraint.getId().equals(var.getId())) {
+          continue;
+        }
+        if (!queueHash.contains(variableInConstraint.getId())) {
+          queue.add(puzzle.getVariable(variableInConstraint.getId()));
+          queueHash.add(variableInConstraint.getId());
+        }
+      }
+    }
+  }
 
   /**
    * Remove all values from focalVariables' domain if no combination of non-focalVariables satisfy the constraint
    *
    * @return return true if domain is reduced by assumption
    */
+
   private static boolean revise(Variable focalVariable, Constraint constraint, VariableList variables) {
     int oldSize = focalVariable.getDomain().getSize();
 
     // iterate over all the values of the focalDomain
-    Iterator<Integer> iterator =  focalVariable.getDomain().iterator();
+    Iterator<Integer> iterator = focalVariable.getDomain().iterator();
     while (iterator.hasNext()) {
       Integer val = iterator.next();
       focalVariable.setValue(val);
@@ -150,7 +161,7 @@ public class GeneralArchConsistency {
       boolean satisfiable = isSatisfiable(constraint, 0, vars, focalVariable, variables);
       if (!satisfiable) {
         // if constraint is impossible to satisfy with the given value, remove the value from the domain
-        Log.v(TAG, "reducing the domain of " + focalVariable + " by removing: " + val + ". Violating: " + constraint);
+//        Log.v(TAG, "reducing the domain of " + focalVariable + " by removing: " + val + ". Violating: " + constraint);
         iterator.remove();
       }
 //      else{

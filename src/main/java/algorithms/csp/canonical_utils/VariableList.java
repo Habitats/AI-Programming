@@ -15,8 +15,8 @@ public class VariableList implements Iterable<Variable> {
     variableMap = new HashMap<>();
   }
 
-  public void getVariable(String id) {
-    variableMap.get(id);
+  public Variable getVariable(String id) {
+    return variableMap.get(id);
   }
 
   public java.util.Collection<Variable> getAll() {
@@ -44,7 +44,6 @@ public class VariableList implements Iterable<Variable> {
   }
 
 
-
   public int size() {
     return variableMap.size();
   }
@@ -52,4 +51,5 @@ public class VariableList implements Iterable<Variable> {
   public boolean isEmpty() {
     return size() == 0;
   }
+
 }

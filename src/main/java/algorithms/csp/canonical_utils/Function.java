@@ -126,4 +126,8 @@ public class Function {
     return variablesMap;
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    return (obj instanceof Function && ((Function) obj).expression.equals(expression));
+  }
 }

@@ -1,7 +1,11 @@
 package algorithms.csp.canonical_utils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Patrick on 04.09.2014.
@@ -14,10 +18,39 @@ public class Variable implements Comparable<Variable>, Serializable {
   private boolean hasValue;
   private VariableListener listener;
   private boolean assumption = false;
+  private List<Constraint> constraintsContainingVariable;
+  private Set<String> variableIDsInConstraintsContainingVariable;
 
   public Variable(String id, Domain domain) {
     this.id = id;
     this.domain = domain;
+  }
+
+  public Set<String> getVariableIDsInConstraintsContainingVariable() {
+    return variableIDsInConstraintsContainingVariable;
+  }
+
+  public void setConstraintsContainingVariable(List<Constraint> constraints) {
+    this.constraintsContainingVariable = new ArrayList<>();
+    this.variableIDsInConstraintsContainingVariable = new HashSet<>();
+    for (Constraint constraint : constraints) {
+      if (constraint.contains(this)) {
+        this.constraintsContainingVariable.add(constraint);
+      }
+    }
+    for (Constraint constraint : constraintsContainingVariable) {
+      for (Variable variable : constraint.getVariables()) {
+        if (variable.getId().equals(getId())) {
+          continue;
+        }
+        variableIDsInConstraintsContainingVariable.add(variable.getId());
+      }
+    }
+  }
+
+
+  public List<Constraint> getConstraintsContainingVariable() {
+    return constraintsContainingVariable;
   }
 
   public Variable setValue(int value) {
@@ -96,6 +129,8 @@ public class Variable implements Comparable<Variable>, Serializable {
     var.value = value;
     var.hasValue = hasValue;
     var.listener = listener;
+    var.constraintsContainingVariable = constraintsContainingVariable;
+    var.variableIDsInConstraintsContainingVariable = variableIDsInConstraintsContainingVariable;
     return var;
   }
 
