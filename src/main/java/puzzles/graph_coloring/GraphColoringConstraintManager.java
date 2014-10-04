@@ -49,7 +49,7 @@ public class GraphColoringConstraintManager {
         String cId = child.getId();
         int res = String.CASE_INSENSITIVE_ORDER.compare(id, cId);
 
-        // remove duplicate constraints, but first we need to order the id's
+        // remove copy constraints, but first we need to order the id's
         // duplication is handled automatically by using a hashmap on the Id
         String id1 = res < 0 ? id : cId;
         String id2 = id1 == id ? cId : id;

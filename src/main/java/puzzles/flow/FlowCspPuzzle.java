@@ -21,7 +21,9 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
 
   @Override
   public AStarCspPuzzle duplicate() {
-    return null;
+    FlowCspPuzzle dupe = new FlowCspPuzzle(flow);
+    dupe.setVariables(getVariables().copy());
+    return dupe;
   }
 
   @Override

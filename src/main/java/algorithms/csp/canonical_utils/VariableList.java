@@ -1,8 +1,10 @@
 package algorithms.csp.canonical_utils;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Patrick on 03.10.2014.
@@ -19,11 +21,11 @@ public class VariableList implements Iterable<Variable> {
     return variableMap.get(id);
   }
 
-  public java.util.Collection<Variable> getAll() {
+  public Collection<Variable> getAll() {
     return variableMap.values();
   }
 
-  public java.util.Set<String> getIds() {
+  public Set<String> getIds() {
     return variableMap.keySet();
   }
 
@@ -52,4 +54,11 @@ public class VariableList implements Iterable<Variable> {
     return size() == 0;
   }
 
+  public VariableList copy() {
+    VariableList dupe = new VariableList();
+    for (Variable var : variableMap.values()) {
+      dupe.variableMap.put(var.getId(), var.copy());
+    }
+    return dupe;
+  }
 }
