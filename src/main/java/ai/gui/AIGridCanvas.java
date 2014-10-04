@@ -3,7 +3,7 @@ package ai.gui;
 import java.awt.*;
 
 import ai.models.grid.Board;
-import ai.models.grid.Tile;
+import ai.models.grid.ColorTile;
 import puzzles.shortestpath.gui.ShortestPathGui;
 
 /**
@@ -27,30 +27,30 @@ public class AIGridCanvas extends AICanvas {
     if (getAdapter() != null) {
       for (int x = 0; x < getAdapter().getWidth(); x++) {
         for (int y = 0; y < getAdapter().getHeight(); y++) {
-          Tile tile = ((Board) getAdapter()).get(x, y);
-          paintTile(g, tile);
+          ColorTile colorTile = ((Board) getAdapter()).get(x, y);
+          paintTile(g, colorTile);
         }
       }
     }
   }
 
-  private void paintTile(Graphics g, Tile tile) {
+  private void paintTile(Graphics g, ColorTile colorTile) {
     // put origin to be the left bottom corner
-    int x = tile.x * tileWidth;
-    int y = getHeight() - tileHeight - tile.y * tileHeight;
+    int x = colorTile.x * tileWidth;
+    int y = getHeight() - tileHeight - colorTile.y * tileHeight;
 
-    drawTile(g, tile, x, y);
+    drawTile(g, colorTile, x, y);
 
     if (drawLabels) {
-      drawStringCenter(g, tile.getText(), x, y);
+      drawStringCenter(g, colorTile.getText(), x, y);
     }
     if (ShortestPathGui.DRAW_OUTLINES) {
       drawOutline(g, x, y);
     }
   }
 
-  private void drawTile(Graphics g, Tile tile, int x, int y) {
-    g.setColor(tile.getColor());
+  private void drawTile(Graphics g, ColorTile colorTile, int x, int y) {
+    g.setColor(colorTile.getColor());
     g.fillRect(x, y, tileWidth, tileHeight);
   }
 

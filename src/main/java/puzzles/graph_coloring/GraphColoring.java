@@ -1,11 +1,14 @@
 package puzzles.graph_coloring;
 
+import java.util.List;
+
 import ai.AIMain;
 import ai.gui.AIGui;
 import ai.models.AIAdapter;
 import ai.models.graph.ColorNode;
 import algorithms.a_star_csp.AStarCsp;
 import algorithms.a_star_csp.AStarCspPuzzle;
+import algorithms.csp.canonical_utils.Constraint;
 import puzzles.graph_coloring.gui.GraphColoringGui;
 
 /**
@@ -48,5 +51,15 @@ public class GraphColoring extends AStarCsp<ColorNode> {
       return null;
     }
     return getPuzzleFromInput(GraphColoringUtils.samples.get(i));
+  }
+
+  @Override
+  public int getDomainSize() {
+    return GraphColoringPuzzle.K;
+  }
+
+  @Override
+  public List<Constraint> getConstraints() {
+    return GraphColoringConstraintManager.getManager().getConstraints();
   }
 }

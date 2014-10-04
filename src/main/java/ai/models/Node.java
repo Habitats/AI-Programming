@@ -54,4 +54,6 @@ public abstract class Node<T extends Node> implements Comparable<T> {
     }
     return children;
   }
+
+  public abstract String getId();
 }

@@ -2,10 +2,12 @@ package ai.models;
 
 import java.util.Collection;
 
+import algorithms.csp.canonical_utils.VariableListener;
+
 /**
  * Created by Patrick on 08.09.2014.
  */
-public abstract class AIAdapter<T> {
+public abstract class AIAdapter<T extends Node & VariableListener> {
 
   private int width;
   private int height;
@@ -58,4 +60,6 @@ public abstract class AIAdapter<T> {
   public int getOriginY() {
     return minY;
   }
+
+  public abstract boolean isLegalPosition(T tile);
 }

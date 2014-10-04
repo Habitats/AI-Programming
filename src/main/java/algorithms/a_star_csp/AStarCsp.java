@@ -1,5 +1,7 @@
 package algorithms.a_star_csp;
 
+import java.util.List;
+
 import ai.Log;
 import ai.gui.AIGui;
 import ai.models.AIAdapter;
@@ -8,11 +10,13 @@ import algorithms.a_star.AStar;
 import algorithms.a_star.AStarCallback;
 import algorithms.a_star.AStarNode;
 import algorithms.csp.CspButtonListener;
+import algorithms.csp.canonical_utils.Constraint;
+import algorithms.csp.canonical_utils.VariableListener;
 
 /**
  * Created by Patrick on 01.10.2014.
  */
-public abstract class AStarCsp<T extends Node> implements CspButtonListener, Runnable {
+public abstract class AStarCsp<T extends Node & VariableListener> implements CspButtonListener, Runnable {
 
   private static final String TAG = AStarCsp.class.getSimpleName();
   private AStar astar;
@@ -66,7 +70,6 @@ public abstract class AStarCsp<T extends Node> implements CspButtonListener, Run
 
   @Override
   public void loadClicked() {
-
     String input = gui.getInput();
     puzzle = getPuzzleFromInput(input);
   }
@@ -119,4 +122,8 @@ public abstract class AStarCsp<T extends Node> implements CspButtonListener, Run
   public AIAdapter<T> getAdapter() {
     return adapter;
   }
+
+  public abstract int getDomainSize();
+
+  public abstract List<Constraint> getConstraints();
 }

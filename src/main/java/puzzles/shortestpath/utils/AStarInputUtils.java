@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ai.models.grid.Board;
-import puzzles.shortestpath.AStarTile;
+import puzzles.shortestpath.AStarColorTile;
 
 /**
  * Created by Patrick on 24.08.2014.
@@ -30,22 +30,22 @@ public class AStarInputUtils {
     return new AStarInputUtils(input);
   }
 
-  public AStarTile getStart() {
+  public AStarColorTile getStart() {
     List<Integer> params = getInputList().get(1);
-    AStarTile tile = new AStarTile(params.get(0), params.get(1), AStarTile.State.START);
+    AStarColorTile tile = new AStarColorTile(params.get(0), params.get(1), AStarColorTile.State.START);
     return tile;
   }
 
-  public AStarTile getGoal() {
+  public AStarColorTile getGoal() {
     List<Integer> params = getInputList().get(2);
-    AStarTile tile = new AStarTile(params.get(0), params.get(1), AStarTile.State.GOAL);
+    AStarColorTile tile = new AStarColorTile(params.get(0), params.get(1), AStarColorTile.State.GOAL);
     return tile;
   }
 
   public Board getBoard() {
     Integer boardWidth = inputList.get(0).get(0);
     Integer boardHeight = inputList.get(0).get(1);
-    Board<AStarTile> board = generateCleanBoard(boardWidth, boardHeight);
+    Board<AStarColorTile> board = generateCleanBoard(boardWidth, boardHeight);
     for (int i = 3; i < inputList.size(); i++) {
       int x = inputList.get(i).get(0);
       int y = inputList.get(i).get(1);
@@ -53,7 +53,7 @@ public class AStarInputUtils {
       int height = inputList.get(i).get(3);
       for (int w = 0; w < width; w++) {
         for (int h = 0; h < height; h++) {
-          AStarTile astarTile = new AStarTile(x + w, y + h, AStarTile.State.OBSTICLE);
+          AStarColorTile astarTile = new AStarColorTile(x + w, y + h, AStarColorTile.State.OBSTICLE);
           board.set(astarTile);
         }
       }
@@ -64,12 +64,12 @@ public class AStarInputUtils {
     return board;
   }
 
-  private Board<AStarTile> generateCleanBoard(int width, int height) {
-    Board<AStarTile> board = new Board<>(width, height);
+  private Board<AStarColorTile> generateCleanBoard(int width, int height) {
+    Board<AStarColorTile> board = new Board<>(width, height);
     board.clear();
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
-        AStarTile tile = new AStarTile(x, y, AStarTile.State.EMPTY);
+        AStarColorTile tile = new AStarColorTile(x, y, AStarColorTile.State.EMPTY);
         board.set(tile);
       }
     }

@@ -1,47 +1,23 @@
 package puzzles.flow;
 
-import java.util.List;
-
+import ai.models.grid.ColorTile;
+import algorithms.a_star_csp.AStarCsp;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.a_star_csp.SimpleAStarCspPuzzle;
-import algorithms.csp.canonical_utils.Constraint;
-import algorithms.csp.canonical_utils.VariableList;
 
 /**
  * Created by Patrick on 01.10.2014.
  */
 public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
 
-  private final Flow flow;
 
-  public FlowCspPuzzle(Flow flow) {
-    this.flow = flow;
-  }
-
-  @Override
-  public AStarCspPuzzle duplicate() {
-    FlowCspPuzzle dupe = new FlowCspPuzzle(flow);
-    dupe.setVariables(getVariables().copy());
-    return dupe;
+  public FlowCspPuzzle(AStarCsp<ColorTile> astarCsp) {
+    super(astarCsp);
   }
 
   @Override
   protected AStarCspPuzzle newInstance() {
-    return new FlowCspPuzzle(flow);
+    return new FlowCspPuzzle(getAstarCsp());
   }
 
-  @Override
-  public List<Constraint> getConstraints() {
-    return null;
-  }
-
-  @Override
-  public void visualize() {
-
-  }
-
-  @Override
-  public VariableList generateVariables() {
-    return null;
-  }
 }

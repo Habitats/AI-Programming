@@ -24,7 +24,8 @@ public abstract class AStarNode extends Node<AStarNode> {
     this.state = state;
   }
 
-  public String getState() {
+  @Override
+  public String getId() {
     if (state == null) {
       generateState();
     }
@@ -128,7 +129,7 @@ public abstract class AStarNode extends Node<AStarNode> {
            + "  - G: " + g() //
            + " - F: " + f() //
            + " - Closed: " + closed //
-//           + " - State: " + getState()//
+//           + " - State: " + getId()//
         ;
   }
 

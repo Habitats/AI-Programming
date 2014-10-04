@@ -54,9 +54,11 @@ public class GeneralArchConsistency {
         vars.add(variables.getVariable(id));
       }
       // iterate over all possible values for this variable
-      for (Integer val : vars.get(focalVariableIndex).getDomain()) {
+      Iterator<Integer> iterator = vars.get(focalVariableIndex).getDomain().iterator();
+      while (iterator.hasNext()) {
         // put a value, and recursively combine it with the possible combinations of the remaining variables
-        vars.get(focalVariableIndex).setValue(val);
+        Integer nextValue = iterator.next();
+        vars.get(focalVariableIndex).setValue(nextValue);
         if (isSatisfiable(constraint, focalVariableIndex + 1, vars, focalVariable, variables)) {
           return true;
         }
@@ -101,6 +103,9 @@ public class GeneralArchConsistency {
 
 //      Log.v(TAG, "after: " + var);
 //      Log.v(TAG, "------------------------------------");
+    }
+    for (Variable variable : puzzle.getVariables()) {
+      Log.v(TAG, variable);
     }
     if (puzzle.getDomainSize() == puzzle.getVariables().size()) {
       return Result.SOLUTION;
@@ -161,7 +166,7 @@ public class GeneralArchConsistency {
       boolean satisfiable = isSatisfiable(constraint, 0, vars, focalVariable, variables);
       if (!satisfiable) {
         // if constraint is impossible to satisfy with the given value, remove the value from the domain
-//        Log.v(TAG, "reducing the domain of " + focalVariable + " by removing: " + val + ". Violating: " + constraint);
+        Log.v(TAG, "reducing the domain of " + focalVariable + " by removing: " + val + ". Violating: " + constraint);
         iterator.remove();
       }
 //      else{

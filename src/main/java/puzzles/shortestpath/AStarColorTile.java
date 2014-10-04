@@ -3,23 +3,23 @@ package puzzles.shortestpath;
 import java.awt.*;
 
 import ai.gui.Theme;
-import ai.models.grid.Tile;
+import ai.models.grid.ColorTile;
 
 /**
  * Created by Patrick on 03.10.2014.
  */
-public class AStarTile extends Tile {
+public class AStarColorTile extends ColorTile {
 
   protected State state;
   private State previousState;
 
-  public AStarTile(int x, int y, State state) {
-    super(x, y);
+  public AStarColorTile(int x, int y, State state) {
+    super(x, y, State.values().length);
     setState(state);
   }
 
-  public AStarTile(int x, int y) {
-    super(x, y);
+  public AStarColorTile(int x, int y) {
+    super(x, y, State.values().length);
     setState(State.EMPTY);
   }
 
@@ -44,8 +44,8 @@ public class AStarTile extends Tile {
   }
 
   @Override
-  public void update(Tile tile) {
-    setState(((AStarTile) tile).getState());
+  public void update(ColorTile colorTile) {
+    setState(((AStarColorTile) colorTile).getState());
   }
 
   @Override
@@ -70,6 +70,11 @@ public class AStarTile extends Tile {
       default:
         return Theme.getButtonBackground();
     }
+  }
+
+  @Override
+  public String getId() {
+    return null;
   }
 
   public enum State {

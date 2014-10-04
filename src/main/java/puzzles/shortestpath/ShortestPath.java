@@ -20,7 +20,7 @@ public class ShortestPath implements ShortestPathButtonListener, Runnable {
 
   private static final String TAG = AIMain.class.getSimpleName();
   private ShortestPathGui gui;
-  private Board<AStarTile> board;
+  private Board<AStarColorTile> board;
   private AStar astar;
   private List<AStar> searches;
 

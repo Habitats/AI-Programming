@@ -6,11 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import ai.models.AIAdapter;
+import algorithms.csp.canonical_utils.VariableListener;
 
 /**
  * Created by Patrick on 24.08.2014.
  */
-public class Board<T extends Tile> extends AIAdapter<T> implements Iterable<List<T>> {
+public class Board<T extends ColorTile & VariableListener> extends AIAdapter<T> implements Iterable<List<T>> {
 
   private List<List<T>> tiles;
   private T start;
@@ -73,9 +74,9 @@ public class Board<T extends Tile> extends AIAdapter<T> implements Iterable<List
 
   public boolean hasAvailableTile(int x, int y) {
     try {
-      Tile tile = tiles.get(x).get(y);
+      ColorTile colorTile = tiles.get(x).get(y);
       // if not null AND is empty, return true
-      return (tile != null && tile.isEmpty());
+      return (colorTile != null && colorTile.isEmpty());
     } catch (IndexOutOfBoundsException e) {
       return false;
     }
@@ -98,9 +99,14 @@ public class Board<T extends Tile> extends AIAdapter<T> implements Iterable<List
 
   @Override
   public Collection getItems() {
-    List<Tile> items = new ArrayList<>();
+    List<ColorTile> items = new ArrayList<>();
     tiles.forEach(items::addAll);
     return items;
+  }
+
+  @Override
+  public boolean isLegalPosition(T tile) {
+    return hasAvailableTile(tile.x, tile.y);
   }
 
   public void clear() {

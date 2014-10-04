@@ -15,17 +15,17 @@ import puzzles.shortestpath.gui.ShortestPathGui;
 public class AStarBoardNode extends AStarNode {
 
   private static final String TAG = AStarBoardNode.class.getSimpleName();
-  private AStarTile tile;
-  private Board<AStarTile> board;
+  private AStarColorTile tile;
+  private Board<AStarColorTile> board;
   private int accuracyMultiplier = 10;
 
-  public AStarBoardNode(AStarTile tile, Board<AStarTile> board) {
+  public AStarBoardNode(AStarColorTile tile, Board<AStarColorTile> board) {
     super();
     this.tile = tile;
     this.board = board;
   }
 
-  public AStarTile getTile() {
+  public AStarColorTile getTile() {
     return tile;
   }
 
@@ -72,7 +72,7 @@ public class AStarBoardNode extends AStarNode {
 
   }
 
-  private int euclideanDistance(AStarTile start, AStarTile goal) {
+  private int euclideanDistance(AStarColorTile start, AStarColorTile goal) {
     double k1 = Math.pow(goal.y - start.y, 2);
     double k2 = Math.pow(goal.x - start.x, 2);
     double h = Math.sqrt(k1 + k2);
@@ -122,14 +122,14 @@ public class AStarBoardNode extends AStarNode {
   }
 
   private void drawPath() {
-    drawPath(AStarTile.State.PATH);
+    drawPath(AStarColorTile.State.PATH);
   }
 
-  private void drawPath(AStarTile.State state) {
+  private void drawPath(AStarColorTile.State state) {
     synchronized (board) {
       AStarNode node = this;
       while (node.hasParent()) {
-        AStarTile tile = ((AStarBoardNode) node).getTile();
+        AStarColorTile tile = ((AStarBoardNode) node).getTile();
         tile.setState(state);
         tile.setText(node.toStringShort());
         board.set(tile);
@@ -141,11 +141,12 @@ public class AStarBoardNode extends AStarNode {
 
   private void drawChildren() {
     for (AStarNode node : getSuccessors()) {
-      AStarTile tile = ((AStarBoardNode) node).getTile();
-      tile.setState(AStarTile.State.CHILDREN);
+      AStarColorTile tile = ((AStarBoardNode) node).getTile();
+      tile.setState(AStarColorTile.State.CHILDREN);
 //      tile.setText(node.toStringShort());
       board.set(tile);
     }
     board.notifyDataChanged();
   }
+
 }

@@ -25,7 +25,7 @@ import ai.gui.AISplitPane;
 import ai.gui.AITextArea;
 import ai.gui.AITextField;
 import ai.models.AIAdapter;
-import ai.models.grid.Tile;
+import ai.models.grid.ColorTile;
 import algorithms.a_star.AStar;
 import algorithms.csp.CspButtonListener;
 import puzzles.flow.FlowUtils;
@@ -33,7 +33,7 @@ import puzzles.flow.FlowUtils;
 /**
  * Created by Patrick on 23.08.2014.
  */
-public class FlowGui extends AIGui<Tile> {
+public class FlowGui extends AIGui<ColorTile> {
 
   private static final String TAG = FlowGui.class.getSimpleName();
   private AIButton resetButton;
@@ -103,7 +103,7 @@ public class FlowGui extends AIGui<Tile> {
 
 
   @Override
-  public void setAdapter(AIAdapter<Tile> adapter) {
+  public void setAdapter(AIAdapter<ColorTile> adapter) {
 
 //    setAdapter.setOrigin(minX, minY);
 

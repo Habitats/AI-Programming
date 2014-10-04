@@ -115,6 +115,11 @@ public class Sudoku implements CspPuzzle {
           public void onDomainChanged(Domain domain) {
 
           }
+
+          @Override
+          public boolean isEmpty() {
+            return false;
+          }
         });
         getVariables().add(var);
       }

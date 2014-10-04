@@ -14,10 +14,11 @@ import puzzles.graph_coloring.GraphColoringPuzzle;
 public class ColorNode extends Node<ColorNode> implements VariableListener {
 
   private static final String TAG = ColorNode.class.getSimpleName();
+  private static final Color EMPTY = Color.WHITE;
   private double x;
   private double y;
   private final int index;
-  private Color color = Color.white;
+  private Color color = EMPTY;
   private String desc = "";
   private Color outlineColor = Color.black;
   private int numberOfColors = GraphColoringPuzzle.K;
@@ -37,8 +38,14 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
     return (int) (x * 100);
   }
 
+  @Override
   public String getId() {
     return "n" + index;
+  }
+
+  @Override
+  public boolean isEmpty() {
+    return color == EMPTY;
   }
 
   public int getY() {

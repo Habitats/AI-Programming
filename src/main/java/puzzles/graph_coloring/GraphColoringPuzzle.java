@@ -3,6 +3,7 @@ package puzzles.graph_coloring;
 import java.util.List;
 
 import ai.models.graph.ColorNode;
+import algorithms.a_star_csp.AStarCsp;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.a_star_csp.SimpleAStarCspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
@@ -16,22 +17,9 @@ public class GraphColoringPuzzle extends SimpleAStarCspPuzzle {
 
 
   public static int K = 6;
-  private final GraphColoring graphColoring;
 
-  public GraphColoringPuzzle(GraphColoring graphColoring) {
-    this.graphColoring = graphColoring;
-  }
-
-
-  @Override
-  public VariableList generateVariables() {
-    VariableList variables = new VariableList();
-    for (ColorNode node : graphColoring.getAdapter().getItems()) {
-      Variable var = new Variable(node.getId(), getInitialDomain());
-      variables.put(var);
-      var.setListener(node);
-    }
-    return variables;
+  public GraphColoringPuzzle(AStarCsp<ColorNode> graphColoring) {
+    super(graphColoring);
   }
 
   private VariableList getMostConstrained() {
@@ -63,16 +51,14 @@ public class GraphColoringPuzzle extends SimpleAStarCspPuzzle {
     return GraphColoringConstraintManager.getManager().getConstraints();
   }
 
+
   @Override
-  public void visualize() {
-    for (Variable variable : getVariables()) {
-      variable.update();
-    }
-    graphColoring.getAdapter().notifyDataChanged();
+  protected int getInitialDomainSize() {
+    return GraphColoringPuzzle.K;
   }
 
   @Override
   protected AStarCspPuzzle newInstance() {
-    return new GraphColoringPuzzle(graphColoring);
+    return new GraphColoringPuzzle(getAstarCsp());
   }
 }

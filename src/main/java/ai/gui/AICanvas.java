@@ -6,11 +6,13 @@ import javax.swing.*;
 
 import ai.models.AIAdapter;
 import ai.models.AIAdapterListener;
+import ai.models.Node;
+import algorithms.csp.canonical_utils.VariableListener;
 
 /**
  * Created by Patrick on 24.08.2014.
  */
-public abstract class AICanvas<T> extends JPanel implements AIAdapterListener {
+public abstract class AICanvas<T extends Node & VariableListener> extends JPanel implements AIAdapterListener {
 
   private static final String TAG = AICanvas.class.getSimpleName();
   private AIAdapter adapter;

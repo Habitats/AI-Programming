@@ -90,14 +90,14 @@ public class AStar implements Runnable {
 
       for (AStarNode succsessor : current.getSuccessors()) {
         // if child has already been generated, use that child
-        if (generated.containsKey(succsessor.getState())) {
-          succsessor = generated.get(succsessor.getState());
+        if (generated.containsKey(succsessor.getId())) {
+          succsessor = generated.get(succsessor.getId());
         }
         current.addChild(succsessor);
 
         // if child is new
-        if (!generated.containsKey(succsessor.getState())) {
-          generated.put(succsessor.getState(), succsessor);
+        if (!generated.containsKey(succsessor.getId())) {
+          generated.put(succsessor.getId(), succsessor);
           attachAndEvaluate(succsessor, current);
 
           if (traversal == Traversal.DEPTH_FIRST) {

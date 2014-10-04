@@ -12,11 +12,12 @@ import ai.Log;
 import ai.models.AIAdapter;
 import ai.models.Node;
 import algorithms.csp.CspButtonListener;
+import algorithms.csp.canonical_utils.VariableListener;
 
 /**
  * Created by Patrick on 08.09.2014.
  */
-public abstract class AIGui<T extends Node> {
+public abstract class AIGui<T extends Node & VariableListener> {
 
   private static final String TAG = AIGui.class.getSimpleName();
   protected CspButtonListener listener;

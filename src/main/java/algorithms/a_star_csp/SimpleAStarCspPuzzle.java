@@ -1,17 +1,26 @@
 package algorithms.a_star_csp;
 
+import java.util.Collection;
+import java.util.List;
+
+import ai.models.Node;
+import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Domain;
 import algorithms.csp.canonical_utils.Variable;
 import algorithms.csp.canonical_utils.VariableList;
-import puzzles.graph_coloring.GraphColoringPuzzle;
+import algorithms.csp.canonical_utils.VariableListener;
 
 /**
  * Created by Patrick on 04.10.2014.
  */
-public abstract class SimpleAStarCspPuzzle implements AStarCspPuzzle{
+public abstract class SimpleAStarCspPuzzle<T extends Node<T> & VariableListener> implements AStarCspPuzzle {
 
+  private final AStarCsp<T> astarCsp;
   protected VariableList variables;
 
+  public SimpleAStarCspPuzzle(AStarCsp<T> astarCsp) {
+    this.astarCsp = astarCsp;
+  }
 
 
   protected Domain getInitialDomain() {
@@ -22,8 +31,8 @@ public abstract class SimpleAStarCspPuzzle implements AStarCspPuzzle{
     return new Domain(domain);
   }
 
-  private int getInitialDomainSize() {
-    return GraphColoringPuzzle.K;
+  protected int getInitialDomainSize() {
+    return getAstarCsp().getDomainSize();
   }
 
   protected Variable getMinimalDomain() {
@@ -94,4 +103,35 @@ public abstract class SimpleAStarCspPuzzle implements AStarCspPuzzle{
   }
 
   protected abstract AStarCspPuzzle newInstance();
+
+  protected AStarCsp<T> getAstarCsp() {
+    return astarCsp;
+  }
+
+  @Override
+  public List<Constraint> getConstraints() {
+    return getAstarCsp().getConstraints();
+  }
+
+  @Override
+  public void visualize() {
+    for (Variable variable : getVariables()) {
+      variable.update();
+    }
+    getAstarCsp().getAdapter().notifyDataChanged();
+  }
+
+  @Override
+  public VariableList generateVariables() {
+    VariableList variables = new VariableList();
+    Collection<T> items = getAstarCsp().getAdapter().getItems();
+    for (T node : items) {
+      if (node.isEmpty()) {
+        Variable var = new Variable(node.getId(), getInitialDomain());
+        variables.put(var);
+        var.setListener(node);
+      }
+    }
+    return variables;
+  }
 }
