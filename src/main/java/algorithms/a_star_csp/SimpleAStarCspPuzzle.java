@@ -126,11 +126,12 @@ public abstract class SimpleAStarCspPuzzle<T extends Node<T> & VariableListener>
     VariableList variables = new VariableList();
     Collection<T> items = getAstarCsp().getAdapter().getItems();
     for (T node : items) {
-      if (node.isEmpty()) {
-        Variable var = new Variable(node.getId(), getInitialDomain());
-        variables.put(var);
-        var.setListener(node);
+      Variable var = new Variable(node.getId(), getInitialDomain());
+      if (!node.isEmpty()) {
+        var.setAssumption(node.getInitialValue());
       }
+      variables.put(var);
+      var.setListener(node);
     }
     return variables;
   }

@@ -1,7 +1,6 @@
 package ai.models.grid;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 import ai.gui.ColorUtils;
 import ai.models.Node;
@@ -15,12 +14,17 @@ public class ColorTile extends Node<Node> implements VariableListener {
 
   protected static final Color EMPTY = Color.WHITE;
   private static final String TAG = ColorTile.class.getSimpleName();
+
+  // final fields
   public final int x;
   public final int y;
-  protected int numberOfColors;
-  private String text;
+  private final int numberOfColors;
+
+  // mutable fields
   private Color color = EMPTY;
   private Color outlineColor;
+  private String domainText;
+  private Integer initialValue = null;
 
   public ColorTile(int x, int y, int numberOfColors) {
     this.x = x;
@@ -28,20 +32,28 @@ public class ColorTile extends Node<Node> implements VariableListener {
     this.numberOfColors = numberOfColors;
   }
 
+  public void setInitialValue(int initialValue) {
+    if (this.initialValue == null) {
+      this.initialValue = initialValue;
+    } else {
+      throw new IllegalArgumentException("InitialValue already set!");
+    }
+  }
+
   @Override
   public String toString() {
-    return String.format("%s: %s, %s - Empty: %s", ColorTile.class.getSimpleName(), x, y, isEmpty());
+    return String.format("%s - %s", getId(), domainText);
   }
 
-  public void setText(String text) {
-    this.text = text;
+  public void setDomainText(String domainText) {
+    this.domainText = domainText;
   }
 
-  public String getText() {
-    if (text == null) {
+  public String getDomainText() {
+    if (domainText == null) {
       return toString();
     }
-    return text;
+    return domainText;
   }
 
   @Override
@@ -59,8 +71,17 @@ public class ColorTile extends Node<Node> implements VariableListener {
     return getColor() == EMPTY;
   }
 
+  @Override
+  public int getInitialValue() {
+    return this.initialValue;
+  }
+
+  // update all the mutable fields
   public void update(ColorTile colorTile) {
-    setColor(colorTile.getColor());
+    color = colorTile.color;
+    initialValue = colorTile.initialValue;
+    outlineColor = colorTile.outlineColor;
+    domainText = colorTile.domainText;
   }
 
   public Color getColor() {
@@ -79,12 +100,12 @@ public class ColorTile extends Node<Node> implements VariableListener {
     return outlineColor;
   }
 
-  public void setColor(int colorIndex) {
-    setColor(ColorUtils.toHsv(colorIndex, numberOfColors, 1));
+  public void setColor(int value) {
+    setColor(ColorUtils.toHsv(value, numberOfColors, 1));
   }
 
-  public void setColor(int colorIndex, double brightness) {
-    setColor(ColorUtils.toHsv(colorIndex, numberOfColors, brightness));
+  public void setColor(int value, double brightness) {
+    setColor(ColorUtils.toHsv(value, numberOfColors, brightness));
   }
 
   @Override
@@ -103,23 +124,8 @@ public class ColorTile extends Node<Node> implements VariableListener {
 
   @Override
   public void onDomainChanged(Domain domain) {
+    domainText = domain.toString();
   }
 
-  public java.util.List<ColorTile> getManhattanNeightbors() {
-    java.util.List<ColorTile> manhattanNeighbors = new ArrayList<>();
-    for (int x = this.x - 1; x <= this.x + 1; x++) {
-      for (int y = this.y - 1; y <= this.y + 1; y++) {
-        // do not put self to its own children
-        if (x == this.x && y == this.y) {
-          continue;
-        }
-        // disallow diagonal neighbors
-        if (this.x != x && this.y != y) {
-          continue;
-        }
-        manhattanNeighbors.add(new ColorTile(x, y, numberOfColors));
-      }
-    }
-    return manhattanNeighbors;
-  }
+
 }

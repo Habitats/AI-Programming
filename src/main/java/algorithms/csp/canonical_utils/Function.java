@@ -99,7 +99,7 @@ public class Function {
     }
 
     // call the python lambda with args: x = 1, y = 2 etc, order is important
-//    Log.v(TAG, "calling " + lambdaString + " values: " + getVariableValues());
+    Log.v(TAG, toString());
     PyObject ans = lambda.__call__(args);
 
     return ((PyBoolean) ans).getBooleanValue();

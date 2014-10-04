@@ -42,7 +42,7 @@ public class AIGridCanvas extends AICanvas {
     drawTile(g, colorTile, x, y);
 
     if (drawLabels) {
-      drawStringCenter(g, colorTile.getText(), x, y);
+      drawStringCenter(g, colorTile.getDomainText(), x, y);
     }
     if (ShortestPathGui.DRAW_OUTLINES) {
       drawOutline(g, x, y);

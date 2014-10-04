@@ -44,25 +44,23 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
     HashMap<String, Constraint> constraints = new HashMap<>();
     int count = 0;
     for (ColorTile tile : adapter.getItems()) {
-      // if the tile is a predefined tile, disregard it!
-      if (!tile.isEmpty()) {
-        continue;
-      }
-      String id = tile.getId();
-      List<ColorTile> neighbors = tile.getManhattanNeightbors();
-      String expression = "";
-      for (ColorTile neighbor : neighbors) {
-        if (adapter.isLegalPosition(neighbor)) {
-          String neighborId = neighbor.getId();
-          expression += " and " + id + " !=  " + neighborId;
-        }
-      }
-      expression = expression.substring(4);
+      // if the tile is a predefined tile, it's either a start or endpoint; special constraints apply!
+      String expression;
+//      if (!tile.isEmpty()) {
+//        expression = generateEndpointConstraintExpression(adapter, tile);
+//      } else {
+//        expression = generateEndpointConstraintExpression(adapter, tile);
+//        expression = generateMidpointConstraintExpression(adapter, tile);
+//        continue;
+//      }
 
-      Constraint constraint = new Constraint(puzzle.getVariables(), expression);
-      constraints.put(expression, constraint);
-      Log.i(TAG, constraint);
-      count++;
+      for (ColorTile neighbor : ((Board<ColorTile>) adapter).getManhattanNeighbors(tile)) {
+        expression = tile.getId() + " != " + neighbor.getId();
+        Constraint constraint = new Constraint(puzzle.getVariables(), expression);
+        constraints.put(expression, constraint);
+        Log.i(TAG, constraint);
+        count++;
+      }
     }
 
     List<Constraint> immutableConstraints = Collections.unmodifiableList(new ArrayList<>(constraints.values()));
@@ -75,6 +73,42 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
       variable.setConstraintsContainingVariable(immutableConstraints);
     }
 
+  }
+
+  private String generateEndpointConstraintExpression(AIAdapter<ColorTile> adapter, ColorTile tile) {
+    List<ColorTile> neighbors = ((Board<ColorTile>) adapter).getManhattanNeighbors(tile);
+    String expression = "";
+    for (ColorTile neighbor : neighbors) {
+      expression += " or (" + tile.getId() + " == " + neighbor.getId() + ")";
+    }
+    expression = expression.substring(3);
+    return expression;
+  }
+
+  private String generateMidpointConstraintExpression(AIAdapter<ColorTile> adapter, ColorTile tile) {
+    String id = tile.getId();
+    List<ColorTile> neighbors = ((Board<ColorTile>) adapter).getManhattanNeighbors(tile);
+    String expression = "";
+    String operator = " e ";
+    List<String> pairs = new ArrayList<>();
+    for (ColorTile neighbor : neighbors) {
+      if (adapter.isLegalPosition(neighbor)) {
+        String neighborId = neighbor.getId();
+        pairs.add(id + operator + neighborId);
+      }
+    }
+    int numberOfValidNeighbors = pairs.size();
+    String finalExpression = "";
+    for (int i = 0; i < numberOfValidNeighbors; i++) {
+      String subExpression = "";
+      for (int j = 0; j < numberOfValidNeighbors; j++) {
+        subExpression += " and " + pairs.get(j).replace(operator, j == i ? " == " : " != ");
+      }
+      subExpression = subExpression.substring(4);
+      finalExpression += " or (" + subExpression + ")";
+    }
+    finalExpression = finalExpression.substring(3);
+    return finalExpression;
   }
 
   @Override
@@ -99,6 +133,8 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
 
       ColorTile start = new ColorTile(startX, startY, numberOfColors);
       ColorTile end = new ColorTile(endX, endY, numberOfColors);
+      start.setInitialValue(i);
+      end.setInitialValue(i);
       start.setColor(i, .9);
       end.setColor(i, .9);
       board.set(start);

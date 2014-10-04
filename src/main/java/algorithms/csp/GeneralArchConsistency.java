@@ -85,6 +85,7 @@ public class GeneralArchConsistency {
     while ((var = queue.poll()) != null) {
       queueHash.remove(var.getId());
       if (var.getDomain().iEmpty()) {
+        printVariables(puzzle);
         return Result.EMPTY_DOMAIN;
       }
 //      Log.v(TAG, "before: " + var);
@@ -104,15 +105,20 @@ public class GeneralArchConsistency {
 //      Log.v(TAG, "after: " + var);
 //      Log.v(TAG, "------------------------------------");
     }
-    for (Variable variable : puzzle.getVariables()) {
-      Log.v(TAG, variable);
-    }
+
+    printVariables(puzzle);
     if (puzzle.getDomainSize() == puzzle.getVariables().size()) {
       return Result.SOLUTION;
     } else if (puzzle.getDomainSize() == initialDomainSize) {
       return Result.UNCHANGED_DOMAIN;
     } else {
       return Result.SHRUNK_DOMAIN;
+    }
+  }
+
+  private static void printVariables(CspPuzzle puzzle) {
+    for (Variable variable : puzzle.getVariables()) {
+      Log.v(TAG, variable.getDomain());
     }
   }
 

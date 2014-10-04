@@ -12,4 +12,6 @@ public interface VariableListener {
   void onDomainChanged(Domain domain);
 
   boolean isEmpty();
+
+  int getInitialValue();
 }

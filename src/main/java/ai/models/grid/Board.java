@@ -39,7 +39,7 @@ public class Board<T extends ColorTile & VariableListener> extends AIAdapter<T> 
   }
 
   public void set(T tile) {
-    if (hasAvailableTile(tile.x, tile.y)) {
+    if (hasEmptyTile(tile.x, tile.y)) {
       tiles.get(tile.x).get(tile.y).update(tile);
     } else {
       tiles.get(tile.x).set(tile.y, tile);
@@ -72,14 +72,8 @@ public class Board<T extends ColorTile & VariableListener> extends AIAdapter<T> 
     return goal;
   }
 
-  public boolean hasAvailableTile(int x, int y) {
-    try {
-      ColorTile colorTile = tiles.get(x).get(y);
-      // if not null AND is empty, return true
-      return (colorTile != null && colorTile.isEmpty());
-    } catch (IndexOutOfBoundsException e) {
-      return false;
-    }
+  public boolean hasEmptyTile(int x, int y) {
+    return (positionExist(x, y) && get(x, y).isEmpty());
   }
 
   @Override
@@ -106,10 +100,41 @@ public class Board<T extends ColorTile & VariableListener> extends AIAdapter<T> 
 
   @Override
   public boolean isLegalPosition(T tile) {
-    return hasAvailableTile(tile.x, tile.y);
+    return positionExist(tile.x, tile.y);
+  }
+
+  private boolean positionExist(int x, int y) {
+    try {
+      ColorTile colorTile = tiles.get(x).get(y);
+      return (colorTile != null);
+    } catch (IndexOutOfBoundsException e) {
+      return false;
+    }
   }
 
   public void clear() {
     clear(getWidth(), getHeight());
+  }
+
+  public java.util.List<ColorTile> getManhattanNeighbors(ColorTile tile) {
+    java.util.List<ColorTile> manhattanNeighbors = new ArrayList<>();
+    for (int x = tile.x - 1; x <= tile.x + 1; x++) {
+      for (int y = tile.y - 1; y <= tile.y + 1; y++) {
+        // if the position is out of bounds, disregard
+        if (!positionExist(x, y)) {
+          continue;
+        }
+        // do not put self to its own children
+        if (x == tile.x && y == tile.y) {
+          continue;
+        }
+        // disallow diagonal neighbors
+        if (tile.x != x && tile.y != y) {
+          continue;
+        }
+        manhattanNeighbors.add(get(x, y));
+      }
+    }
+    return manhattanNeighbors;
   }
 }

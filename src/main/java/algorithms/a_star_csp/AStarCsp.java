@@ -10,6 +10,7 @@ import algorithms.a_star.AStar;
 import algorithms.a_star.AStarCallback;
 import algorithms.a_star.AStarNode;
 import algorithms.csp.CspButtonListener;
+import algorithms.csp.GeneralArchConsistency;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.VariableListener;
 
@@ -41,6 +42,7 @@ public abstract class AStarCsp<T extends Node & VariableListener> implements Csp
   private void astarCsp() {
 
     AStarNode start = new AStarCspNode(puzzle);
+
     astar = new AStar(start, new AStarCallback() {
 
       @Override
@@ -60,7 +62,13 @@ public abstract class AStarCsp<T extends Node & VariableListener> implements Csp
 
   @Override
   public void runClicked() {
-    astarCsp();
+    Log.i(TAG, "Running initial domain filtering ...");
+    if (GeneralArchConsistency.domainFilter(puzzle) == GeneralArchConsistency.Result.SOLUTION) {
+      Log.i(AStarCsp.TAG, "Domain filtered to a solution without A*!");
+    } else {
+      Log.i(TAG, "No solution, running A*-CSP ...");
+      astarCsp();
+    }
   }
 
   @Override

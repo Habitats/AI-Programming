@@ -120,6 +120,11 @@ public class Sudoku implements CspPuzzle {
           public boolean isEmpty() {
             return false;
           }
+
+          @Override
+          public int getInitialValue() {
+            return 0;
+          }
         });
         getVariables().add(var);
       }

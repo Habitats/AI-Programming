@@ -22,6 +22,7 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
   private String desc = "";
   private Color outlineColor = Color.black;
   private int numberOfColors = GraphColoringPuzzle.K;
+  private int value;
 
   public ColorNode(double x, double y, int index) {
     this.x = x;
@@ -59,6 +60,7 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
 
   @Override
   public void onValueChanged(int value, int size) {
+    this.value = value;
     if (size == 1) {
       setColor(ColorUtils.toHsv(value, numberOfColors, 1));
     } else {
@@ -80,6 +82,10 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
     desc = domain.toString();
   }
 
+  @Override
+  public int getInitialValue() {
+    return value;
+  }
 
   public Color getColor() {
     return color;

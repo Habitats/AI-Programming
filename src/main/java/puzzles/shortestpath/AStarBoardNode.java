@@ -49,7 +49,7 @@ public class AStarBoardNode extends AStarNode {
         }
         // check if coordinates for the specified successor are valid on the board.
         // ie. if the coordinates is an obstacle, or are out of bounds, it will return false
-        if (board.hasAvailableTile(x, y)) {
+        if (board.hasEmptyTile(x, y)) {
           // finally, generate a new BoardNode with the new coordinates
           successors.add(new AStarBoardNode(board.get(x, y), board));
         }
@@ -131,7 +131,7 @@ public class AStarBoardNode extends AStarNode {
       while (node.hasParent()) {
         AStarColorTile tile = ((AStarBoardNode) node).getTile();
         tile.setState(state);
-        tile.setText(node.toStringShort());
+        tile.setDomainText(node.toStringShort());
         board.set(tile);
         node = node.getParent();
       }
@@ -143,7 +143,7 @@ public class AStarBoardNode extends AStarNode {
     for (AStarNode node : getSuccessors()) {
       AStarColorTile tile = ((AStarBoardNode) node).getTile();
       tile.setState(AStarColorTile.State.CHILDREN);
-//      tile.setText(node.toStringShort());
+//      tile.setDomainText(node.toStringShort());
       board.set(tile);
     }
     board.notifyDataChanged();
