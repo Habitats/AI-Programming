@@ -64,11 +64,13 @@ public class AIGridCanvas extends AICanvas {
     return tileWidth;
   }
 
+  @Override
   protected void drawOutline(Graphics g, int x, int y) {
     g.setColor(Theme.getForeground());
     g.drawRect(x, y, tileWidth, tileHeight);
   }
 
+  @Override
   protected void updateMetrics() {
     if (getAdapter() == null) {
       return;

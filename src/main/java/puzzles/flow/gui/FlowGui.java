@@ -102,6 +102,7 @@ public class FlowGui extends AIGui<Tile> {
   }
 
 
+  @Override
   public void setAdapter(AIAdapter<Tile> adapter) {
 
 //    setAdapter.setOrigin(minX, minY);
@@ -111,10 +112,12 @@ public class FlowGui extends AIGui<Tile> {
     mainPanel.repaint();
   }
 
+  @Override
   public String getInput() {
     return inputField.getText().trim();
   }
 
+  @Override
   public void setListener(CspButtonListener listener) {
     this.listener = listener;
   }

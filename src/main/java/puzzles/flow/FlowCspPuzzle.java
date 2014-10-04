@@ -3,19 +3,25 @@ package puzzles.flow;
 import java.util.List;
 
 import algorithms.a_star_csp.AStarCspPuzzle;
+import algorithms.a_star_csp.SimpleAStarCspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
-import algorithms.csp.canonical_utils.Variable;
 import algorithms.csp.canonical_utils.VariableList;
 
 /**
  * Created by Patrick on 01.10.2014.
  */
-public class FlowCspPuzzle implements AStarCspPuzzle {
+public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
 
   private final Flow flow;
 
   public FlowCspPuzzle(Flow flow) {
     this.flow = flow;
+  }
+
+
+  @Override
+  public AStarCspPuzzle duplicate() {
+    return null;
   }
 
   @Override
@@ -24,47 +30,12 @@ public class FlowCspPuzzle implements AStarCspPuzzle {
   }
 
   @Override
-  public VariableList getVariables() {
-    return null;
-  }
-
-  @Override
-  public int getDomainSize() {
-    return 0;
-  }
-
-  @Override
   public void visualize() {
 
   }
 
   @Override
-  public String getId() {
-    return null;
-  }
-
-  @Override
-  public Variable getVariable(String id) {
-    return null;
-  }
-
-  @Override
   public VariableList generateVariables() {
-    return null;
-  }
-
-  @Override
-  public void setVariables(VariableList aVoid) {
-
-  }
-
-  @Override
-  public Variable getSuccessor() {
-    return null;
-  }
-
-  @Override
-  public AStarCspPuzzle duplicate() {
     return null;
   }
 }

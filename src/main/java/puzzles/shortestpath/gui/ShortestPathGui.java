@@ -121,6 +121,7 @@ public class ShortestPathGui extends AIGui {
     mainPanel.repaint();
   }
 
+  @Override
   public String getInput() {
     return inputField.getText().trim();
   }

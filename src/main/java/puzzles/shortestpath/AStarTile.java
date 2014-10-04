@@ -38,6 +38,7 @@ public class AStarTile extends Tile {
     return state;
   }
 
+  @Override
   public boolean isEmpty() {
     return state != State.OBSTICLE;
   }

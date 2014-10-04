@@ -103,6 +103,7 @@ public class GraphColoringGui extends AIGui<ColorNode> {
   }
 
 
+  @Override
   public void setAdapter(AIAdapter<ColorNode> adapter) {
 
 //    setAdapter.setOrigin(minX, minY);
@@ -112,6 +113,7 @@ public class GraphColoringGui extends AIGui<ColorNode> {
     mainPanel.repaint();
   }
 
+  @Override
   public String getInput() {
     return inputField.getText().trim();
   }
@@ -120,6 +122,7 @@ public class GraphColoringGui extends AIGui<ColorNode> {
     return kField.getText().trim();
   }
 
+  @Override
   public void setListener(CspButtonListener listener) {
     this.listener = listener;
   }
