@@ -1,6 +1,7 @@
 package puzzles.graph_coloring;
 
 import ai.AIMain;
+import ai.gui.AIGui;
 import ai.models.AIAdapter;
 import ai.models.graph.ColorNode;
 import algorithms.a_star_csp.AStarCsp;
@@ -15,7 +16,7 @@ public class GraphColoring extends AStarCsp<ColorNode> {
   public static final String TAG = AIMain.class.getSimpleName();
 
   @Override
-  protected ai.gui.AIGui generateGui() {
+  protected AIGui generateGui() {
     return new GraphColoringGui();
   }
 

@@ -15,12 +15,13 @@ import algorithms.csp.canonical_utils.VariableList;
 public class GraphColoringPuzzle extends SimpleAStarCspPuzzle {
 
 
-  private final GraphColoring graphColoring;
   public static int K = 6;
+  private final GraphColoring graphColoring;
 
   public GraphColoringPuzzle(GraphColoring graphColoring) {
     this.graphColoring = graphColoring;
   }
+
 
   @Override
   public VariableList generateVariables() {
@@ -70,17 +71,8 @@ public class GraphColoringPuzzle extends SimpleAStarCspPuzzle {
     graphColoring.getAdapter().notifyDataChanged();
   }
 
-  // AStarCspPuzzle /////////////////////////////////////////////////////////////////
-
   @Override
-  public AStarCspPuzzle duplicate() {
-    GraphColoringPuzzle dupe = new GraphColoringPuzzle(graphColoring);
-    dupe.setVariables(dupe.generateVariables());
-    for (Variable variable : getVariables()) {
-      dupe.getVariables().put(variable.copy());
-    }
-    return dupe;
+  protected AStarCspPuzzle newInstance() {
+    return new GraphColoringPuzzle(graphColoring);
   }
-
-
 }

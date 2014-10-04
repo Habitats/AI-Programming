@@ -12,6 +12,8 @@ public abstract class SimpleAStarCspPuzzle implements AStarCspPuzzle{
 
   protected VariableList variables;
 
+
+
   protected Domain getInitialDomain() {
     int[] domain = new int[getInitialDomainSize()];
     for (int i = 0; i < getInitialDomainSize(); i++) {
@@ -83,4 +85,13 @@ public abstract class SimpleAStarCspPuzzle implements AStarCspPuzzle{
     successor = getMinimalDomain();
     return successor;
   }
+
+  @Override
+  public AStarCspPuzzle duplicate() {
+    AStarCspPuzzle dupe = newInstance();
+    dupe.setVariables(getVariables().copy());
+    return dupe;
+  }
+
+  protected abstract AStarCspPuzzle newInstance();
 }
