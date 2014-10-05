@@ -67,10 +67,6 @@ public abstract class AIGui<T extends Node & VariableListener> {
     return new String(encoded, encoding);
   }
 
-  public JFrame getFrame() {
-    return frame;
-  }
-
   protected void init() {
   }
 

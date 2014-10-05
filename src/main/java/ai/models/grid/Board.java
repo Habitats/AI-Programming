@@ -92,8 +92,8 @@ public class Board<T extends ColorTile & VariableListener> extends AIAdapter<T> 
   }
 
   @Override
-  public Collection getItems() {
-    List<ColorTile> items = new ArrayList<>();
+  public Collection<T> getItems() {
+    List<T> items = new ArrayList<>();
     tiles.forEach(items::addAll);
     return items;
   }
@@ -105,7 +105,7 @@ public class Board<T extends ColorTile & VariableListener> extends AIAdapter<T> 
 
   private boolean positionExist(int x, int y) {
     try {
-      ColorTile colorTile = tiles.get(x).get(y);
+      T colorTile = tiles.get(x).get(y);
       return (colorTile != null);
     } catch (IndexOutOfBoundsException e) {
       return false;
@@ -116,8 +116,8 @@ public class Board<T extends ColorTile & VariableListener> extends AIAdapter<T> 
     clear(getWidth(), getHeight());
   }
 
-  public java.util.List<ColorTile> getManhattanNeighbors(ColorTile tile) {
-    java.util.List<ColorTile> manhattanNeighbors = new ArrayList<>();
+  public java.util.List<T> getManhattanNeighbors(T tile) {
+    java.util.List<T> manhattanNeighbors = new ArrayList<>();
     for (int x = tile.x - 1; x <= tile.x + 1; x++) {
       for (int y = tile.y - 1; y <= tile.y + 1; y++) {
         // if the position is out of bounds, disregard

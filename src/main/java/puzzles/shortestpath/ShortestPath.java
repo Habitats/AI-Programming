@@ -29,7 +29,7 @@ public class ShortestPath implements ShortestPathButtonListener, Runnable {
    */
   private void initializeBoard() {
     try {
-      board = AStarInputUtils.build(gui.getInput()).getBoard();
+      board = AStarInputUtils.build(gui.getInput()).<AStarBoardNode>getBoard();
       gui.setAdapter(board);
       Log.v(TAG, board);
       Log.v(TAG, "Successfully loaded input!");

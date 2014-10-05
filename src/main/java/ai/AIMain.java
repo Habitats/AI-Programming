@@ -52,7 +52,7 @@ public class AIMain {
         panel.add(graphColoringButton);
         panel.add(flowButton);
         panel.add(nonoButton);
-        super.buildFrame(panel, null, null);
+        buildFrame(panel, null, null);
       }
 
       @Override
@@ -80,11 +80,11 @@ public class AIMain {
     new Thread(new Flow()).start();
   }
 
-  public static void shortestPath() {
+  private static void shortestPath() {
     new Thread(new ShortestPath()).start();
   }
 
-  public static void graphColoring() {
+  private static void graphColoring() {
     new Thread(new GraphColoring()).start();
   }
 }

@@ -11,7 +11,7 @@ public abstract class AIAdapter<T extends Node & VariableListener> {
 
   private int width;
   private int height;
-  protected AIAdapterListener listener;
+  private AIAdapterListener listener;
   private int minX;
   private int minY;
 

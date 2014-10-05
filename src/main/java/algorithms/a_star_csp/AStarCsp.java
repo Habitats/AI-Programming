@@ -26,12 +26,12 @@ public abstract class AStarCsp<T extends Node & VariableListener> implements Csp
   private AStarCspPuzzle puzzle;
 
 
-  public void setAdapter(AIAdapter graph) {
+  public void setAdapter(AIAdapter<T> graph) {
     this.adapter = graph;
     gui.setAdapter(graph);
   }
 
-  public AIGui getGui() {
+  protected AIGui getGui() {
     return gui;
   }
 
@@ -65,6 +65,7 @@ public abstract class AStarCsp<T extends Node & VariableListener> implements Csp
     Log.i(TAG, "Running initial domain filtering ...");
     if (GeneralArchConsistency.domainFilter(puzzle) == GeneralArchConsistency.Result.SOLUTION) {
       Log.i(AStarCsp.TAG, "Domain filtered to a solution without A*!");
+      puzzle.visualize();
     } else {
       Log.i(TAG, "No solution, running A*-CSP ...");
       astarCsp();

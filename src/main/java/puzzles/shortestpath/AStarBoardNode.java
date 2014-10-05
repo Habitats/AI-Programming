@@ -15,9 +15,9 @@ import puzzles.shortestpath.gui.ShortestPathGui;
 public class AStarBoardNode extends AStarNode {
 
   private static final String TAG = AStarBoardNode.class.getSimpleName();
-  private AStarColorTile tile;
-  private Board<AStarColorTile> board;
-  private int accuracyMultiplier = 10;
+  private final AStarColorTile tile;
+  private final Board<AStarColorTile> board;
+  private final int accuracyMultiplier = 10;
 
   public AStarBoardNode(AStarColorTile tile, Board<AStarColorTile> board) {
     super();
@@ -36,7 +36,7 @@ public class AStarBoardNode extends AStarNode {
 
   @Override
   protected void generateSuccessors() {
-    List<AStarNode> successors = new ArrayList<AStarNode>();
+    List<AStarNode> successors = new ArrayList<>();
     for (int x = tile.x - 1; x <= tile.x + 1; x++) {
       for (int y = tile.y - 1; y <= tile.y + 1; y++) {
         // do not put self to its own children
@@ -68,9 +68,6 @@ public class AStarBoardNode extends AStarNode {
     setHeuristic(distance);
   }
 
-  private void getGoal() {
-
-  }
 
   private int euclideanDistance(AStarColorTile start, AStarColorTile goal) {
     double k1 = Math.pow(goal.y - start.y, 2);

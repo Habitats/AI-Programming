@@ -88,18 +88,14 @@ public class GraphColoringGui extends AIGui<ColorNode> {
       AStar.MANUAL_STEP = checkbox.isSelected();
     });
     resetButton.addActionListener(e -> listener.resetClicked());
-    runButton.addActionListener(e -> {
-      listener.runClicked();
-    });
+    runButton.addActionListener(e -> listener.runClicked());
     readFromFileButton.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser("C:\\Dropbox\\code\\projects\\ai_prog\\samples");
       chooser.showOpenDialog(mainPanel);
       File file = chooser.getSelectedFile();
       inputField.setText(readFile(file.getPath(), Charset.defaultCharset()));
     });
-    loadButton.addActionListener(e -> {
-      listener.loadClicked();
-    });
+    loadButton.addActionListener(e -> listener.loadClicked());
   }
 
 
@@ -150,10 +146,6 @@ public class GraphColoringGui extends AIGui<ColorNode> {
   @Override
   public AITextArea getInputField() {
     return inputField;
-  }
-
-  private void createUIComponents() {
-    // TODO: place custom component creation code here
   }
 
   {

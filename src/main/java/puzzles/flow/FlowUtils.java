@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class FlowUtils {
 
-  public static List<String> samples = new ArrayList<>();
+  public static final List<String> samples = new ArrayList<>();
 
   static {
     samples.add("6 6 \n" + "0 2 2 4 5  \n" + "1 0 1 0 5  \n" + "2 0 0 1 5  \n" + "3 2 0 5 5  \n" + "4 2 3 2 5  \n"

@@ -11,7 +11,7 @@ import java.util.Set;
 public class Domain implements Iterable<Integer> {
 
   private static final String TAG = Domain.class.getSimpleName();
-  private Set<Integer> args;
+  private final Set<Integer> args;
 
   public Domain(Integer... args) {
     this.args = new HashSet(Arrays.asList(args));
@@ -23,8 +23,8 @@ public class Domain implements Iterable<Integer> {
 
   public Domain(int[] args) {
     this.args = new HashSet<>();
-    for (int i = 0; i < args.length; i++) {
-      this.args.add(new Integer(args[i]));
+    for (int arg : args) {
+      this.args.add(arg);
     }
   }
 
@@ -63,15 +63,19 @@ public class Domain implements Iterable<Integer> {
   }
 
   @Override
-  public boolean equals(Object other) {
-    Set<Integer> otherArgs = ((Domain) other).args;
-    return (args.containsAll(otherArgs)) && otherArgs.containsAll(args);
+  public boolean equals(Object obj) {
+    if (obj instanceof Domain) {
+      Domain other = (Domain) obj;
+      Set<Integer> otherArgs = other.args;
+      return (args.containsAll(otherArgs)) && otherArgs.containsAll(args);
+    }
+    return false;
   }
 
   public String getId() {
     StringBuilder sb = new StringBuilder();
     for (Integer i : args) {
-      sb.append(i + ",");
+      sb.append(i).append(",");
     }
     return sb.toString();
   }

@@ -13,7 +13,7 @@ import java.util.Set;
 public class Variable implements Comparable<Variable>, Serializable {
 
   private final String id;
-  private Domain domain;
+  private final Domain domain;
   private int value;
   private boolean hasValue;
   private VariableListener listener;
@@ -136,23 +136,16 @@ public class Variable implements Comparable<Variable>, Serializable {
 
   @Override
   public boolean equals(Object obj) {
-    Variable other = (Variable) obj;
-    if (!id.equals(id)) {
-      return false;
+    if (obj instanceof Variable) {
+      Variable other = (Variable) obj;
+      return (!id.equals(other.id))  //
+             && (!domain.equals(other.domain))  //
+             && (hasValue != other.hasValue) //
+             && (listener != other.listener)  //
+             && (value != other.value)  //
+          ;
     }
-    if (!domain.equals(other.getDomain())) {
-      return false;
-    }
-    if (hasValue != other.hasValue) {
-      return false;
-    }
-    if (listener != other.listener) {
-      return false;
-    }
-    if (value != other.value) {
-      return false;
-    }
-    return true;
+    return false;
   }
 
   public void update() {

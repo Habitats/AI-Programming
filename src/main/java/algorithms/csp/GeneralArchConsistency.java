@@ -33,7 +33,7 @@ public class GeneralArchConsistency {
   }
 
   public enum Result {
-    EMPTY_DOMAIN, SHRUNK_DOMAIN, UNCHANGED_DOMAIN, SOLUTION;
+    EMPTY_DOMAIN, SHRUNK_DOMAIN, UNCHANGED_DOMAIN, SOLUTION
   }
 
   private static final String TAG = GeneralArchConsistency.class.getSimpleName();
@@ -54,10 +54,8 @@ public class GeneralArchConsistency {
         vars.add(variables.getVariable(id));
       }
       // iterate over all possible values for this variable
-      Iterator<Integer> iterator = vars.get(focalVariableIndex).getDomain().iterator();
-      while (iterator.hasNext()) {
+      for (Integer nextValue : vars.get(focalVariableIndex).getDomain()) {
         // put a value, and recursively combine it with the possible combinations of the remaining variables
-        Integer nextValue = iterator.next();
         vars.get(focalVariableIndex).setValue(nextValue);
         if (isSatisfiable(constraint, focalVariableIndex + 1, vars, focalVariable, variables)) {
           return true;

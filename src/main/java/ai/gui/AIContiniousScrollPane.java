@@ -20,9 +20,9 @@ import ai.Log;
  */
 public class AIContiniousScrollPane extends JScrollPane {
 
-  private int maxLength = 1000;
+  private final int maxLength = 1000;
 
-  private JTextPane pane;
+  private final JTextPane pane;
 
   public AIContiniousScrollPane() {
     super(new JTextPane());
@@ -58,7 +58,7 @@ public class AIContiniousScrollPane extends JScrollPane {
   public class LimitLinesDocumentListener implements DocumentListener {
 
     private int maximumLines;
-    private boolean isRemoveFromStart;
+    private final boolean isRemoveFromStart;
 
     /*
      * Specify the number of lines to be stored in the Document. Extra lines will be removed from the
@@ -103,12 +103,7 @@ public class AIContiniousScrollPane extends JScrollPane {
       // Changes to the Document can not be done within the listener
       // so we need to put the processing to the end of the EDT
 
-      SwingUtilities.invokeLater(new Runnable() {
-        @Override
-        public void run() {
-          removeLines(e);
-        }
-      });
+      SwingUtilities.invokeLater(() -> removeLines(e));
     }
 
     @Override

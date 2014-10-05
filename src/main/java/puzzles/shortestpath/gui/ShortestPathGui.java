@@ -130,10 +130,6 @@ public class ShortestPathGui extends AIGui {
     this.listener = listener;
   }
 
-  private void createUIComponents() {
-    // TODO: place custom component creation code here
-  }
-
   @Override
   protected int getDefaultCloseOperation() {
     return WindowConstants.DISPOSE_ON_CLOSE;

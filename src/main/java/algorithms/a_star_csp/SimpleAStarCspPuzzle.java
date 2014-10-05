@@ -77,7 +77,7 @@ public abstract class SimpleAStarCspPuzzle<T extends Node<T> & VariableListener>
   public String getId() {
     StringBuilder sb = new StringBuilder();
     for (Variable var : getVariables()) {
-      sb.append(var.getId() + ":" + var.getDomain().getId() + " ");
+      sb.append(var.getId()).append(":").append(var.getDomain().getId()).append(" ");
     }
     return sb.toString();
   }

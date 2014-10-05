@@ -8,7 +8,6 @@ import algorithms.csp.canonical_utils.Variable;
  */
 public interface AStarCspPuzzle extends CspPuzzle {
 
-  @Override
   String getId();
 
   Variable getSuccessor();

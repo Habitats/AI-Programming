@@ -88,7 +88,7 @@ public class GraphColoringUtils {
     return graph;
   }
 
-  public static List<String> samples = new ArrayList<>();
+  public static final List<String> samples = new ArrayList<>();
 
   // The format:
 //  A graph is defined by its vertices and edges. The format is as

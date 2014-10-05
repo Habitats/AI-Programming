@@ -10,7 +10,7 @@ import ai.models.grid.ColorTile;
  */
 public class AStarColorTile extends ColorTile {
 
-  protected State state;
+  private State state;
   private State previousState;
 
   public AStarColorTile(int x, int y, State state) {

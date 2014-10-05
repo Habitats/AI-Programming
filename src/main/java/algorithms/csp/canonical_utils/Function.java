@@ -22,7 +22,7 @@ import ai.Log;
 public class Function {
 
   private static final String TAG = Function.class.getSimpleName();
-  private static ScriptEngine engine = new PyScriptEngineFactory().getScriptEngine();
+  private static final ScriptEngine engine = new PyScriptEngineFactory().getScriptEngine();
 
   private final Map<String, Variable> variablesMap;
   private final String expression;
@@ -58,6 +58,7 @@ public class Function {
     try {
       lambda = (PyFunction) engine.eval(lambdaString);
     } catch (ScriptException e) {
+      Log.i(TAG, "INVALID CALL TO EVAL: " + lambdaString);
     }
     return lambda;
   }
@@ -99,7 +100,7 @@ public class Function {
     }
 
     // call the python lambda with args: x = 1, y = 2 etc, order is important
-    Log.v(TAG, toString());
+//    Log.v(TAG, toString());
     PyObject ans = lambda.__call__(args);
 
     return ((PyBoolean) ans).getBooleanValue();

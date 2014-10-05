@@ -42,32 +42,25 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
   protected void generateConstraints(AStarCspPuzzle puzzle, AIAdapter<ColorTile> adapter) {
     Log.v(TAG, "Generating constraints ...");
     HashMap<String, Constraint> constraints = new HashMap<>();
-    int count = 0;
     for (ColorTile tile : adapter.getItems()) {
       // if the tile is a predefined tile, it's either a start or endpoint; special constraints apply!
       String expression;
-//      if (!tile.isEmpty()) {
-//        expression = generateEndpointConstraintExpression(adapter, tile);
-//      } else {
-//        expression = generateEndpointConstraintExpression(adapter, tile);
-//        expression = generateMidpointConstraintExpression(adapter, tile);
-//        continue;
-//      }
-
-      for (ColorTile neighbor : ((Board<ColorTile>) adapter).getManhattanNeighbors(tile)) {
-        expression = tile.getId() + " != " + neighbor.getId();
-        Constraint constraint = new Constraint(puzzle.getVariables(), expression);
-        constraints.put(expression, constraint);
-        Log.i(TAG, constraint);
-        count++;
+      if (!tile.isEmpty()) {
+        expression = generateAtLeastOneEqualNeighborConstraint(adapter, tile);
+      } else {
+        expression = generateExactlyTwoEqualNeighborConstraint(adapter, tile);
       }
+      Constraint constraint = new Constraint(puzzle.getVariables(), expression.trim());
+      constraints.put(expression, constraint);
+      Log.i(TAG, constraint);
+
+//      generateGraphColoringConstraints(puzzle, (Board<ColorTile>) adapter, constraints, tile);
     }
 
     List<Constraint> immutableConstraints = Collections.unmodifiableList(new ArrayList<>(constraints.values()));
     setConstraints(immutableConstraints);
 
-    Log.i(TAG, "... finished generating " + constraints.size() + " constraints and filtered out " + (count - constraints
-        .size()) + " duplicates!");
+    Log.i(TAG, "... finished generating " + constraints.size());
 
     for (Variable variable : puzzle.getVariables()) {
       variable.setConstraintsContainingVariable(immutableConstraints);
@@ -75,7 +68,92 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
 
   }
 
-  private String generateEndpointConstraintExpression(AIAdapter<ColorTile> adapter, ColorTile tile) {
+  private String generateAtLeastTwoEqualNeighborConstraint(AIAdapter<ColorTile> adapter, ColorTile tile) {
+    List<ColorTile> neighbors = ((Board<ColorTile>) adapter).getManhattanNeighbors(tile);
+    String expression = "";
+    for (ColorTile neighbor : neighbors) {
+      expression += " and (" + tile.getId() + " == " + neighbor.getId() + ")";
+    }
+    expression = expression.substring(4);
+
+    String[] pairs = expression.split(" and ");
+    if (pairs.length == 2) {
+      return expression;
+    } else if (pairs.length == 3) {
+      expression = "(" + pairs[0] + " and " + pairs[1] + ")" //
+                   + " or (" + pairs[0] + " and " + pairs[2] + ")"//
+                   + " or (" + pairs[1] + " and " + pairs[2] + ")"//
+      ;
+      return expression;
+
+    } else if (pairs.length == 4) {
+      expression = "(" + pairs[0] + " and " + pairs[1] + ")" //
+                   + " or (" + pairs[0] + " and " + pairs[2] + ")"//
+                   + " or (" + pairs[0] + " and " + pairs[3] + ")"//
+                   + " or (" + pairs[1] + " and " + pairs[2] + ")"//
+                   + " or (" + pairs[1] + " and " + pairs[3] + ")"//
+                   + " or (" + pairs[2] + " and " + pairs[3] + ")"//
+      ;
+      return expression;
+    }
+    return "";
+  }
+
+  private String generateExactlyTwoEqualNeighborConstraint(AIAdapter<ColorTile> adapter, ColorTile tile) {
+    List<ColorTile> neighbors = ((Board<ColorTile>) adapter).getManhattanNeighbors(tile);
+    String expression = "";
+    for (ColorTile neighbor : neighbors) {
+      expression += " and (" + tile.getId() + " == " + neighbor.getId() + ")";
+    }
+    expression = expression.substring(4);
+
+    String[] pairs = expression.split(" and ");
+    if (pairs.length == 2) {
+      return expression;
+    } else if (pairs.length == 3) {
+      expression = "(" + pairs[0] + " and " + pairs[1] + " and " + pairs[2].replace("==", "!=") + ")" //
+                   + " or (" + pairs[0] + " and " + pairs[2] + " and " + pairs[1].replace("==", "!=") + ")"//
+                   + " or (" + pairs[1] + " and " + pairs[2] + " and " + pairs[0].replace("==", "!=") + ")"//
+      ;
+      return expression;
+
+    } else if (pairs.length == 4) {
+      expression = "(" + pairs[0] + " and " + pairs[1] + " and " +  //
+                   pairs[2].replace("==", "!=") + " and " + pairs[3].replace("==", "!=") + ")" //
+
+                   + " or (" + pairs[0] + " and " + pairs[2] + " and " //
+                   + pairs[1].replace("==", "!=") + " and " + pairs[3].replace("==", "!=") + ")"//
+
+                   + " or (" + pairs[0] + " and " + pairs[3] + " and " //
+                   + pairs[1].replace("==", "!=") + " and " + pairs[2].replace("==", "!=") + ")"//
+
+                   + " or (" + pairs[1] + " and " + pairs[2] + " and " //
+                   + pairs[0].replace("==", "!=") + " and " + pairs[3].replace("==", "!=") + ")"//
+
+                   + " or (" + pairs[1] + " and " + pairs[3] + " and "  //
+                   + pairs[0].replace("==", "!=") + " and " + pairs[2].replace("==", "!=") + ")"//
+
+                   + " or (" + pairs[2] + " and " + pairs[3] + " and "  //
+                   + pairs[0].replace("==", "!=") + " and " + pairs[1].replace("==", "!=") + ")"//
+      ;
+      return expression;
+    }
+    return "";
+  }
+
+  private void generateGraphColoringConstraints(AStarCspPuzzle puzzle, Board<ColorTile> adapter,
+                                                HashMap<String, Constraint> constraints, ColorTile tile) {
+    String expression;
+    for (ColorTile neighbor : adapter.getManhattanNeighbors(tile)) {
+      expression = tile.getId() + " != " + neighbor.getId();
+      Constraint constraint = new Constraint(puzzle.getVariables(), expression);
+      constraints.put(expression, constraint);
+      Log.i(TAG, constraint);
+    }
+  }
+
+
+  private String generateExactlyOneEqualNeighborConstraint(AIAdapter<ColorTile> adapter, ColorTile tile) {
     List<ColorTile> neighbors = ((Board<ColorTile>) adapter).getManhattanNeighbors(tile);
     String expression = "";
     for (ColorTile neighbor : neighbors) {
@@ -85,31 +163,16 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
     return expression;
   }
 
-  private String generateMidpointConstraintExpression(AIAdapter<ColorTile> adapter, ColorTile tile) {
-    String id = tile.getId();
+  private String generateAtLeastOneEqualNeighborConstraint(AIAdapter<ColorTile> adapter, ColorTile tile) {
     List<ColorTile> neighbors = ((Board<ColorTile>) adapter).getManhattanNeighbors(tile);
     String expression = "";
-    String operator = " e ";
-    List<String> pairs = new ArrayList<>();
     for (ColorTile neighbor : neighbors) {
-      if (adapter.isLegalPosition(neighbor)) {
-        String neighborId = neighbor.getId();
-        pairs.add(id + operator + neighborId);
-      }
+      expression += " or (" + tile.getId() + " == " + neighbor.getId() + ")";
     }
-    int numberOfValidNeighbors = pairs.size();
-    String finalExpression = "";
-    for (int i = 0; i < numberOfValidNeighbors; i++) {
-      String subExpression = "";
-      for (int j = 0; j < numberOfValidNeighbors; j++) {
-        subExpression += " and " + pairs.get(j).replace(operator, j == i ? " == " : " != ");
-      }
-      subExpression = subExpression.substring(4);
-      finalExpression += " or (" + subExpression + ")";
-    }
-    finalExpression = finalExpression.substring(3);
-    return finalExpression;
+    expression = expression.substring(3);
+    return expression;
   }
+
 
   @Override
   protected AIAdapter<ColorTile> generateAdapter(String input) {
@@ -159,10 +222,6 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
     return constraints;
   }
 
-  @Override
-  public void runClicked() {
-    super.runClicked();
-  }
 
   public void setConstraints(List<Constraint> constraints) {
     this.constraints = constraints;

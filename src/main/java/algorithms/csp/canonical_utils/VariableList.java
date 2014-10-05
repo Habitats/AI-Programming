@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public class VariableList implements Iterable<Variable> {
 
-  private Map<String, Variable> variableMap;
+  private final Map<String, Variable> variableMap;
 
   public VariableList() {
     variableMap = new HashMap<>();

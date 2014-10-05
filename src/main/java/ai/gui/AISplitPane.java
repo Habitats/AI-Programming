@@ -12,7 +12,7 @@ public class AISplitPane extends JSplitPane {
   }
 
   @Override
-  public void setDividerLocation(double l) {
-    super.setDividerLocation(l);
+  public void setDividerLocation(double proportionalLocation) {
+    super.setDividerLocation(proportionalLocation);
   }
 }

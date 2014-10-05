@@ -21,7 +21,7 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
   private Color color = EMPTY;
   private String desc = "";
   private Color outlineColor = Color.black;
-  private int numberOfColors = GraphColoringPuzzle.K;
+  private final int numberOfColors = GraphColoringPuzzle.K;
   private int value;
 
   public ColorNode(double x, double y, int index) {

@@ -83,9 +83,7 @@ public class NonoGui extends AIGui {
       AStar.MANUAL_STEP = checkbox.isSelected();
     });
     resetButton.addActionListener(e -> listener.resetClicked());
-    loadButton.addActionListener(e -> {
-      listener.loadClicked();
-    });
+    loadButton.addActionListener(e -> listener.loadClicked());
     readFromFileButton.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser("C:\\Dropbox\\code\\projects\\ai_prog\\samples");
       chooser.showOpenDialog(getMainPanel());

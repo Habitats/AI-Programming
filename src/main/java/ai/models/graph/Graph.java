@@ -12,27 +12,27 @@ import ai.models.Node;
 /**
  * Created by Patrick on 08.09.2014.
  */
-public class Graph<T extends Node> extends AIAdapter implements Iterable<T> {
+public class Graph<N extends Node> extends AIAdapter implements Iterable<N> {
 
-  private List<T> items;
+  private List<N> items;
 
-  public Graph<T> addNode(T node) {
+  public Graph<N> addNode(N node) {
     getItems().add(node);
     return this;
   }
 
-  public Graph<T> addEdge(Node one, Node two) {
+  public Graph<N> addEdge(N one, N two) {
     one.addChild(two);
     two.addChild(one);
     return this;
   }
 
   @Override
-  public T getItem(int index) {
+  public N getItem(int index) {
     return items.get(index);
   }
 
-  public T get(int i) {
+  public N get(int i) {
     return getItems().get(i);
   }
 
@@ -47,7 +47,7 @@ public class Graph<T extends Node> extends AIAdapter implements Iterable<T> {
   }
 
   @Override
-  public List<T> getItems() {
+  public List<N> getItems() {
     if (items == null) {
       items = new ArrayList<>();
     }
@@ -60,7 +60,7 @@ public class Graph<T extends Node> extends AIAdapter implements Iterable<T> {
   }
 
   @Override
-  public Iterator<T> iterator() {
+  public Iterator<N> iterator() {
     return items.iterator();
   }
 }

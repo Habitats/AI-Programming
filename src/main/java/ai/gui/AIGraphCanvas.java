@@ -11,11 +11,11 @@ import ai.models.graph.ColorNode;
 public class AIGraphCanvas extends AICanvas<ColorNode> {
 
   private static final String TAG = AIGraphCanvas.class.getSimpleName();
-  private int itemHeight = 30;
-  private int itemWidth = 30;
+  private final int itemHeight = 30;
+  private final int itemWidth = 30;
   private double horizontalScalingFactor;
   private double verticalScalingFactor;
-  private int padding = 30;
+  private final int padding = 30;
 
 
   @Override

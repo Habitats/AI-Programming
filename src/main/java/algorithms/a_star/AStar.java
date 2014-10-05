@@ -39,9 +39,7 @@ public class AStar implements Runnable {
   private final AStarNode start;
   private final Traversal traversal;
   private final AStarCallback callback;
-  private Queue<AStarNode> opened;
-  private int count;
-  private Map<String, AStarNode> generated;
+  private final Map<String, AStarNode> generated;
   private long startTime;
   private long endTime;
   private Status status;
@@ -68,11 +66,11 @@ public class AStar implements Runnable {
     start.generateHeuristic();
     setStatus(Status.RUNNING);
 
-    opened = new PriorityQueue<>();
+    Queue<AStarNode> opened = new PriorityQueue<>();
     opened.add(start);
 
     // this is used for BFS/DFS
-    count = 0;
+    int count = 0;
 
     AStarNode current = null;
     while (opened.size() > 0) {

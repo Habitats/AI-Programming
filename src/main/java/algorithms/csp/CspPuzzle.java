@@ -27,5 +27,5 @@ public interface CspPuzzle {
 
   VariableList generateVariables();
 
-  void setVariables(VariableList aVoid);
+  void setVariables(VariableList variables);
 }
