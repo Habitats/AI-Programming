@@ -25,6 +25,8 @@ public class ColorTile extends Node<Node> implements VariableListener {
   private Color outlineColor;
   private String domainText;
   private Integer initialValue = null;
+  private ColorTile output;
+  private ColorTile input;
 
   public ColorTile(int x, int y, int numberOfColors) {
     this.x = x;
@@ -128,4 +130,16 @@ public class ColorTile extends Node<Node> implements VariableListener {
   }
 
 
+  public ColorTile getOutput() {
+    return this;
+  }
+
+  public void setOutput(ColorTile output) {
+    this.output = output;
+  }
+
+
+  public void setInput(ColorTile input) {
+    this.input = input;
+  }
 }

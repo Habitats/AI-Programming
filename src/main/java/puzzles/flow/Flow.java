@@ -1,5 +1,8 @@
 package puzzles.flow;
 
+import org.javatuples.Pair;
+import org.javatuples.Tuple;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,6 +19,7 @@ import algorithms.a_star_csp.AStarCsp;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.CspButtonListener;
 import algorithms.csp.canonical_utils.Constraint;
+import algorithms.csp.canonical_utils.ExpressionBuilder;
 import algorithms.csp.canonical_utils.Variable;
 import puzzles.flow.gui.FlowGui;
 
@@ -25,6 +29,7 @@ import puzzles.flow.gui.FlowGui;
 public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runnable {
 
   public static final String TAG = AIMain.class.getSimpleName();
+
   private List<Constraint> constraints;
   private int domainSize;
 
@@ -45,8 +50,9 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
     for (ColorTile tile : adapter.getItems()) {
       // if the tile is a predefined tile, it's either a start or endpoint; special constraints apply!
       String expression;
-      if (!tile.isEmpty()) {
-        expression = generateAtLeastOneEqualNeighborConstraint(adapter, tile);
+      boolean startOrEndNode = !tile.isEmpty();
+      if (startOrEndNode) {
+        expression = generateExactlyOneEqualNeighborConstraint(adapter, tile);
       } else {
         expression = generateExactlyTwoEqualNeighborConstraint(adapter, tile);
       }
@@ -68,84 +74,64 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
 
   }
 
-  private String generateAtLeastTwoEqualNeighborConstraint(AIAdapter<ColorTile> adapter, ColorTile tile) {
-    List<ColorTile> neighbors = ((Board<ColorTile>) adapter).getManhattanNeighbors(tile);
-    String expression = "";
+  private String generateExactlyOneNeighborWithTheSameColorPointsToThisConstraints(AIAdapter<ColorTile> adapter,
+                                                                                   ColorTile tile) {
+    List<ColorTile> neighbors = ((Board) adapter).getManhattanNeighbors(tile);
+    Tuple[] pairs = new Tuple[neighbors.size()];
+    int i = 0;
     for (ColorTile neighbor : neighbors) {
-      expression += " and (" + tile.getId() + " == " + neighbor.getId() + ")";
+      pairs[i++] = Pair.with(tile.getId(), neighbor.getOutput().getId());
     }
-    expression = expression.substring(4);
 
-    String[] pairs = expression.split(" and ");
-    if (pairs.length == 2) {
-      return expression;
-    } else if (pairs.length == 3) {
-      expression = "(" + pairs[0] + " and " + pairs[1] + ")" //
-                   + " or (" + pairs[0] + " and " + pairs[2] + ")"//
-                   + " or (" + pairs[1] + " and " + pairs[2] + ")"//
-      ;
-      return expression;
-
-    } else if (pairs.length == 4) {
-      expression = "(" + pairs[0] + " and " + pairs[1] + ")" //
-                   + " or (" + pairs[0] + " and " + pairs[2] + ")"//
-                   + " or (" + pairs[0] + " and " + pairs[3] + ")"//
-                   + " or (" + pairs[1] + " and " + pairs[2] + ")"//
-                   + " or (" + pairs[1] + " and " + pairs[3] + ")"//
-                   + " or (" + pairs[2] + " and " + pairs[3] + ")"//
-      ;
-      return expression;
-    }
-    return "";
+    return ExpressionBuilder.exatlyOneTupleEquals(pairs);
   }
+
+  private String generateNoInputAndOneOutputConstraints(AIAdapter<ColorTile> adapter, ColorTile tile) {
+    return null;
+  }
+
+  private String generateAtLeastTwoEqualNeighborConstraint(AIAdapter<ColorTile> adapter, ColorTile tile) {
+    Tuple[] pairs = getNeighborIdTuples((Board<ColorTile>) (Board<ColorTile>) adapter, (ColorTile) tile);
+    String expression;
+
+    return ExpressionBuilder.atLeastTwoTuplesEquals(pairs);
+  }
+
 
   private String generateExactlyTwoEqualNeighborConstraint(AIAdapter<ColorTile> adapter, ColorTile tile) {
-    List<ColorTile> neighbors = ((Board<ColorTile>) adapter).getManhattanNeighbors(tile);
-    String expression = "";
-    for (ColorTile neighbor : neighbors) {
-      expression += " and (" + tile.getId() + " == " + neighbor.getId() + ")";
-    }
-    expression = expression.substring(4);
+    Tuple[] pairs = getNeighborIdTuples((Board<ColorTile>) adapter, tile);
+    String expression;
 
-    String[] pairs = expression.split(" and ");
-    if (pairs.length == 2) {
-      return expression;
-    } else if (pairs.length == 3) {
-      expression = "(" + pairs[0] + " and " + pairs[1] + " and " + pairs[2].replace("==", "!=") + ")" //
-                   + " or (" + pairs[0] + " and " + pairs[2] + " and " + pairs[1].replace("==", "!=") + ")"//
-                   + " or (" + pairs[1] + " and " + pairs[2] + " and " + pairs[0].replace("==", "!=") + ")"//
-      ;
-      return expression;
-
-    } else if (pairs.length == 4) {
-      expression = "(" + pairs[0] + " and " + pairs[1] + " and " +  //
-                   pairs[2].replace("==", "!=") + " and " + pairs[3].replace("==", "!=") + ")" //
-
-                   + " or (" + pairs[0] + " and " + pairs[2] + " and " //
-                   + pairs[1].replace("==", "!=") + " and " + pairs[3].replace("==", "!=") + ")"//
-
-                   + " or (" + pairs[0] + " and " + pairs[3] + " and " //
-                   + pairs[1].replace("==", "!=") + " and " + pairs[2].replace("==", "!=") + ")"//
-
-                   + " or (" + pairs[1] + " and " + pairs[2] + " and " //
-                   + pairs[0].replace("==", "!=") + " and " + pairs[3].replace("==", "!=") + ")"//
-
-                   + " or (" + pairs[1] + " and " + pairs[3] + " and "  //
-                   + pairs[0].replace("==", "!=") + " and " + pairs[2].replace("==", "!=") + ")"//
-
-                   + " or (" + pairs[2] + " and " + pairs[3] + " and "  //
-                   + pairs[0].replace("==", "!=") + " and " + pairs[1].replace("==", "!=") + ")"//
-      ;
-      return expression;
-    }
-    return "";
+    return ExpressionBuilder.exatlyTwoTuplesEquals(pairs);
   }
 
+  private Tuple[] getNeighborIdTuples(Board<ColorTile> adapter, ColorTile tile) {
+    List<ColorTile> neighbors = adapter.getManhattanNeighbors(tile);
+    String expression = "";
+
+    Tuple[] pairs = new Tuple[neighbors.size()];
+    int i = 0;
+    for (ColorTile neighbor : neighbors) {
+      pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
+    }
+    return pairs;
+  }
+
+  /**
+   * This will make all neighboring nodes a different color
+   */
   private void generateGraphColoringConstraints(AStarCspPuzzle puzzle, Board<ColorTile> adapter,
                                                 HashMap<String, Constraint> constraints, ColorTile tile) {
     String expression;
     for (ColorTile neighbor : adapter.getManhattanNeighbors(tile)) {
-      expression = tile.getId() + " != " + neighbor.getId();
+      //     xy != xy1
+      // and xy != xy2
+      // and xy != xy3
+      // and xy != xy4
+      // and ...
+
+      // since and is being used, all of the lines are added as different constraints!
+      expression = tile.getId() + ExpressionBuilder.NOT + neighbor.getId();
       Constraint constraint = new Constraint(puzzle.getVariables(), expression);
       constraints.put(expression, constraint);
       Log.i(TAG, constraint);
@@ -156,23 +142,26 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
   private String generateExactlyOneEqualNeighborConstraint(AIAdapter<ColorTile> adapter, ColorTile tile) {
     List<ColorTile> neighbors = ((Board<ColorTile>) adapter).getManhattanNeighbors(tile);
     String expression = "";
+
+    Tuple[] pairs = new Tuple[neighbors.size()];
+    int i = 0;
     for (ColorTile neighbor : neighbors) {
-      expression += " or (" + tile.getId() + " == " + neighbor.getId() + ")";
+      pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
     }
-    expression = expression.substring(3);
-    return expression;
+
+    return ExpressionBuilder.exatlyOneTupleEquals(pairs);
   }
+
 
   private String generateAtLeastOneEqualNeighborConstraint(AIAdapter<ColorTile> adapter, ColorTile tile) {
     List<ColorTile> neighbors = ((Board<ColorTile>) adapter).getManhattanNeighbors(tile);
-    String expression = "";
+    Tuple[] pairs = new Tuple[neighbors.size()];
+    int i = 0;
     for (ColorTile neighbor : neighbors) {
-      expression += " or (" + tile.getId() + " == " + neighbor.getId() + ")";
+      pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
     }
-    expression = expression.substring(3);
-    return expression;
+    return ExpressionBuilder.atLeastOneTupleEquals(pairs);
   }
-
 
   @Override
   protected AIAdapter<ColorTile> generateAdapter(String input) {
@@ -208,6 +197,8 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
     setDomainSize(numberOfColors);
     return board;
   }
+
+  // GETTERS AND SETTERS
 
   @Override
   protected AStarCspPuzzle getSamplePuzzle(int i) {

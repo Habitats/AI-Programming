@@ -16,6 +16,7 @@ dependencies {
     compile 'joda-time:joda-time:2+'
     compile 'org.python:jython-standalone:2.5.2'
     compile 'com.intellij:forms_rt:7.0.3'
+    compile 'org.javatuples:javatuples:1.2'
 }
 
 
