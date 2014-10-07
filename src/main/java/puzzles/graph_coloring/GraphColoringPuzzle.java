@@ -1,7 +1,9 @@
 package puzzles.graph_coloring;
 
+import java.util.Collection;
 import java.util.List;
 
+import ai.models.Node;
 import ai.models.graph.ColorNode;
 import algorithms.a_star_csp.AStarCsp;
 import algorithms.a_star_csp.AStarCspPuzzle;
@@ -60,5 +62,20 @@ public class GraphColoringPuzzle extends SimpleAStarCspPuzzle {
   @Override
   protected AStarCspPuzzle newInstance() {
     return new GraphColoringPuzzle(getAstarCsp());
+  }
+
+  @Override
+  public VariableList generateVariables() {
+    VariableList variables = new VariableList();
+    Collection<Node> items = getAstarCsp().getAdapter().getItems();
+    for (Node node : items) {
+      Variable var = new Variable(node.getId(), getInitialDomain());
+      if (!node.isEmpty()) {
+        var.setAssumption(node.getInitialValue());
+      }
+      variables.put(var);
+      var.setListener(node);
+    }
+    return variables;
   }
 }

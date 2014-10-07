@@ -130,8 +130,8 @@ public class ColorTile extends Node<Node> implements VariableListener {
   }
 
 
-  public ColorTile getOutput() {
-    return this;
+  public String getOutput() {
+    return "out:x" + x + ":y";
   }
 
   public void setOutput(ColorTile output) {

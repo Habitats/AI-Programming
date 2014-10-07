@@ -52,9 +52,9 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
       String expression;
       boolean startOrEndNode = !tile.isEmpty();
       if (startOrEndNode) {
-        expression = generateExactlyOneEqualNeighborConstraint(adapter, tile);
+        expression = generateAtLeastOneEqualNeighborConstraint(adapter, tile);
       } else {
-        expression = generateExactlyTwoEqualNeighborConstraint(adapter, tile);
+        expression = generateAtLeastTwoEqualNeighborConstraint(adapter, tile);
       }
       Constraint constraint = new Constraint(puzzle.getVariables(), expression.trim());
       constraints.put(expression, constraint);
@@ -80,7 +80,7 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
     Tuple[] pairs = new Tuple[neighbors.size()];
     int i = 0;
     for (ColorTile neighbor : neighbors) {
-      pairs[i++] = Pair.with(tile.getId(), neighbor.getOutput().getId());
+      pairs[i++] = Pair.with(tile.getOutput(), neighbor.getOutput());
     }
 
     return ExpressionBuilder.exatlyOneTupleEquals(pairs);

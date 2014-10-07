@@ -14,4 +14,5 @@ public interface AStarCspPuzzle extends CspPuzzle {
 
   AStarCspPuzzle duplicate();
 
+
 }

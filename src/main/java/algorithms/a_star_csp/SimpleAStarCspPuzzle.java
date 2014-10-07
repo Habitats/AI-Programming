@@ -1,6 +1,5 @@
 package algorithms.a_star_csp;
 
-import java.util.Collection;
 import java.util.List;
 
 import ai.models.Node;
@@ -122,17 +121,5 @@ public abstract class SimpleAStarCspPuzzle<T extends Node<T> & VariableListener>
   }
 
   @Override
-  public VariableList generateVariables() {
-    VariableList variables = new VariableList();
-    Collection<T> items = getAstarCsp().getAdapter().getItems();
-    for (T node : items) {
-      Variable var = new Variable(node.getId(), getInitialDomain());
-      if (!node.isEmpty()) {
-        var.setAssumption(node.getInitialValue());
-      }
-      variables.put(var);
-      var.setListener(node);
-    }
-    return variables;
-  }
+  public abstract VariableList generateVariables();
 }
