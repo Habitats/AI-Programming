@@ -12,7 +12,6 @@ import ai.Log;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Variable;
-import algorithms.csp.canonical_utils.VariableList;
 
 /**
  * Created by Patrick on 04.09.2014.
@@ -45,19 +44,19 @@ public class GeneralArchConsistency {
    * @return true on the first isSatisfiable occurrence, false is no combination satisfies expression
    */
   private static boolean isSatisfiable(Constraint constraint, int focalVariableIndex, List<Variable> vars,
-                                       Variable focalVariable, VariableList variables) {
+                                       Variable focalVariable, CspPuzzle puzzle) {
     boolean hasMoreVariables = constraint.hasNext() || vars.size() > focalVariableIndex;
     if (hasMoreVariables) {
       // isSatisfiable if it's the first time we see this variable. If yes, put it to current variables
       if (vars.size() == focalVariableIndex) {
         String id = constraint.getNextVariableId();
-        vars.add(variables.getVariable(id));
+        vars.add(puzzle.getVariable(id));
       }
       // iterate over all possible values for this variable
       for (Integer nextValue : vars.get(focalVariableIndex).getDomain()) {
         // put a value, and recursively combine it with the possible combinations of the remaining variables
         vars.get(focalVariableIndex).setValue(nextValue);
-        if (isSatisfiable(constraint, focalVariableIndex + 1, vars, focalVariable, variables)) {
+        if (isSatisfiable(constraint, focalVariableIndex + 1, vars, focalVariable, puzzle)) {
           return true;
         }
       }
@@ -83,7 +82,6 @@ public class GeneralArchConsistency {
     while ((var = queue.poll()) != null) {
       queueHash.remove(var.getId());
       if (var.getDomain().iEmpty()) {
-        printVariables(puzzle);
         return Result.EMPTY_DOMAIN;
       }
 //      Log.v(TAG, "before: " + var);
@@ -94,7 +92,7 @@ public class GeneralArchConsistency {
           continue;
         }
 
-        if (revise(var, constraint, puzzle.getVariables())) {
+        if (revise(var, constraint, puzzle)) {
           addVariablesInConstraintsContainingCurrentVariable(puzzle, queue, queueHash, var, constraint);
 //          addVariablesInConstraintsContainingCurrentVariable2(puzzle, queue, queueHash, var);
         }
@@ -155,8 +153,9 @@ public class GeneralArchConsistency {
    * @return return true if domain is reduced by assumption
    */
 
-  private static boolean revise(Variable focalVariable, Constraint constraint, VariableList variables) {
+  private static boolean revise(Variable focalVariable, Constraint constraint, CspPuzzle puzzle) {
     int oldSize = focalVariable.getDomain().getSize();
+
 
     // iterate over all the values of the focalDomain
     Iterator<Integer> iterator = focalVariable.getDomain().iterator();
@@ -167,7 +166,7 @@ public class GeneralArchConsistency {
       List<Variable> vars = new ArrayList<>();
       constraint.clearHasNext();
       constraint.removeFocalvariableFromTodo(focalVariable);
-      boolean satisfiable = isSatisfiable(constraint, 0, vars, focalVariable, variables);
+      boolean satisfiable = isSatisfiable(constraint, 0, vars, focalVariable, puzzle);
       if (!satisfiable) {
         // if constraint is impossible to satisfy with the given value, remove the value from the domain
         Log.v(TAG, "reducing the domain of " + focalVariable + " by removing: " + val + ". Violating: " + constraint);

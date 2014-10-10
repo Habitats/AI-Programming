@@ -52,12 +52,12 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
       // if the tile is a predefined tile, it's either a start or endpoint; special constraints apply!
       boolean startOrEndNode = !tile.isEmpty();
       if (startOrEndNode) {
-//        String colorExpression = generateAtLeastOneEqualNeighborConstraint(adapter, tile);
-//        Constraint colorConstraint = new Constraint(puzzle.getVariables(), colorExpression.trim());
-//        constraints.put(colorExpression, colorConstraint);
-//        Log.i(TAG, colorConstraint);
+        String colorExpression = generateAtLeastOneEqualNeighborConstraint(adapter, tile);
+        Constraint colorConstraint = new Constraint(puzzle.getVariables(), colorExpression.trim());
+        constraints.put(colorExpression, colorConstraint);
+        Log.i(TAG, colorConstraint);
 
-//        if (firstNode) {
+        if (firstNode) {
           String
               inputOutputExpression =
               generateExactlyOneNeighborWithTheSameColorPointsToThisConstraints(adapter, tile);
@@ -65,13 +65,13 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
           constraints.put(inputOutputExpression, inputOutputConstraint);
           Log.i(TAG, inputOutputConstraint);
           firstNode = false;
-//        }
+        }
 
       } else {
-//        String expression = generateAtLeastTwoEqualNeighborConstraint(adapter, tile);
-//        Constraint colorConstraint = new Constraint(puzzle.getVariables(), expression.trim());
-//        constraints.put(expression, colorConstraint);
-//        Log.i(TAG, colorConstraint);
+        String expression = generateAtLeastTwoEqualNeighborConstraint(adapter, tile);
+        Constraint colorConstraint = new Constraint(puzzle.getVariables(), expression.trim());
+        constraints.put(expression, colorConstraint);
+        Log.i(TAG, colorConstraint);
 
         String inputOutputExpression = generateExactlyOneNeighborWithTheSameColorPointsToThisConstraints(adapter, tile);
         Constraint inputOutputConstraint = new Constraint(puzzle.getVariables(), inputOutputExpression.trim());

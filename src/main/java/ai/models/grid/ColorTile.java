@@ -65,7 +65,7 @@ public class ColorTile extends Node<Node> implements VariableListener {
 
   @Override
   public String getId() {
-    return "x" + x + "y" + y;
+    return "idx" + x + "y" + y;
   }
 
   @Override

@@ -30,16 +30,16 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
     VariableList variables = new VariableList();
     Collection<ColorTile> items = getAstarCsp().getAdapter().getItems();
     for (ColorTile colorTile : items) {
-//      Variable colorVariable = new Variable(colorTile.getId(), getInitialDomain());
+      Variable colorVariable = new Variable(colorTile.getId(), getInitialDomain());
       Variable outputVariable = new Variable(colorTile.getOutput(), new Domain(0, 1, 2, 3));
       Variable inputVariable   = new Variable(colorTile.getInput(), new Domain(0, 1, 2, 3));
       if (!colorTile.isEmpty()) {
-//        colorVariable.setAssumption(colorTile.getInitialValue());
+        colorVariable.setAssumption(colorTile.getInitialValue());
       }
-//      variables.put(colorVariable);
+      variables.put(colorVariable);
       variables.put(outputVariable);
       variables.put(inputVariable);
-      inputVariable.setListener(colorTile);
+      colorVariable.setListener(colorTile);
     }
     return variables;
   }
