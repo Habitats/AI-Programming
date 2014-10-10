@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by Patrick on 10.09.2014.
  */
-public abstract class Constraint<T> implements Iterable<Variable<Integer>> {
+public abstract class Constraint<T> implements Iterable<Variable<T>> {
 
   private static final String TAG = Constraint.class.getSimpleName();
   private boolean satisfied;
@@ -16,7 +16,7 @@ public abstract class Constraint<T> implements Iterable<Variable<Integer>> {
   public abstract boolean contains(Variable x);
 
   @Override
-  public abstract Iterator<Variable<Integer>> iterator();
+  public abstract Iterator<Variable<T>> iterator();
 
 
 
