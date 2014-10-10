@@ -2,6 +2,14 @@ package algorithms.csp.canonical_utils;
 
 import org.javatuples.Tuple;
 
+import java.util.HashMap;
+
+import ai.Log;
+import ai.models.grid.Board;
+import ai.models.grid.ColorTile;
+import algorithms.a_star_csp.AStarCspPuzzle;
+import puzzles.flow.Flow;
+
 /**
  * Created by Patrick on 07.10.2014.
  */
@@ -174,5 +182,26 @@ public class ExpressionBuilder {
       return expression;
     }
     return "";
+  }
+
+  /**
+   * This will make all neighboring nodes a different color
+   */
+  private static void generateGraphColoringConstraints(AStarCspPuzzle puzzle, Board<ColorTile> adapter,
+                                                       HashMap<String, Constraint> constraints, ColorTile tile) {
+    String expression;
+    for (ColorTile neighbor : adapter.getManhattanNeighbors(tile)) {
+      //     xy != xy1
+      // and xy != xy2
+      // and xy != xy3
+      // and xy != xy4
+      // and ...
+
+      // since and is being used, all of the lines are added as different constraints!
+      expression = tile.getId() + NOT + neighbor.getId();
+      Constraint constraint = new Constraint(puzzle.getVariables(), expression);
+      constraints.put(expression, constraint);
+      Log.i(Flow.TAG, constraint);
+    }
   }
 }

@@ -49,16 +49,26 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
     HashMap<String, Constraint> constraints = new HashMap<>();
     for (ColorTile tile : adapter.getItems()) {
       // if the tile is a predefined tile, it's either a start or endpoint; special constraints apply!
-      String expression;
       boolean startOrEndNode = !tile.isEmpty();
       if (startOrEndNode) {
-        expression = generateAtLeastOneEqualNeighborConstraint(adapter, tile);
+        String colorExpression = generateAtLeastOneEqualNeighborConstraint(adapter, tile);
+        Constraint colorConstraint = new Constraint(puzzle.getVariables(), colorExpression.trim());
+        constraints.put(colorExpression, colorConstraint);
+        Log.i(TAG, colorConstraint);
+
+
       } else {
-        expression = generateAtLeastTwoEqualNeighborConstraint(adapter, tile);
+        String expression = generateAtLeastTwoEqualNeighborConstraint(adapter, tile);
+        Constraint colorConstraint = new Constraint(puzzle.getVariables(), expression.trim());
+        constraints.put(expression, colorConstraint);
+        Log.i(TAG, colorConstraint);
+
+//        String inputOutputExpression = generateExactlyOneNeighborWithTheSameColorPointsToThisConstraints(adapter, tile);
+//        Constraint inputOutputConstraint = new Constraint(puzzle.getVariables(), inputOutputExpression.trim());
+//        constraints.put(inputOutputExpression, inputOutputConstraint);
+//        Log.i(TAG, inputOutputConstraint);
+
       }
-      Constraint constraint = new Constraint(puzzle.getVariables(), expression.trim());
-      constraints.put(expression, constraint);
-      Log.i(TAG, constraint);
 
 //      generateGraphColoringConstraints(puzzle, (Board<ColorTile>) adapter, constraints, tile);
     }
@@ -74,13 +84,14 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
 
   }
 
+
   private String generateExactlyOneNeighborWithTheSameColorPointsToThisConstraints(AIAdapter<ColorTile> adapter,
                                                                                    ColorTile tile) {
     List<ColorTile> neighbors = ((Board) adapter).getManhattanNeighbors(tile);
     Tuple[] pairs = new Tuple[neighbors.size()];
     int i = 0;
     for (ColorTile neighbor : neighbors) {
-      pairs[i++] = Pair.with(tile.getOutput(), neighbor.getOutput());
+      pairs[i++] = Pair.with(tile.getOutput(), "( " + neighbor.getInput() + " + 2) % 4");
     }
 
     return ExpressionBuilder.exatlyOneTupleEquals(pairs);
@@ -115,27 +126,6 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
       pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
     }
     return pairs;
-  }
-
-  /**
-   * This will make all neighboring nodes a different color
-   */
-  private void generateGraphColoringConstraints(AStarCspPuzzle puzzle, Board<ColorTile> adapter,
-                                                HashMap<String, Constraint> constraints, ColorTile tile) {
-    String expression;
-    for (ColorTile neighbor : adapter.getManhattanNeighbors(tile)) {
-      //     xy != xy1
-      // and xy != xy2
-      // and xy != xy3
-      // and xy != xy4
-      // and ...
-
-      // since and is being used, all of the lines are added as different constraints!
-      expression = tile.getId() + ExpressionBuilder.NOT + neighbor.getId();
-      Constraint constraint = new Constraint(puzzle.getVariables(), expression);
-      constraints.put(expression, constraint);
-      Log.i(TAG, constraint);
-    }
   }
 
 

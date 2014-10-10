@@ -59,6 +59,7 @@ public class Function {
       lambda = (PyFunction) engine.eval(lambdaString);
     } catch (ScriptException e) {
       Log.i(TAG, "INVALID CALL TO EVAL: " + lambdaString);
+      throw new IllegalArgumentException();
     }
     return lambda;
   }

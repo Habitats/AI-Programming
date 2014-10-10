@@ -42,7 +42,6 @@ public class AStarCspNode extends AStarNode {
       for (Integer value : successorVariable.getDomain()) {
 
         AStarCspPuzzle next = puzzle.duplicate();
-        next.makeAssumption();
 
         Variable variable = next.getVariable(successorVariable.getId());
         variable.setAssumption(value);
