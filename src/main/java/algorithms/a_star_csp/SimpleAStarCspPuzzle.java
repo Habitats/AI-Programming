@@ -23,11 +23,11 @@ public abstract class SimpleAStarCspPuzzle<T extends Node<T> & VariableListener>
 
 
   protected Domain getInitialDomain() {
-    int[] domain = new int[getInitialDomainSize()];
+    Integer[] domain = new Integer[getInitialDomainSize()];
     for (int i = 0; i < getInitialDomainSize(); i++) {
       domain[i] = i;
     }
-    return new Domain(domain);
+    return new Domain<>(domain);
   }
 
   protected int getInitialDomainSize() {

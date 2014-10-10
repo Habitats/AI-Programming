@@ -11,7 +11,7 @@ import puzzles.graph_coloring.GraphColoringPuzzle;
 /**
  * Created by Patrick on 08.09.2014.
  */
-public class ColorNode extends Node<ColorNode> implements VariableListener {
+public class ColorNode extends Node<ColorNode> implements VariableListener<Integer> {
 
   private static final String TAG = ColorNode.class.getSimpleName();
   private static final Color EMPTY = Color.WHITE;
@@ -59,7 +59,7 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
   }
 
   @Override
-  public void onValueChanged(int value, int size) {
+  public void onValueChanged(Integer value, int size) {
     this.value = value;
     if (size == 1) {
       setColor(ColorUtils.toHsv(value, numberOfColors, 1));
@@ -73,7 +73,7 @@ public class ColorNode extends Node<ColorNode> implements VariableListener {
   }
 
   @Override
-  public void onAssumptionMade(int value) {
+  public void onAssumptionMade(Integer value) {
     setOutlineColor(ColorUtils.toHsv(value, numberOfColors, .7));
   }
 

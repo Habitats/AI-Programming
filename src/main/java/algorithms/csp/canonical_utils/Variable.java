@@ -9,18 +9,18 @@ import java.util.Set;
 /**
  * Created by Patrick on 04.09.2014.
  */
-public class Variable implements Comparable<Variable> {
+public class Variable<T> implements Comparable<Variable<T>> {
 
   private final String id;
-  private final Domain domain;
-  private int value;
+  private final Domain<T> domain;
+  private T value;
   private boolean hasValue;
   private VariableListener listener;
   private boolean assumption = false;
   private List<Constraint> constraintsContainingVariable;
   private Set<String> variableIDsInConstraintsContainingVariable;
 
-  public Variable(String id, Domain domain) {
+  public Variable(String id, Domain<T> domain) {
     this.id = id;
     this.domain = domain;
   }
@@ -37,8 +37,8 @@ public class Variable implements Comparable<Variable> {
         this.constraintsContainingVariable.add(constraint);
       }
     }
-    for (Constraint constraint : constraintsContainingVariable) {
-      for (Variable variable : constraint.getVariables()) {
+    for (Constraint<Variable> constraint : constraintsContainingVariable) {
+      for (Variable<T> variable : constraint.getVariables()) {
         if (variable.getId().equals(getId())) {
           continue;
         }
@@ -52,7 +52,7 @@ public class Variable implements Comparable<Variable> {
     return constraintsContainingVariable;
   }
 
-  public Variable setValue(int value) {
+  public Variable<T> setValue(T value) {
     this.value = value;
     hasValue = true;
     if (listener != null) {
@@ -62,12 +62,12 @@ public class Variable implements Comparable<Variable> {
     return this;
   }
 
-  public Variable setAssumption(int value) {
+  public Variable<T> setAssumption(T value) {
     this.value = value;
     assumption = true;
-    Iterator<Integer> iterator = domain.iterator();
+    Iterator<T> iterator = domain.iterator();
     while (iterator.hasNext()) {
-      Integer val = iterator.next();
+      T val = iterator.next();
       if ((val) != value) {
         iterator.remove();
         if (listener != null) {
@@ -82,16 +82,16 @@ public class Variable implements Comparable<Variable> {
     return this;
   }
 
-  public VariableListener getListener() {
+  public VariableListener<T> getListener() {
     return listener;
   }
 
 
-  public int getValue() {
+  public T getValue() {
     return value;
   }
 
-  public Domain getDomain() {
+  public Domain<T> getDomain() {
     return domain;
   }
 
@@ -115,7 +115,7 @@ public class Variable implements Comparable<Variable> {
   }
 
   @Override
-  public int compareTo(Variable o) {
+  public int compareTo(Variable<T> o) {
     return 0;
   }
 
@@ -123,8 +123,8 @@ public class Variable implements Comparable<Variable> {
     this.listener = listener;
   }
 
-  public Variable copy() {
-    Variable var = new Variable(id, domain.copy());
+  public Variable<T> copy() {
+    Variable<T> var = new Variable(id, domain.copy());
     var.value = value;
     var.hasValue = hasValue;
     var.listener = listener;

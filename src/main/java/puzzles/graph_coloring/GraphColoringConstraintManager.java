@@ -76,7 +76,7 @@ public class GraphColoringConstraintManager {
   }
 
   private void generateVariableCounts() {
-    for (Constraint constraint : this.constraints) {
+    for (Constraint<Variable> constraint : this.constraints) {
       for (Variable variable : constraint.getVariables()) {
         if (variableCountMap.containsKey(variable.getId())) {
           variableCountMap.put(variable.getId(), variableCountMap.get(variable.getId()) + 1);

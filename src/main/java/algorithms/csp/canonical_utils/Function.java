@@ -24,13 +24,13 @@ public class Function {
   private static final String TAG = Function.class.getSimpleName();
   private static final ScriptEngine engine = new PyScriptEngineFactory().getScriptEngine();
 
-  private final Map<String, Variable> variablesMap;
+  private final Map<String, Variable<Integer>> variablesMap;
   private final String expression;
   private final PyFunction lambda;
 
-  public Function(HashMap<String, Variable> variablesMap, String expression) {
+  public Function(HashMap<String, Variable<Integer>> variablesMap, String expression) {
     this.variablesMap = new HashMap<>();
-    for (Variable var : variablesMap.values()) {
+    for (Variable<Integer> var : variablesMap.values()) {
       this.variablesMap.put(var.getId(), var.copy());
     }
 
@@ -40,7 +40,7 @@ public class Function {
     this.expression = expression;
   }
 
-  private String setExpressionValues(String expression, Collection<Variable> variables) {
+  private String setExpressionValues(String expression, Collection<Variable<Integer>> variables) {
     for (Variable var : variables) {
       if (var.hasValue()) {
         expression = expression.replaceAll(var.getId(), String.valueOf(var.getValue()));
@@ -73,7 +73,7 @@ public class Function {
     return keys;
   }
 
-  public boolean call(List<Variable> variables, Variable focalVariable) {
+  public boolean call(List<Variable<Integer>> variables, Variable<Integer> focalVariable) {
 
     // put all the right values in the valuesMap
     variablesMap.put(focalVariable.getId(), focalVariable.copy());
@@ -92,7 +92,7 @@ public class Function {
     return call(variablesMap);
   }
 
-  private boolean call(Map<String, Variable> variablesMap) {
+  private boolean call(Map<String, Variable<Integer>> variablesMap) {
     // put the values in the right order according to how the parameters for the lambda was created
     PyInteger[] args = new PyInteger[variablesMap.size()];
     int i = 0;
@@ -124,7 +124,7 @@ public class Function {
     return variablesMap.containsKey(x.getId());
   }
 
-  public Map<String, Variable> getVariablesMap() {
+  public Map<String, Variable<Integer>> getVariablesMap() {
     return variablesMap;
   }
 

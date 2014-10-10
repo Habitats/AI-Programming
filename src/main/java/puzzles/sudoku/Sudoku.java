@@ -100,14 +100,14 @@ public class Sudoku implements CspPuzzle {
     for (int x = 1; x <= domain.length; x++) {
       for (int y = 1; y <= domain.length; y++) {
         final Variable var = new Variable("v" + x + y, new Domain(domain));
-        var.setListener(new VariableListener() {
+        var.setListener(new VariableListener<Integer>() {
           @Override
-          public void onValueChanged(int value, int size) {
+          public void onValueChanged(Integer value, int size) {
             Log.v(TAG, "value of: " + var.getId() + ", changed to: " + value);
           }
 
           @Override
-          public void onAssumptionMade(int value) {
+          public void onAssumptionMade(Integer value) {
             Log.v(TAG, "assumption of: " + var.getId() + ", changed to: " + value);
           }
 

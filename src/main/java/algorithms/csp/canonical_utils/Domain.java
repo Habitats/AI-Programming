@@ -8,32 +8,28 @@ import java.util.Set;
 /**
  * Created by Patrick on 04.09.2014.
  */
-public class Domain implements Iterable<Integer> {
+public class Domain<T> implements Iterable<T> {
 
   private static final String TAG = Domain.class.getSimpleName();
-  private final Set<Integer> args;
+  private final Set<T> args;
 
-  public Domain(Integer... args) {
+  public Domain(T... args) {
     this.args = new HashSet(Arrays.asList(args));
-  }
-
-  public Domain(Set<Integer> args) {
-    this.args = new HashSet<>(args);
-  }
-
-  public Domain(int[] args) {
-    this.args = new HashSet<>();
-    for (int arg : args) {
+    for (T arg : args) {
       this.args.add(arg);
     }
   }
 
+  public Domain(Set<T> args) {
+    this.args = new HashSet<>(args);
+  }
+
   @Override
-  public Iterator<Integer> iterator() {
+  public Iterator<T> iterator() {
     return args.iterator();
   }
 
-  public boolean remove(Integer val) {
+  public boolean remove(T val) {
     return args.remove(val);
   }
 
@@ -47,7 +43,7 @@ public class Domain implements Iterable<Integer> {
       return "Empty";
     }
     String domain = "";
-    for (Integer i : args) {
+    for (T i : args) {
       domain += ", " + i;
     }
     return "D: " + domain.substring(2);
@@ -66,7 +62,7 @@ public class Domain implements Iterable<Integer> {
   public boolean equals(Object obj) {
     if (obj instanceof Domain) {
       Domain other = (Domain) obj;
-      Set<Integer> otherArgs = other.args;
+      Set<T> otherArgs = other.args;
       return (args.containsAll(otherArgs)) && otherArgs.containsAll(args);
     }
     return false;
@@ -74,7 +70,7 @@ public class Domain implements Iterable<Integer> {
 
   public String getId() {
     StringBuilder sb = new StringBuilder();
-    for (Integer i : args) {
+    for (T i : args) {
       sb.append(i).append(",");
     }
     return sb.toString();

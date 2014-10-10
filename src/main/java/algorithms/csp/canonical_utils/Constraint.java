@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * Created by Patrick on 10.09.2014.
  */
-public class Constraint implements Iterable<Variable> {
+public class Constraint<T> implements Iterable<Variable<Integer>> {
 
   private static final String TAG = Constraint.class.getSimpleName();
   private final Set<String> variableIdsToCheck;
@@ -18,7 +18,7 @@ public class Constraint implements Iterable<Variable> {
   private boolean satisfied;
 
   public Constraint(VariableList variables, String expression) {
-    HashMap<String, Variable> variableMap = new HashMap<>();
+    HashMap<String, Variable<Integer>> variableMap = new HashMap<>();
     variableIdsToCheck = new LinkedHashSet<>();
     for (Variable var : variables) {
       if (expression.contains(var.getId())) {
@@ -39,7 +39,7 @@ public class Constraint implements Iterable<Variable> {
   }
 
   @Override
-  public Iterator<Variable> iterator() {
+  public Iterator<Variable<Integer>> iterator() {
     return function.getVariablesMap().values().iterator();
   }
 
@@ -54,7 +54,7 @@ public class Constraint implements Iterable<Variable> {
 
   }
 
-  public boolean isSatisfied(List<Variable> variables, Variable focalVariable) {
+  public boolean isSatisfied(List<Variable<Integer>> variables, Variable<Integer> focalVariable) {
     boolean satisfied = function.call(variables, focalVariable);
 //    if (satisfied) {
 //    }

@@ -37,7 +37,7 @@ public class AStarCspNode extends AStarNode {
     List<AStarNode> succ = new ArrayList<>();
 
     // retrieve the variable with the biggest domain
-    Variable successorVariable = puzzle.getSuccessor();
+    Variable<Integer> successorVariable = puzzle.getSuccessor();
     if (!(successorVariable == null)) {
       for (Integer value : successorVariable.getDomain()) {
 

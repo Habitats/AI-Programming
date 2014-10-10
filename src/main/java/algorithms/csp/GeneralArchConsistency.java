@@ -43,8 +43,8 @@ public class GeneralArchConsistency {
    *
    * @return true on the first isSatisfiable occurrence, false is no combination satisfies expression
    */
-  private static boolean isSatisfiable(Constraint constraint, int focalVariableIndex, List<Variable> vars,
-                                       Variable focalVariable, CspPuzzle puzzle) {
+  private static boolean isSatisfiable(Constraint constraint, int focalVariableIndex, List<Variable<Integer>> vars,
+                                       Variable<Integer> focalVariable, CspPuzzle puzzle) {
     boolean hasMoreVariables = constraint.hasNext() || vars.size() > focalVariableIndex;
     if (hasMoreVariables) {
       // isSatisfiable if it's the first time we see this variable. If yes, put it to current variables
@@ -119,7 +119,8 @@ public class GeneralArchConsistency {
   }
 
   private static void addVariablesInConstraintsContainingCurrentVariable2(CspPuzzle puzzle, Queue<Variable> queue,
-                                                                          Set<String> queueHash, Variable var) {
+                                                                          Set<String> queueHash,
+                                                                          Variable<Integer> var) {
     for (String variableId : var.getVariableIDsInConstraintsContainingVariable()) {
       if (!queueHash.contains(variableId)) {
         queue.add(puzzle.getVariable(variableId));
@@ -129,9 +130,9 @@ public class GeneralArchConsistency {
   }
 
   private static void addVariablesInConstraintsContainingCurrentVariable(CspPuzzle puzzle, Queue<Variable> queue,
-                                                                         Set<String> queueHash, Variable var,
+                                                                         Set<String> queueHash, Variable<Integer> var,
                                                                          Constraint constraint) {
-    for (Constraint constraintContainingVariable : var.getConstraintsContainingVariable()) {
+    for (Constraint<Variable> constraintContainingVariable : var.getConstraintsContainingVariable()) {
       if (constraintContainingVariable.equals(constraint)) {
         continue;
       }
@@ -153,9 +154,9 @@ public class GeneralArchConsistency {
    * @return return true if domain is reduced by assumption
    */
 
-  private static boolean revise(Variable focalVariable, Constraint constraint, CspPuzzle puzzle) {
+  private static boolean revise(Variable<Integer> focalVariable, Constraint<Variable<Integer>> constraint,
+                                CspPuzzle puzzle) {
     int oldSize = focalVariable.getDomain().getSize();
-
 
     // iterate over all the values of the focalDomain
     Iterator<Integer> iterator = focalVariable.getDomain().iterator();
@@ -163,7 +164,7 @@ public class GeneralArchConsistency {
       Integer val = iterator.next();
       focalVariable.setValue(val);
 
-      List<Variable> vars = new ArrayList<>();
+      List<Variable<Integer>> vars = new ArrayList<>();
       constraint.clearHasNext();
       constraint.removeFocalvariableFromTodo(focalVariable);
       boolean satisfiable = isSatisfiable(constraint, 0, vars, focalVariable, puzzle);

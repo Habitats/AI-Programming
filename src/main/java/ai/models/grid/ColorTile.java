@@ -10,7 +10,7 @@ import algorithms.csp.canonical_utils.VariableListener;
 /**
  * Created by Patrick on 24.08.2014.
  */
-public class ColorTile extends Node<Node> implements VariableListener {
+public class ColorTile extends Node<Node> implements VariableListener<Integer> {
 
   protected static final Color EMPTY = Color.WHITE;
   private static final String TAG = ColorTile.class.getSimpleName();
@@ -111,7 +111,7 @@ public class ColorTile extends Node<Node> implements VariableListener {
   }
 
   @Override
-  public void onValueChanged(int value, int size) {
+  public void onValueChanged(Integer value, int size) {
     if (size == 1) {
       setColor(ColorUtils.toHsv(value, numberOfColors, 1));
     } else {
@@ -120,7 +120,7 @@ public class ColorTile extends Node<Node> implements VariableListener {
   }
 
   @Override
-  public void onAssumptionMade(int value) {
+  public void onAssumptionMade(Integer value) {
     setOutlineColor(ColorUtils.toHsv(value, numberOfColors, .7));
   }
 
