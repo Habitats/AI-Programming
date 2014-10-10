@@ -264,4 +264,63 @@ public class ExpressionBuilder {
     }
     return S + sortedExpression.substring(3) + E;
   }
+
+  public static String exatlyOneTuplePlusIdEquals(Tuple[] pairs) {
+    String expression;
+    Tuple xy1, xy2, xy3, xy4, xy1Id, xy2Id, xy3Id, xy4Id;
+    if (pairs.length == 2) {
+      // xy == xy1
+      xy1 = pairs[0];
+      xy1Id = pairs[1];
+      return is(xy1) + AND + is(xy1Id);
+    } else if (pairs.length == 4) {
+      xy1 = pairs[0];
+      xy1Id = pairs[1];
+      xy2 = pairs[2];
+      xy2Id = pairs[3];
+      //    ((xy1 != xy2) and (xy1 == xy2))
+      // or ((xy1 == xy2) and (xy1 != xy2))
+      expression = not(xy1) + AND + is(xy2) + AND + is(xy2Id)  //
+                   + OR + is(xy1) + AND + is(xy1Id) + AND + not(xy2) //
+      ;
+      return expression;
+    } else if (pairs.length == 6) {
+      xy1 = pairs[0];
+      xy1Id = pairs[1];
+      xy2 = pairs[2];
+      xy2Id = pairs[3];
+      xy3 = pairs[4];
+      xy3Id = pairs[5];
+      //    ((xy1 != xy2) and (xy1 != xy3) and (xy1 == xy3))
+      // or ((xy1 != xy2) and (xy1 == xy3) and (xy1 != xy3))
+      // or ((xy1 == xy2) and (xy1 != xy3) and (xy1 != xy3))
+      expression = not(xy1) + AND + not(xy2) + AND + is(xy3) + AND + is(xy3Id)  //
+                   + OR + not(xy1) + AND + is(xy2) + AND + is(xy2Id) + AND + not(xy3) //
+                   + OR + is(xy1) + AND + is(xy1Id) + AND + not(xy2) + AND + not(xy3) //
+      ;
+      return expression;
+
+    } else if (pairs.length == 8) {
+      xy1 = pairs[0];
+      xy2 = pairs[2];
+      xy3 = pairs[4];
+      xy4 = pairs[6];
+      xy1Id = pairs[1];
+      xy2Id = pairs[3];
+      xy3Id = pairs[5];
+      xy4Id = pairs[7];
+      //    ((xy1 != xy2) and (xy1 != xy3) and (xy1 != xy3) and (xy1 == xy4))
+      // or ((xy1 != xy2) and (xy1 != xy3) and (xy1 == xy3) and (xy1 != xy4))
+      // or ((xy1 != xy2) and (xy1 == xy3) and (xy1 != xy3) and (xy1 != xy4))
+      // or ((xy1 == xy2) and (xy1 != xy3) and (xy1 != xy3) and (xy1 != xy4))
+      expression = //
+          not(xy1) + AND + not(xy2) + AND + not(xy3) + AND + is(xy4) + AND + is(xy4Id)   //
+          + OR + not(xy1) + AND + not(xy2) + AND + is(xy3) + AND + is(xy3Id) + AND + not(xy4)   //
+          + OR + not(xy1) + AND + is(xy2) + AND + is(xy2Id) + AND + not(xy3) + AND + not(xy4)   //
+          + OR + is(xy1) + AND + is(xy1Id) + AND + not(xy2) + AND + not(xy3) + AND + not(xy4)   //
+      ;
+      return expression;
+    }
+    return "";
+  }
 }

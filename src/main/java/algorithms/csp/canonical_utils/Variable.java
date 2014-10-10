@@ -1,6 +1,5 @@
 package algorithms.csp.canonical_utils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -10,7 +9,7 @@ import java.util.Set;
 /**
  * Created by Patrick on 04.09.2014.
  */
-public class Variable implements Comparable<Variable>, Serializable {
+public class Variable implements Comparable<Variable> {
 
   private final String id;
   private final Domain domain;

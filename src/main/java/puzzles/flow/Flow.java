@@ -57,26 +57,35 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
         constraints.put(colorExpression, colorConstraint);
         Log.i(TAG, colorConstraint);
 
-        if (firstNode) {
-          String
-              inputOutputExpression =
-              generateExactlyOneNeighborWithTheSameColorPointsToThisConstraints(adapter, tile);
-          Constraint inputOutputConstraint = new Constraint(puzzle.getVariables(), inputOutputExpression.trim());
-          constraints.put(inputOutputExpression, inputOutputConstraint);
-          Log.i(TAG, inputOutputConstraint);
-          firstNode = false;
-        }
+//        if (firstNode) {
+//          String
+//              inputOutputExpression =
+//              generateExactlyOneNeighborWithTheSameColorPointsToThisConstraints(adapter, tile);
+//          Constraint inputOutputConstraint = new Constraint(puzzle.getVariables(), inputOutputExpression.trim());
+//          constraints.put(inputOutputExpression, inputOutputConstraint);
+//          Log.i(TAG, inputOutputConstraint);
+//          firstNode = false;
+//        } else {
+//          String inputOutputExpression = generateExactlyOneNeighborWithTheSameColorFromThisConstraints(adapter, tile);
+//          Constraint inputOutputConstraint = new Constraint(puzzle.getVariables(), inputOutputExpression.trim());
+//          constraints.put(inputOutputExpression, inputOutputConstraint);
+//          Log.i(TAG, inputOutputConstraint);
+//        }
 
       } else {
         String expression = generateAtLeastTwoEqualNeighborConstraint(adapter, tile);
         Constraint colorConstraint = new Constraint(puzzle.getVariables(), expression.trim());
         constraints.put(expression, colorConstraint);
         Log.i(TAG, colorConstraint);
+//        String outputInputExpression = generateExactlyOneNeighborWithTheSameColorFromThisConstraints(adapter, tile);
+//        Constraint outputInputConstraint = new Constraint(puzzle.getVariables(), outputInputExpression.trim());
+//        constraints.put(outputInputExpression, outputInputConstraint);
+//        Log.i(TAG, outputInputConstraint);
 
-        String inputOutputExpression = generateExactlyOneNeighborWithTheSameColorPointsToThisConstraints(adapter, tile);
-        Constraint inputOutputConstraint = new Constraint(puzzle.getVariables(), inputOutputExpression.trim());
-        constraints.put(inputOutputExpression, inputOutputConstraint);
-        Log.i(TAG, inputOutputConstraint);
+//        String inputOutputExpression = generateExactlyOneNeighborWithTheSameColorPointsToThisConstraints(adapter, tile);
+//        Constraint inputOutputConstraint = new Constraint(puzzle.getVariables(), inputOutputExpression.trim());
+//        constraints.put(inputOutputExpression, inputOutputConstraint);
+//        Log.i(TAG, inputOutputConstraint);
 
       }
 
@@ -95,33 +104,69 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
   }
 
 
+  private String generateExactlyOneNeighborWithTheSameColorFromThisConstraints(AIAdapter<ColorTile> adapter,
+                                                                               ColorTile tile) {
+    List<ColorTile> neighbors = ((Board) adapter).getManhattanNeighbors(tile);
+    Tuple[] pairs = new Tuple[neighbors.size() * 2];
+    int i = 0;
+    for (ColorTile neighbor : neighbors) {
+      // if neighbor is below
+      if (neighbor.x == tile.x && neighbor.y < tile.y) {
+        pairs[i++] = Pair.with(tile.getOutput(), neighbor.getInput());
+        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
+      }
+      // if neighbor is above
+      else if (neighbor.x == tile.x && neighbor.y > tile.y) {
+        pairs[i++] = Pair.with(tile.getOutput(), "( " + neighbor.getInput() + " +2 )");
+        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
+      }
+      // if neighbor is left
+      else if (neighbor.x < tile.x && neighbor.y == tile.y) {
+        pairs[i++] = Pair.with(tile.getOutput(), "( " + neighbor.getInput() + " -1 )");
+        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
+      }
+      // if neighbor is right
+      else if (neighbor.x > tile.x && neighbor.y == tile.y) {
+        pairs[i++] = Pair.with(tile.getOutput(), "( " + neighbor.getInput() + " +1 )");
+        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
+      }
+//      pairs[i++] = Pair.with(tile.getOutput(), neighbor.getInput());
+    }
+    // xy.input != xy1.output
+    return ExpressionBuilder.exatlyOneTuplePlusIdEquals(pairs);
+  }
+
   private String generateExactlyOneNeighborWithTheSameColorPointsToThisConstraints(AIAdapter<ColorTile> adapter,
                                                                                    ColorTile tile) {
     List<ColorTile> neighbors = ((Board) adapter).getManhattanNeighbors(tile);
-    Tuple[] pairs = new Tuple[neighbors.size()];
+    Tuple[] pairs = new Tuple[neighbors.size() * 2];
     int i = 0;
     for (ColorTile neighbor : neighbors) {
       // if neighbor is below
       if (neighbor.x == tile.x && neighbor.y < tile.y) {
         pairs[i++] = Pair.with(tile.getInput(), neighbor.getOutput());
+        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
       }
       // if neighbor is above
       else if (neighbor.x == tile.x && neighbor.y > tile.y) {
         pairs[i++] = Pair.with(tile.getInput(), "( " + neighbor.getOutput() + " +2 )");
+        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
       }
       // if neighbor is left
       else if (neighbor.x < tile.x && neighbor.y == tile.y) {
         pairs[i++] = Pair.with(tile.getInput(), "( " + neighbor.getOutput() + " -1 )");
+        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
       }
       // if neighbor is right
       else if (neighbor.x > tile.x && neighbor.y == tile.y) {
         pairs[i++] = Pair.with(tile.getInput(), "( " + neighbor.getOutput() + " +1 )");
+        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
       }
 //      pairs[i++] = Pair.with(tile.getOutput(), neighbor.getInput());
     }
     // xy.input != xy1.output
 
-    return ExpressionBuilder.exatlyOneTupleEquals(pairs);
+    return ExpressionBuilder.exatlyOneTuplePlusIdEquals(pairs);
   }
 
   private String generateNoInputAndOneOutputConstraints(AIAdapter<ColorTile> adapter, ColorTile tile) {
