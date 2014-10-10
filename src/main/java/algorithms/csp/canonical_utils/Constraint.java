@@ -9,9 +9,6 @@ import java.util.List;
 public abstract class Constraint<T> implements Iterable<Variable<T>> {
 
   private static final String TAG = Constraint.class.getSimpleName();
-  private boolean satisfied;
-
-
 
   public abstract boolean contains(Variable x);
 
@@ -19,16 +16,14 @@ public abstract class Constraint<T> implements Iterable<Variable<T>> {
   public abstract Iterator<Variable<T>> iterator();
 
 
-
-  public abstract boolean isSatisfied(List<Variable<Integer>> variables, Variable<Integer> focalVariable);
+  public abstract boolean isSatisfied(List<Variable<T>> variables, Variable<T> focalVariable);
 
   public abstract void clearHasNext();
 
   @Override
   public abstract String toString();
 
-  public abstract List<Variable> getVariables();
-
+  public abstract List<Variable<T>> getVariables();
 
 
   public abstract boolean isSatisfied(VariableList variables);

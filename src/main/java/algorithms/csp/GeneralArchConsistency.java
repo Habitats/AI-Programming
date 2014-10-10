@@ -132,7 +132,7 @@ public class GeneralArchConsistency {
   private static void addVariablesInConstraintsContainingCurrentVariable(CspPuzzle puzzle, Queue<Variable> queue,
                                                                          Set<String> queueHash, Variable<Integer> var,
                                                                          Constraint constraint) {
-    for (Constraint<Variable> constraintContainingVariable : var.getConstraintsContainingVariable()) {
+    for (Constraint<Integer> constraintContainingVariable : var.getConstraintsContainingVariable()) {
       if (constraintContainingVariable.equals(constraint)) {
         continue;
       }

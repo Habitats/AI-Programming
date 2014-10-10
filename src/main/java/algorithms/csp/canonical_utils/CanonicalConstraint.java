@@ -82,7 +82,7 @@ public class CanonicalConstraint extends Constraint<Integer> {
     return function.toString();
   }
 
-  public List<Variable> getVariables() {
+  public List<Variable<Integer>> getVariables() {
     return new ArrayList<>(function.getVariablesMap().values());
   }
 }

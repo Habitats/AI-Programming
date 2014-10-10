@@ -17,7 +17,7 @@ public class Variable<T> implements Comparable<Variable<T>> {
   private boolean hasValue;
   private VariableListener listener;
   private boolean assumption = false;
-  private List<Constraint> constraintsContainingVariable;
+  private List<Constraint<T>> constraintsContainingVariable;
   private Set<String> variableIDsInConstraintsContainingVariable;
 
   public Variable(String id, Domain<T> domain) {
@@ -37,7 +37,7 @@ public class Variable<T> implements Comparable<Variable<T>> {
         this.constraintsContainingVariable.add(constraint);
       }
     }
-    for (Constraint<Variable> constraint : constraintsContainingVariable) {
+    for (Constraint<T> constraint : constraintsContainingVariable) {
       for (Variable<T> variable : constraint.getVariables()) {
         if (variable.getId().equals(getId())) {
           continue;
@@ -48,7 +48,7 @@ public class Variable<T> implements Comparable<Variable<T>> {
   }
 
 
-  public List<Constraint> getConstraintsContainingVariable() {
+  public List<Constraint<T>> getConstraintsContainingVariable() {
     return constraintsContainingVariable;
   }
 
