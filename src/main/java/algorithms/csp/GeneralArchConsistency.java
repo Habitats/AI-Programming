@@ -116,7 +116,7 @@ public class GeneralArchConsistency {
 
   private static void printVariables(CspPuzzle puzzle) {
     for (Variable variable : puzzle.getVariables()) {
-      Log.v(TAG, variable.getDomain());
+      Log.v(TAG, variable);
     }
   }
 

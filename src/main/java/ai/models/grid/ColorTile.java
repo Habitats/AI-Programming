@@ -131,11 +131,11 @@ public class ColorTile extends Node<Node> implements VariableListener {
 
 
   public String getOutput() {
-    return "out_x" + x + "y" + y;
+    return "ox" + x + "y" + y;
   }
 
   public String getInput() {
-    return "in_x" + x + "y" + y;
+    return "ix" + x + "y" + y;
   }
 
   public void setOutput(ColorTile output) {

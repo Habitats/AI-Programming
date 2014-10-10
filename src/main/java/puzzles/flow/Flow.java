@@ -47,26 +47,36 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
   protected void generateConstraints(AStarCspPuzzle puzzle, AIAdapter<ColorTile> adapter) {
     Log.v(TAG, "Generating constraints ...");
     HashMap<String, Constraint> constraints = new HashMap<>();
+    boolean firstNode = true;
     for (ColorTile tile : adapter.getItems()) {
       // if the tile is a predefined tile, it's either a start or endpoint; special constraints apply!
       boolean startOrEndNode = !tile.isEmpty();
       if (startOrEndNode) {
-        String colorExpression = generateAtLeastOneEqualNeighborConstraint(adapter, tile);
-        Constraint colorConstraint = new Constraint(puzzle.getVariables(), colorExpression.trim());
-        constraints.put(colorExpression, colorConstraint);
-        Log.i(TAG, colorConstraint);
+//        String colorExpression = generateAtLeastOneEqualNeighborConstraint(adapter, tile);
+//        Constraint colorConstraint = new Constraint(puzzle.getVariables(), colorExpression.trim());
+//        constraints.put(colorExpression, colorConstraint);
+//        Log.i(TAG, colorConstraint);
 
+//        if (firstNode) {
+          String
+              inputOutputExpression =
+              generateExactlyOneNeighborWithTheSameColorPointsToThisConstraints(adapter, tile);
+          Constraint inputOutputConstraint = new Constraint(puzzle.getVariables(), inputOutputExpression.trim());
+          constraints.put(inputOutputExpression, inputOutputConstraint);
+          Log.i(TAG, inputOutputConstraint);
+          firstNode = false;
+//        }
 
       } else {
-        String expression = generateAtLeastTwoEqualNeighborConstraint(adapter, tile);
-        Constraint colorConstraint = new Constraint(puzzle.getVariables(), expression.trim());
-        constraints.put(expression, colorConstraint);
-        Log.i(TAG, colorConstraint);
+//        String expression = generateAtLeastTwoEqualNeighborConstraint(adapter, tile);
+//        Constraint colorConstraint = new Constraint(puzzle.getVariables(), expression.trim());
+//        constraints.put(expression, colorConstraint);
+//        Log.i(TAG, colorConstraint);
 
-//        String inputOutputExpression = generateExactlyOneNeighborWithTheSameColorPointsToThisConstraints(adapter, tile);
-//        Constraint inputOutputConstraint = new Constraint(puzzle.getVariables(), inputOutputExpression.trim());
-//        constraints.put(inputOutputExpression, inputOutputConstraint);
-//        Log.i(TAG, inputOutputConstraint);
+        String inputOutputExpression = generateExactlyOneNeighborWithTheSameColorPointsToThisConstraints(adapter, tile);
+        Constraint inputOutputConstraint = new Constraint(puzzle.getVariables(), inputOutputExpression.trim());
+        constraints.put(inputOutputExpression, inputOutputConstraint);
+        Log.i(TAG, inputOutputConstraint);
 
       }
 
@@ -91,8 +101,25 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
     Tuple[] pairs = new Tuple[neighbors.size()];
     int i = 0;
     for (ColorTile neighbor : neighbors) {
-      pairs[i++] = Pair.with(tile.getOutput(), "( " + neighbor.getInput() + " + 2) % 4");
+      // if neighbor is below
+      if (neighbor.x == tile.x && neighbor.y < tile.y) {
+        pairs[i++] = Pair.with(tile.getInput(), neighbor.getOutput());
+      }
+      // if neighbor is above
+      else if (neighbor.x == tile.x && neighbor.y > tile.y) {
+        pairs[i++] = Pair.with(tile.getInput(), "( " + neighbor.getOutput() + " +2 )");
+      }
+      // if neighbor is left
+      else if (neighbor.x < tile.x && neighbor.y == tile.y) {
+        pairs[i++] = Pair.with(tile.getInput(), "( " + neighbor.getOutput() + " -1 )");
+      }
+      // if neighbor is right
+      else if (neighbor.x > tile.x && neighbor.y == tile.y) {
+        pairs[i++] = Pair.with(tile.getInput(), "( " + neighbor.getOutput() + " +1 )");
+      }
+//      pairs[i++] = Pair.with(tile.getOutput(), neighbor.getInput());
     }
+    // xy.input != xy1.output
 
     return ExpressionBuilder.exatlyOneTupleEquals(pairs);
   }
