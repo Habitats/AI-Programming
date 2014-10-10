@@ -249,7 +249,7 @@ public class ExpressionBuilder {
 
       // since and is being used, all of the lines are added as different constraints!
       expression = tile.getId() + NOT + neighbor.getId();
-      Constraint constraint = new Constraint(puzzle.getVariables(), expression);
+      Constraint constraint = new CanonicalConstraint(puzzle.getVariables(), expression);
       constraints.put(expression, constraint);
       Log.i(Flow.TAG, constraint);
     }

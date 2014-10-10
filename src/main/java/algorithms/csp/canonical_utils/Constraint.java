@@ -1,88 +1,41 @@
 package algorithms.csp.canonical_utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Patrick on 10.09.2014.
  */
-public class Constraint<T> implements Iterable<Variable<Integer>> {
+public abstract class Constraint<T> implements Iterable<Variable<Integer>> {
 
   private static final String TAG = Constraint.class.getSimpleName();
-  private final Set<String> variableIdsToCheck;
-  private final Function function;
   private boolean satisfied;
 
-  public Constraint(VariableList variables, String expression) {
-    HashMap<String, Variable<Integer>> variableMap = new HashMap<>();
-    variableIdsToCheck = new LinkedHashSet<>();
-    for (Variable var : variables) {
-      if (expression.contains(var.getId())) {
-        variableMap.put(var.getId(), var);
-      }
-    }
 
-    function = new Function(variableMap, expression);
-    clearHasNext();
-  }
 
-  public void removeFocalvariableFromTodo(Variable focalVariable) {
-    variableIdsToCheck.remove(focalVariable.getId());
-  }
-
-  public boolean contains(Variable x) {
-    return function.contains(x);
-  }
+  public abstract boolean contains(Variable x);
 
   @Override
-  public Iterator<Variable<Integer>> iterator() {
-    return function.getVariablesMap().values().iterator();
-  }
+  public abstract Iterator<Variable<Integer>> iterator();
 
-  public boolean hasNext() {
-    return variableIdsToCheck.size() > 0;
-  }
 
-  public String getNextVariableId() {
-    String next = variableIdsToCheck.iterator().next();
-    variableIdsToCheck.remove(next);
-    return next;
 
-  }
+  public abstract boolean isSatisfied(List<Variable<Integer>> variables, Variable<Integer> focalVariable);
 
-  public boolean isSatisfied(List<Variable<Integer>> variables, Variable<Integer> focalVariable) {
-    boolean satisfied = function.call(variables, focalVariable);
-//    if (satisfied) {
-//    }
-//    Log.v(TAG, satisfied + ": " + function);
-    return satisfied;
-  }
-
-  public void clearHasNext() {
-    for (Variable var : function.getVariablesMap().values()) {
-      variableIdsToCheck.add(var.getId());
-    }
-  }
+  public abstract void clearHasNext();
 
   @Override
-  public String toString() {
-    return function.toString();
-  }
+  public abstract String toString();
 
-  public List<Variable> getVariables() {
-    return new ArrayList<>(function.getVariablesMap().values());
-  }
+  public abstract List<Variable> getVariables();
 
-  @Override
-  public boolean equals(Object obj) {
-    return obj instanceof Constraint && ((Constraint) obj).function.equals(function);
-  }
 
-  public boolean isSatisfied(VariableList variables) {
-    return function.call(variables);
-  }
+
+  public abstract boolean isSatisfied(VariableList variables);
+
+  public abstract boolean hasNext();
+
+  public abstract String getNextVariableId();
+
+  public abstract void removeFocalvariableFromTodo(Variable<T> focalVariable);
 }

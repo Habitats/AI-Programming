@@ -7,6 +7,7 @@ import java.util.List;
 
 import ai.Log;
 import algorithms.csp.CspPuzzle;
+import algorithms.csp.canonical_utils.CanonicalConstraint;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Domain;
 import algorithms.csp.canonical_utils.Variable;
@@ -46,13 +47,13 @@ public class Sudoku implements CspPuzzle {
           String.format(
               "v%s1 != v%s2 and v%s1 != v%s3 and v%s1 != v%s4 and v%s3 != v%s4 and v%s2 != v%s3 and v%s2 != v%s4", //
               col, col, col, col, col, col, col, col, col, col, col, col);
-      Constraint c1 = new Constraint(getVariables(), expression);
+      Constraint c1 = new CanonicalConstraint(getVariables(), expression);
 
       expression =
           String.format(
               "v1%s != v2%s and v1%s != v3%s and v1%s != v4%s and v3%s != v4%s and v2%s != v3%s and v2%s != v4%s", //
               row, row, row, row, row, row, row, row, row, row, row, row);
-      Constraint c2 = new Constraint(getVariables(), expression);
+      Constraint c2 = new CanonicalConstraint(getVariables(), expression);
       constraints.add(c1);
       constraints.add(c2);
     }

@@ -18,6 +18,7 @@ import ai.models.grid.ColorTile;
 import algorithms.a_star_csp.AStarCsp;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.CspButtonListener;
+import algorithms.csp.canonical_utils.CanonicalConstraint;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.ExpressionBuilder;
 import algorithms.csp.canonical_utils.Variable;
@@ -53,7 +54,7 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
       boolean startOrEndNode = !tile.isEmpty();
       if (startOrEndNode) {
         String colorExpression = generateAtLeastOneEqualNeighborConstraint(adapter, tile);
-        Constraint colorConstraint = new Constraint(puzzle.getVariables(), colorExpression.trim());
+        Constraint colorConstraint = new CanonicalConstraint(puzzle.getVariables(), colorExpression.trim());
         constraints.put(colorExpression, colorConstraint);
         Log.i(TAG, colorConstraint);
 
@@ -74,7 +75,7 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
 
       } else {
         String expression = generateAtLeastTwoEqualNeighborConstraint(adapter, tile);
-        Constraint colorConstraint = new Constraint(puzzle.getVariables(), expression.trim());
+        Constraint colorConstraint = new CanonicalConstraint(puzzle.getVariables(), expression.trim());
         constraints.put(expression, colorConstraint);
         Log.i(TAG, colorConstraint);
 //        String outputInputExpression = generateExactlyOneNeighborWithTheSameColorFromThisConstraints(adapter, tile);

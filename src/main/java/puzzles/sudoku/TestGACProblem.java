@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import algorithms.csp.CspPuzzle;
+import algorithms.csp.canonical_utils.CanonicalConstraint;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Domain;
 import algorithms.csp.canonical_utils.Variable;
@@ -51,16 +52,16 @@ public class TestGACProblem implements CspPuzzle {
   private void setConstraints() {
     constraints = new ArrayList<>();
     if (i == 1) {
-      Constraint c1 = new Constraint(variables, "x == 2*y");
-      Constraint c2 = new Constraint(variables, "x > z");
-      Constraint c3 = new Constraint(variables, "y < z");
-      Constraint c4 = new Constraint(variables, "(y +x + z )== 9");
+      Constraint c1 = new CanonicalConstraint(variables, "x == 2*y");
+      Constraint c2 = new CanonicalConstraint(variables, "x > z");
+      Constraint c3 = new CanonicalConstraint(variables, "y < z");
+      Constraint c4 = new CanonicalConstraint(variables, "(y +x + z )== 9");
       constraints.add(c1);
       constraints.add(c2);
       constraints.add(c3);
       constraints.add(c4);
     } else if (i == 2) {
-      Constraint c1 = new Constraint(variables, "x+w +y< z+1");
+      Constraint c1 = new CanonicalConstraint(variables, "x+w +y< z+1");
       constraints.add(c1);
     }
   }

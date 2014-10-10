@@ -43,8 +43,8 @@ public class GeneralArchConsistency {
    *
    * @return true on the first isSatisfiable occurrence, false is no combination satisfies expression
    */
-  private static boolean isSatisfiable(Constraint constraint, int focalVariableIndex, List<Variable<Integer>> vars,
-                                       Variable<Integer> focalVariable, CspPuzzle puzzle) {
+  private static boolean isSatisfiable(Constraint constraint, int focalVariableIndex, List<Variable> vars,
+                                       Variable focalVariable, CspPuzzle puzzle) {
     boolean hasMoreVariables = constraint.hasNext() || vars.size() > focalVariableIndex;
     if (hasMoreVariables) {
       // isSatisfiable if it's the first time we see this variable. If yes, put it to current variables
@@ -53,7 +53,7 @@ public class GeneralArchConsistency {
         vars.add(puzzle.getVariable(id));
       }
       // iterate over all possible values for this variable
-      for (Integer nextValue : vars.get(focalVariableIndex).getDomain()) {
+      for (Object nextValue : vars.get(focalVariableIndex).getDomain()) {
         // put a value, and recursively combine it with the possible combinations of the remaining variables
         vars.get(focalVariableIndex).setValue(nextValue);
         if (isSatisfiable(constraint, focalVariableIndex + 1, vars, focalVariable, puzzle)) {
@@ -154,8 +154,7 @@ public class GeneralArchConsistency {
    * @return return true if domain is reduced by assumption
    */
 
-  private static boolean revise(Variable<Integer> focalVariable, Constraint<Variable<Integer>> constraint,
-                                CspPuzzle puzzle) {
+  private static boolean revise(Variable focalVariable, Constraint<Variable> constraint, CspPuzzle puzzle) {
     int oldSize = focalVariable.getDomain().getSize();
 
     // iterate over all the values of the focalDomain
@@ -164,7 +163,7 @@ public class GeneralArchConsistency {
       Integer val = iterator.next();
       focalVariable.setValue(val);
 
-      List<Variable<Integer>> vars = new ArrayList<>();
+      List<Variable> vars = new ArrayList<>();
       constraint.clearHasNext();
       constraint.removeFocalvariableFromTodo(focalVariable);
       boolean satisfiable = isSatisfiable(constraint, 0, vars, focalVariable, puzzle);

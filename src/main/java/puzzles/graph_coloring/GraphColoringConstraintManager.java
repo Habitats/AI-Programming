@@ -8,6 +8,7 @@ import java.util.List;
 import ai.Log;
 import ai.models.AIAdapter;
 import ai.models.graph.ColorNode;
+import algorithms.csp.canonical_utils.CanonicalConstraint;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Variable;
 import algorithms.csp.canonical_utils.VariableList;
@@ -55,7 +56,7 @@ public class GraphColoringConstraintManager {
         String id2 = id1 == id ? cId : id;
         String expression = id1 + " != " + id2;
 
-        Constraint constraint = new Constraint(variables, expression);
+        Constraint constraint = new CanonicalConstraint(variables, expression);
         constraints.put(expression, constraint);
         Log.i(TAG, constraint);
         count++;
