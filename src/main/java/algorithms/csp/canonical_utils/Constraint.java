@@ -1,14 +1,23 @@
 package algorithms.csp.canonical_utils;
 
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Patrick on 10.09.2014.
  */
 public abstract class Constraint<T> implements Iterable<Variable<T>> {
 
+  protected final Set<String> variableIdsToCheck;
+
   private static final String TAG = Constraint.class.getSimpleName();
+
+  public Constraint(VariableList variables) {
+    variableIdsToCheck = new LinkedHashSet<>();
+
+  }
 
   public abstract boolean contains(Variable x);
 

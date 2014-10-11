@@ -323,4 +323,17 @@ public class ExpressionBuilder {
     }
     return "";
   }
+
+  public static String atLeastOneTupleWithIdEquals(Tuple[] pairs) {
+    String expression = "";
+    for (int i = 0; i < pairs.length; i += 2) {
+      //    (xy == xy1)
+      // or (xy == xy2)
+      // or (xy == xy3)
+      // or ...
+      expression += OR + S + is(pairs[i]) + AND + is(pairs[i + 1]) + E;
+    }
+    expression = expression.substring(3);
+    return expression;
+  }
 }

@@ -3,9 +3,7 @@ package algorithms.csp.canonical_utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by anon on 10.10.2014.
@@ -13,12 +11,11 @@ import java.util.Set;
 public class CanonicalConstraint extends Constraint<Integer> {
 
   private final Function function;
-  private final Set<String> variableIdsToCheck;
 
   public CanonicalConstraint(VariableList variables, String expression) {
-    super();
+    super(variables);
     HashMap<String, Variable<Integer>> variableMap = new HashMap<>();
-    variableIdsToCheck = new LinkedHashSet<>();
+
     for (Variable var : variables) {
       if (expression.contains(var.getId())) {
         variableMap.put(var.getId(), var);

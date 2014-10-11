@@ -58,26 +58,31 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
         constraints.put(colorExpression, colorConstraint);
         Log.i(TAG, colorConstraint);
 
-//        if (firstNode) {
-//          String
-//              inputOutputExpression =
-//              generateExactlyOneNeighborWithTheSameColorPointsToThisConstraints(adapter, tile);
-//          Constraint inputOutputConstraint = new Constraint(puzzle.getVariables(), inputOutputExpression.trim());
+        if (firstNode) {
+//          String inputOutputExpression = generateAtLeastOneNodePointsToThisConstraints(adapter, tile);
+//          Constraint inputOutputConstraint = new CanonicalConstraint(puzzle.getVariables(), inputOutputExpression.trim());
 //          constraints.put(inputOutputExpression, inputOutputConstraint);
 //          Log.i(TAG, inputOutputConstraint);
-//          firstNode = false;
-//        } else {
-//          String inputOutputExpression = generateExactlyOneNeighborWithTheSameColorFromThisConstraints(adapter, tile);
-//          Constraint inputOutputConstraint = new Constraint(puzzle.getVariables(), inputOutputExpression.trim());
-//          constraints.put(inputOutputExpression, inputOutputConstraint);
-//          Log.i(TAG, inputOutputConstraint);
-//        }
+
+          firstNode = false;
+        } else {
+          String inputOutputExpression = generateAtLeastOneNodePointsToThisConstraints(adapter, tile);
+          Constraint inputOutputConstraint = new CanonicalConstraint(puzzle.getVariables(), inputOutputExpression.trim());
+          constraints.put(inputOutputExpression, inputOutputConstraint);
+          Log.i(TAG, inputOutputConstraint);
+        }
 
       } else {
         String expression = generateAtLeastTwoEqualNeighborConstraint(adapter, tile);
         Constraint colorConstraint = new CanonicalConstraint(puzzle.getVariables(), expression.trim());
         constraints.put(expression, colorConstraint);
         Log.i(TAG, colorConstraint);
+
+        String inputOutputExpression = generateAtLeastOneNodePointsToThisConstraints(adapter, tile);
+        Constraint inputOutputConstraint = new CanonicalConstraint(puzzle.getVariables(), inputOutputExpression.trim());
+        constraints.put(inputOutputExpression, inputOutputConstraint);
+        Log.i(TAG, inputOutputConstraint);
+
 //        String outputInputExpression = generateExactlyOneNeighborWithTheSameColorFromThisConstraints(adapter, tile);
 //        Constraint outputInputConstraint = new Constraint(puzzle.getVariables(), outputInputExpression.trim());
 //        constraints.put(outputInputExpression, outputInputConstraint);
@@ -102,6 +107,37 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
       variable.setConstraintsContainingVariable(immutableConstraints);
     }
 
+  }
+
+  private String generateAtLeastOneNodePointsToThisConstraints(AIAdapter<ColorTile> adapter, ColorTile tile) {
+    List<ColorTile> neighbors = ((Board) adapter).getManhattanNeighbors(tile);
+    Tuple[] pairs = new Tuple[neighbors.size() * 2];
+    int i = 0;
+    for (ColorTile neighbor : neighbors) {
+      // if neighbor is below
+      if (neighbor.x == tile.x && neighbor.y < tile.y) {
+        pairs[i++] = Pair.with("0", neighbor.getOutput());
+        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
+      }
+      // if neighbor is above
+      else if (neighbor.x == tile.x && neighbor.y > tile.y) {
+        pairs[i++] = Pair.with("0", "( " + neighbor.getOutput() + " -2 )");
+        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
+      }
+      // if neighbor is left
+      else if (neighbor.x < tile.x && neighbor.y == tile.y) {
+        pairs[i++] = Pair.with("0", "( " + neighbor.getOutput() + " -3 )");
+        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
+      }
+      // if neighbor is right
+      else if (neighbor.x > tile.x && neighbor.y == tile.y) {
+        pairs[i++] = Pair.with("0", "( " + neighbor.getOutput() + " -1 )");
+        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
+      }
+//      pairs[i++] = Pair.with(tile.getOutput(), neighbor.getInput());
+    }
+    // xy.input != xy1.output
+    return ExpressionBuilder.atLeastOneTupleWithIdEquals(pairs);
   }
 
 

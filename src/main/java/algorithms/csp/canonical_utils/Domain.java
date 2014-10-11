@@ -54,14 +54,14 @@ public class Domain<T> implements Iterable<T> {
   }
 
 
-  public Domain copy() {
+  public Domain<T> copy() {
     return new Domain(args);
   }
 
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof Domain) {
-      Domain other = (Domain) obj;
+      Domain<T> other = (Domain) obj;
       Set<T> otherArgs = other.args;
       return (args.containsAll(otherArgs)) && otherArgs.containsAll(args);
     }
