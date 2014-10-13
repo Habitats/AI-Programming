@@ -63,6 +63,7 @@
             </constraints>
             <properties>
               <model>
+                <item value="simple"/>
                 <item value="flowspec-0"/>
                 <item value="flowspec-1"/>
                 <item value="flowspec-2"/>

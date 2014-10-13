@@ -102,9 +102,13 @@ public class Function {
 
     // call the python lambda with args: x = 1, y = 2 etc, order is important
 //    Log.v(TAG, toString());
-    PyObject ans = lambda.__call__(args);
-
-    return ((PyBoolean) ans).getBooleanValue();
+    try {
+      PyObject ans = lambda.__call__(args);
+      return ((PyBoolean) ans).getBooleanValue();
+    } catch (Exception e) {
+      Log.v(TAG, "lambda crashed: " + toString(), e);
+      throw new IllegalArgumentException();
+    }
   }
 
   public String getVariableValues() {

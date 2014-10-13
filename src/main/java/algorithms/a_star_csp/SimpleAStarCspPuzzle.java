@@ -30,6 +30,12 @@ public abstract class SimpleAStarCspPuzzle<T extends Node<T> & VariableListener>
     return new Domain<>(domain);
   }
 
+  @Override
+  public void setAssumption(String variableId, Integer value) {
+    Variable variable = getVariable(variableId);
+    variable.setAssumption(value);
+  }
+
   protected int getInitialDomainSize() {
     return getAstarCsp().getDomainSize();
   }

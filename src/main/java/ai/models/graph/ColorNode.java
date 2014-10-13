@@ -83,7 +83,7 @@ public class ColorNode extends Node<ColorNode> implements VariableListener<Integ
   }
 
   @Override
-  public int getInitialValue() {
+  public Integer getInitialValue() {
     return value;
   }
 

@@ -31,18 +31,107 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
     Collection<ColorTile> items = getAstarCsp().getAdapter().getItems();
     for (ColorTile colorTile : items) {
       Variable<Integer> colorVariable = new Variable(colorTile.getId(), getInitialDomain());
-      Variable<Integer> outputVariable = new Variable(colorTile.getOutput(), new Domain(0, 1, 2, 3));
-      Variable<Integer> inputVariable = new Variable(colorTile.getInput(), new Domain(0, 1, 2, 3));
-      if (!colorTile.isEmpty()) {
-        colorVariable.setAssumption(colorTile.getInitialValue());
+
+      // if mid state, add both input and output
+      if (colorTile.getColorState() == ColorTile.State.MID) {
+        Variable<Integer> inputVariable = new Variable(colorTile.getInput(), getNeighborDomain(colorTile));
+        putVariable(variables, inputVariable);
+        Variable<Integer> outputVariable = new Variable(colorTile.getOutput(), getNeighborDomain(colorTile));
+        putVariable(variables, outputVariable);
       }
-      variables.put(colorVariable);
-      variables.put(outputVariable);
-      variables.put(inputVariable);
+      // if mid state, both input and output
+      else {
+        colorVariable.setAssumption(colorTile.getInitialValue());
+        // if start state, only output
+        if (colorTile.getColorState() == ColorTile.State.START) {
+          Variable<Integer> outputVariable = new Variable(colorTile.getOutput(), getNeighborDomain(colorTile));
+          putVariable(variables, outputVariable);
+        }
+        // if end state, only input
+        else if (colorTile.getColorState() == ColorTile.State.END) {
+          Variable<Integer> inputVariable = new Variable(colorTile.getInput(), getNeighborDomain(colorTile));
+          putVariable(variables, inputVariable);
+        }
+      }
+
+      putVariable(variables, colorVariable);
+//      variables.put(colorOutputNeighborVariable);
+//      variables.put(colorInputNeighborVariable);
       colorVariable.setListener(colorTile);
-//      outputVariable.setListener(colorTile);
     }
     return variables;
+  }
+
+  private void putVariable(VariableList variables, Variable<Integer> colorVariable) {
+    variables.put(colorVariable);
+  }
+
+  private Domain getNeighborDomain(ColorTile colorTile) {
+    return new Domain(colorTile.getManhattanNeighbors().keySet());
+  }
+
+  @Override
+  public void setAssumption(String variableId, Integer value) {
+    super.setAssumption(variableId, value);
+
+//    // if the assumption is an output
+//    if (variableId.startsWith(ColorTile.OUTPUT)) {
+//      updateVariable(variableId, value, ColorTile.OUTPUT);
+//    }
+//    // if the assumption is an input
+//    else if (variableId.startsWith(ColorTile.OUTPUT) && !variableId.startsWith("id")) {
+//      updateVariable(variableId, value, ColorTile.INPUT);
+//    }
+  }
+
+
+  private void updateVariable(String variableId, Integer value, String i) {
+    // ID of the center tile
+    String
+        centerVariableId =
+        ColorTile.ID + variableId.split(ColorTile.SEP)[variableId.split(ColorTile.SEP).length - 1];
+    // ID of the sink for center tile
+    String tileNeighborId = i + centerVariableId;
+
+    // find the coordinates and variable ID for the new sink variable
+    String baseNeighborId = getNeighborId(value, centerVariableId);
+
+    // the ID of the new neighbor
+    String tileNeighborColorId = ColorTile.NEIGHBOR + i + ColorTile.ID + baseNeighborId;
+
+    // fetch the neighbor variable
+    Variable neighborVariable = getVariable(tileNeighborColorId);
+
+    Variable centerVariable = getVariable(centerVariableId);
+
+    neighborVariable.setAssumption(centerVariable.getValue());
+
+    // connect the center tile to the new source variable
+
+    getVariables().put(tileNeighborId, neighborVariable);
+  }
+
+  private String getNeighborId(Integer ioValue, String centerVariableId) {
+    String baseNeighborId;
+    int oldNeighborX = Integer.parseInt(centerVariableId.split("x")[1].split("y")[0]);
+    int oldNeighborY = Integer.parseInt(centerVariableId.split("y")[1]);
+    switch (ioValue) {
+      case ColorTile.ABOVE:
+        baseNeighborId = "x" + oldNeighborX + "y" + (oldNeighborY + 1);
+        break;
+      case ColorTile.BELOW:
+        baseNeighborId = "x" + oldNeighborX + "y" + (oldNeighborY - 1);
+        break;
+      case ColorTile.LEFT:
+        baseNeighborId = "x" + (oldNeighborX - 1) + "y" + oldNeighborY;
+        break;
+      case ColorTile.RIGHT:
+        baseNeighborId = "x" + (oldNeighborX + 1) + "y" + oldNeighborY;
+        break;
+      default:
+        throw new IllegalArgumentException();
+    }
+    return baseNeighborId;
   }
 
   @Override

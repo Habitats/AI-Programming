@@ -13,5 +13,5 @@ public interface VariableListener<T> {
 
   boolean isEmpty();
 
-  int getInitialValue();
+  Integer getInitialValue();
 }

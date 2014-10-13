@@ -57,6 +57,11 @@ public class NonoCspPuzzle implements AStarCspPuzzle {
   }
 
   @Override
+  public void setAssumption(String id, Integer value) {
+
+  }
+
+  @Override
   public Variable getSuccessor() {
     return null;
   }

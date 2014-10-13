@@ -123,7 +123,7 @@ public class Sudoku implements CspPuzzle {
           }
 
           @Override
-          public int getInitialValue() {
+          public Integer getInitialValue() {
             return 0;
           }
         });
@@ -206,6 +206,11 @@ public class Sudoku implements CspPuzzle {
   @Override
   public void setVariables(VariableList aVoid) {
 
+  }
+
+  @Override
+  public void setAssumption(String id, Integer value) {
+    getVariable(id).setAssumption(value);
   }
 
 

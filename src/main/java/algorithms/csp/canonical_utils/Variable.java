@@ -9,10 +9,10 @@ import java.util.Set;
 /**
  * Created by Patrick on 04.09.2014.
  */
-public class Variable<T> implements Comparable<Variable<T>> {
+public class Variable<T> implements Comparable<Variable<T>>, VariableListener<T> {
 
-  private final String id;
-  private final Domain<T> domain;
+  private String id;
+  private Domain<T> domain;
   private T value;
   private boolean hasValue;
   private VariableListener listener;
@@ -116,7 +116,7 @@ public class Variable<T> implements Comparable<Variable<T>> {
 
   @Override
   public int compareTo(Variable<T> o) {
-    return 0;
+    return  String.CASE_INSENSITIVE_ORDER.compare(getId(), o.getId());
   }
 
   public void setListener(VariableListener listener) {
@@ -152,5 +152,38 @@ public class Variable<T> implements Comparable<Variable<T>> {
     if (assumption) {
       setAssumption(value);
     }
+  }
+
+
+  @Override
+  public void onValueChanged(T value, int size) {
+    setValue(value);
+  }
+
+  @Override
+  public void onAssumptionMade(T value) {
+    setAssumption(value);
+  }
+
+  @Override
+  public void onDomainChanged(Domain<T> domain) {
+    // do nothing
+  }
+
+  @Override
+  public boolean isEmpty() {
+    // do nothing
+    return domain.iEmpty();
+  }
+
+  @Override
+  public Integer getInitialValue() {
+    // do nothing
+    return 0;
+  }
+
+  public void dupe(Variable<T> outputVariable) {
+    this.domain = outputVariable.domain;
+    this.value = outputVariable.value;
   }
 }

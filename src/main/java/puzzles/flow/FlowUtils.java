@@ -11,6 +11,7 @@ public class FlowUtils {
   public static final List<String> samples = new ArrayList<>();
 
   static {
+    samples.add("3 2 \n" + "0 0 0 2 1  \n" + "1 2 2 1 1  ");
     samples.add("6 6 \n" + "0 2 2 4 5  \n" + "1 0 1 0 5  \n" + "2 0 0 1 5  \n" + "3 2 0 5 5  \n" + "4 2 3 2 5  \n"
                 + "5 2 1 4 4  \n");
     samples.add("6 5 \n" + "0 3 0 3 2  \n" + "1 1 0 2 4  \n" + "2 0 0 2 0  \n" + "3 4 4 5 0  \n" + "4 4 5 5 1  \n");

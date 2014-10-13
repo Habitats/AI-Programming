@@ -9,6 +9,8 @@ import ai.gui.AICanvas;
 import ai.gui.AIGui;
 import ai.gui.AIPanel;
 import ai.gui.AITextArea;
+import algorithms.csp.CspPuzzle;
+import algorithms.csp.GeneralArchConsistency;
 import puzzles.flow.Flow;
 import puzzles.graph_coloring.GraphColoring;
 import puzzles.nono.Nono;
@@ -24,6 +26,11 @@ public class AIMain {
   public static void main(String[] args) {
 //    graphColoring();
 //    shortestPath();
+    loadGui();
+//    flowTest();
+  }
+
+  private static void loadGui() {
     new AIGui() {
 
       @Override
@@ -78,6 +85,26 @@ public class AIMain {
 
   private static void flow() {
     new Thread(new Flow()).start();
+  }
+
+  private static void flowTest() {
+    Flow flow = new Flow();
+    flow.run();
+    CspPuzzle puzzle = flow.getSamplePuzzle(5);
+    int domainSize = puzzle.getDomainSize();
+    GeneralArchConsistency.printVariables(puzzle);
+    GeneralArchConsistency.Result res = GeneralArchConsistency.domainFilter(puzzle);
+    GeneralArchConsistency.printVariables(puzzle);
+    puzzle.setAssumption("id_x1y0", 0);
+    puzzle.visualize();
+    res = GeneralArchConsistency.domainFilter(puzzle);
+    GeneralArchConsistency.printVariables(puzzle);
+    puzzle.setAssumption("id_x0y1", 0);
+    puzzle.visualize();
+    res = GeneralArchConsistency.domainFilter(puzzle);
+    GeneralArchConsistency.printVariables(puzzle);
+
+    puzzle.visualize();
   }
 
   private static void shortestPath() {

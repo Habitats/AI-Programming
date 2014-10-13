@@ -9,9 +9,9 @@ import java.util.Set;
 /**
  * Created by Patrick on 03.10.2014.
  */
-public class VariableList implements Iterable<Variable> {
+public class VariableList implements Iterable<Variable<Integer>> {
 
-  private final Map<String, Variable> variableMap;
+  private final Map<String, Variable<Integer>> variableMap;
 
   public VariableList() {
     variableMap = new HashMap<>();
@@ -21,7 +21,7 @@ public class VariableList implements Iterable<Variable> {
     return variableMap.get(id);
   }
 
-  public Collection<Variable> getAll() {
+  public Collection<Variable<Integer>> getAll() {
     return variableMap.values();
   }
 
@@ -32,9 +32,12 @@ public class VariableList implements Iterable<Variable> {
   public void put(Variable var) {
     variableMap.put(var.getId(), var);
   }
+  public void put(String id, Variable var){
+    variableMap.put(id, var);
+  }
 
   @Override
-  public Iterator<Variable> iterator() {
+  public Iterator<Variable<Integer>> iterator() {
     return variableMap.values().iterator();
   }
 

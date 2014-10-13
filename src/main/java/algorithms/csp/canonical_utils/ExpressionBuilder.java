@@ -336,4 +336,26 @@ public class ExpressionBuilder {
     expression = expression.substring(3);
     return expression;
   }
+//
+//  public static String outputHasSameColor(ColorTile tile, Map<Integer, ColorTile> manhattanNeighbors) {
+//    String expression = "";
+//    for (Integer index : manhattanNeighbors.keySet()) {
+//      ColorTile neighbor = manhattanNeighbors.get(index);
+//      expression +=
+//          OR + S + not(Pair.with(tile.getOutput(), index)) + OR + is(Pair.with(tile.getId(), neighbor.getId())) + E;
+//    }
+//    expression = expression.substring(3);
+//    return expression;
+//  }
+//
+//  public static String inputHasSameColor(ColorTile tile, Map<Integer, ColorTile> manhattanNeighbors) {
+//    String expression = "";
+//    for (Integer index : manhattanNeighbors.keySet()) {
+//      ColorTile neighbor = manhattanNeighbors.get(index);
+//      expression +=
+//          OR +
+//    }
+//    expression = expression.substring(3);
+//    return expression;
+//  }
 }

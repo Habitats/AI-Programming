@@ -28,4 +28,6 @@ public interface CspPuzzle {
   VariableList generateVariables();
 
   void setVariables(VariableList variables);
+
+  void setAssumption(String id, Integer value);
 }
