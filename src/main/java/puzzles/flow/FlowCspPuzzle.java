@@ -87,24 +87,4 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
     }
     return new Domain(args);
   }
-
-  @Override
-  public Variable getSuccessor() {
-    return getMinimalDomain(getVariables());
-  }
-
-  private Variable getMinimalDomain(VariableList variables) {
-    int min = Integer.MAX_VALUE;
-    Variable minVar = null;
-    for (Variable var : variables) {
-      if (var.getDomain().getSize() == 1) {
-        continue;
-      }
-      if (var.getDomain().getSize() < min) {
-        min = var.getDomain().getSize();
-        minVar = var;
-      }
-    }
-    return minVar;
-  }
 }
