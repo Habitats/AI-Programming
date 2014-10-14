@@ -4,6 +4,7 @@ import java.awt.*;
 
 import ai.gui.Theme;
 import ai.models.grid.ColorTile;
+import puzzles.flow.FlowTile;
 
 /**
  * Created by Patrick on 03.10.2014.
@@ -12,6 +13,9 @@ public class AStarColorTile extends ColorTile {
 
   private State state;
   private State previousState;
+  private ColorTile output;
+  private ColorTile input;
+  private String neighborId;
 
   public AStarColorTile(int x, int y, State state) {
     super(x, y, State.values().length);
@@ -75,6 +79,38 @@ public class AStarColorTile extends ColorTile {
   @Override
   public String getId() {
     return null;
+  }
+
+  public void setColorState(State state) {
+    this.state = state;
+  }
+
+  public State getColorState() {
+    return state;
+  }
+
+  public String getOutput() {
+    return FlowTile.OUTPUT + "x" + x + "y" + y;
+  }
+
+  public String getInput() {
+    return FlowTile.INPUT + "x" + x + "y" + y;
+  }
+
+  public void setOutput(ColorTile output) {
+    this.output = output;
+  }
+
+  public void setInput(ColorTile input) {
+    this.input = input;
+  }
+
+  public String getOutputNeighborId() {
+    return FlowTile.NEIGHBOR + FlowTile.OUTPUT + getId();
+  }
+
+  public String getInputNeighborId() {
+    return FlowTile.NEIGHBOR + FlowTile.INPUT + getId();
   }
 
   public enum State {

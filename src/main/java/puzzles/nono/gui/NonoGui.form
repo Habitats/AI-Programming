@@ -63,13 +63,13 @@
             </constraints>
             <properties>
               <model>
-                <item value="simple"/>
-                <item value="graph-color-1"/>
-                <item value="graph-color-2"/>
-                <item value="rand-50-4-color1"/>
-                <item value="rand-100-4-color1"/>
-                <item value="rand-100-6-color1"/>
-                <item value="spiral-500-4-color1"/>
+                <item value="nono-camel"/>
+                <item value="nono-cat"/>
+                <item value="nono-chick"/>
+                <item value="nono-heart-1"/>
+                <item value="nono-rabbit"/>
+                <item value="nono-sailboat"/>
+                <item value="nono-telephone"/>
               </model>
             </properties>
           </component>

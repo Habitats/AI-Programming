@@ -1,10 +1,12 @@
 package puzzles.nono;
 
+import java.util.Arrays;
 import java.util.List;
 
 import ai.AIMain;
 import ai.gui.AIGui;
 import ai.models.AIAdapter;
+import ai.models.grid.Board;
 import ai.models.grid.ColorTile;
 import algorithms.a_star_csp.AStarCsp;
 import algorithms.a_star_csp.AStarCspPuzzle;
@@ -26,7 +28,7 @@ public class Nono extends AStarCsp<ColorTile> implements CspButtonListener, Runn
 
   @Override
   protected AStarCspPuzzle generateCspPuzzle() {
-    return null;
+    return new NonoCspPuzzle(this);
   }
 
   @Override
@@ -36,12 +38,28 @@ public class Nono extends AStarCsp<ColorTile> implements CspButtonListener, Runn
 
   @Override
   protected AIAdapter<ColorTile> generateAdapter(String input) {
+    List<String> inputList = Arrays.asList(input.split("\\n"));
+    int width = Integer.parseInt(inputList.get(0).split("\\s+")[0]);
+    int height = Integer.parseInt(inputList.get(0).split("\\s+")[1]);
+    int numberOfColors = 2;
+
+    Board<ColorTile> board = new Board(width, height);
+    for (int x = 0; x < width; x++) {
+      for (int y = 0; y < height; y++) {
+        ColorTile tile = new ColorTile(x, y, numberOfColors);
+        board.set(tile);
+      }
+    }
+
     return null;
   }
 
   @Override
   protected AStarCspPuzzle getSamplePuzzle(int i) {
-    return null;
+    if (i >= NonoUtils.samples.size()) {
+      return null;
+    }
+    return getPuzzleFromInput(NonoUtils.samples.get(i));
   }
 
   @Override

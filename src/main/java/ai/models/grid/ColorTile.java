@@ -1,33 +1,17 @@
 package ai.models.grid;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import ai.gui.ColorUtils;
 import ai.models.Node;
 import algorithms.csp.canonical_utils.Domain;
 import algorithms.csp.canonical_utils.VariableListener;
+import puzzles.flow.FlowTile;
 
 /**
  * Created by Patrick on 24.08.2014.
  */
 public class ColorTile extends Node<Node> implements VariableListener<Integer> {
-
-  private State state;
-
-  public void setColorState(State state) {
-    this.state = state;
-  }
-
-  public State getColorState() {
-    return state;
-  }
-
-  public enum State {
-    START, END, MID
-  }
 
   protected static final Color EMPTY = Color.WHITE;
   private static final String TAG = ColorTile.class.getSimpleName();
@@ -42,28 +26,11 @@ public class ColorTile extends Node<Node> implements VariableListener<Integer> {
   private Color outlineColor;
   private String domainText;
   private Integer initialValue = null;
-  private ColorTile output;
-  private ColorTile input;
-  private Map<Integer, ColorTile> manhattanNeighbors;
-  private String neighborId;
-  public static State STATE;
-
-  public static final java.lang.String SEP = "_";
-  public static final String INPUT = "i" + SEP;
-  public static final String ID = "id" + SEP;
-  public static final String OUTPUT = "o" + SEP;
-  public static final String NEIGHBOR = "n" + SEP;
-
-  public static final int ABOVE = 0;
-  public static final int RIGHT = 1;
-  public static final int BELOW = 2;
-  public static final int LEFT = 3;
 
   public ColorTile(int x, int y, int numberOfColors) {
     this.x = x;
     this.y = y;
     this.numberOfColors = numberOfColors;
-    state = State.MID;
   }
 
   public void setInitialValue(int initialValue) {
@@ -97,7 +64,7 @@ public class ColorTile extends Node<Node> implements VariableListener<Integer> {
 
   @Override
   public String getId() {
-    return ID + "x" + x + "y" + y;
+    return FlowTile.ID + "x" + x + "y" + y;
   }
 
   @Override
@@ -116,7 +83,6 @@ public class ColorTile extends Node<Node> implements VariableListener<Integer> {
     initialValue = colorTile.initialValue;
     outlineColor = colorTile.outlineColor;
     domainText = colorTile.domainText;
-    state = colorTile.state;
   }
 
   public Color getColor() {
@@ -163,53 +129,5 @@ public class ColorTile extends Node<Node> implements VariableListener<Integer> {
   }
 
 
-  public String getOutput() {
-    return OUTPUT + "x" + x + "y" + y;
-  }
 
-  public String getInput() {
-    return INPUT + "x" + x + "y" + y;
-  }
-
-  public void setOutput(ColorTile output) {
-    this.output = output;
-  }
-
-  public void setInput(ColorTile input) {
-    this.input = input;
-  }
-
-  public void setManhattanNeighbors(List<ColorTile> manhattanNeighbors) {
-    this.manhattanNeighbors = new HashMap<>();
-    for (ColorTile neighbor : manhattanNeighbors) {
-      // if neighbor is below
-      if (neighbor.x == x && neighbor.y < y) {
-        this.manhattanNeighbors.put(BELOW, neighbor);
-      }
-      // if neighbor is above
-      else if (neighbor.x == x && neighbor.y > y) {
-        this.manhattanNeighbors.put(ABOVE, neighbor);
-      }
-      // if neighbor is left
-      else if (neighbor.x < x && neighbor.y == y) {
-        this.manhattanNeighbors.put(LEFT, neighbor);
-      }
-      // if neighbor is right
-      else if (neighbor.x > x && neighbor.y == y) {
-        this.manhattanNeighbors.put(RIGHT, neighbor);
-      }
-    }
-  }
-
-  public Map<Integer, ColorTile> getManhattanNeighbors() {
-    return manhattanNeighbors;
-  }
-
-  public String getOutputNeighborId() {
-    return NEIGHBOR + OUTPUT + getId();
-  }
-
-  public String getInputNeighborId() {
-    return NEIGHBOR + INPUT + getId();
-  }
 }

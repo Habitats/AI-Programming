@@ -7,13 +7,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ai.AIMain;
 import ai.Log;
 import ai.gui.AIGui;
 import ai.models.AIAdapter;
 import ai.models.grid.Board;
-import ai.models.grid.ColorTile;
 import algorithms.a_star_csp.AStarCsp;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.CspButtonListener;
@@ -31,7 +31,7 @@ import static algorithms.csp.canonical_utils.ExpressionBuilder.not;
 /**
  * Created by Patrick on 01.10.2014.
  */
-public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runnable {
+public class Flow extends AStarCsp<FlowTile> implements CspButtonListener, Runnable {
 
   public static final String TAG = AIMain.class.getSimpleName();
 
@@ -53,19 +53,19 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
   }
 
   @Override
-  protected void generateConstraints(AStarCspPuzzle puzzle, AIAdapter<ColorTile> adapter) {
+  protected void generateConstraints(AStarCspPuzzle puzzle, AIAdapter<FlowTile> adapter) {
     Log.v(TAG, "Generating constraints ...");
     HashMap<String, Constraint> constraints = new HashMap<>();
 
-    for (ColorTile tile : adapter.getItems()) {
+    for (FlowTile tile : adapter.getItems()) {
       // if the tile is a predefined tile, it's either a start or endpoint; special constraints apply!
-      if (tile.getColorState() != ColorTile.State.MID) {
+      if (tile.getColorState() != FlowTile.State.MID) {
         // if start state, only output
-        if (tile.getColorState() == ColorTile.State.START) {
+        if (tile.getColorState() == FlowTile.State.START) {
           addOutputSameColorConstraints(puzzle, constraints, tile);
         }
         // if end state, only input
-        else if (tile.getColorState() == ColorTile.State.END) {
+        else if (tile.getColorState() == FlowTile.State.END) {
           addInputSameColorConstraints(puzzle, constraints, tile);
         }
 
@@ -81,40 +81,41 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
       }
     }
 
-    for (ColorTile tile : adapter.getItems()) {
-      for (Integer neighborIndex : tile.getManhattanNeighbors().keySet()) {
-        ColorTile neighbor = tile.getManhattanNeighbors().get(neighborIndex);
-        for (Integer adjNeighborIndex : neighbor.getManhattanNeighbors().keySet()) {
+    for (FlowTile tile : adapter.getItems()) {
+      Map<Integer, FlowTile> neighbors = tile.getManhattanNeighbors();
+      for (Integer neighborIndex : neighbors.keySet()) {
+        FlowTile neighbor = neighbors.get(neighborIndex);
+        Map<Integer, FlowTile> adjNeighbors = neighbor.getManhattanNeighbors();
+        for (Integer adjNeighborIndex : adjNeighbors.keySet()) {
           if (neighborIndex == (adjNeighborIndex + 2) % 4) {
             continue;
           }
-          ColorTile adjNeighbor = neighbor.getManhattanNeighbors().get(adjNeighborIndex);
+          FlowTile adjNeighbor = adjNeighbors.get(adjNeighborIndex);
 
-          if (tile.getColorState() == ColorTile.State.MID && adjNeighbor.getColorState() == ColorTile.State.MID) {
+          if (tile.getColorState() == FlowTile.State.MID && adjNeighbor.getColorState() == FlowTile.State.MID) {
             addSingleInputConstraint(puzzle, constraints, tile, neighborIndex, adjNeighborIndex, adjNeighbor);
             addSingleOutputConstraint(puzzle, constraints, tile, neighborIndex, adjNeighborIndex, adjNeighbor);
           } else {
             // if both are start state, only output
-            if (tile.getColorState() == ColorTile.State.START && adjNeighbor.getColorState() == ColorTile.State.START) {
+            if (tile.getColorState() == FlowTile.State.START && adjNeighbor.getColorState() == FlowTile.State.START) {
               addSingleOutputConstraint(puzzle, constraints, tile, neighborIndex, adjNeighborIndex, adjNeighbor);
             }
             // if borth are end state, only input
-            else if (tile.getColorState() == ColorTile.State.END
-                     && adjNeighbor.getColorState() == ColorTile.State.END) {
+            else if (tile.getColorState() == FlowTile.State.END && adjNeighbor.getColorState() == FlowTile.State.END) {
               addSingleInputConstraint(puzzle, constraints, tile, neighborIndex, adjNeighborIndex, adjNeighbor);
             }
             // if tile is mid
-            else if (tile.getColorState() == ColorTile.State.MID) {
+            else if (tile.getColorState() == FlowTile.State.MID) {
               // is start, only output
-              if (adjNeighbor.getColorState() == ColorTile.State.START) {
+              if (adjNeighbor.getColorState() == FlowTile.State.START) {
                 addSingleOutputConstraint(puzzle, constraints, tile, neighborIndex, adjNeighborIndex, adjNeighbor);
               } else {
                 addSingleInputConstraint(puzzle, constraints, tile, neighborIndex, adjNeighborIndex, adjNeighbor);
               }
             }
             // if adj is mid
-            else if (adjNeighbor.getColorState() == ColorTile.State.MID) {
-              if (tile.getColorState() == ColorTile.State.START) {
+            else if (adjNeighbor.getColorState() == FlowTile.State.MID) {
+              if (tile.getColorState() == FlowTile.State.START) {
                 addSingleOutputConstraint(puzzle, constraints, tile, neighborIndex, adjNeighborIndex, adjNeighbor);
               } else {
                 addSingleInputConstraint(puzzle, constraints, tile, neighborIndex, adjNeighborIndex, adjNeighbor);
@@ -136,9 +137,10 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
   }
 
   private void addInputSameColorConstraints(AStarCspPuzzle puzzle, HashMap<String, Constraint> constraints,
-                                            ColorTile tile) {
-    for (Integer index : tile.getManhattanNeighbors().keySet()) {
-      ColorTile neighbor = tile.getManhattanNeighbors().get(index);
+                                            FlowTile tile) {
+    Map<Integer, FlowTile> neighbors = tile.getManhattanNeighbors();
+    for (Integer index : neighbors.keySet()) {
+      FlowTile neighbor = neighbors.get(index);
       String expression = //
           S + not(Pair.with(tile.getInput(), index)) + OR + is(Pair.with(tile.getId(), neighbor.getId())) + E;
       Constraint outputColorConstraint = new CanonicalConstraint(puzzle.getVariables(), expression);
@@ -147,9 +149,10 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
   }
 
   private void addOutputSameColorConstraints(AStarCspPuzzle puzzle, HashMap<String, Constraint> constraints,
-                                            ColorTile tile) {
-    for (Integer index : tile.getManhattanNeighbors().keySet()) {
-      ColorTile neighbor = tile.getManhattanNeighbors().get(index);
+                                             FlowTile tile) {
+    Map<Integer, FlowTile> neighbors = tile.getManhattanNeighbors();
+    for (Integer index : neighbors.keySet()) {
+      FlowTile neighbor = neighbors.get(index);
       String expression = //
           S + not(Pair.with(tile.getOutput(), index)) + OR + is(Pair.with(tile.getId(), neighbor.getId())) + E;
       Constraint outputColorConstraint = new CanonicalConstraint(puzzle.getVariables(), expression);
@@ -162,8 +165,8 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
     return constraints.put(inputNotOutputExpression, inputNotOutputConstraint);
   }
 
-  private void addSingleInputConstraint(AStarCspPuzzle puzzle, HashMap<String, Constraint> constraints, ColorTile tile,
-                                        Integer neighborIndex, Integer adjNeighborIndex, ColorTile adjNeighbor) {
+  private void addSingleInputConstraint(AStarCspPuzzle puzzle, HashMap<String, Constraint> constraints, FlowTile tile,
+                                        Integer neighborIndex, Integer adjNeighborIndex, FlowTile adjNeighbor) {
     String expression = S + not(Pair.with(tile.getInput(), neighborIndex)) + OR +
                         not(Pair.with(adjNeighbor.getInput(), (adjNeighborIndex + 2) % 4)) + E;
     Constraint inputConstraint = new CanonicalConstraint(puzzle.getVariables(), expression);
@@ -171,8 +174,8 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
     Log.i(TAG, inputConstraint);
   }
 
-  private void addSingleOutputConstraint(AStarCspPuzzle puzzle, HashMap<String, Constraint> constraints, ColorTile tile,
-                                         Integer neighborIndex, Integer adjNeighborIndex, ColorTile adjNeighbor) {
+  private void addSingleOutputConstraint(AStarCspPuzzle puzzle, HashMap<String, Constraint> constraints, FlowTile tile,
+                                         Integer neighborIndex, Integer adjNeighborIndex, FlowTile adjNeighbor) {
     String outExpression = S + not(Pair.with(tile.getOutput(), neighborIndex)) + OR +
                            not(Pair.with(adjNeighbor.getOutput(), (adjNeighborIndex + 2) % 4)) + E;
     Constraint outputConstraint = new CanonicalConstraint(puzzle.getVariables(), outExpression);
@@ -180,24 +183,24 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
     Log.i(TAG, outputConstraint);
   }
 
-  private String generateInputNotOutputConstraint(AIAdapter<ColorTile> adapter, ColorTile tile) {
+  private String generateInputNotOutputConstraint(AIAdapter<FlowTile> adapter, FlowTile tile) {
     return not(Pair.with(tile.getInput(), tile.getOutput()));
   }
 
   @Override
-  protected AIAdapter<ColorTile> generateAdapter(String input) {
+  protected AIAdapter<FlowTile> generateAdapter(String input) {
     List<String> inputList = Arrays.asList(input.split("\\n"));
     int dimension = Integer.parseInt(inputList.get(0).split("\\s+")[0]);
     int numberOfColors = Integer.parseInt(inputList.get(0).split("\\s+")[1]);
 
-    Board<ColorTile> board = new Board(dimension, dimension);
+    Board<FlowTile> board = new Board(dimension, dimension);
     for (int x = 0; x < dimension; x++) {
       for (int y = 0; y < dimension; y++) {
-        ColorTile tile = new ColorTile(x, y, numberOfColors);
+        FlowTile tile = new FlowTile(x, y, numberOfColors);
         board.set(tile);
       }
     }
-    for (ColorTile tile : board.getItems()) {
+    for (FlowTile tile : board.getItems()) {
       tile.setManhattanNeighbors(board.getManhattanNeighbors(tile));
     }
 
@@ -209,12 +212,12 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
       int endX = Integer.parseInt(pairRow[3]);
       int endY = Integer.parseInt(pairRow[4]);
 
-      ColorTile start = new ColorTile(startX, startY, numberOfColors);
-      ColorTile end = new ColorTile(endX, endY, numberOfColors);
+      FlowTile start = new FlowTile(startX, startY, numberOfColors);
+      FlowTile end = new FlowTile(endX, endY, numberOfColors);
       start.setInitialValue(value);
-      start.setColorState(ColorTile.State.START);
+      start.setColorState(FlowTile.State.START);
       end.setInitialValue(value);
-      end.setColorState(ColorTile.State.END);
+      end.setColorState(FlowTile.State.END);
       start.setColor(value, .9);
       end.setColor(value, .9);
       board.set(start);
