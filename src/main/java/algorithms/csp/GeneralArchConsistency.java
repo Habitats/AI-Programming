@@ -1,6 +1,8 @@
 package algorithms.csp;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -113,21 +115,21 @@ public class GeneralArchConsistency {
   }
 
   public static void printVariables(CspPuzzle puzzle) {
-//
-//    List sorted = new ArrayList<>(puzzle.getVariables().copy().getAll());
-//
-//    Collections.sort(sorted, new Comparator<Object>() {
-//      @Override
-//      public int compare(Object o1, Object o2) {
-//        String s1 = ((Variable) o1).getId();
-//        String s2 = ((Variable) o2).getId();
-//        return String.CASE_INSENSITIVE_ORDER.compare(s1, s2);
-//      }
-//    });
-//
-//    for (Object variable : sorted) {
-//      Log.v(TAG, variable);
-//    }
+
+    List sorted = new ArrayList<>(puzzle.getVariables().copy().getAll());
+
+    Collections.sort(sorted, new Comparator<Object>() {
+      @Override
+      public int compare(Object o1, Object o2) {
+        String s1 = ((Variable) o1).getId();
+        String s2 = ((Variable) o2).getId();
+        return String.CASE_INSENSITIVE_ORDER.compare(s1, s2);
+      }
+    });
+
+    for (Object variable : sorted) {
+      Log.v(TAG, variable);
+    }
   }
 
   private static void addVariablesInConstraintsContainingCurrentVariable2(CspPuzzle puzzle, Queue<Variable> queue,
@@ -181,7 +183,7 @@ public class GeneralArchConsistency {
       boolean satisfiable = isSatisfiable(constraint, 0, vars, focalVariable, puzzle);
       if (!satisfiable) {
         // if constraint is impossible to satisfy with the given value, remove the value from the domain
-//        Log.v(TAG, "reducing the domain of " + focalVariable + " by removing: " + val + ". Violating: " + constraint);
+        Log.v(TAG, "reducing the domain of " + focalVariable + " by removing: " + val + ". Violating: " + constraint);
         iterator.remove();
       }
 //      else{
