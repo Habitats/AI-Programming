@@ -1,7 +1,6 @@
 package puzzles.flow;
 
 import org.javatuples.Pair;
-import org.javatuples.Tuple;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -80,8 +79,6 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
         putConstraint(constraints, inputNotOutputExpression, inputNotOutputConstraint);
         Log.i(TAG, inputNotOutputConstraint);
       }
-
-//      generateGraphColoringConstraints(puzzle, (Board<ColorTile>) adapter, constraints, tile);
     }
 
     for (ColorTile tile : adapter.getItems()) {
@@ -183,31 +180,8 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
     Log.i(TAG, outputConstraint);
   }
 
-//  private String generateInputHasSameColor(AIAdapter<ColorTile> adapter, ColorTile tile) {
-//    return inputHasSameColor(tile, tile.getManhattanNeighbors());
-//  }
-//  private String generateOutputHasSameColor(AIAdapter<ColorTile> adapter, ColorTile tile) {
-//
-//    return outputHasSameColor(tile, tile.getManhattanNeighbors());
-//  }
-
   private String generateInputNotOutputConstraint(AIAdapter<ColorTile> adapter, ColorTile tile) {
     return not(Pair.with(tile.getInput(), tile.getOutput()));
-  }
-
-
-
-
-  private Tuple[] getNeighborIdTuples(Board<ColorTile> adapter, ColorTile tile) {
-    List<ColorTile> neighbors = adapter.getManhattanNeighbors(tile);
-    String expression = "";
-
-    Tuple[] pairs = new Tuple[neighbors.size()];
-    int i = 0;
-    for (ColorTile neighbor : neighbors) {
-      pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
-    }
-    return pairs;
   }
 
   @Override
