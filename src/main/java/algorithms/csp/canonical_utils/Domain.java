@@ -19,9 +19,17 @@ public class Domain<T> implements Iterable<T> {
       this.args.add(arg);
     }
   }
+  public Domain(){
+    this.args = new HashSet();
+  }
 
   public Domain(Set<T> args) {
     this.args = new HashSet<>(args);
+  }
+
+
+  protected Set<T> getArgs() {
+    return args;
   }
 
   @Override
