@@ -75,7 +75,7 @@ public class AStar implements Runnable {
     AStarNode current = null;
     while (opened.size() > 0) {
       current = opened.poll();
-      Log.v(TAG, current);
+      Log.i(TAG, current.toStringShort() + " - " + toString());
 
       visualizeAndWait(current);
 //      Log.v(TAG, toString());
@@ -203,8 +203,7 @@ public class AStar implements Runnable {
 
   @Override
   public String toString() {
-    return traversal + " search -- Status: " + getStatus() //
-           + " - Start: " + start  //
+    return traversal + " search" //
            + " - Generated: " + getGeneratedSize() //
            + " - Closed: " + getClosedSize() //
            + " - Opened: " + getOpenedSize() //

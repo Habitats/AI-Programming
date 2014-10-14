@@ -57,7 +57,6 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
       }
 
       putVariable(variables, colorVariable);
-
       colorVariable.setListener(colorTile);
     }
     return variables;

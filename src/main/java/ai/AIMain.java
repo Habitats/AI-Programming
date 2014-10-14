@@ -26,8 +26,8 @@ public class AIMain {
   public static void main(String[] args) {
 //    graphColoring();
 //    shortestPath();
-//    loadGui();
-    flowTest();
+    loadGui();
+//    flowTest();
   }
 
   private static void loadGui() {

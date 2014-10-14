@@ -26,12 +26,6 @@ import puzzles.flow.gui.FlowGui;
 import static algorithms.csp.canonical_utils.ExpressionBuilder.E;
 import static algorithms.csp.canonical_utils.ExpressionBuilder.OR;
 import static algorithms.csp.canonical_utils.ExpressionBuilder.S;
-import static algorithms.csp.canonical_utils.ExpressionBuilder.atLeastOneTupleEquals;
-import static algorithms.csp.canonical_utils.ExpressionBuilder.atLeastOneTupleWithIdEquals;
-import static algorithms.csp.canonical_utils.ExpressionBuilder.atLeastTwoTuplesEquals;
-import static algorithms.csp.canonical_utils.ExpressionBuilder.exatlyOneTupleEquals;
-import static algorithms.csp.canonical_utils.ExpressionBuilder.exatlyOneTuplePlusIdEquals;
-import static algorithms.csp.canonical_utils.ExpressionBuilder.exatlyTwoTuplesEquals;
 import static algorithms.csp.canonical_utils.ExpressionBuilder.is;
 import static algorithms.csp.canonical_utils.ExpressionBuilder.not;
 
@@ -52,7 +46,6 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
 
   public void test() {
     loadClicked();
-
   }
 
   @Override
@@ -202,132 +195,8 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
     return not(Pair.with(tile.getInput(), tile.getOutput()));
   }
 
-  private String generateAtLeastOneNodePointsToThisConstraints(AIAdapter<ColorTile> adapter, ColorTile tile) {
-    List<ColorTile> neighbors = ((Board) adapter).getManhattanNeighbors(tile);
-    Tuple[] pairs = new Tuple[neighbors.size() * 2];
-    int i = 0;
-    for (ColorTile neighbor : neighbors) {
-      // if neighbor is below
-      if (neighbor.x == tile.x && neighbor.y < tile.y) {
-        pairs[i++] = Pair.with("0", neighbor.getOutput());
-        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
-      }
-      // if neighbor is above
-      else if (neighbor.x == tile.x && neighbor.y > tile.y) {
-        pairs[i++] = Pair.with("0", "( " + neighbor.getOutput() + " -2 )");
-        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
-      }
-      // if neighbor is left
-      else if (neighbor.x < tile.x && neighbor.y == tile.y) {
-        pairs[i++] = Pair.with("0", "( " + neighbor.getOutput() + " -3 )");
-        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
-      }
-      // if neighbor is right
-      else if (neighbor.x > tile.x && neighbor.y == tile.y) {
-        pairs[i++] = Pair.with("0", "( " + neighbor.getOutput() + " -1 )");
-        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
-      }
-//      pairs[i++] = Pair.with(tile.getOutput(), neighbor.getInput());
-    }
-    // xy.input != xy1.output
-    return atLeastOneTupleWithIdEquals(pairs);
-  }
 
 
-  private String generateExactlyOneNeighborWithTheSameColorFromThisConstraints(AIAdapter<ColorTile> adapter,
-                                                                               ColorTile tile) {
-    List<ColorTile> neighbors = ((Board) adapter).getManhattanNeighbors(tile);
-    Tuple[] pairs = new Tuple[neighbors.size() * 2];
-    int i = 0;
-    for (ColorTile neighbor : neighbors) {
-      // if neighbor is below
-      if (neighbor.x == tile.x && neighbor.y < tile.y) {
-        pairs[i++] = Pair.with(tile.getOutput(), neighbor.getInput());
-        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
-      }
-      // if neighbor is above
-      else if (neighbor.x == tile.x && neighbor.y > tile.y) {
-        pairs[i++] = Pair.with(tile.getOutput(), "( " + neighbor.getInput() + " +2 )");
-        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
-      }
-      // if neighbor is left
-      else if (neighbor.x < tile.x && neighbor.y == tile.y) {
-        pairs[i++] = Pair.with(tile.getOutput(), "( " + neighbor.getInput() + " -1 )");
-        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
-      }
-      // if neighbor is right
-      else if (neighbor.x > tile.x && neighbor.y == tile.y) {
-        pairs[i++] = Pair.with(tile.getOutput(), "( " + neighbor.getInput() + " +1 )");
-        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
-      }
-//      pairs[i++] = Pair.with(tile.getOutput(), neighbor.getInput());
-    }
-    // xy.input != xy1.output
-    return exatlyOneTuplePlusIdEquals(pairs);
-  }
-
-  private String generateExactlyOneNeighborWithTheSameColorPointsToThisConstraints(AIAdapter<ColorTile> adapter,
-                                                                                   ColorTile tile) {
-    List<ColorTile> neighbors = ((Board) adapter).getManhattanNeighbors(tile);
-    Tuple[] pairs = new Tuple[neighbors.size() * 2];
-    int i = 0;
-    for (ColorTile neighbor : neighbors) {
-      // if neighbor is below
-      if (neighbor.x == tile.x && neighbor.y < tile.y) {
-        pairs[i++] = Pair.with(tile.getInput(), neighbor.getOutput());
-        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
-      }
-      // if neighbor is above
-      else if (neighbor.x == tile.x && neighbor.y > tile.y) {
-        pairs[i++] = Pair.with(tile.getInput(), "( " + neighbor.getOutput() + " +2 )");
-        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
-      }
-      // if neighbor is left
-      else if (neighbor.x < tile.x && neighbor.y == tile.y) {
-        pairs[i++] = Pair.with(tile.getInput(), "( " + neighbor.getOutput() + " -1 )");
-        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
-      }
-      // if neighbor is right
-      else if (neighbor.x > tile.x && neighbor.y == tile.y) {
-        pairs[i++] = Pair.with(tile.getInput(), "( " + neighbor.getOutput() + " +1 )");
-        pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
-      }
-//      pairs[i++] = Pair.with(tile.getOutput(), neighbor.getInput());
-    }
-    // xy.input != xy1.output
-
-    return exatlyOneTuplePlusIdEquals(pairs);
-  }
-
-  private String generateNoInputAndOneOutputConstraints(AIAdapter<ColorTile> adapter, ColorTile tile) {
-    return null;
-  }
-
-
-  private String generateAtLeastTwoEqualNeighborConstraint(AIAdapter<ColorTile> adapter, ColorTile tile) {
-    Tuple[] pairs = getNeighborIdTuples((Board<ColorTile>) (Board<ColorTile>) adapter, (ColorTile) tile);
-    String expression;
-
-    return atLeastTwoTuplesEquals(pairs);
-  }
-
-//  private String generateOutputSameColorConstraint(AIAdapter<ColorTile> adapter, ColorTile tile) {
-//    Pair<String, String> pair = Pair.with(tile.getId(), tile.getOutputNeighborId());
-//    return ExpressionBuilder.is(pair);
-//  }
-//
-//  private String generateInputSameColorConstraint(AIAdapter<ColorTile> adapter, ColorTile tile) {
-//    Pair<String, String> pair = Pair.with(tile.getId(), tile.getInputNeighborId());
-//    return ExpressionBuilder.is(pair);
-//  }
-
-
-  private String generateExactlyTwoEqualNeighborConstraint(AIAdapter<ColorTile> adapter, ColorTile tile) {
-    Tuple[] pairs = getNeighborIdTuples((Board<ColorTile>) adapter, tile);
-    String expression;
-
-    return exatlyTwoTuplesEquals(pairs);
-  }
 
   private Tuple[] getNeighborIdTuples(Board<ColorTile> adapter, ColorTile tile) {
     List<ColorTile> neighbors = adapter.getManhattanNeighbors(tile);
@@ -339,31 +208,6 @@ public class Flow extends AStarCsp<ColorTile> implements CspButtonListener, Runn
       pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
     }
     return pairs;
-  }
-
-
-  private String generateExactlyOneEqualNeighborConstraint(AIAdapter<ColorTile> adapter, ColorTile tile) {
-    List<ColorTile> neighbors = ((Board<ColorTile>) adapter).getManhattanNeighbors(tile);
-    String expression = "";
-
-    Tuple[] pairs = new Tuple[neighbors.size()];
-    int i = 0;
-    for (ColorTile neighbor : neighbors) {
-      pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
-    }
-
-    return exatlyOneTupleEquals(pairs);
-  }
-
-
-  private String generateAtLeastOneEqualNeighborConstraint(AIAdapter<ColorTile> adapter, ColorTile tile) {
-    List<ColorTile> neighbors = ((Board<ColorTile>) adapter).getManhattanNeighbors(tile);
-    Tuple[] pairs = new Tuple[neighbors.size()];
-    int i = 0;
-    for (ColorTile neighbor : neighbors) {
-      pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
-    }
-    return atLeastOneTupleEquals(pairs);
   }
 
   @Override
