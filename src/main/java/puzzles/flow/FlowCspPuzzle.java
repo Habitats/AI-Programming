@@ -1,6 +1,8 @@
 package puzzles.flow;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import ai.models.grid.ColorTile;
 import algorithms.a_star_csp.AStarCsp;
@@ -34,9 +36,9 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
 
       // if mid state, add both input and output
       if (colorTile.getColorState() == ColorTile.State.MID) {
-        Variable<Integer> inputVariable = new Variable(colorTile.getInput(), getNeighborDomain(colorTile));
+        Variable<Integer> inputVariable = new Variable(colorTile.getInput(), getInputDomain(colorTile));
         putVariable(variables, inputVariable);
-        Variable<Integer> outputVariable = new Variable(colorTile.getOutput(), getNeighborDomain(colorTile));
+        Variable<Integer> outputVariable = new Variable(colorTile.getOutput(), getOutputDomain(colorTile));
         putVariable(variables, outputVariable);
       }
       // if mid state, both input and output
@@ -44,30 +46,47 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
         colorVariable.setAssumption(colorTile.getInitialValue());
         // if start state, only output
         if (colorTile.getColorState() == ColorTile.State.START) {
-          Variable<Integer> outputVariable = new Variable(colorTile.getOutput(), getNeighborDomain(colorTile));
+          Variable<Integer> outputVariable = new Variable(colorTile.getOutput(), getOutputDomain(colorTile));
           putVariable(variables, outputVariable);
         }
         // if end state, only input
         else if (colorTile.getColorState() == ColorTile.State.END) {
-          Variable<Integer> inputVariable = new Variable(colorTile.getInput(), getNeighborDomain(colorTile));
+          Variable<Integer> inputVariable = new Variable(colorTile.getInput(), getInputDomain(colorTile));
           putVariable(variables, inputVariable);
         }
       }
 
       putVariable(variables, colorVariable);
-//      variables.put(colorOutputNeighborVariable);
-//      variables.put(colorInputNeighborVariable);
+
       colorVariable.setListener(colorTile);
     }
     return variables;
+  }
+
+  private Domain getOutputDomain(ColorTile colorTile) {
+    Set<Integer> args = new HashSet<>();
+    for (Integer index : colorTile.getManhattanNeighbors().keySet()) {
+      ColorTile neighbor = colorTile.getManhattanNeighbors().get(index);
+      if (neighbor.getColorState() == ColorTile.State.MID || neighbor.getColorState() == ColorTile.State.END) {
+        args.add(index);
+      }
+    }
+    return new Domain(args);
   }
 
   private void putVariable(VariableList variables, Variable<Integer> colorVariable) {
     variables.put(colorVariable);
   }
 
-  private Domain getNeighborDomain(ColorTile colorTile) {
-    return new Domain(colorTile.getManhattanNeighbors().keySet());
+  private Domain getInputDomain(ColorTile colorTile) {
+    Set<Integer> args = new HashSet<>();
+    for (Integer index : colorTile.getManhattanNeighbors().keySet()) {
+      ColorTile neighbor = colorTile.getManhattanNeighbors().get(index);
+      if (neighbor.getColorState() == ColorTile.State.MID || neighbor.getColorState() == ColorTile.State.START) {
+        args.add(index);
+      }
+    }
+    return new Domain(args);
   }
 
   @Override
