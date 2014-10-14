@@ -26,8 +26,8 @@ public class AIMain {
   public static void main(String[] args) {
 //    graphColoring();
 //    shortestPath();
-    loadGui();
-//    flowTest();
+//    loadGui();
+    flowTest();
   }
 
   private static void loadGui() {
@@ -90,7 +90,7 @@ public class AIMain {
   private static void flowTest() {
     Flow flow = new Flow();
     flow.run();
-    CspPuzzle puzzle = flow.getSamplePuzzle(5);
+    CspPuzzle puzzle = flow.getSamplePuzzle(0);
     int domainSize = puzzle.getDomainSize();
     GeneralArchConsistency.printVariables(puzzle);
     GeneralArchConsistency.Result res = GeneralArchConsistency.domainFilter(puzzle);
