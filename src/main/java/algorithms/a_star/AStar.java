@@ -108,6 +108,8 @@ public class AStar implements Runnable {
           opened.add(succsessor);
         }
 
+
+
         // else if child has previously been generated, see if it is better
         else if (succsessor.hasBetter(current)) {
           attachAndEvaluate(succsessor, current);

@@ -1,5 +1,7 @@
 package puzzles.flow;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,6 +96,17 @@ public class FlowTile extends ColorTile {
 
   public String getInputNeighborId() {
     return NEIGHBOR + INPUT + getId();
+  }
+
+  public List<FlowTile> getSameColorNeighbor() {
+    Collection<FlowTile> neighbors = getManhattanNeighbors().values();
+    List<FlowTile> sameColor = new ArrayList<>();
+    for (FlowTile neighbor : neighbors) {
+      if (neighbor.getColor().equals(getColor())) {
+        sameColor.add(neighbor);
+      }
+    }
+    return sameColor;
   }
 
   public enum State {

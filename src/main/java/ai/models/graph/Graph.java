@@ -1,6 +1,5 @@
 package ai.models.graph;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -56,7 +55,7 @@ public class Graph<N extends Node> extends AIAdapter implements Iterable<N> {
 
   @Override
   public boolean isLegalPosition(Node tile) {
-    throw new NotImplementedException();
+    throw new IllegalArgumentException();
   }
 
   @Override

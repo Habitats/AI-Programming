@@ -69,7 +69,7 @@ public class AStarCspNode extends AStarNode {
     } else if (res == GeneralArchConsistency.Result.EMPTY_DOMAIN) {
       setHeuristic(Integer.MAX_VALUE);
     } else {
-      int domainDelta = puzzle.getDomainSize() - puzzle.getVariables().size();
+      int domainDelta = puzzle.getHeuristic();
       if (domainDelta < 0) {
         setHeuristic(Integer.MAX_VALUE);
       } else {

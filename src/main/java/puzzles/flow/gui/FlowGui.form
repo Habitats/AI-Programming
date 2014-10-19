@@ -71,6 +71,8 @@
                 <item value="flowspec-4"/>
                 <item value="flowspec-5"/>
                 <item value="flowspec-6"/>
+                <item value="sparse"/>
+                <item value="sparse2"/>
               </model>
             </properties>
           </component>

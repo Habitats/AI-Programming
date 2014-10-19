@@ -1,7 +1,5 @@
 package puzzles.sudoku;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -162,7 +160,7 @@ public class Sudoku implements CspPuzzle {
     board = board.replaceAll("\\s", "");
     for (int i = 0; i < getVariables().size(); i++) {
       if (!String.valueOf(board.charAt(i)).equals("0")) {
-        throw new NotImplementedException();
+        throw new IllegalArgumentException();
       }
     }
   }
@@ -216,7 +214,7 @@ public class Sudoku implements CspPuzzle {
 
   private void printSudoku() {
     String row = "";
-    throw new NotImplementedException();
+    throw new IllegalArgumentException();
 
   }
 }

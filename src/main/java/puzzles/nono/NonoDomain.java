@@ -1,97 +1,78 @@
 package puzzles.nono;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 import algorithms.csp.canonical_utils.Domain;
+
 
 /**
  * Created by Patrick on 14.10.2014.
  */
-public class NonoDomain extends Domain<NonoLineValues> {
+public class NonoDomain extends Domain<ChunkVals> {
 
   public NonoDomain(List<Integer> specs, int range) {
     super();
-    int minRange = getMinimumRequiredRange(specs);
-    // if the chunk is as big as the range, only one chucnk is required in the domain
-    if (range == minRange) {
-      int[] chunkVals = new int[range];
-      int index = 0;
-      for (Integer i : specs) {
-        for (int v = 0; v < i; v++) {
-          chunkVals[index++] = 1;
-        }
-        // add the space between the chunks
-        if (index < chunkVals.length) {
-          chunkVals[index++] = 0;
-        }
+    int index = 0;
+    Queue<Chunk> chunkQueue = new PriorityQueue<>();
+    for (Integer length : specs) {
+      Chunk chunk = new Chunk(length, index);
+      chunkQueue.add(chunk);
+    }
+
+    ChunkVals chunkVals = new ChunkVals(range);
+    SubDomain domain = new SubDomain(range);
+    placeSubChunk(chunkQueue, domain, chunkVals, 0, range);
+  }
+
+  private void placeSubChunk(Queue<Chunk> chunkQueue, SubDomain domain, ChunkVals chunkVals, int firstStartPosition,
+                             int range) {
+    Chunk chunk = chunkQueue.poll();
+    int lastStartPosition = range - getMinimumRequiredRange(chunkQueue, chunk);
+    for (int startPosition = firstStartPosition; startPosition <= lastStartPosition; startPosition++) {
+      placeChunk(chunk.length, startPosition, chunkVals);
+      if (chunkQueue.isEmpty()) {
+        addChunk(chunkVals);
+//        chunkVals.clear();
+      } else {
+        placeSubChunk(copy(chunkQueue), new SubDomain(domain.length - (startPosition + chunk.length + 1)),
+                      chunkVals.copy(), startPosition + chunk.length + 1, range);
       }
-      getArgs().add(new NonoLineValues(chunkVals));
-    } else {
-      addChunkPermutations(specs, range);
+      clearChunks(chunk.length, startPosition, chunkVals);
     }
   }
 
-  private void addChunkPermutations(List<Integer> specs, int range) {
-    // the minimum required range for the entire line
-    int minRange = getMinimumRequiredRange(specs);
-
-    // the indexes the first chunk can start
-    int delta = range - minRange;
-
-    // the actual values of the line (0 and 1)
-
-    // for each start index
-    for (int start = 0; start < delta; start++) {
-      int[] chunkVals = new int[range];
-
-      // which chunk to place
-      int next = 0;
-
-      // the length of the chunk to place
-      int length = specs.get(next);
-
-      // place the chunk in the chunkvals
-      addChunk(start, length, chunkVals);
-
-      // place the remaining chunks
-      int startPositionOfNext = start + length + 1;
-
-      addCombinations(startPositionOfNext, ++next, specs, chunkVals, range, delta - start);
-    }
-  }
-
-  private void addCombinations(int startPositionOfNext, int indexOfNext, List<Integer> specs, int[] chunkVals,
-                               int range, int spaceLeft) {
-    int lengthNext;
-    // if this is the last chunk in spec, do something lol
-    if (indexOfNext < specs.size()) {
-      lengthNext = specs.get(indexOfNext);
-    } else {
-      getArgs().add(new NonoLineValues(chunkVals));
-      return;
-    }
-    if (spaceLeft == 0) {
-      return;
-    }
-    if (startPositionOfNext + lengthNext - 1 == range) {
-      addChunk(startPositionOfNext, lengthNext, chunkVals);
-      getArgs().add(new NonoLineValues(chunkVals));
-    } else {
-      for (int start = startPositionOfNext; start < startPositionOfNext + spaceLeft; start++) {
-        if (start + lengthNext < chunkVals.length) {
-          addChunk(start, lengthNext, chunkVals);
-          startPositionOfNext = start + lengthNext + 1;
-          int[] newChunkVals = Arrays.copyOf(chunkVals, chunkVals.length);
-          addCombinations(startPositionOfNext, ++indexOfNext, specs, newChunkVals, range, spaceLeft - start);
-        }
-      }
-    }
-  }
-
-  private void addChunk(int start, int length, int[] chunkVals) {
+  private void clearChunks(int length, int start, ChunkVals chunkVals) {
     for (int i = start; i < start + length; i++) {
-      chunkVals[i] = 1;
+      chunkVals.off(i);
+    }
+  }
+
+  private int getMinimumRequiredRange(Queue<Chunk> chunkQueue, Chunk chunk) {
+    int min = chunk.length + 1;
+    for (Chunk o : chunkQueue) {
+      min += o.length + 1;
+    }
+    min--;
+    return min;
+  }
+
+  private Queue<Chunk> copy(Queue<Chunk> chunkQueue) {
+    Queue<Chunk> copy = new PriorityQueue<>();
+    for (Chunk chunk : chunkQueue) {
+      copy.add(new Chunk(chunk.length, chunk.index));
+    }
+    return copy;
+  }
+
+  private void addChunk(ChunkVals chunkVals) {
+    getArgs().add(chunkVals.copy());
+  }
+
+  private void placeChunk(int length, int start, ChunkVals chunkVals) {
+    for (int i = start; i < start + length; i++) {
+      chunkVals.on(i);
     }
   }
 
@@ -103,5 +84,41 @@ public class NonoDomain extends Domain<NonoLineValues> {
     return minimumRequiredRange;
   }
 
+  public static NonoDomain testDomain1() {
+//    spe
+//    NonoDomain domain = new NonoDomain();
+    return null;
+  }
+
+
+  private class Chunk implements Comparable<Chunk> {
+
+    public final int length;
+    private final int index;
+
+    public Chunk(Integer length, int index) {
+      this.length = length;
+      this.index = index;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(length);
+    }
+
+    @Override
+    public int compareTo(Chunk o) {
+      return o.index - length;
+    }
+  }
+
+  private class SubDomain {
+
+    public final int length;
+
+    public SubDomain(int length) {
+      this.length = length;
+    }
+  }
 
 }

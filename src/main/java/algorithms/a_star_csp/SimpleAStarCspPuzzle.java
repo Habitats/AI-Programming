@@ -1,5 +1,6 @@
 package algorithms.a_star_csp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ai.models.Node;
@@ -44,10 +45,12 @@ public abstract class SimpleAStarCspPuzzle<T extends Node<T> & VariableListener>
     return getMinimalDomain(getVariables());
   }
 
-  private Variable getMinimalDomain(VariableList variables) {
+  protected Variable getMinimalDomain(VariableList variables) {
     int min = Integer.MAX_VALUE;
     Variable minVar = null;
-    for (Variable var : variables) {
+    List<Variable<Integer>> vars = variables.getAll();
+//    Collections.shuffle(vars);
+    for (Variable var : vars) {
       if (var.getDomain().getSize() == 1) {
         continue;
       }
@@ -56,7 +59,23 @@ public abstract class SimpleAStarCspPuzzle<T extends Node<T> & VariableListener>
         minVar = var;
       }
     }
-    return minVar;
+    List<Variable> minVars = new ArrayList<>();
+    for (Variable var : vars) {
+      if (var.getDomain().getSize() == min) {
+        minVars.add(minVar);
+      }
+    }
+    int index = (int) (minVars.size() * Math.random());
+    return minVars.get(index);
+  }
+
+  /**
+   * Solution should return 0, and the worst possible state should return a high number
+   * @return
+   */
+  @Override
+  public int getHeuristic() {
+    return getDomainSize() - getVariables().size();
   }
 
   @Override
@@ -95,7 +114,6 @@ public abstract class SimpleAStarCspPuzzle<T extends Node<T> & VariableListener>
   @Override
   public Variable getSuccessor() {
     Variable successor;
-//    successor = getMinimalDomain(getMostConstrained());
     successor = getMinimalDomain();
     return successor;
   }

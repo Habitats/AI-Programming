@@ -13,7 +13,7 @@ import puzzles.flow.FlowTile;
  */
 public class ColorTile extends Node<Node> implements VariableListener<Integer> {
 
-  protected static final Color EMPTY = Color.WHITE;
+  public static final Color EMPTY = Color.WHITE;
   private static final String TAG = ColorTile.class.getSimpleName();
 
   // final fields
