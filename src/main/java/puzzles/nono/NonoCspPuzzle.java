@@ -46,6 +46,19 @@ public class NonoCspPuzzle extends SimpleAStarCspPuzzle {
     return variables;
   }
 
+  public void pruneVariable(Variable<ChunkVals> var) {
+    Variable<ChunkVals> twin = getTwin(var);
+    ChunkVals certainValues = ((NonoDomain) twin.getDomain()).getCertainValues();
+    NonoDomain domainToPrune = (NonoDomain) var.getDomain();
+    domainToPrune.pruneDomain(certainValues);
+  }
+
+  private Variable<ChunkVals> getTwin(Variable<ChunkVals> var) {
+    String id = var.getId();
+    String twinId = (id.startsWith("x") ? "y" : "x") + id.substring(1);
+    return variables.getVariable(twinId);
+  }
+
   private List<List<Integer>> getRowSpecs() {
     Collection<NonoTile> items = getAstarCsp().getAdapter().getItems();
     return items.iterator().next().getRowSpecs();

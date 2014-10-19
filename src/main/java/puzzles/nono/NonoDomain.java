@@ -1,5 +1,6 @@
 package puzzles.nono;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -12,8 +13,11 @@ import algorithms.csp.canonical_utils.Domain;
  */
 public class NonoDomain extends Domain<ChunkVals> {
 
+  private final int range;
+
   public NonoDomain(List<Integer> specs, int range) {
     super();
+    this.range = range;
     int index = 0;
     Queue<Chunk> chunkQueue = new PriorityQueue<>();
     for (Integer length : specs) {
@@ -70,6 +74,23 @@ public class NonoDomain extends Domain<ChunkVals> {
     getArgs().add(chunkVals.copy());
   }
 
+  public ChunkVals getCertainValues() {
+    ChunkVals fullVals = new ChunkVals(range);
+    for (int i = 0; i < range; i++) {
+      fullVals.on(i);
+    }
+
+    for (ChunkVals chunk : getArgs()) {
+      for (int i = 0; i < chunk.values.size(); i++) {
+        if (chunk.values.get(i) == 0) {
+          fullVals.off(i);
+        }
+      }
+    }
+    return fullVals;
+  }
+
+
   private void placeChunk(int length, int start, ChunkVals chunkVals) {
     for (int i = start; i < start + length; i++) {
       chunkVals.on(i);
@@ -90,6 +111,24 @@ public class NonoDomain extends Domain<ChunkVals> {
     return null;
   }
 
+  public void pruneDomain(ChunkVals certainValues) {
+    for (int i = 0; i < certainValues.values.size(); i++) {
+
+      Iterator<ChunkVals> iter = getArgs().iterator();
+      while (iter.hasNext()) {
+        ChunkVals chunk = iter.next();
+        for (int valIndex = 0; valIndex < chunk.values.size(); valIndex++) {
+          if (certainValues.values.get(valIndex) == 1) {
+            if (chunk.values.get(valIndex) != 1) {
+              iter.remove();
+              break;
+            }
+
+          }
+        }
+      }
+    }
+  }
 
   private class Chunk implements Comparable<Chunk> {
 

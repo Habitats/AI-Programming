@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import ai.AIMain;
+import ai.Log;
 import ai.gui.AIGui;
 import ai.models.AIAdapter;
 import ai.models.grid.Board;
@@ -12,6 +13,7 @@ import algorithms.a_star_csp.AStarCsp;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.CspButtonListener;
 import algorithms.csp.canonical_utils.Constraint;
+import algorithms.csp.canonical_utils.Variable;
 import puzzles.nono.gui.NonoGui;
 
 /**
@@ -73,6 +75,15 @@ public class Nono extends AStarCsp<NonoTile> implements CspButtonListener, Runna
     }
 
     return board;
+  }
+
+  public void test() {
+    NonoCspPuzzle puzzle = (NonoCspPuzzle) getSamplePuzzle(0);
+    for (Variable var : puzzle.getVariables()) {
+      Log.v(TAG, "Domain Size: " + var.getDomain().getSize() + " - " + var);
+      puzzle.pruneVariable(var);
+      Log.v(TAG, "Domain Size: " + var.getDomain().getSize() + " - " + var);
+    }
   }
 
   @Override

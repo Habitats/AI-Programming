@@ -26,8 +26,15 @@ public class AIMain {
   public static void main(String[] args) {
 //    graphColoring();
 //    shortestPath();
-    loadGui();
+//    loadGui();
 //    flowTest();
+    nonoTest();
+  }
+
+  private static void nonoTest() {
+    Nono nono = new Nono();
+    nono.run();
+    nono.test();
   }
 
   private static void loadGui() {
