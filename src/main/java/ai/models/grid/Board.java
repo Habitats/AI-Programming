@@ -25,10 +25,10 @@ public class Board<T extends ColorTile & VariableListener<Integer>> extends AIAd
     setWidth(width);
     setHeight(height);
     tiles = new ArrayList<>();
-    for (int h = 0; h < height; h++) {
-      List<T> column = new ArrayList<>(width);
-      for (int w = 0; w < width; w++) {
-        column.add(w, null);
+    for (int x = 0; x < width; x++) {
+      List<T> column = new ArrayList<>(height);
+      for (int y = 0; y < height; y++) {
+        column.add(y, null);
       }
       tiles.add(column);
     }
