@@ -15,7 +15,7 @@ public class Variable<T> implements Comparable<Variable<T>>, VariableListener<T>
   private Domain<T> domain;
   private T value;
   private boolean hasValue;
-  private VariableListener listener;
+  private List<VariableListener> listeners;
   private boolean assumption = false;
   private List<Constraint<T>> constraintsContainingVariable;
   private Set<String> variableIDsInConstraintsContainingVariable;
@@ -23,6 +23,7 @@ public class Variable<T> implements Comparable<Variable<T>>, VariableListener<T>
   public Variable(String id, Domain<T> domain) {
     this.id = id;
     this.domain = domain;
+    listeners = new ArrayList<>();
   }
 
   public Set<String> getVariableIDsInConstraintsContainingVariable() {
@@ -55,11 +56,27 @@ public class Variable<T> implements Comparable<Variable<T>>, VariableListener<T>
   public Variable<T> setValue(T value) {
     this.value = value;
     hasValue = true;
-    if (listener != null) {
-      getListener().onValueChanged(value, domain.getSize());
-      getListener().onDomainChanged(domain);
-    }
+    fireValueChanged(value);
+    fireDomainChanged();
     return this;
+  }
+
+  private void fireDomainChanged() {
+    for (VariableListener listener : listeners) {
+      listener.onDomainChanged(domain);
+    }
+  }
+
+  private void fireValueChanged(T value) {
+    for (VariableListener listener : listeners) {
+      listener.onValueChanged(value, domain.getSize());
+    }
+  }
+
+  private void fireAssumptionMade(T value) {
+    for (VariableListener listener : listeners) {
+      listener.onAssumptionMade(value);
+    }
   }
 
   public Variable<T> setAssumption(T value) {
@@ -70,22 +87,13 @@ public class Variable<T> implements Comparable<Variable<T>>, VariableListener<T>
       T val = iterator.next();
       if ((val) != value) {
         iterator.remove();
-        if (listener != null) {
-          listener.onDomainChanged(domain);
-        }
+        fireDomainChanged();
       }
     }
 
-    if (listener != null) {
-      getListener().onAssumptionMade(value);
-    }
+    fireAssumptionMade(value);
     return this;
   }
-
-  public VariableListener<T> getListener() {
-    return listener;
-  }
-
 
   public T getValue() {
     return value;
@@ -116,18 +124,18 @@ public class Variable<T> implements Comparable<Variable<T>>, VariableListener<T>
 
   @Override
   public int compareTo(Variable<T> o) {
-    return  String.CASE_INSENSITIVE_ORDER.compare(getId(), o.getId());
+    return String.CASE_INSENSITIVE_ORDER.compare(getId(), o.getId());
   }
 
-  public void setListener(VariableListener listener) {
-    this.listener = listener;
+  public void addListener(VariableListener listener) {
+    this.listeners.add(listener);
   }
 
   public Variable<T> copy() {
     Variable<T> var = new Variable(id, domain.copy());
     var.value = value;
     var.hasValue = hasValue;
-    var.listener = listener;
+    var.listeners = listeners;
     var.constraintsContainingVariable = constraintsContainingVariable;
     var.variableIDsInConstraintsContainingVariable = variableIDsInConstraintsContainingVariable;
     return var;
@@ -140,7 +148,7 @@ public class Variable<T> implements Comparable<Variable<T>>, VariableListener<T>
       return (!id.equals(other.id))  //
              && (!domain.equals(other.domain))  //
              && (hasValue != other.hasValue) //
-             && (listener != other.listener)  //
+             && (listeners != other.listeners)  //
              && (value != other.value)  //
           ;
     }
