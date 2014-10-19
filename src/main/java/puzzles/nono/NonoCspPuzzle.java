@@ -3,6 +3,9 @@ package puzzles.nono;
 import java.util.Collection;
 import java.util.List;
 
+import ai.Log;
+import ai.models.grid.Board;
+import ai.models.grid.ColorTile;
 import algorithms.a_star_csp.AStarCsp;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.a_star_csp.SimpleAStarCspPuzzle;
@@ -14,6 +17,8 @@ import algorithms.csp.canonical_utils.VariableList;
  */
 public class NonoCspPuzzle extends SimpleAStarCspPuzzle {
 
+
+  private static final String TAG = NonoCspPuzzle.class.getSimpleName();
 
   public NonoCspPuzzle(AStarCsp<NonoTile> astarCsp) {
     super(astarCsp);
@@ -43,12 +48,23 @@ public class NonoCspPuzzle extends SimpleAStarCspPuzzle {
       variables.add(var);
     }
 
+    x = 0;
+    Variable<NonoDomain> next;
+    Board<ColorTile> board = (Board<ColorTile>) getAstarCsp().getAdapter();
+    while ((next = getVariable("x" + x)) != null) {
+      for (y = 0; y < next.getDomain().getSize(); y++) {
+        ColorTile tile = board.get(x, y);
+        next.addListener(tile);
+      }
+    }
+
     return variables;
   }
 
   public void pruneVariable(Variable<ChunkVals> var) {
+    ChunkVals certainValues = ((NonoDomain) var.getDomain()).getCertainValues();
+    Log.v(TAG, certainValues);
     Variable<ChunkVals> twin = getTwin(var);
-    ChunkVals certainValues = ((NonoDomain) twin.getDomain()).getCertainValues();
     NonoDomain domainToPrune = (NonoDomain) var.getDomain();
     domainToPrune.pruneDomain(certainValues);
   }

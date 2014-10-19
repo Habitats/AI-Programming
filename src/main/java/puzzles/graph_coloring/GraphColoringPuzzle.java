@@ -73,7 +73,7 @@ public class GraphColoringPuzzle extends SimpleAStarCspPuzzle {
         var.setAssumption(node.getInitialValue());
       }
       variables.put(var);
-      var.setListener(node);
+      var.addListener(node);
     }
     return variables;
   }
