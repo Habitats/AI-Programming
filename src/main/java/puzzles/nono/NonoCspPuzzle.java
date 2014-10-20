@@ -1,11 +1,10 @@
 package puzzles.nono;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import ai.Log;
-import ai.models.grid.Board;
-import ai.models.grid.ColorTile;
 import algorithms.a_star_csp.AStarCsp;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.a_star_csp.SimpleAStarCspPuzzle;
@@ -48,25 +47,40 @@ public class NonoCspPuzzle extends SimpleAStarCspPuzzle {
       variables.add(var);
     }
 
-    x = 0;
-    Variable<NonoDomain> next;
-    Board<ColorTile> board = (Board<ColorTile>) getAstarCsp().getAdapter();
-    while ((next = getVariable("x" + x)) != null) {
-      for (y = 0; y < next.getDomain().getSize(); y++) {
-        ColorTile tile = board.get(x, y);
-        next.addListener(tile);
-      }
-    }
-
     return variables;
   }
 
-  public void pruneVariable(Variable<ChunkVals> var) {
+  public void pruneVariable(Variable<ChunkVals> var, String incomingAxis, String twinAxis) {
     ChunkVals certainValues = ((NonoDomain) var.getDomain()).getCertainValues();
     Log.v(TAG, certainValues);
-    Variable<ChunkVals> twin = getTwin(var);
-    NonoDomain domainToPrune = (NonoDomain) var.getDomain();
-    domainToPrune.pruneDomain(certainValues);
+    // 0 1 1 1 0 0
+    // 0 1 0 1 0 0
+    // 0 1 0 1 0 0
+    // 0 1 1 1 0 0
+    // 0 0 0 1 0 0
+
+    if (var.getId().startsWith(incomingAxis)) {
+      int y = 0;
+      int x = Integer.parseInt(var.getId().substring(1));
+      for (int certainIndex = 0; certainIndex < certainValues.values.size(); certainIndex++) {
+        int certainValue = certainValues.values.get(certainIndex);
+        if (certainValue == 1) {
+          Variable<ChunkVals> twin = getVariable(twinAxis + certainIndex);
+          NonoDomain domain = (NonoDomain) twin.getDomain();
+          Iterator<ChunkVals> iterator = domain.iterator();
+          while (iterator.hasNext()) {
+            ChunkVals vals = iterator.next();
+            if (vals.values.get(certainIndex) != 1) {
+              iterator.remove();
+            }
+          }
+        }
+      }
+    }
+
+//    Variable<ChunkVals> twin = getTwin(var);
+//    NonoDomain domainToPrune = (NonoDomain) var.getDomain();
+//    domainToPrune.pruneDomain(certainValues);
   }
 
   private Variable<ChunkVals> getTwin(Variable<ChunkVals> var) {

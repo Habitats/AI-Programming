@@ -11,6 +11,7 @@ import ai.models.grid.Board;
 import algorithms.a_star_csp.AStarCsp;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.CspButtonListener;
+import algorithms.csp.GeneralArchConsistency;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Variable;
 import puzzles.nono.gui.NonoGui;
@@ -76,15 +77,34 @@ public class Nono extends AStarCsp<NonoTile> implements CspButtonListener, Runna
     return board;
   }
 
-  public void test() {
-    NonoCspPuzzle puzzle = (NonoCspPuzzle) getSamplePuzzle(0);
+  public void test(int i) {
+    NonoCspPuzzle puzzle = (NonoCspPuzzle) getSamplePuzzle(i);
+    GeneralArchConsistency.printVariables(puzzle);
     for (Variable var : puzzle.getVariables()) {
-//      Log.v(TAG, "Domain Size: " + var.getDomain().getSize() + " - " + var);
-      puzzle.pruneVariable(var);
+      String incomingAxis = String.valueOf(var.getId().charAt(0));
+      String twinAxis = incomingAxis.equals("x") ? "y" : "x";
+      puzzle.pruneVariable(var, incomingAxis, twinAxis);
       puzzle.visualize();
-//      Log.v(TAG, "Domain Size: " + var.getDomain().getSize() + " - " + var);
     }
+    GeneralArchConsistency.printVariables(puzzle);
 
+    visualize(puzzle);
+  }
+
+  private void visualize(NonoCspPuzzle puzzle) {
+    int x = 0;
+    int y;
+    Variable<ChunkVals> next;
+    Board<NonoTile> board = (Board<NonoTile>) getAdapter();
+    while ((next = puzzle.getVariable("x" + x)) != null) {
+      NonoDomain domain = (NonoDomain) next.getDomain();
+      ChunkVals chunkVals = domain.getCertainValues();
+      for (y = 0; y < chunkVals.values.size(); y++) {
+        board.get(x, y).setColor(chunkVals.values.get(y));
+      }
+      x++;
+    }
+    board.notifyDataChanged();
   }
 
   @Override
@@ -99,6 +119,12 @@ public class Nono extends AStarCsp<NonoTile> implements CspButtonListener, Runna
   public int getDomainSize() {
     // do nothing
     return -1;
+  }
+
+  @Override
+  public void sampleSelected(int i) {
+    super.sampleSelected(i);
+    test(i);
   }
 
   @Override

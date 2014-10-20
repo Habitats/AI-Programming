@@ -116,19 +116,19 @@ public class GeneralArchConsistency {
 
   public static void printVariables(CspPuzzle puzzle) {
 
-    List sorted = new ArrayList<>(puzzle.getVariables().copy().getAll());
+    List<Variable> sorted = new ArrayList<>(puzzle.getVariables().copy().getAll());
 
-    Collections.sort(sorted, new Comparator<Object>() {
+    Collections.sort(sorted, new Comparator<Variable>() {
       @Override
-      public int compare(Object o1, Object o2) {
-        String s1 = ((Variable) o1).getId();
-        String s2 = ((Variable) o2).getId();
+      public int compare(Variable o1, Variable o2) {
+        String s1 = o1.getId();
+        String s2 = o2.getId();
         return String.CASE_INSENSITIVE_ORDER.compare(s1, s2);
       }
     });
 
-    for (Object variable : sorted) {
-      Log.v(TAG, variable);
+    for (Variable variable : sorted) {
+      Log.v(TAG, variable.getId() + " - DS: " + variable.getDomain().getSize() + " " +  variable);
     }
   }
 
