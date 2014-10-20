@@ -7,8 +7,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 
 import ai.Log;
+import algorithms.csp.CspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
 import algorithms.csp.canonical_utils.Variable;
 import algorithms.csp.canonical_utils.VariableList;
@@ -109,6 +112,13 @@ public class FlowConstraint extends Constraint<Integer> {
 
   public boolean contains(Variable x) {
     return contains(x);
+  }
+
+  @Override
+  public void addVariablesInConstraintsContainingCurrentVariable(CspPuzzle puzzle, Queue<Variable> queue,
+                                                                 Set<String> queueHash, Variable var,
+                                                                 Constraint constraint) {
+
   }
 
   @Override

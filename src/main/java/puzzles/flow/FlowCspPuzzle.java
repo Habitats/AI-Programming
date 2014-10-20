@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ai.models.grid.ColorTile;
 import algorithms.a_star_csp.AStarCsp;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.a_star_csp.SimpleAStarCspPuzzle;
@@ -96,14 +95,17 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
   @Override
   protected Variable getMinimalDomain(VariableList variables) {
     List<Variable<Integer>> vars = variables.getAll();
+
     // sometimes, return something random
-    if (Math.random() > 0.5) {
+    if (Math.random() > 0.9) {
       Variable<Integer> randomVar = vars.get((int) ((vars.size() - 1) * Math.random()));
       if (randomVar.getDomain().getSize() > 1) {
         return randomVar;
       }
-    } int min = Integer.MAX_VALUE;
+    }
+    int min = Integer.MAX_VALUE;
     Variable minVar = vars.get(0);
+
 //    Collections.shuffle(vars);
     for (Variable var : vars) {
 
@@ -131,25 +133,25 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
 
   @Override
   public int getHeuristic() {
-    Collection<FlowTile> tiles = getAstarCsp().getAdapter().getItems();
     int penalty = 0;
-    for (FlowTile tile : tiles) {
-      if (!tile.getColor().equals(ColorTile.EMPTY)) {
-        int goal;
-        if (tile.getColorState() == FlowTile.State.END || tile.getColorState() == FlowTile.State.START) {
-          goal = 1;
-        } else {
-          goal = 2;
-        }
-        List<FlowTile> sameColorNeighbors = tile.getSameColorNeighbor();
-        // penalize if too many neighbors
-        if (sameColorNeighbors.size() != goal) {
-          penalty += 30;
-        }
-      } else {
-//        penalty += 10;
-      }
-    }
+//    Collection<FlowTile> tiles = getAstarCsp().getAdapter().getItems();
+//    for (FlowTile tile : tiles) {
+//      if (!tile.getColor().equals(ColorTile.EMPTY)) {
+//        int goal;
+//        if (tile.getColorState() == FlowTile.State.END || tile.getColorState() == FlowTile.State.START) {
+//          goal = 1;
+//        } else {
+//          goal = 2;
+//        }
+//        List<FlowTile> sameColorNeighbors = tile.getSameColorNeighbor();
+//        // penalize if too many neighbors
+//        if (sameColorNeighbors.size() != goal) {
+////          penalty += 30;
+//        }
+//      } else {
+////        penalty += 10;
+//      }
+//    }
     int domainSize = getDomainSize();
     int bestDomainSize = getVariables().size();
     if (domainSize == bestDomainSize) {

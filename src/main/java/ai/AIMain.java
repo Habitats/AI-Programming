@@ -26,9 +26,9 @@ public class AIMain {
   public static void main(String[] args) {
 //    graphColoring();
 //    shortestPath();
-//    loadGui();
+    loadGui();
 //    flowTest();
-    nonoTest();
+//    nonoTest();
   }
 
   private static void nonoTest() {

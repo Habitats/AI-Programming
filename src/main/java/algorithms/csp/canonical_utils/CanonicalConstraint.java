@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Queue;
+import java.util.Set;
+
+import algorithms.csp.CspPuzzle;
 
 /**
  * Created by anon on 10.10.2014.
@@ -56,6 +60,27 @@ public class CanonicalConstraint extends Constraint<Integer> {
 
   public boolean contains(Variable x) {
     return function.contains(x);
+  }
+
+  @Override
+  public void addVariablesInConstraintsContainingCurrentVariable(CspPuzzle puzzle, Queue<Variable> queue,
+                                                                 Set<String> queueHash, Variable var,
+                                                                 Constraint constraint) {
+    List<Constraint<Integer>> constraintsContainingVariable = var.getConstraintsContainingVariable();
+    for (Constraint<Integer> constraintContainingVariable : constraintsContainingVariable) {
+      if (constraintContainingVariable.equals(constraint)) {
+        continue;
+      }
+      for (Variable variableInConstraint : constraintContainingVariable) {
+        if (variableInConstraint.getId().equals(var.getId())) {
+          continue;
+        }
+        if (!queueHash.contains(variableInConstraint.getId())) {
+          queue.add(puzzle.getVariable(variableInConstraint.getId()));
+          queueHash.add(variableInConstraint.getId());
+        }
+      }
+    }
   }
 
   @Override

@@ -95,7 +95,7 @@ public class GeneralArchConsistency {
         }
 
         if (revise(var, constraint, puzzle)) {
-          addVariablesInConstraintsContainingCurrentVariable(puzzle, queue, queueHash, var, constraint);
+          constraint.addVariablesInConstraintsContainingCurrentVariable(puzzle, queue, queueHash, var, constraint);
 //          addVariablesInConstraintsContainingCurrentVariable2(puzzle, queue, queueHash, var);
         }
       }
@@ -128,39 +128,10 @@ public class GeneralArchConsistency {
     });
 
     for (Variable variable : sorted) {
-      Log.v(TAG, variable.getId() + " - DS: " + variable.getDomain().getSize() + " " +  variable);
+      Log.v(TAG, variable.getId() + " - DS: " + variable.getDomain().getSize() + " " + variable);
     }
   }
 
-  private static void addVariablesInConstraintsContainingCurrentVariable2(CspPuzzle puzzle, Queue<Variable> queue,
-                                                                          Set<String> queueHash,
-                                                                          Variable<Integer> var) {
-    for (String variableId : var.getVariableIDsInConstraintsContainingVariable()) {
-      if (!queueHash.contains(variableId)) {
-        queue.add(puzzle.getVariable(variableId));
-        queueHash.add(variableId);
-      }
-    }
-  }
-
-  private static void addVariablesInConstraintsContainingCurrentVariable(CspPuzzle puzzle, Queue<Variable> queue,
-                                                                         Set<String> queueHash, Variable<Integer> var,
-                                                                         Constraint constraint) {
-    for (Constraint<Integer> constraintContainingVariable : var.getConstraintsContainingVariable()) {
-      if (constraintContainingVariable.equals(constraint)) {
-        continue;
-      }
-      for (Variable variableInConstraint : constraintContainingVariable) {
-        if (variableInConstraint.getId().equals(var.getId())) {
-          continue;
-        }
-        if (!queueHash.contains(variableInConstraint.getId())) {
-          queue.add(puzzle.getVariable(variableInConstraint.getId()));
-          queueHash.add(variableInConstraint.getId());
-        }
-      }
-    }
-  }
 
   /**
    * Remove all values from focalVariables' domain if no combination of non-focalVariables satisfy the constraint
