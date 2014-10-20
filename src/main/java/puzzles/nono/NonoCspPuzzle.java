@@ -62,7 +62,7 @@ public class NonoCspPuzzle extends SimpleAStarCspPuzzle {
     int varIndex = Integer.parseInt(var.getId().substring(1));
     for (int certainIndex = 0; certainIndex < certainValues.values.size(); certainIndex++) {
       int certainValue = certainValues.values.get(certainIndex);
-      if (certainValue == 0) {
+      if (certainValue == 3) {
         continue;
       }
       Variable<ChunkVals> twin = getVariable(twinAxis + certainIndex);
@@ -70,22 +70,13 @@ public class NonoCspPuzzle extends SimpleAStarCspPuzzle {
       Iterator<ChunkVals> iterator = domain.iterator();
       while (iterator.hasNext()) {
         ChunkVals vals = iterator.next();
-        if (vals.values.get(varIndex) != 1) {
+        if (vals.values.get(varIndex) != certainValue) {
           iterator.remove();
         }
       }
     }
-
-//    Variable<ChunkVals> twin = getTwin(var);
-//    NonoDomain domainToPrune = (NonoDomain) var.getDomain();
-//    domainToPrune.pruneDomain(certainValues);
   }
 
-  private Variable<ChunkVals> getTwin(Variable<ChunkVals> var) {
-    String id = var.getId();
-    String twinId = (id.startsWith("x") ? "y" : "x") + id.substring(1);
-    return variables.getVariable(twinId);
-  }
 
   private List<List<Integer>> getRowSpecs() {
     Collection<NonoTile> items = getAstarCsp().getAdapter().getItems();

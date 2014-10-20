@@ -45,7 +45,7 @@ public class Nono extends AStarCsp<NonoTile> implements CspButtonListener, Runna
     List<String> inputList = Arrays.asList(input.split("\\n"));
     int width = Integer.parseInt(inputList.get(0).split("\\s+")[0]);
     int height = Integer.parseInt(inputList.get(0).split("\\s+")[1]);
-    int numberOfColors = 3;
+    int numberOfColors = 5;
 
     List<List<Integer>> rowSpecs = new ArrayList<>();
     List<List<Integer>> colSpecs = new ArrayList<>();
@@ -89,13 +89,39 @@ public class Nono extends AStarCsp<NonoTile> implements CspButtonListener, Runna
       puzzle.visualize();
     }
     GeneralArchConsistency.printVariables(puzzle);
-//    for (Variable var : puzzle.getVariables()) {
-//      String incomingAxis = String.valueOf(var.getId().charAt(0));
-//      String twinAxis = incomingAxis.equals("x") ? "y" : "x";
-//      puzzle.pruneVariable(var, incomingAxis, twinAxis);
-//      puzzle.visualize();
-//    }
-//    GeneralArchConsistency.printVariables(puzzle);
+    for (Variable var : puzzle.getVariables()) {
+      String incomingAxis = String.valueOf(var.getId().charAt(0));
+      String twinAxis = incomingAxis.equals("x") ? "y" : "x";
+      puzzle.pruneVariable(var, incomingAxis, twinAxis);
+      puzzle.visualize();
+    }
+    for (Variable var : puzzle.getVariables()) {
+      String incomingAxis = String.valueOf(var.getId().charAt(0));
+      String twinAxis = incomingAxis.equals("x") ? "y" : "x";
+      puzzle.pruneVariable(var, incomingAxis, twinAxis);
+      puzzle.visualize();
+    }
+    GeneralArchConsistency.printVariables(puzzle);
+    for (Variable var : puzzle.getVariables()) {
+      String incomingAxis = String.valueOf(var.getId().charAt(0));
+      String twinAxis = incomingAxis.equals("x") ? "y" : "x";
+      puzzle.pruneVariable(var, incomingAxis, twinAxis);
+      puzzle.visualize();
+    }
+    for (Variable var : puzzle.getVariables()) {
+      String incomingAxis = String.valueOf(var.getId().charAt(0));
+      String twinAxis = incomingAxis.equals("x") ? "y" : "x";
+      puzzle.pruneVariable(var, incomingAxis, twinAxis);
+      puzzle.visualize();
+    }
+    GeneralArchConsistency.printVariables(puzzle);
+    for (Variable var : puzzle.getVariables()) {
+      String incomingAxis = String.valueOf(var.getId().charAt(0));
+      String twinAxis = incomingAxis.equals("x") ? "y" : "x";
+      puzzle.pruneVariable(var, incomingAxis, twinAxis);
+      puzzle.visualize();
+    }
+    GeneralArchConsistency.printVariables(puzzle);
 
     visualize(puzzle);
   }

@@ -86,31 +86,31 @@ public class NonoDomain extends Domain<ChunkVals> {
         }
       }
     }
-//
-//    ChunkVals certainEmptyVals = new ChunkVals(range);
-//    for (int i = 0; i < range; i++) {
-//      certainEmptyVals.on(i);
-//    }
-//
-//    for (ChunkVals chunk : getArgs()) {
-//      for (int i = 0; i < chunk.values.size(); i++) {
-//        if (chunk.values.get(i) == 1) {
-//          certainEmptyVals.off(i);
-//        }
-//      }
-//    }
-//
-//    ChunkVals certainVals = new ChunkVals(range);
-//    for (int i = 0; i < range; i++) {
-//      if (certainEmptyVals.values.get(i) == 1) {
-//        certainVals.off(i);
-//      } else if (certainFilledVals.values.get(i) == 1) {
-//        certainVals.on(i);
-//      } else {
-//        certainVals.dunno(i);
-//      }
-//    }
-    return certainFilledVals;
+
+    ChunkVals certainEmptyVals = new ChunkVals(range);
+    for (int i = 0; i < range; i++) {
+      certainEmptyVals.on(i);
+    }
+
+    for (ChunkVals chunk : getArgs()) {
+      for (int i = 0; i < chunk.values.size(); i++) {
+        if (chunk.values.get(i) == 1) {
+          certainEmptyVals.off(i);
+        }
+      }
+    }
+
+    ChunkVals certainVals = new ChunkVals(range);
+    for (int i = 0; i < range; i++) {
+      if (certainEmptyVals.values.get(i) == 1) {
+        certainVals.off(i);
+      } else if (certainFilledVals.values.get(i) == 1) {
+        certainVals.on(i);
+      } else {
+        certainVals.dunno(i);
+      }
+    }
+    return certainVals;
   }
 
 
