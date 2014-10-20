@@ -18,7 +18,7 @@ public class ChunkVals {
   }
 
   public void clear() {
-    Collections.fill(values,0);
+    Collections.fill(values, 0);
   }
 
   public puzzles.nono.ChunkVals copy() {
@@ -38,5 +38,9 @@ public class ChunkVals {
 
   public void off(int i) {
     values.set(i, 0);
+  }
+
+  public void dunno(int i) {
+    values.set(i, 3);
   }
 }

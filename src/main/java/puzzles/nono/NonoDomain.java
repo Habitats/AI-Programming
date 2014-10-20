@@ -1,6 +1,5 @@
 package puzzles.nono;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -21,7 +20,7 @@ public class NonoDomain extends Domain<ChunkVals> {
     int index = 0;
     Queue<Chunk> chunkQueue = new PriorityQueue<>();
     for (Integer length : specs) {
-      Chunk chunk = new Chunk(length, index);
+      Chunk chunk = new Chunk(length, index++);
       chunkQueue.add(chunk);
     }
 
@@ -75,19 +74,43 @@ public class NonoDomain extends Domain<ChunkVals> {
   }
 
   public ChunkVals getCertainValues() {
-    ChunkVals fullVals = new ChunkVals(range);
+    ChunkVals certainFilledVals = new ChunkVals(range);
     for (int i = 0; i < range; i++) {
-      fullVals.on(i);
+      certainFilledVals.on(i);
     }
 
     for (ChunkVals chunk : getArgs()) {
       for (int i = 0; i < chunk.values.size(); i++) {
         if (chunk.values.get(i) == 0) {
-          fullVals.off(i);
+          certainFilledVals.off(i);
         }
       }
     }
-    return fullVals;
+//
+//    ChunkVals certainEmptyVals = new ChunkVals(range);
+//    for (int i = 0; i < range; i++) {
+//      certainEmptyVals.on(i);
+//    }
+//
+//    for (ChunkVals chunk : getArgs()) {
+//      for (int i = 0; i < chunk.values.size(); i++) {
+//        if (chunk.values.get(i) == 1) {
+//          certainEmptyVals.off(i);
+//        }
+//      }
+//    }
+//
+//    ChunkVals certainVals = new ChunkVals(range);
+//    for (int i = 0; i < range; i++) {
+//      if (certainEmptyVals.values.get(i) == 1) {
+//        certainVals.off(i);
+//      } else if (certainFilledVals.values.get(i) == 1) {
+//        certainVals.on(i);
+//      } else {
+//        certainVals.dunno(i);
+//      }
+//    }
+    return certainFilledVals;
   }
 
 
@@ -103,31 +126,6 @@ public class NonoDomain extends Domain<ChunkVals> {
       minimumRequiredRange += chunk;
     }
     return minimumRequiredRange;
-  }
-
-  public static NonoDomain testDomain1() {
-//    spe
-//    NonoDomain domain = new NonoDomain();
-    return null;
-  }
-
-  public void pruneDomain(ChunkVals certainValues) {
-    for (int i = 0; i < certainValues.values.size(); i++) {
-
-      Iterator<ChunkVals> iter = getArgs().iterator();
-      while (iter.hasNext()) {
-        ChunkVals chunk = iter.next();
-        for (int valIndex = 0; valIndex < chunk.values.size(); valIndex++) {
-          if (certainValues.values.get(valIndex) == 1) {
-            if (chunk.values.get(valIndex) != 1) {
-              iter.remove();
-              break;
-            }
-
-          }
-        }
-      }
-    }
   }
 
   private class Chunk implements Comparable<Chunk> {
@@ -147,7 +145,7 @@ public class NonoDomain extends Domain<ChunkVals> {
 
     @Override
     public int compareTo(Chunk o) {
-      return o.index - length;
+      return index - o.index;
     }
   }
 

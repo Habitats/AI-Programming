@@ -34,7 +34,7 @@ public class AIMain {
   private static void nonoTest() {
     Nono nono = new Nono();
     nono.run();
-    nono.test(0);
+    nono.test(1);
   }
 
   private static void loadGui() {

@@ -17,6 +17,5 @@ public class NonoDomainTest {
     specs.add(2);
     NonoDomain domain = new NonoDomain(specs, 5);
 
-    NonoDomain realDomain =  NonoDomain.testDomain1();
   }
 }

@@ -2,6 +2,7 @@ package puzzles.nono;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import ai.AIMain;
@@ -49,7 +50,7 @@ public class Nono extends AStarCsp<NonoTile> implements CspButtonListener, Runna
     List<List<Integer>> rowSpecs = new ArrayList<>();
     List<List<Integer>> colSpecs = new ArrayList<>();
 
-    for (int i = width; i > 0; i--) {
+    for (int i = 1; i < height + 1; i++) {
       String[] s = inputList.get(i).split("\\s+");
       List<Integer> args = new ArrayList<>();
       for (String n : s) {
@@ -57,12 +58,13 @@ public class Nono extends AStarCsp<NonoTile> implements CspButtonListener, Runna
       }
       rowSpecs.add(args);
     }
-    for (int i = height + width; i > height; i--) {
+    for (int i = height + 1; i < height + width+1; i++) {
       String[] s = inputList.get(i).split("\\s+");
       List<Integer> args = new ArrayList<>();
       for (String n : s) {
         args.add(Integer.parseInt(n));
       }
+      Collections.reverse(args);
       colSpecs.add(args);
     }
 
@@ -87,6 +89,13 @@ public class Nono extends AStarCsp<NonoTile> implements CspButtonListener, Runna
       puzzle.visualize();
     }
     GeneralArchConsistency.printVariables(puzzle);
+//    for (Variable var : puzzle.getVariables()) {
+//      String incomingAxis = String.valueOf(var.getId().charAt(0));
+//      String twinAxis = incomingAxis.equals("x") ? "y" : "x";
+//      puzzle.pruneVariable(var, incomingAxis, twinAxis);
+//      puzzle.visualize();
+//    }
+//    GeneralArchConsistency.printVariables(puzzle);
 
     visualize(puzzle);
   }

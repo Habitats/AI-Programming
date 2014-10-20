@@ -38,12 +38,12 @@ public class NonoCspPuzzle extends SimpleAStarCspPuzzle {
     int x = 0, y = 0;
     for (List<Integer> row : rowSpecs) {
       String id = "y" + y++;
-      Variable<NonoDomain> var = new Variable(id, new NonoDomain(row, getAstarCsp().getAdapter().getHeight()));
+      Variable<NonoDomain> var = new Variable(id, new NonoDomain(row, getAstarCsp().getAdapter().getWidth()));
       variables.add(var);
     }
     for (List<Integer> col : colSpecs) {
       String id = "x" + x++;
-      Variable<NonoDomain> var = new Variable(id, new NonoDomain(col, getAstarCsp().getAdapter().getWidth()));
+      Variable<NonoDomain> var = new Variable(id, new NonoDomain(col, getAstarCsp().getAdapter().getHeight()));
       variables.add(var);
     }
 
@@ -59,21 +59,19 @@ public class NonoCspPuzzle extends SimpleAStarCspPuzzle {
     // 0 1 1 1 0 0
     // 0 0 0 1 0 0
 
-    if (var.getId().startsWith(incomingAxis)) {
-      int y = 0;
-      int x = Integer.parseInt(var.getId().substring(1));
-      for (int certainIndex = 0; certainIndex < certainValues.values.size(); certainIndex++) {
-        int certainValue = certainValues.values.get(certainIndex);
-        if (certainValue == 1) {
-          Variable<ChunkVals> twin = getVariable(twinAxis + certainIndex);
-          NonoDomain domain = (NonoDomain) twin.getDomain();
-          Iterator<ChunkVals> iterator = domain.iterator();
-          while (iterator.hasNext()) {
-            ChunkVals vals = iterator.next();
-            if (vals.values.get(certainIndex) != 1) {
-              iterator.remove();
-            }
-          }
+    int varIndex = Integer.parseInt(var.getId().substring(1));
+    for (int certainIndex = 0; certainIndex < certainValues.values.size(); certainIndex++) {
+      int certainValue = certainValues.values.get(certainIndex);
+      if (certainValue == 0) {
+        continue;
+      }
+      Variable<ChunkVals> twin = getVariable(twinAxis + certainIndex);
+      NonoDomain domain = (NonoDomain) twin.getDomain();
+      Iterator<ChunkVals> iterator = domain.iterator();
+      while (iterator.hasNext()) {
+        ChunkVals vals = iterator.next();
+        if (vals.values.get(varIndex) != 1) {
+          iterator.remove();
         }
       }
     }
