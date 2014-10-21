@@ -94,7 +94,7 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
 
   @Override
   protected Variable getMinimalDomain(VariableList variables) {
-    List<Variable<Integer>> vars = variables.getAll();
+    List<Variable> vars = variables.getAll();
 
     // sometimes, return something random
     if (Math.random() > 0.9) {

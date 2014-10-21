@@ -85,7 +85,7 @@ public class Variable<T> implements Comparable<Variable<T>>, VariableListener<T>
     Iterator<T> iterator = domain.iterator();
     while (iterator.hasNext()) {
       T val = iterator.next();
-      if ((val) != value) {
+      if (!(val).equals(value)) {
         iterator.remove();
         fireDomainChanged();
       }

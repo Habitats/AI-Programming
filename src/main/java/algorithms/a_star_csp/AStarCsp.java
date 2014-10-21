@@ -50,6 +50,7 @@ public abstract class AStarCsp<T extends Node & VariableListener> implements Csp
         Log.i(AStarCsp.TAG, "A* success! ");
         Log.i(AStarCsp.TAG, best);
         Log.i(AStarCsp.TAG, "Number of assumptions made: " + best.getPathLength());
+        best.visualize();
       }
 
       @Override
@@ -66,6 +67,7 @@ public abstract class AStarCsp<T extends Node & VariableListener> implements Csp
     if (GeneralArchConsistency.domainFilter(puzzle) == GeneralArchConsistency.Result.SOLUTION) {
       Log.i(AStarCsp.TAG, "Domain filtered to a solution without A*!");
       puzzle.visualize();
+      GeneralArchConsistency.domainFilter(puzzle);
     } else {
       Log.i(TAG, "No solution, running A*-CSP ...");
       astarCsp();

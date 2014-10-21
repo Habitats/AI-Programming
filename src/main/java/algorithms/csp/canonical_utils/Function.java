@@ -73,7 +73,7 @@ public class Function {
     return keys;
   }
 
-  public boolean call(List<Variable<Integer>> variables, Variable<Integer> focalVariable) {
+  public boolean call(List<Variable> variables, Variable<Integer> focalVariable) {
 
     // put all the right values in the valuesMap
     variablesMap.put(focalVariable.getId(), focalVariable.copy());

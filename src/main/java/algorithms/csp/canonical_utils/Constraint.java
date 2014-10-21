@@ -32,8 +32,6 @@ public abstract class Constraint<T> implements Iterable<Variable<T>> {
   public abstract Iterator<Variable<T>> iterator();
 
 
-  public abstract boolean isSatisfied(List<Variable<T>> variables, Variable<T> focalVariable);
-
   public abstract void clearHasNext();
 
   @Override
@@ -49,4 +47,7 @@ public abstract class Constraint<T> implements Iterable<Variable<T>> {
   public abstract String getNextVariableId();
 
   public abstract void removeFocalvariableFromTodo(Variable<T> focalVariable);
+
+  public abstract boolean revise(Variable focalVariable,  CspPuzzle puzzle);
+
 }

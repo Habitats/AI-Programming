@@ -38,23 +38,6 @@ public class FlowConstraint extends Constraint<Integer> {
     clearHasNext();
   }
 
-  public boolean isSatisfied(List<Variable<Integer>> variables, Variable<Integer> focalVariable) {
-    Variable other;
-    for (Variable var : variables) {
-      if (var.getId().equals(focalVariable)) {
-        continue;
-      }
-      other = var;
-
-    }
-//    return (baseValue != focalVariable.getValue())||
-////    if (satisfied)k {
-////    }
-////    Log.v(TAG, satisfied + ": " + FlowFunction);
-////    return !variables.get(0)
-//    return satisfied;
-    return false;
-  }
 
   public Map<String, Variable<Integer>> getVariablesMap() {
     return variablesMap;
@@ -98,6 +81,12 @@ public class FlowConstraint extends Constraint<Integer> {
     return next;
 
   }
+
+  @Override
+  public boolean revise(Variable focalVariable, CspPuzzle puzzle) {
+    return false;
+  }
+
 
 
   public void removeFocalvariableFromTodo(Variable focalVariable) {

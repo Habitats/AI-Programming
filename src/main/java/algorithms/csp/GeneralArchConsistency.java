@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -40,37 +39,6 @@ public class GeneralArchConsistency {
   private static final String TAG = GeneralArchConsistency.class.getSimpleName();
 
 
-  /**
-   * Check all permutations of variables and values and isSatisfiable if the expression is isSatisfiable.
-   *
-   * @return true on the first isSatisfiable occurrence, false is no combination satisfies expression
-   */
-  private static boolean isSatisfiable(Constraint constraint, int focalVariableIndex, List<Variable> vars,
-                                       Variable focalVariable, CspPuzzle puzzle) {
-    boolean hasMoreVariables = constraint.hasNext() || vars.size() > focalVariableIndex;
-    if (hasMoreVariables) {
-      // isSatisfiable if it's the first time we see this variable. If yes, put it to current variables
-      if (vars.size() == focalVariableIndex) {
-        String id = constraint.getNextVariableId();
-        vars.add(puzzle.getVariable(id));
-      }
-      // iterate over all possible values for this variable
-      for (Object nextValue : vars.get(focalVariableIndex).getDomain()) {
-        // put a value, and recursively combine it with the possible combinations of the remaining variables
-        vars.get(focalVariableIndex).setValue(nextValue);
-        if (isSatisfiable(constraint, focalVariableIndex + 1, vars, focalVariable, puzzle)) {
-          return true;
-        }
-      }
-    } else {
-      // return on the first isSatisfiable occurrence
-      if (constraint.isSatisfied(vars, focalVariable)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   public static Result domainFilter(CspPuzzle puzzle) {
     List<Constraint> constraints = puzzle.getConstraints();
     Queue<Variable> queue = new PriorityQueue<>();
@@ -80,27 +48,28 @@ public class GeneralArchConsistency {
       queueHash.add(v.getId());
     }
     int initialDomainSize = puzzle.getDomainSize();
-    Variable var;
-    while ((var = queue.poll()) != null) {
-      queueHash.remove(var.getId());
-      if (var.getDomain().iEmpty()) {
+    Variable focalVariable;
+    while ((focalVariable = queue.poll()) != null) {
+      queueHash.remove(focalVariable.getId());
+      if (focalVariable.getDomain().iEmpty()) {
         return Result.EMPTY_DOMAIN;
       }
-//      Log.v(TAG, "before: " + var);
+//      Log.v(TAG, "before: " + focalVariable);
       for (Constraint constraint : constraints) {
 
 //        // if focalvariable isn't present in the constraint, there is no way it can directly affect it either
-        if (!constraint.contains(var)) {
+        if (!constraint.contains(focalVariable)) {
           continue;
         }
 
-        if (revise(var, constraint, puzzle)) {
-          constraint.addVariablesInConstraintsContainingCurrentVariable(puzzle, queue, queueHash, var, constraint);
-//          addVariablesInConstraintsContainingCurrentVariable2(puzzle, queue, queueHash, var);
+        if (constraint.revise(focalVariable, puzzle)) {
+          constraint
+              .addVariablesInConstraintsContainingCurrentVariable(puzzle, queue, queueHash, focalVariable, constraint);
+//          addVariablesInConstraintsContainingCurrentVariable2(puzzle, queue, queueHash, focalVariable);
         }
       }
 
-//      Log.v(TAG, "after: " + var);
+//      Log.v(TAG, "after: " + focalVariable);
 //      Log.v(TAG, "------------------------------------");
     }
 
@@ -109,6 +78,8 @@ public class GeneralArchConsistency {
       return Result.SOLUTION;
     } else if (puzzle.getDomainSize() == initialDomainSize) {
       return Result.UNCHANGED_DOMAIN;
+    } else if (puzzle.getDomainSize() < puzzle.getVariables().size()) {
+      return Result.EMPTY_DOMAIN;
     } else {
       return Result.SHRUNK_DOMAIN;
     }
@@ -132,39 +103,6 @@ public class GeneralArchConsistency {
     }
   }
 
-
-  /**
-   * Remove all values from focalVariables' domain if no combination of non-focalVariables satisfy the constraint
-   *
-   * @return return true if domain is reduced by assumption
-   */
-
-  private static boolean revise(Variable focalVariable, Constraint<Variable> constraint, CspPuzzle puzzle) {
-    int oldSize = focalVariable.getDomain().getSize();
-
-    // iterate over all the values of the focalDomain
-    Iterator<Integer> iterator = focalVariable.getDomain().iterator();
-    while (iterator.hasNext()) {
-      Integer val = iterator.next();
-      focalVariable.setValue(val);
-
-      List<Variable> vars = new ArrayList<>();
-      constraint.clearHasNext();
-      constraint.removeFocalvariableFromTodo(focalVariable);
-      boolean satisfiable = isSatisfiable(constraint, 0, vars, focalVariable, puzzle);
-      if (!satisfiable) {
-        // if constraint is impossible to satisfy with the given value, remove the value from the domain
-        Log.v(TAG, "reducing the domain of " + focalVariable + " by removing: " + val + ". Violating: " + constraint);
-        iterator.remove();
-      }
-//      else{
-//        Log.v(TAG, "unable to reduce the domain of " + focalVariable + " with values:  " + val + " and constraint: " + constraint);
-//      }
-    }
-    int newSize = focalVariable.getDomain().getSize();
-//    Log.v(TAG, "old: " + oldSize + " new: " + newSize);
-    return oldSize > newSize;
-  }
 
   public static int numberOfUnsatisfiedConstraints(CspPuzzle puzzle) {
     int num = 0;

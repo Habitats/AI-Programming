@@ -1,10 +1,9 @@
 package puzzles.nono;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
-import ai.Log;
+import ai.models.grid.Board;
 import algorithms.a_star_csp.AStarCsp;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.a_star_csp.SimpleAStarCspPuzzle;
@@ -50,40 +49,35 @@ public class NonoCspPuzzle extends SimpleAStarCspPuzzle {
     return variables;
   }
 
-  public void pruneVariable(Variable<ChunkVals> var, String incomingAxis, String twinAxis) {
-    ChunkVals certainValues = ((NonoDomain) var.getDomain()).getCertainValues();
-    Log.v(TAG, certainValues);
-    // 0 1 1 1 0 0
-    // 0 1 0 1 0 0
-    // 0 1 0 1 0 0
-    // 0 1 1 1 0 0
-    // 0 0 0 1 0 0
-
-    int varIndex = Integer.parseInt(var.getId().substring(1));
-    for (int certainIndex = 0; certainIndex < certainValues.values.size(); certainIndex++) {
-      int certainValue = certainValues.values.get(certainIndex);
-      if (certainValue == 3) {
-        continue;
+  @Override
+  public void visualize() {
+    int x = 0;
+    int y;
+    Variable<ChunkVals> next;
+    Board<NonoTile> board = (Board<NonoTile>) getAstarCsp().getAdapter();
+    while ((next = getVariable("x" + x)) != null) {
+      NonoDomain domain = (NonoDomain) next.getDomain();
+      ChunkVals chunkVals = domain.getCertainValues();
+      for (y = 0; y < chunkVals.values.size(); y++) {
+        board.get(x, y).setColor(chunkVals.values.get(y).ordinal());
       }
-      Variable<ChunkVals> twin = getVariable(twinAxis + certainIndex);
-      NonoDomain domain = (NonoDomain) twin.getDomain();
-      Iterator<ChunkVals> iterator = domain.iterator();
-      while (iterator.hasNext()) {
-        ChunkVals vals = iterator.next();
-        if (vals.values.get(varIndex) != certainValue) {
-          iterator.remove();
-        }
-      }
+      x++;
     }
+    board.notifyDataChanged();
   }
 
 
-  private List<List<Integer>> getRowSpecs() {
+  @Override
+  public Variable getSuccessor() {
+    return super.getSuccessor();
+  }
+
+public List<List<Integer>> getRowSpecs() {
     Collection<NonoTile> items = getAstarCsp().getAdapter().getItems();
     return items.iterator().next().getRowSpecs();
   }
 
-  private List<List<Integer>> getColSpecs() {
+public List<List<Integer>> getColSpecs() {
     Collection<NonoTile> items = getAstarCsp().getAdapter().getItems();
     return items.iterator().next().getColSpecs();
   }

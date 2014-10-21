@@ -29,7 +29,7 @@ public class NonoGui extends AIGui {
 
   private static final String TAG = NonoGui.class.getSimpleName();
   private AIButton resetButton;
-  private AIButton loadButton;
+  private AIButton runButton;
   private AIButton stepButton;
 
   private JPanel mainPanel;
@@ -77,7 +77,7 @@ public class NonoGui extends AIGui {
       AStar.MANUAL_STEP = checkbox.isSelected();
     });
     resetButton.addActionListener(e -> listener.resetClicked());
-    loadButton.addActionListener(e -> listener.loadClicked());
+    runButton.addActionListener(e -> listener.runClicked());
     readFromFileButton.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser("C:\\Dropbox\\code\\projects\\ai_prog\\samples");
       chooser.showOpenDialog(getMainPanel());

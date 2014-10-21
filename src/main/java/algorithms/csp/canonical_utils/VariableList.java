@@ -22,7 +22,7 @@ public class VariableList implements Iterable<Variable<Integer>> {
     return variableMap.get(id);
   }
 
-  public List<Variable<Integer>> getAll() {
+  public List<Variable> getAll() {
     return new ArrayList<>(variableMap.values());
   }
 

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
+import ai.Log;
 import algorithms.csp.CspPuzzle;
 
 /**
@@ -14,6 +15,7 @@ import algorithms.csp.CspPuzzle;
  */
 public class CanonicalConstraint extends Constraint<Integer> {
 
+  private static final String TAG = CanonicalConstraint.class.getSimpleName();
   private final Function function;
 
   public CanonicalConstraint(VariableList variables, String expression) {
@@ -30,7 +32,23 @@ public class CanonicalConstraint extends Constraint<Integer> {
     clearHasNext();
   }
 
-  public boolean isSatisfied(List<Variable<Integer>> variables, Variable<Integer> focalVariable) {
+
+  /**
+   * Remove all values from focalVariables' domain if no combination of non-focalVariables satisfy the constraint
+   *
+   * @return return true if domain is reduced by assumption
+   */
+
+  public boolean revise(Variable focalVariable, CspPuzzle puzzle) {
+    int oldSize = focalVariable.getDomain().getSize();
+    removeInvalidValues(focalVariable, puzzle);
+
+    int newSize = focalVariable.getDomain().getSize();
+//    Log.v(TAG, "old: " + oldSize + " new: " + newSize);
+    return oldSize > newSize;
+  }
+
+  public boolean isSatisfied(List<Variable> variables, Variable<Integer> focalVariable) {
     boolean satisfied = function.call(variables, focalVariable);
 //    if (satisfied) {
 //    }
@@ -80,6 +98,60 @@ public class CanonicalConstraint extends Constraint<Integer> {
           queueHash.add(variableInConstraint.getId());
         }
       }
+    }
+  }
+
+  /**
+   * Check all permutations of variables and values and isSatisfiable if the expression is isSatisfiable.
+   *
+   * @return true on the first isSatisfiable occurrence, false is no combination satisfies expression
+   */
+  private boolean isSatisfiable(CanonicalConstraint constraint, int focalVariableIndex, List<Variable> vars,
+                                Variable focalVariable, CspPuzzle puzzle) {
+    boolean hasMoreVariables = constraint.hasNext() || vars.size() > focalVariableIndex;
+    if (hasMoreVariables) {
+      // isSatisfiable if it's the first time we see this variable. If yes, put it to current variables
+      if (vars.size() == focalVariableIndex) {
+        String id = constraint.getNextVariableId();
+        vars.add(puzzle.getVariable(id));
+      }
+      // iterate over all possible values for this variable
+      for (Object nextValue : vars.get(focalVariableIndex).getDomain()) {
+        // put a value, and recursively combine it with the possible combinations of the remaining variables
+        vars.get(focalVariableIndex).setValue(nextValue);
+        if (isSatisfiable(constraint, focalVariableIndex + 1, vars, focalVariable, puzzle)) {
+          return true;
+        }
+      }
+    } else {
+      // return on the first isSatisfiable occurrence
+      if (constraint.isSatisfied(vars, focalVariable)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private void removeInvalidValues(Variable focalVariable, CspPuzzle puzzle) {
+    // iterate over all the values of the focalDomain
+    Iterator<Integer> iterator = focalVariable.getDomain().iterator();
+    CanonicalConstraint constraint = this;
+    while (iterator.hasNext()) {
+      Object val = iterator.next();
+      focalVariable.setValue(val);
+
+      List<Variable> vars = new ArrayList<>();
+      constraint.clearHasNext();
+      constraint.removeFocalvariableFromTodo(focalVariable);
+      boolean satisfiable = isSatisfiable(constraint, 0, vars, focalVariable, puzzle);
+      if (!satisfiable) {
+        // if constraint is impossible to satisfy with the given value, remove the value from the domain
+        Log.v(TAG, "reducing the domain of " + focalVariable + " by removing: " + val + ". Violating: " + constraint);
+        iterator.remove();
+      }
+//      else{
+//        Log.v(TAG, "unable to reduce the domain of " + focalVariable + " with values:  " + val + " and constraint: " + constraint);
+//      }
     }
   }
 

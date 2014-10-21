@@ -11,7 +11,7 @@ import java.util.Set;
 public class Domain<T> implements Iterable<T> {
 
   private static final String TAG = Domain.class.getSimpleName();
-  private final Set<T> args;
+  protected  Set<T> args;
 
   public Domain(T... args) {
     this.args = new HashSet(Arrays.asList(args));
@@ -82,5 +82,9 @@ public class Domain<T> implements Iterable<T> {
       sb.append(i).append(",");
     }
     return sb.toString();
+  }
+
+  public void empty() {
+    args.clear();
   }
 }

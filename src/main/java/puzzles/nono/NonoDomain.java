@@ -1,10 +1,14 @@
 package puzzles.nono;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Set;
 
 import algorithms.csp.canonical_utils.Domain;
+
+import static puzzles.nono.ChunkVals.V.*;
 
 
 /**
@@ -12,10 +16,12 @@ import algorithms.csp.canonical_utils.Domain;
  */
 public class NonoDomain extends Domain<ChunkVals> {
 
+  private final List<Integer> specs;
   private final int range;
 
   public NonoDomain(List<Integer> specs, int range) {
     super();
+    this.specs = specs;
     this.range = range;
     int index = 0;
     Queue<Chunk> chunkQueue = new PriorityQueue<>();
@@ -61,6 +67,21 @@ public class NonoDomain extends Domain<ChunkVals> {
     return min;
   }
 
+  @Override
+  public Domain<ChunkVals> copy() {
+    NonoDomain copy = new NonoDomain(specs, range);
+    copy.args = getArgsCopy();
+    return copy;
+  }
+
+  private Set<ChunkVals> getArgsCopy() {
+    Set<ChunkVals> copy = new HashSet<>();
+    for (ChunkVals chunkVals : args) {
+      copy.add(chunkVals.copy());
+    }
+    return copy;
+  }
+
   private Queue<Chunk> copy(Queue<Chunk> chunkQueue) {
     Queue<Chunk> copy = new PriorityQueue<>();
     for (Chunk chunk : chunkQueue) {
@@ -81,7 +102,7 @@ public class NonoDomain extends Domain<ChunkVals> {
 
     for (ChunkVals chunk : getArgs()) {
       for (int i = 0; i < chunk.values.size(); i++) {
-        if (chunk.values.get(i) == 0) {
+        if (chunk.values.get(i) == OFF) {
           certainFilledVals.off(i);
         }
       }
@@ -94,7 +115,7 @@ public class NonoDomain extends Domain<ChunkVals> {
 
     for (ChunkVals chunk : getArgs()) {
       for (int i = 0; i < chunk.values.size(); i++) {
-        if (chunk.values.get(i) == 1) {
+        if (chunk.values.get(i) == ON) {
           certainEmptyVals.off(i);
         }
       }
@@ -102,9 +123,9 @@ public class NonoDomain extends Domain<ChunkVals> {
 
     ChunkVals certainVals = new ChunkVals(range);
     for (int i = 0; i < range; i++) {
-      if (certainEmptyVals.values.get(i) == 1) {
+      if (certainEmptyVals.values.get(i) == ON) {
         certainVals.off(i);
-      } else if (certainFilledVals.values.get(i) == 1) {
+      } else if (certainFilledVals.values.get(i) == ON) {
         certainVals.on(i);
       } else {
         certainVals.dunno(i);

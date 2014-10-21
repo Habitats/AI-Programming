@@ -29,5 +29,5 @@ public interface CspPuzzle {
 
   void setVariables(VariableList variables);
 
-  void setAssumption(String id, Integer value);
+  void setAssumption(String id, Object value);
 }

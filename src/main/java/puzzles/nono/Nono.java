@@ -14,7 +14,6 @@ import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.CspButtonListener;
 import algorithms.csp.GeneralArchConsistency;
 import algorithms.csp.canonical_utils.Constraint;
-import algorithms.csp.canonical_utils.Variable;
 import puzzles.nono.gui.NonoGui;
 
 /**
@@ -37,7 +36,10 @@ public class Nono extends AStarCsp<NonoTile> implements CspButtonListener, Runna
 
   @Override
   protected void generateConstraints(AStarCspPuzzle puzzle, AIAdapter<NonoTile> board) {
+    NonoConstraint constraint = new NonoConstraint(puzzle.getVariables());
 
+    constraints = new ArrayList<>();
+    constraints.add(constraint);
   }
 
   @Override
@@ -58,7 +60,7 @@ public class Nono extends AStarCsp<NonoTile> implements CspButtonListener, Runna
       }
       rowSpecs.add(args);
     }
-    for (int i = height + 1; i < height + width+1; i++) {
+    for (int i = height + 1; i < height + width + 1; i++) {
       String[] s = inputList.get(i).split("\\s+");
       List<Integer> args = new ArrayList<>();
       for (String n : s) {
@@ -79,67 +81,23 @@ public class Nono extends AStarCsp<NonoTile> implements CspButtonListener, Runna
     return board;
   }
 
-  public void test(int i) {
-    NonoCspPuzzle puzzle = (NonoCspPuzzle) getSamplePuzzle(i);
-    GeneralArchConsistency.printVariables(puzzle);
-    for (Variable var : puzzle.getVariables()) {
-      String incomingAxis = String.valueOf(var.getId().charAt(0));
-      String twinAxis = incomingAxis.equals("x") ? "y" : "x";
-      puzzle.pruneVariable(var, incomingAxis, twinAxis);
-      puzzle.visualize();
-    }
-    GeneralArchConsistency.printVariables(puzzle);
-    for (Variable var : puzzle.getVariables()) {
-      String incomingAxis = String.valueOf(var.getId().charAt(0));
-      String twinAxis = incomingAxis.equals("x") ? "y" : "x";
-      puzzle.pruneVariable(var, incomingAxis, twinAxis);
-      puzzle.visualize();
-    }
-    for (Variable var : puzzle.getVariables()) {
-      String incomingAxis = String.valueOf(var.getId().charAt(0));
-      String twinAxis = incomingAxis.equals("x") ? "y" : "x";
-      puzzle.pruneVariable(var, incomingAxis, twinAxis);
-      puzzle.visualize();
-    }
-    GeneralArchConsistency.printVariables(puzzle);
-    for (Variable var : puzzle.getVariables()) {
-      String incomingAxis = String.valueOf(var.getId().charAt(0));
-      String twinAxis = incomingAxis.equals("x") ? "y" : "x";
-      puzzle.pruneVariable(var, incomingAxis, twinAxis);
-      puzzle.visualize();
-    }
-    for (Variable var : puzzle.getVariables()) {
-      String incomingAxis = String.valueOf(var.getId().charAt(0));
-      String twinAxis = incomingAxis.equals("x") ? "y" : "x";
-      puzzle.pruneVariable(var, incomingAxis, twinAxis);
-      puzzle.visualize();
-    }
-    GeneralArchConsistency.printVariables(puzzle);
-    for (Variable var : puzzle.getVariables()) {
-      String incomingAxis = String.valueOf(var.getId().charAt(0));
-      String twinAxis = incomingAxis.equals("x") ? "y" : "x";
-      puzzle.pruneVariable(var, incomingAxis, twinAxis);
-      puzzle.visualize();
-    }
-    GeneralArchConsistency.printVariables(puzzle);
-
-    visualize(puzzle);
+  @Override
+  public void runClicked() {
+    loadClicked();
+    super.runClicked();
   }
 
-  private void visualize(NonoCspPuzzle puzzle) {
-    int x = 0;
-    int y;
-    Variable<ChunkVals> next;
-    Board<NonoTile> board = (Board<NonoTile>) getAdapter();
-    while ((next = puzzle.getVariable("x" + x)) != null) {
-      NonoDomain domain = (NonoDomain) next.getDomain();
-      ChunkVals chunkVals = domain.getCertainValues();
-      for (y = 0; y < chunkVals.values.size(); y++) {
-        board.get(x, y).setColor(chunkVals.values.get(y));
-      }
-      x++;
-    }
-    board.notifyDataChanged();
+  public void test(int i) {
+    NonoCspPuzzle puzzle = (NonoCspPuzzle) getSamplePuzzle(i);
+
+    puzzle.visualize();
+    GeneralArchConsistency.Result res = GeneralArchConsistency.domainFilter(puzzle);
+    puzzle.visualize();
+    res = GeneralArchConsistency.domainFilter(puzzle);
+    puzzle.visualize();
+    res = GeneralArchConsistency.domainFilter(puzzle);
+    puzzle.visualize();
+
   }
 
   @Override
@@ -153,13 +111,7 @@ public class Nono extends AStarCsp<NonoTile> implements CspButtonListener, Runna
   @Override
   public int getDomainSize() {
     // do nothing
-    return -1;
-  }
-
-  @Override
-  public void sampleSelected(int i) {
-    super.sampleSelected(i);
-    test(i);
+    return 3;
   }
 
   @Override

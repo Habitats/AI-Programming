@@ -108,7 +108,7 @@ public class TestGACProblem implements CspPuzzle {
   }
 
   @Override
-  public void setAssumption(String id, Integer value) {
+  public void setAssumption(String id, Object value) {
     getVariable(id).setAssumption(value);
   }
 

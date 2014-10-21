@@ -32,7 +32,7 @@ public abstract class SimpleAStarCspPuzzle<T extends Node<T> & VariableListener>
   }
 
   @Override
-  public void setAssumption(String variableId, Integer value) {
+  public void setAssumption(String variableId, Object value) {
     Variable variable = getVariable(variableId);
     variable.setAssumption(value);
   }
@@ -48,7 +48,7 @@ public abstract class SimpleAStarCspPuzzle<T extends Node<T> & VariableListener>
   protected Variable getMinimalDomain(VariableList variables) {
     int min = Integer.MAX_VALUE;
     Variable minVar = null;
-    List<Variable<Integer>> vars = variables.getAll();
+    List<Variable> vars = variables.getAll();
 //    Collections.shuffle(vars);
     for (Variable var : vars) {
       if (var.getDomain().getSize() == 1) {
