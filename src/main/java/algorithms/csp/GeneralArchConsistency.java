@@ -1,8 +1,5 @@
 package algorithms.csp;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -82,25 +79,26 @@ public class GeneralArchConsistency {
       return Result.EMPTY_DOMAIN;
     } else {
       return Result.SHRUNK_DOMAIN;
+
     }
   }
 
   public static void printVariables(CspPuzzle puzzle) {
-
-    List<Variable> sorted = new ArrayList<>(puzzle.getVariables().copy().getAll());
-
-    Collections.sort(sorted, new Comparator<Variable>() {
-      @Override
-      public int compare(Variable o1, Variable o2) {
-        String s1 = o1.getId();
-        String s2 = o2.getId();
-        return String.CASE_INSENSITIVE_ORDER.compare(s1, s2);
-      }
-    });
-
-    for (Variable variable : sorted) {
-      Log.v(TAG, variable.getId() + " - DS: " + variable.getDomain().getSize() + " " + variable);
-    }
+//
+//    List<Variable> sorted = new ArrayList<>(puzzle.getVariables().copy().getAll());
+//
+//    Collections.sort(sorted, new Comparator<Variable>() {
+//      @Override
+//      public int compare(Variable o1, Variable o2) {
+//        String s1 = o1.getId();
+//        String s2 = o2.getId();
+//        return String.CASE_INSENSITIVE_ORDER.compare(s1, s2);
+//      }
+//    });
+//
+//    for (Variable variable : sorted) {
+//      Log.v(TAG, variable.getId() + " - DS: " + variable.getDomain().getSize() + " " + variable);
+//    }
   }
 
 

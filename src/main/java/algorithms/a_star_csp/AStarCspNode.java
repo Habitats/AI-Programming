@@ -1,13 +1,11 @@
 package algorithms.a_star_csp;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import ai.Log;
 import algorithms.a_star.AStarNode;
 import algorithms.csp.GeneralArchConsistency;
-import algorithms.csp.canonical_utils.Domain;
 import algorithms.csp.canonical_utils.Variable;
 
 /**
@@ -41,19 +39,16 @@ public class AStarCspNode extends AStarNode {
     // retrieve the variable with the biggest domain
     Variable successorVariable = puzzle.getSuccessor();
     if (!(successorVariable == null)) {
-      Domain domain = successorVariable.getDomain();
-      Iterator iter = domain.iterator();
-      while (iter.hasNext()) {
-        Object value = iter.next();
+      for (Object value : successorVariable.getDomain()) {
 
         AStarCspPuzzle next = puzzle.duplicate();
 
-        next.setAssumption(successorVariable.getId(), value);
+        next.setAssumption(successorVariable.getId(),value);
 
         GeneralArchConsistency.Result domainFilteringResult;
         domainFilteringResult = GeneralArchConsistency.domainFilter(next);
         Log.v(TAG, domainFilteringResult + " " + puzzle.getDomainSize());
-        if (domainFilteringResult == GeneralArchConsistency.Result.EMPTY_DOMAIN) {
+        if(domainFilteringResult == GeneralArchConsistency.Result.EMPTY_DOMAIN){
           continue;
         }
         AStarCspNode nextNode = new AStarCspNode(next);

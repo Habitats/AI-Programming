@@ -11,6 +11,7 @@ public class NonoUtils {
   public static List<String> samples = new ArrayList<>();
 
   static {
+    samples.add("4 4\n" + "1\n" + "1\n" + "1\n" + "1\n" + "1\n" + "1\n" + "1\n" + "1\n");
     samples.add("5 6\n" + "2 1\n" + "1 2\n" + "3 1\n" + "3 1\n" +"1 2\n" + "2 1\n" + "4\n" + "1 2 1\n" + "6\n" + "1 1\n"
                 + "1 2 1\n");
     samples.add("6 7\n" + "6\n" + "1 1\n" + "1 1\n" + "1 1\n" + "1 2 1\n" + "1 1\n" + "2\n" + "1 1\n" + "1 4\n"

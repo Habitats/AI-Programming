@@ -1,7 +1,6 @@
 package algorithms.csp.canonical_utils;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -13,22 +12,23 @@ public class Domain<T> implements Iterable<T> {
 
   private static final String TAG = Domain.class.getSimpleName();
   private final double maxSize;
-  protected  Set<T> args;
+  protected Set<T> args;
 
   public Domain(T... args) {
     maxSize = args.length;
-    this.args = Collections.synchronizedSet(new HashSet(Arrays.asList(args)));
+    this.args = new HashSet(Arrays.asList(args));
     for (T arg : args) {
       this.args.add(arg);
     }
   }
-  public Domain(){
-    this.args = Collections.synchronizedSet(new HashSet(Arrays.asList()));
+
+  public Domain() {
+    this.args = new HashSet(Arrays.asList());
     maxSize = args.size();
   }
 
   public Domain(Set<T> args) {
-    this.args = Collections.synchronizedSet(new HashSet(Arrays.asList(args)));
+    this.args = new HashSet(args);
     maxSize = args.size();
   }
 
@@ -42,7 +42,7 @@ public class Domain<T> implements Iterable<T> {
     return args.iterator();
   }
 
-  public synchronized boolean remove(T val) {
+  public boolean remove(T val) {
     return args.remove(val);
   }
 
@@ -89,7 +89,7 @@ public class Domain<T> implements Iterable<T> {
     return sb.toString();
   }
 
-  public synchronized void empty() {
+  public void empty() {
     args.clear();
   }
 

@@ -63,6 +63,7 @@
             </constraints>
             <properties>
               <model>
+                <item value="multiple solutions"/>
                 <item value="simple"/>
                 <item value="dog"/>
                 <item value="nono-camel"/>

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
-import ai.Log;
 import algorithms.a_star_csp.SimpleAStarCspPuzzle;
 import algorithms.csp.CspPuzzle;
 
@@ -150,7 +149,7 @@ public class CanonicalConstraint extends Constraint<Integer> {
       boolean satisfiable = isSatisfiable(constraint, 0, vars, focalVariable, puzzle);
       if (!satisfiable) {
         // if constraint is impossible to satisfy with the given value, remove the value from the domain
-        Log.v(TAG, "reducing the domain of " + focalVariable + " by removing: " + val + ". Violating: " + constraint);
+//        Log.v(TAG, "reducing the domain of " + focalVariable + " by removing: " + val + ". Violating: " + constraint);
         iterator.remove();
       }
 //      else{

@@ -105,10 +105,10 @@ public class Function {
 
     // call the python lambda with args: x = 1, y = 2 etc, order is important
 //    Log.v(TAG, toString());
-//    if (history.containsKey(argsToString(args))) {
-//      SimpleAStarCspPuzzle.hit++;
-//      return history.get(argsToString(args));
-//    } else {
+    if (history.containsKey(argsToString(args))) {
+      SimpleAStarCspPuzzle.hit++;
+      return history.get(argsToString(args));
+    } else {
       try {
         PyObject ans = lambda.__call__(args);
         boolean booleanValue = ((PyBoolean) ans).getBooleanValue();
@@ -119,7 +119,7 @@ public class Function {
         Log.v(TAG, "lambda crashed: " + toString(), e);
         throw new IllegalArgumentException();
       }
-//    }
+    }
   }
 
   private String argsToString(PyInteger[] args) {
