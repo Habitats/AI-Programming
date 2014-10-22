@@ -1,6 +1,5 @@
 package puzzles.flow;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -97,82 +96,70 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
     List<Variable> vars = variables.getAll();
 
     // sometimes, return something random
-    if (Math.random() > 0.9) {
-      Variable<Integer> randomVar = vars.get((int) ((vars.size() - 1) * Math.random()));
-      if (randomVar.getDomain().getSize() > 1) {
-        return randomVar;
-      }
-    }
-    int min = Integer.MAX_VALUE;
-    Variable minVar = vars.get(0);
+//    if (Math.random() > 0.9) {
+//      Variable<Integer> randomVar = vars.get((int) ((vars.size() - 1) * Math.random()));
+//      if (randomVar.getDomain().getSize() > 1) {
+//        return randomVar;
+//      }
+//    }
+    double min = Integer.MAX_VALUE;
+    Variable minVar = null;
 
 //    Collections.shuffle(vars);
     for (Variable var : vars) {
 
+      double normalizedSize = var.getDomain().getSize(); // / var.getDomain().getMaxSize();
       if (var.getDomain().getSize() == 1) {
+//        var.setValue(var.getDomain().iterator().next());
         continue;
       }
-      if (var.getDomain().getSize() < min) {
-        min = var.getDomain().getSize();
+//      if (var.getId().startsWith(FlowTile.OUTPUT)) {
+//        continue;
+//      }
+      if (normalizedSize < min) {
+        min = normalizedSize;
         minVar = var;
       }
     }
-    List<Variable> minVars = new ArrayList<>();
-    for (Variable var : vars) {
-      if (var.getDomain().getSize() == min) {
-        minVars.add(minVar);
-      }
-    }
-    int index = (int) ((minVars.size() - 1) * Math.random());
-    if (index < 0 || minVars.size() == 0) {
-      return minVar;
-    }
-
-    return minVars.get(index);
+    return minVar;
+//    List<Variable> minVars = new ArrayList<>();
+//    for (Variable var : vars) {
+//      if ((var.getDomain().getSize() / var.getDomain().getMaxSize()) == min) {
+//        minVars.add(minVar);
+//      }
+//    }
+//    int index = (int) ((minVars.size() - 1) * Math.random());
+//
+//    if (index < 0 || minVars.size() == 0) {
+//      return minVar;
+//    }
+//
+//    return minVars.get(index);
   }
 
   @Override
   public int getHeuristic() {
-    int penalty = 0;
-//    Collection<FlowTile> tiles = getAstarCsp().getAdapter().getItems();
-//    for (FlowTile tile : tiles) {
-//      if (!tile.getColor().equals(ColorTile.EMPTY)) {
-//        int goal;
-//        if (tile.getColorState() == FlowTile.State.END || tile.getColorState() == FlowTile.State.START) {
-//          goal = 1;
-//        } else {
-//          goal = 2;
-//        }
-//        List<FlowTile> sameColorNeighbors = tile.getSameColorNeighbor();
-//        // penalize if too many neighbors
-//        if (sameColorNeighbors.size() != goal) {
-////          penalty += 30;
-//        }
-//      } else {
-////        penalty += 10;
-//      }
-//    }
+
     int domainSize = getDomainSize();
-    int bestDomainSize = getVariables().size();
-    if (domainSize == bestDomainSize) {
+
+//    int h = 0; for(Variable var: getVariables()){
+//     if(var.getDomain().getSize() == 1){
+//       h++;
+//     }
+//    }
+//    return  h;
+    int bestDomainSize = getVariables().size(); if (domainSize == bestDomainSize) {
       return 0;
     } else {
-      return domainSize - bestDomainSize + penalty;
+      return domainSize - bestDomainSize;
     }
   }
 
   @Override
   public int getDomainSize() {
-
     int size = 0;
     for (Variable variable : variables) {
-      int multiplier;
-      if (variable.getId().startsWith(FlowTile.ID)) {
-        multiplier = 1;
-      } else {
-        multiplier = 1;
-      }
-      size += variable.getDomain().getSize() * multiplier;
+      size += variable.getDomain().getSize();
     }
     return size;
   }

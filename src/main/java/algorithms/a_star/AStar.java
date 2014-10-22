@@ -9,6 +9,10 @@ import java.util.Queue;
 
 import ai.Log;
 
+import static algorithms.a_star_csp.SimpleAStarCspPuzzle.avg;
+import static algorithms.a_star_csp.SimpleAStarCspPuzzle.hit;
+import static algorithms.a_star_csp.SimpleAStarCspPuzzle.miss;
+
 /**
  * Created by Patrick on 23.08.2014.
  */
@@ -180,6 +184,7 @@ public class AStar implements Runnable {
       Log.i(TAG, getTraversal() + " - generated nodes: " + getGeneratedSize() + " - solution lenght: " + best
           .getPathLength());
     }
+    Log.i(TAG, "hits: " + hit + " miss: " + miss + " ratio: " + (hit + 0e10) / miss + " avg: " + (avg / (hit + miss)));
   }
 
 

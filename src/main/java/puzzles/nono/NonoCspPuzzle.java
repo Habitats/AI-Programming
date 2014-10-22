@@ -23,6 +23,12 @@ public class NonoCspPuzzle extends SimpleAStarCspPuzzle {
   }
 
   @Override
+  public void setAssumption(String variableId, Object value) {
+    ChunkVals vals = ((ChunkVals) value).copy();
+    super.setAssumption(variableId, vals);
+  }
+
+  @Override
   protected AStarCspPuzzle newInstance() {
     return new NonoCspPuzzle(getAstarCsp());
   }

@@ -19,7 +19,6 @@ public abstract class Constraint<T> implements Iterable<Variable<T>> {
 
   public Constraint(VariableList variables) {
     variableIdsToCheck = new LinkedHashSet<>();
-
   }
 
   public abstract boolean contains(Variable x);

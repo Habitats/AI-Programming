@@ -15,6 +15,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
 import ai.Log;
+import algorithms.a_star_csp.SimpleAStarCspPuzzle;
 
 /**
  * Created by Patrick on 04.09.2014.
@@ -27,9 +28,11 @@ public class Function {
   private final Map<String, Variable<Integer>> variablesMap;
   private final String expression;
   private final PyFunction lambda;
+  private final Map<String, Boolean> history;
 
   public Function(HashMap<String, Variable<Integer>> variablesMap, String expression) {
     this.variablesMap = new HashMap<>();
+    history = new HashMap<>();
     for (Variable<Integer> var : variablesMap.values()) {
       this.variablesMap.put(var.getId(), var.copy());
     }
@@ -102,13 +105,29 @@ public class Function {
 
     // call the python lambda with args: x = 1, y = 2 etc, order is important
 //    Log.v(TAG, toString());
-    try {
-      PyObject ans = lambda.__call__(args);
-      return ((PyBoolean) ans).getBooleanValue();
-    } catch (Exception e) {
-      Log.v(TAG, "lambda crashed: " + toString(), e);
-      throw new IllegalArgumentException();
+//    if (history.containsKey(argsToString(args))) {
+//      SimpleAStarCspPuzzle.hit++;
+//      return history.get(argsToString(args));
+//    } else {
+      try {
+        PyObject ans = lambda.__call__(args);
+        boolean booleanValue = ((PyBoolean) ans).getBooleanValue();
+        history.put(argsToString(args), booleanValue);
+        SimpleAStarCspPuzzle.miss++;
+        return booleanValue;
+      } catch (Exception e) {
+        Log.v(TAG, "lambda crashed: " + toString(), e);
+        throw new IllegalArgumentException();
+      }
+//    }
+  }
+
+  private String argsToString(PyInteger[] args) {
+    StringBuilder sb = new StringBuilder();
+    for (PyInteger i : args) {
+      sb.append(i.toString());
     }
+    return sb.toString();
   }
 
   public String getVariableValues() {

@@ -8,6 +8,7 @@ import java.util.Queue;
 import java.util.Set;
 
 import ai.Log;
+import algorithms.a_star_csp.SimpleAStarCspPuzzle;
 import algorithms.csp.CspPuzzle;
 
 /**
@@ -49,7 +50,10 @@ public class CanonicalConstraint extends Constraint<Integer> {
   }
 
   public boolean isSatisfied(List<Variable> variables, Variable<Integer> focalVariable) {
+    long start = System.nanoTime();
     boolean satisfied = function.call(variables, focalVariable);
+
+   SimpleAStarCspPuzzle.avg +=  System.nanoTime() - start;
 //    if (satisfied) {
 //    }
 //    Log.v(TAG, satisfied + ": " + function);

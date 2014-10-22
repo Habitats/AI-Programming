@@ -46,8 +46,10 @@ public class NonoConstraint extends Constraint<ChunkVals> {
   public void addVariablesInConstraintsContainingCurrentVariable(CspPuzzle puzzle, Queue<Variable> queue,
                                                                  Set<String> queueHash, Variable var,
                                                                  Constraint constraint) {
-    for (Variable v : getVariables()) {
-      queue.add(v);
+    for (Variable v : puzzle.getVariables()) {
+      if (!queueHash.contains(v)) {
+        queue.add(v);
+      }
       queueHash.add(v.getId());
     }
   }
@@ -57,7 +59,7 @@ public class NonoConstraint extends Constraint<ChunkVals> {
       return true;
     }
     for (Variable var : puzzle.getVariables()) {
-      ChunkVals chunkVals = (ChunkVals) var.getValue();
+      ChunkVals chunkVals = (ChunkVals) var.getDomain().iterator().next();
       String incomingAxis = String.valueOf(var.getId().charAt(0));
       int varIndex = Integer.parseInt(var.getId().substring(1));
 
@@ -66,6 +68,9 @@ public class NonoConstraint extends Constraint<ChunkVals> {
                                    : ((NonoCspPuzzle) puzzle).getRowSpecs().get(varIndex);
 
       // check if the number of chunks is consistent with the specs
+      if ((incomingAxis + varIndex).equals("y9")) {
+        Log.v(TAG, "asd");
+      }
       if (chunkVals.getNumChunks() != spec.size()) {
         return false;
       }
@@ -106,7 +111,7 @@ public class NonoConstraint extends Constraint<ChunkVals> {
       if (certainValue == UNCERTAIN) {
         continue;
       }
-      Variable<ChunkVals> twin = getVariablesMap().get(twinAxis + certainIndex);
+      Variable<ChunkVals> twin = puzzle.getVariable(twinAxis + certainIndex);
       NonoDomain twinDomain = (NonoDomain) twin.getDomain();
       Iterator<ChunkVals> iterator = twinDomain.iterator();
       while (iterator.hasNext()) {
@@ -118,8 +123,8 @@ public class NonoConstraint extends Constraint<ChunkVals> {
 
     }
 
-    for(Variable var: getVariables()){
-      if(var.getDomain().getSize() == 1){
+    for (Variable var : getVariables()) {
+      if (var.getDomain().getSize() == 1) {
         Object next = var.getDomain().iterator().next();
         var.setAssumption(next);
         var.setValue(next);

@@ -15,8 +15,11 @@ import algorithms.csp.canonical_utils.VariableListener;
  */
 public abstract class SimpleAStarCspPuzzle<T extends Node<T> & VariableListener> implements AStarCspPuzzle {
 
+  public static int miss;
+  public static int hit;
   private final AStarCsp<T> astarCsp;
   protected VariableList variables;
+  public static double avg;
 
   public SimpleAStarCspPuzzle(AStarCsp<T> astarCsp) {
     this.astarCsp = astarCsp;
@@ -71,7 +74,6 @@ public abstract class SimpleAStarCspPuzzle<T extends Node<T> & VariableListener>
 
   /**
    * Solution should return 0, and the worst possible state should return a high number
-   * @return
    */
   @Override
   public int getHeuristic() {
