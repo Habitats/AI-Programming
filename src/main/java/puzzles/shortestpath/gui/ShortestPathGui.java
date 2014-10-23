@@ -1,8 +1,5 @@
 package puzzles.shortestpath.gui;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
-
 import java.awt.*;
 import java.io.File;
 import java.nio.charset.Charset;
@@ -19,9 +16,7 @@ import ai.gui.AIComboBox;
 import ai.gui.AIContiniousScrollPane;
 import ai.gui.AIGridCanvas;
 import ai.gui.AIGui;
-import ai.gui.AIPanel;
 import ai.gui.AISlider;
-import ai.gui.AISplitPane;
 import ai.gui.AITextArea;
 import ai.gui.AITextField;
 import ai.models.grid.Board;

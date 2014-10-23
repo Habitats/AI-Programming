@@ -43,12 +43,12 @@ public class AStarCspNode extends AStarNode {
 
         AStarCspPuzzle next = puzzle.duplicate();
 
-        next.setAssumption(successorVariable.getId(),value);
+        next.setAssumption(successorVariable.getId(), value);
 
         GeneralArchConsistency.Result domainFilteringResult;
         domainFilteringResult = GeneralArchConsistency.domainFilter(next);
         Log.v(TAG, domainFilteringResult + " " + puzzle.getDomainSize());
-        if(domainFilteringResult == GeneralArchConsistency.Result.EMPTY_DOMAIN){
+        if (domainFilteringResult == GeneralArchConsistency.Result.EMPTY_DOMAIN) {
           continue;
         }
         AStarCspNode nextNode = new AStarCspNode(next);

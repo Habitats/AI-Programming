@@ -88,7 +88,6 @@ public class FlowConstraint extends Constraint<Integer> {
   }
 
 
-
   public void removeFocalvariableFromTodo(Variable focalVariable) {
     variableIdsToCheck.remove(focalVariable.getId());
   }

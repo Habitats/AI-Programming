@@ -40,7 +40,6 @@ public class ExpressionBuilder {
   }
 
 
-
   public static String exatlyOneTupleEquals(Tuple[] pairs) {
     String expression;
     Tuple xy1, xy2, xy3, xy4;

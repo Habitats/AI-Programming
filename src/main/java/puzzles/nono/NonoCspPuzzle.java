@@ -78,12 +78,12 @@ public class NonoCspPuzzle extends SimpleAStarCspPuzzle {
     return super.getSuccessor();
   }
 
-public List<List<Integer>> getRowSpecs() {
+  public List<List<Integer>> getRowSpecs() {
     Collection<NonoTile> items = getAstarCsp().getAdapter().getItems();
     return items.iterator().next().getRowSpecs();
   }
 
-public List<List<Integer>> getColSpecs() {
+  public List<List<Integer>> getColSpecs() {
     Collection<NonoTile> items = getAstarCsp().getAdapter().getItems();
     return items.iterator().next().getColSpecs();
   }

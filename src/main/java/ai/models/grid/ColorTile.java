@@ -129,5 +129,4 @@ public class ColorTile extends Node<Node> implements VariableListener<Integer> {
   }
 
 
-
 }

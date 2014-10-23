@@ -31,7 +31,9 @@ import static algorithms.csp.canonical_utils.ExpressionBuilder.exatlyOneTupleEqu
 import static algorithms.csp.canonical_utils.ExpressionBuilder.exatlyTwoTuplesEquals;
 import static algorithms.csp.canonical_utils.ExpressionBuilder.is;
 import static algorithms.csp.canonical_utils.ExpressionBuilder.not;
-import static puzzles.flow.FlowTile.State.*;
+import static puzzles.flow.FlowTile.State.END;
+import static puzzles.flow.FlowTile.State.MID;
+import static puzzles.flow.FlowTile.State.START;
 
 /**
  * Created by Patrick on 01.10.2014.

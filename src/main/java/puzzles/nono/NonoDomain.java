@@ -8,7 +8,8 @@ import java.util.Set;
 
 import algorithms.csp.canonical_utils.Domain;
 
-import static puzzles.nono.ChunkVals.V.*;
+import static puzzles.nono.ChunkVals.V.OFF;
+import static puzzles.nono.ChunkVals.V.ON;
 
 
 /**

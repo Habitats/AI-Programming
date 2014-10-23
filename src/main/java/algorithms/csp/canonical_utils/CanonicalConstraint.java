@@ -52,7 +52,7 @@ public class CanonicalConstraint extends Constraint<Integer> {
     long start = System.nanoTime();
     boolean satisfied = function.call(variables, focalVariable);
 
-   SimpleAStarCspPuzzle.avg +=  System.nanoTime() - start;
+    SimpleAStarCspPuzzle.avg += System.nanoTime() - start;
 //    if (satisfied) {
 //    }
 //    Log.v(TAG, satisfied + ": " + function);

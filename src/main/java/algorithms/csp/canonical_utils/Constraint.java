@@ -47,6 +47,6 @@ public abstract class Constraint<T> implements Iterable<Variable<T>> {
 
   public abstract void removeFocalvariableFromTodo(Variable<T> focalVariable);
 
-  public abstract boolean revise(Variable focalVariable,  CspPuzzle puzzle);
+  public abstract boolean revise(Variable focalVariable, CspPuzzle puzzle);
 
 }

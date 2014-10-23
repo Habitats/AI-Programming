@@ -33,7 +33,8 @@ public class VariableList implements Iterable<Variable<Integer>> {
   public void put(Variable var) {
     variableMap.put(var.getId(), var);
   }
-  public void put(String id, Variable var){
+
+  public void put(String id, Variable var) {
     variableMap.put(id, var);
   }
 

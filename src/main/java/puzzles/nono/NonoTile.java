@@ -8,7 +8,7 @@ import puzzles.flow.FlowTile;
 /**
  * Created by Patrick on 14.10.2014.
  */
-public class NonoTile extends ColorTile{
+public class NonoTile extends ColorTile {
 
 
   private final List<List<Integer>> colSpecs;
