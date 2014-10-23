@@ -2,10 +2,12 @@ package puzzles.flow;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ai.models.grid.Board;
 import algorithms.a_star_csp.AStarCsp;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.a_star_csp.SimpleAStarCspPuzzle;
@@ -30,6 +32,14 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
 
   @Override
   public VariableList generateVariables() {
+    if (Flow.SIMPLE) {
+      return generateSimpleVariables();
+    } else {
+      return generateFlowVariables();
+    }
+  }
+
+  private VariableList generateFlowVariables() {
     VariableList variables = new VariableList();
     Collection<FlowTile> items = getAstarCsp().getAdapter().getItems();
     for (FlowTile colorTile : items) {
@@ -63,6 +73,21 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
     return variables;
   }
 
+  private VariableList generateSimpleVariables() {
+    VariableList variables = new VariableList();
+    Collection<FlowTile> items = getAstarCsp().getAdapter().getItems();
+    for (FlowTile colorTile : items) {
+      Variable<Integer> colorVariable = new Variable(colorTile.getId(), getInitialDomain());
+      putVariable(variables, colorVariable);
+      colorVariable.addListener(colorTile);
+
+      if (colorTile.getColorState() != FlowTile.State.MID) {
+        colorVariable.setAssumption(colorTile.getInitialValue());
+      }
+    }
+    return variables;
+  }
+
   private Domain getOutputDomain(FlowTile colorTile) {
     Set<Integer> args = new HashSet<>();
     Map<Integer, FlowTile> neighbors = colorTile.getManhattanNeighbors();
@@ -92,6 +117,11 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
   }
 
   @Override
+  public Variable getSuccessor() {
+    return super.getSuccessor();
+  }
+
+  @Override
   protected Variable getMinimalDomain(VariableList variables) {
     List<Variable> vars = variables.getAll();
 
@@ -102,6 +132,7 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
 //        return randomVar;
 //      }
 //    }
+    vars = filterOutMidspoints(vars);
     double min = Integer.MAX_VALUE;
     Variable minVar = null;
 
@@ -137,6 +168,35 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
 //    return minVars.get(index);
   }
 
+  private List<Variable> filterOutMidspoints(List<Variable> vars) {
+    Board<FlowTile> board = (Board<FlowTile>) getAstarCsp().getAdapter();
+    for (Iterator<Variable> iterator = vars.iterator(); iterator.hasNext(); ) {
+      Variable var = iterator.next();
+      boolean color = var.getId().startsWith(FlowTile.ID);
+      boolean output = var.getId().startsWith(FlowTile.OUTPUT);
+      boolean input = var.getId().startsWith(FlowTile.INPUT);
+
+      int x = Integer.parseInt(var.getId().split("x")[1].split("y")[0]);
+      int y = Integer.parseInt(var.getId().split("y")[1]);
+
+      FlowTile tile = board.get(x, y);
+
+//      if (color) {
+//        boolean hasNeighborWithSameColor = false;
+//        for (FlowTile neighbor : tile.getManhattanNeighbors().values()) {
+//          if (neighbor.getColor().equals(tile.getColor())) {
+//            hasNeighborWithSameColor = true;
+//          }
+//        }
+//        if (!hasNeighborWithSameColor) {
+//          iterator.remove();
+//        }
+//      }
+
+    }
+    return vars;
+  }
+
   @Override
   public int getHeuristic() {
 
@@ -148,7 +208,8 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
 //     }
 //    }
 //    return  h;
-    int bestDomainSize = getVariables().size(); if (domainSize == bestDomainSize) {
+    int bestDomainSize = getVariables().size();
+    if (domainSize == bestDomainSize) {
       return 0;
     } else {
       return domainSize - bestDomainSize;

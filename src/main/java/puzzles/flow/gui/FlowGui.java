@@ -23,6 +23,7 @@ import ai.models.AIAdapter;
 import ai.models.grid.ColorTile;
 import algorithms.a_star.AStar;
 import algorithms.csp.CspButtonListener;
+import puzzles.flow.Flow;
 import puzzles.flow.FlowUtils;
 
 /**
@@ -48,6 +49,7 @@ public class FlowGui extends AIGui<ColorTile> {
   private AICheckBox stepCheckBox;
   private AIButton readFromFileButton;
   private AIButton loadButton;
+  private AICheckBox simpleCheckBox;
 
   private CspButtonListener listener;
 
@@ -92,6 +94,7 @@ public class FlowGui extends AIGui<ColorTile> {
     loadButton.addActionListener(e -> listener.loadClicked());
 
     inputField.setText(FlowUtils.samples.get(0));
+    simpleCheckBox.addActionListener(e -> Flow.SIMPLE = ((JCheckBox) e.getSource()).isSelected());
   }
 
 
