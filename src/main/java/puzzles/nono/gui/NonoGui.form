@@ -73,6 +73,8 @@
                 <item value="nono-rabbit"/>
                 <item value="nono-sailboat"/>
                 <item value="nono-telephone"/>
+                <item value="cup"/>
+                <item value="cat"/>
               </model>
             </properties>
           </component>
