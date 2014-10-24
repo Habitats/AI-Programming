@@ -5,6 +5,7 @@ import java.awt.*;
 import ai.gui.ColorUtils;
 import ai.models.Node;
 import algorithms.csp.canonical_utils.Domain;
+import algorithms.csp.canonical_utils.Variable;
 import algorithms.csp.canonical_utils.VariableListener;
 import puzzles.graph_coloring.GraphColoringPuzzle;
 
@@ -59,9 +60,9 @@ public class ColorNode extends Node<ColorNode> implements VariableListener<Integ
   }
 
   @Override
-  public void onValueChanged(Integer value, int size) {
+  public void onValueChanged(Integer value, int domainSize, Variable<Integer> variable) {
     this.value = value;
-    if (size == 1) {
+    if (domainSize == 1) {
       setColor(ColorUtils.toHsv(value, numberOfColors, 1));
     } else {
       setColor(Color.white);
@@ -73,12 +74,12 @@ public class ColorNode extends Node<ColorNode> implements VariableListener<Integ
   }
 
   @Override
-  public void onAssumptionMade(Integer value) {
+  public void onAssumptionMade(Integer value, Variable<Integer> variable) {
     setOutlineColor(ColorUtils.toHsv(value, numberOfColors, .7));
   }
 
   @Override
-  public void onDomainChanged(Domain domain) {
+  public void onDomainChanged(Domain<Integer> domain, Variable<Integer> tVariable) {
     desc = domain.toString();
   }
 

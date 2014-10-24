@@ -190,7 +190,7 @@ public class NonoConstraint extends Constraint<ChunkVals> {
 
   @Override
   public boolean isSatisfied(VariableList variables) {
-    return false;
+    return true;
   }
 
 }

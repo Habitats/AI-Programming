@@ -63,19 +63,19 @@ public class Variable<T> implements Comparable<Variable<T>>, VariableListener<T>
 
   private void fireDomainChanged() {
     for (VariableListener listener : listeners) {
-      listener.onDomainChanged(domain);
+      listener.onDomainChanged(domain, this);
     }
   }
 
   private void fireValueChanged(T value) {
     for (VariableListener listener : listeners) {
-      listener.onValueChanged(value, domain.getSize());
+      listener.onValueChanged(value, domain.getSize(), this);
     }
   }
 
   private void fireAssumptionMade(T value) {
     for (VariableListener listener : listeners) {
-      listener.onAssumptionMade(value);
+      listener.onAssumptionMade(value, this);
     }
   }
 
@@ -164,17 +164,17 @@ public class Variable<T> implements Comparable<Variable<T>>, VariableListener<T>
 
 
   @Override
-  public void onValueChanged(T value, int size) {
+  public void onValueChanged(T value, int domainSize, Variable<T> variable) {
     setValue(value);
   }
 
   @Override
-  public void onAssumptionMade(T value) {
+  public void onAssumptionMade(T value, Variable<T> variable) {
     setAssumption(value);
   }
 
   @Override
-  public void onDomainChanged(Domain<T> domain) {
+  public void onDomainChanged(Domain<T> domain, Variable<T> variable) {
     // do nothing
   }
 

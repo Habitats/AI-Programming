@@ -5,6 +5,7 @@ import java.awt.*;
 import ai.gui.ColorUtils;
 import ai.models.Node;
 import algorithms.csp.canonical_utils.Domain;
+import algorithms.csp.canonical_utils.Variable;
 import algorithms.csp.canonical_utils.VariableListener;
 import puzzles.flow.FlowTile;
 
@@ -110,8 +111,8 @@ public class ColorTile extends Node<Node> implements VariableListener<Integer> {
   }
 
   @Override
-  public void onValueChanged(Integer value, int size) {
-    if (size == 1) {
+  public void onValueChanged(Integer value, int domainSize, Variable<Integer> variable) {
+    if (domainSize == 1) {
       setColor(ColorUtils.toHsv(value, numberOfColors, 1));
     } else {
       setColor(Color.white);
@@ -119,12 +120,12 @@ public class ColorTile extends Node<Node> implements VariableListener<Integer> {
   }
 
   @Override
-  public void onAssumptionMade(Integer value) {
+  public void onAssumptionMade(Integer value, Variable<Integer> var) {
     setOutlineColor(ColorUtils.toHsv(value, numberOfColors, .7));
   }
 
   @Override
-  public void onDomainChanged(Domain domain) {
+  public void onDomainChanged(Domain<Integer> domain, Variable<Integer> variable) {
     domainText = domain.toString();
   }
 

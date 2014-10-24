@@ -100,7 +100,13 @@ public class Function {
     PyInteger[] args = new PyInteger[variablesMap.size()];
     int i = 0;
     for (String key : variablesMap.keySet()) {
-      args[i++] = new PyInteger(variablesMap.get(key).getValue());
+      Variable<Integer> integerVariable = variablesMap.get(key);
+      Integer value = integerVariable.getValue();
+      if(value == null){
+        Log.v(TAG, "wut");
+        return false;
+      }
+      args[i++] = new PyInteger(value);
     }
 
     // call the python lambda with args: x = 1, y = 2 etc, order is important

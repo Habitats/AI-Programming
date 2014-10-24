@@ -68,6 +68,7 @@ public class Flow extends AStarCsp<FlowTile> implements CspButtonListener, Runna
     if (SIMPLE) {
       constraints = generateSimpleConstraints(puzzle, adapter);
     } else {
+//      constraints = generateHaxConstraints(puzzle, adapter);
       constraints = generateFlowConstraints(puzzle, adapter);
     }
 
@@ -79,6 +80,10 @@ public class Flow extends AStarCsp<FlowTile> implements CspButtonListener, Runna
     for (Variable variable : puzzle.getVariables()) {
       variable.setConstraintsContainingVariable(immutableConstraints);
     }
+  }
+
+  private HashMap<String, Constraint> generateHaxConstraints(AStarCspPuzzle puzzle, AIAdapter<FlowTile> adapter) {
+    return null;
   }
 
   private HashMap<String, Constraint> generateSimpleConstraints(AStarCspPuzzle puzzle, AIAdapter<FlowTile> adapter) {
@@ -123,6 +128,8 @@ public class Flow extends AStarCsp<FlowTile> implements CspButtonListener, Runna
         Constraint inputNotOutputConstraint = new CanonicalConstraint(puzzle.getVariables(), inputNotOutputExpression);
         putConstraint(constraints, inputNotOutputExpression, inputNotOutputConstraint);
         Log.i(TAG, inputNotOutputConstraint);
+
+
       }
     }
 
@@ -169,8 +176,31 @@ public class Flow extends AStarCsp<FlowTile> implements CspButtonListener, Runna
           }
         }
       }
+      addInputMatchesOutputconstraints(puzzle, adapter, constraints, tile);
     }
     return constraints;
+  }
+
+  private void addInputMatchesOutputconstraints(AStarCspPuzzle puzzle, AIAdapter<FlowTile> adapter,
+                                                HashMap<String, Constraint> constraints, FlowTile tile) {
+    Map<Integer, FlowTile> neighbors = tile.getManhattanNeighbors();
+    for (Integer index : neighbors.keySet()) {
+      FlowTile neighbor = neighbors.get(index);
+      String input = tile.getInput();
+      String output = neighbor.getOutput();
+      if(output.equals("o_x2y2")){
+        Log.v(TAG, "wut");
+      }
+      boolean inputVariableExist = puzzle.getVariable(input) != null;
+      boolean outputVariableExist = puzzle.getVariable(output) != null;
+      if(inputVariableExist && outputVariableExist) {
+        String expression = //
+            S + not(Pair.with(input, index)) + OR + is(Pair.with(input, "( ( " + output + " +2 ) % 4)")) + E;
+        Constraint outputColorConstraint = new CanonicalConstraint(puzzle.getVariables(), expression);
+        putConstraint(constraints, expression, outputColorConstraint);
+        Log.i(TAG, expression);
+      }
+    }
   }
 
   private void addInputSameColorConstraints(AStarCspPuzzle puzzle, HashMap<String, Constraint> constraints,
@@ -222,6 +252,10 @@ public class Flow extends AStarCsp<FlowTile> implements CspButtonListener, Runna
 
   private String generateInputNotOutputConstraint(AIAdapter<FlowTile> adapter, FlowTile tile) {
     return not(Pair.with(tile.getInput(), tile.getOutput()));
+  }
+
+  private String generateInputMatchesOutputConstraint(AIAdapter<FlowTile> adapter, FlowTile tile) {
+    return is(Pair.with(tile.getInput(), ("(( " + tile.getOutput()) + " + 2) % 4)"));
   }
 
   private String generateExactlyTwoEqualNeighborConstraint(AIAdapter<FlowTile> adapter, FlowTile tile) {

@@ -1,7 +1,5 @@
 package puzzles.flow;
 
-import org.python.core.PyInteger;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,9 +8,9 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-import ai.Log;
 import algorithms.csp.CspPuzzle;
 import algorithms.csp.canonical_utils.Constraint;
+import algorithms.csp.canonical_utils.Domain;
 import algorithms.csp.canonical_utils.Variable;
 import algorithms.csp.canonical_utils.VariableList;
 
@@ -43,33 +41,6 @@ public class FlowConstraint extends Constraint<Integer> {
     return variablesMap;
   }
 
-  public boolean call(VariableList variables) {
-    for (Variable var : variables) {
-      if (variablesMap.containsKey(var.getId())) {
-        variablesMap.put(var.getId(), var.copy());
-      }
-    }
-    return call(variablesMap);
-  }
-
-  private boolean call(Map<String, Variable<Integer>> variablesMap) {
-    // put the values in the right order according to how the parameters for the lambda was created
-    PyInteger[] args = new PyInteger[variablesMap.size()];
-    int i = 0;
-    for (String key : variablesMap.keySet()) {
-      args[i++] = new PyInteger(variablesMap.get(key).getValue());
-    }
-
-    // call the python lambda with args: x = 1, y = 2 etc, order is important
-//    Log.v(TAG, toString());
-    try {
-      boolean ans = false;
-      return ans;
-    } catch (Exception e) {
-      Log.v(TAG, "lambda crashed: " + toString(), e);
-      throw new IllegalArgumentException();
-    }
-  }
 
   public boolean hasNext() {
     return variableIdsToCheck.size() > 0;
@@ -84,7 +55,28 @@ public class FlowConstraint extends Constraint<Integer> {
 
   @Override
   public boolean revise(Variable focalVariable, CspPuzzle puzzle) {
-    return false;
+    int oldSize = puzzle.getDomainSize();
+    removeInvalidValues(focalVariable, puzzle);
+    int newSize = puzzle.getDomainSize();
+    return oldSize > newSize;
+
+  }
+
+  private void removeInvalidValues(Variable focalVariable, CspPuzzle puzzle) {
+    Domain domain = focalVariable.getDomain();
+//    Board<FlowTile> board = (Board<FlowTile>) puzzle.getAstarCsp().getAdapter();
+
+    boolean color = focalVariable.getId().startsWith(FlowTile.ID);
+    boolean input = focalVariable.getId().startsWith(FlowTile.INPUT);
+    boolean output = focalVariable.getId().startsWith(FlowTile.OUTPUT);
+
+
+    int x = Integer.parseInt(focalVariable.getId().split("x")[1].split("y")[0]);
+    int y = Integer.parseInt(focalVariable.getId().split("y")[1]);
+
+
+
+//    FlowTile tile = board.get(x, y);
   }
 
 
@@ -94,7 +86,7 @@ public class FlowConstraint extends Constraint<Integer> {
 
   @Deprecated
   public boolean isSatisfied(VariableList variables) {
-    return call(variables);
+    return true;
   }
 
 
@@ -106,6 +98,12 @@ public class FlowConstraint extends Constraint<Integer> {
   public void addVariablesInConstraintsContainingCurrentVariable(CspPuzzle puzzle, Queue<Variable> queue,
                                                                  Set<String> queueHash, Variable var,
                                                                  Constraint constraint) {
+    for (Variable v : puzzle.getVariables()) {
+      if (!queueHash.contains(v)) {
+        queue.add(v);
+      }
+      queueHash.add(v.getId());
+    }
 
   }
 

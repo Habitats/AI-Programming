@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ai.Log;
 import ai.models.grid.Board;
 import algorithms.a_star_csp.AStarCsp;
 import algorithms.a_star_csp.AStarCspPuzzle;
@@ -20,6 +21,8 @@ import algorithms.csp.canonical_utils.VariableList;
  */
 public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
 
+
+  private static final String TAG = FlowCspPuzzle.class.getSimpleName();
 
   public FlowCspPuzzle(AStarCsp<FlowTile> astarCsp) {
     super(astarCsp);
@@ -144,9 +147,9 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
 //        var.setValue(var.getDomain().iterator().next());
         continue;
       }
-//      if (var.getId().startsWith(FlowTile.OUTPUT)) {
-//        continue;
-//      }
+      if (var.getId().startsWith(FlowTile.ID)) {
+        continue;
+      }
       if (normalizedSize < min) {
         min = normalizedSize;
         minVar = var;
@@ -195,6 +198,84 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
 
     }
     return vars;
+  }
+
+  @Override
+  public void setAssumption(String variableId, Object value) {
+    super.setAssumption(variableId, value);
+    if (true) {
+      return;
+    }
+
+    Variable var = getVariable(variableId);
+    Integer val = (Integer) value;
+
+    Domain domain = var.getDomain();
+//    Board<FlowTile> board = (Board<FlowTile>) puzzle.getAstarCsp().getAdapter();
+
+    boolean color = var.getId().startsWith(FlowTile.ID);
+    boolean input = var.getId().startsWith(FlowTile.INPUT);
+    boolean output = var.getId().startsWith(FlowTile.OUTPUT);
+
+    int x = Integer.parseInt(var.getId().split("x")[1].split("y")[0]);
+    int y = Integer.parseInt(var.getId().split("y")[1]);
+
+    FlowTile tile = ((Board<FlowTile>) getAstarCsp().getAdapter()).get(x, y);
+    Map<Integer, FlowTile> neighbors = tile.getManhattanNeighbors();
+
+    if (output) {
+      FlowTile neighbor = neighbors.get(val);
+
+      for (Integer adjNeighborIndex : neighbor.getManhattanNeighbors().keySet()) {
+        // if it's this tile
+        if ((adjNeighborIndex + 2) % 4 == val) {
+          continue;
+        }
+        FlowTile adjNeighbor = neighbor.getManhattanNeighbors().get(adjNeighborIndex);
+
+        try {
+          Variable<Integer>
+              adjNeighborOutput =
+              getVariable(FlowTile.OUTPUT + adjNeighbor.getId().split(FlowTile.ID)[1]);
+          int valueToPrune = (adjNeighborIndex + 2) % 4;
+          adjNeighborOutput.getDomain().remove(valueToPrune);
+        } catch (Exception e) {
+          Log.v(TAG,
+                "something went wrong with variable: " + FlowTile.OUTPUT + adjNeighbor.getId().split(FlowTile.ID)[1]);
+        }
+
+      }
+      Variable neighborInput = getVariable(FlowTile.INPUT + neighbor.getId().split(FlowTile.ID)[1]);
+      if (neighborInput != null) {
+        neighborInput.setAssumption((val + 2) % 4);
+      }
+    } else if (input) {
+      FlowTile neighbor = neighbors.get(val);
+
+      Variable neighborOutput = getVariable(FlowTile.INPUT + neighbor.getId().split(FlowTile.ID)[1]);
+
+      for (Integer adjNeighborIndex : neighbor.getManhattanNeighbors().keySet()) {
+        // if it's this tile
+        if ((adjNeighborIndex + 2) % 4 == val) {
+          continue;
+        }
+        FlowTile adjNeighbor = neighbor.getManhattanNeighbors().get(adjNeighborIndex);
+
+        try {
+          Variable<Integer> adjNeighborInput = getVariable(FlowTile.INPUT + adjNeighbor.getId().split(FlowTile.ID)[1]);
+          int valueToPrune = (adjNeighborIndex + 2) % 4;
+          adjNeighborInput.getDomain().remove(valueToPrune);
+        } catch (Exception e) {
+          Log.v(TAG,
+                "something went wrong with variable: " + FlowTile.OUTPUT + adjNeighbor.getId().split(FlowTile.ID)[1]);
+        }
+
+      }
+      if (neighborOutput != null) {
+        neighborOutput.setAssumption((val + 2) % 4);
+      }
+
+    }
   }
 
   @Override
