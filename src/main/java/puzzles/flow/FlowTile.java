@@ -1,12 +1,17 @@
 package puzzles.flow;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ai.gui.AICanvas;
+import ai.gui.ColorUtils;
 import ai.models.grid.ColorTile;
+import algorithms.csp.canonical_utils.Domain;
+import algorithms.csp.canonical_utils.Variable;
 
 /**
  * Created by Patrick on 14.10.2014.
@@ -26,6 +31,9 @@ public class FlowTile extends ColorTile {
   private ColorTile input;
   private String neighborId;
   private State state;
+  private String domainInputText = "";
+  private String domainOuputText = "";
+  private String domainColorText = "";
 
   private Map<Integer, FlowTile> manhattanNeighbors;
 
@@ -111,5 +119,51 @@ public class FlowTile extends ColorTile {
 
   public enum State {
     START, END, MID
+  }
+
+  @Override
+  public void onDomainChanged(Domain<Integer> domain, Variable<Integer> variable) {
+    boolean color = variable.getId().startsWith(FlowTile.ID);
+    boolean output = variable.getId().startsWith(FlowTile.OUTPUT);
+    boolean input = variable.getId().startsWith(FlowTile.INPUT);
+    if (color) {
+      domainColorText = domain.getId();
+    } else if (output) {
+      domainOuputText = domain.getId();
+    } else if (input) {
+      domainInputText = domain.getId();
+    }
+  }
+
+  @Override
+  public String toString() {
+    return "C: " + domainColorText //
+           + ((domainInputText.length() > 0) ? " - I: " + domainInputText : "") //
+           + ((domainOuputText.length() > 0) ? " - O: " + domainOuputText : "");
+  }
+
+  @Override
+  public void onValueChanged(Integer value, int domainSize, Variable<Integer> variable) {
+    drawTile(value, domainSize, variable);
+  }
+
+  private void drawTile(Integer value, int domainSize, Variable<Integer> variable) {
+    boolean color = variable.getId().startsWith(FlowTile.ID);
+    boolean output = variable.getId().startsWith(FlowTile.OUTPUT);
+    boolean input = variable.getId().startsWith(FlowTile.INPUT);
+
+    if (color) {
+      if (domainSize == 1) {
+        setColor(ColorUtils.toHsv(value, getNumberOfColors(), 1));
+      } else {
+        setColor(Color.white);
+      }
+    } else if (output) {
+      if (domainSize == 1) {
+        setDirection(AICanvas.Direction.getDirection(value));
+      } else {
+        setDirection(null);
+      }
+    }
   }
 }

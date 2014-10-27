@@ -2,6 +2,7 @@ package ai.models.grid;
 
 import java.awt.*;
 
+import ai.gui.AICanvas;
 import ai.gui.ColorUtils;
 import ai.models.Node;
 import algorithms.csp.canonical_utils.Domain;
@@ -26,7 +27,9 @@ public class ColorTile extends Node<Node> implements VariableListener<Integer> {
   private Color color = EMPTY;
   private Color outlineColor;
   private String domainText;
+
   private Integer initialValue = null;
+  private AICanvas.Direction direction;
 
   public ColorTile(int x, int y, int numberOfColors) {
     this.x = x;
@@ -42,6 +45,10 @@ public class ColorTile extends Node<Node> implements VariableListener<Integer> {
     }
   }
 
+  public void setDirection(AICanvas.Direction direction) {
+    this.direction = direction;
+  }
+
   @Override
   public String toString() {
     return String.format("%s - %s", getId(), domainText);
@@ -55,7 +62,7 @@ public class ColorTile extends Node<Node> implements VariableListener<Integer> {
     if (domainText == null) {
       return toString();
     }
-    return domainText;
+    return "";
   }
 
   @Override
@@ -129,5 +136,12 @@ public class ColorTile extends Node<Node> implements VariableListener<Integer> {
     domainText = domain.toString();
   }
 
+  public int getNumberOfColors() {
+    return numberOfColors;
+  }
+
+  public AICanvas.Direction getDirection() {
+    return direction;
+  }
 
 }

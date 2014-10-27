@@ -59,7 +59,7 @@ public class Domain<T> implements Iterable<T> {
     for (T i : args) {
       domain += ", " + i;
     }
-    return "D: " + domain.substring(2);
+    return domain.substring(2);
   }
 
   public boolean iEmpty() {
@@ -84,9 +84,9 @@ public class Domain<T> implements Iterable<T> {
   public String getId() {
     StringBuilder sb = new StringBuilder();
     for (T i : args) {
-      sb.append(i).append(",");
+      sb.append(",").append(i);
     }
-    return sb.toString();
+    return sb.toString().substring(1);
   }
 
   public void empty() {

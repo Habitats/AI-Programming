@@ -47,6 +47,34 @@ public class AIGridCanvas extends AICanvas {
     if (ShortestPathGui.DRAW_OUTLINES) {
       drawOutline(g, x, y);
     }
+    if (colorTile.getDirection() != null) {
+      drawArrow(g, x, y, colorTile.getDirection());
+    }
+  }
+
+  private void drawArrow(Graphics g, int x, int y, Direction direction) {
+    Point start = new Point();
+    Point end = new Point();
+    int arrowLength = 40;
+    switch (direction) {
+      case UP:
+        start.setLocation(x + (tileWidth / 2), y + (tileHeight / 2) + (arrowLength / 2));
+        end.setLocation(x + (tileWidth / 2), y + (tileHeight / 2) - (arrowLength / 2));
+        break;
+      case RIGHT:
+        start.setLocation(x + (tileWidth / 2) - (arrowLength / 2), y + (tileHeight / 2));
+        end.setLocation(x + (tileWidth / 2) + (arrowLength / 2), y + (tileHeight / 2));
+        break;
+      case DOWN:
+        start.setLocation(x + (tileWidth / 2), y + (tileHeight / 2) - (arrowLength / 2));
+        end.setLocation(x + (tileWidth / 2), y + (tileHeight / 2)+ (arrowLength / 2));
+        break;
+      case LEFT:
+        start.setLocation(x + (tileWidth / 2) + (arrowLength / 2), y + (tileHeight / 2));
+        end.setLocation(x + (tileWidth / 2) - (arrowLength / 2), y + (tileHeight / 2));
+        break;
+    }
+    createArrowShape((Graphics2D) g, start, end);
   }
 
   private void drawTile(Graphics g, ColorTile colorTile, int x, int y) {

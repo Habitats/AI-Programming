@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * Created by Patrick on 04.09.2014.
  */
-public class Variable<T> implements Comparable<Variable<T>>, VariableListener<T> {
+public class Variable<T> implements Comparable<Variable<T>>{
 
   private String id;
   private Domain<T> domain;
@@ -24,6 +24,9 @@ public class Variable<T> implements Comparable<Variable<T>>, VariableListener<T>
     this.id = id;
     this.domain = domain;
     listeners = new ArrayList<>();
+
+    fireDomainChanged();
+
   }
 
   public Set<String> getVariableIDsInConstraintsContainingVariable() {
@@ -129,6 +132,8 @@ public class Variable<T> implements Comparable<Variable<T>>, VariableListener<T>
 
   public void addListener(VariableListener listener) {
     this.listeners.add(listener);
+
+    fireDomainChanged();
   }
 
   public Variable<T> copy() {
@@ -160,34 +165,6 @@ public class Variable<T> implements Comparable<Variable<T>>, VariableListener<T>
     if (assumption) {
       setAssumption(value);
     }
-  }
-
-
-  @Override
-  public void onValueChanged(T value, int domainSize, Variable<T> variable) {
-    setValue(value);
-  }
-
-  @Override
-  public void onAssumptionMade(T value, Variable<T> variable) {
-    setAssumption(value);
-  }
-
-  @Override
-  public void onDomainChanged(Domain<T> domain, Variable<T> variable) {
-    // do nothing
-  }
-
-  @Override
-  public boolean isEmpty() {
-    // do nothing
-    return domain.iEmpty();
-  }
-
-  @Override
-  public Integer getInitialValue() {
-    // do nothing
-    return 0;
   }
 
   public void dupe(Variable<T> outputVariable) {

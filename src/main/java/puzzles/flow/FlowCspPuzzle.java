@@ -47,12 +47,14 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
     Collection<FlowTile> items = getAstarCsp().getAdapter().getItems();
     for (FlowTile colorTile : items) {
       Variable<Integer> colorVariable = new Variable(colorTile.getId(), getInitialDomain());
+      Variable<Integer> inputVariable = null;
+      Variable<Integer> outputVariable = null;
 
       // if mid state, add both input and output
       if (colorTile.getColorState() == FlowTile.State.MID) {
-        Variable<Integer> inputVariable = new Variable(colorTile.getInput(), getInputDomain(colorTile));
+        inputVariable = new Variable(colorTile.getInput(), getInputDomain(colorTile));
         putVariable(variables, inputVariable);
-        Variable<Integer> outputVariable = new Variable(colorTile.getOutput(), getOutputDomain(colorTile));
+        outputVariable = new Variable(colorTile.getOutput(), getOutputDomain(colorTile));
         putVariable(variables, outputVariable);
       }
       // if mid state, both input and output
@@ -60,18 +62,24 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
         colorVariable.setAssumption(colorTile.getInitialValue());
         // if start state, only output
         if (colorTile.getColorState() == FlowTile.State.START) {
-          Variable<Integer> outputVariable = new Variable(colorTile.getOutput(), getOutputDomain(colorTile));
+          outputVariable = new Variable(colorTile.getOutput(), getOutputDomain(colorTile));
           putVariable(variables, outputVariable);
         }
         // if end state, only input
         else if (colorTile.getColorState() == FlowTile.State.END) {
-          Variable<Integer> inputVariable = new Variable(colorTile.getInput(), getInputDomain(colorTile));
+          inputVariable = new Variable(colorTile.getInput(), getInputDomain(colorTile));
           putVariable(variables, inputVariable);
         }
       }
 
       putVariable(variables, colorVariable);
       colorVariable.addListener(colorTile);
+      if (outputVariable != null) {
+        outputVariable.addListener(colorTile);
+      }
+      if (inputVariable != null) {
+        inputVariable.addListener(colorTile);
+      }
     }
     return variables;
   }
