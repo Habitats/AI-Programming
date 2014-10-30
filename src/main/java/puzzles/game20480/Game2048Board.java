@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ai.Log;
-import ai.gui.AICanvas;
+import ai.gui.AICanvas.Direction;
 import ai.models.grid.Board;
 
 import static puzzles.game20480.Game2048Tile.VALUE.EMPTY;
@@ -14,10 +14,11 @@ import static puzzles.game20480.Game2048Tile.VALUE.v4;
 /**
  * Created by Patrick on 29.10.2014.
  */
-public class Game2048Board extends Board<Game2048Tile> {
+public class Game2048Board extends Board<Game2048Tile> implements Comparable<Game2048Board> {
 
   private static final String TAG = Game2048Board.class.getSimpleName();
   private boolean didMove;
+  private Direction lastMove;
 
   public Game2048Board() {
     super(4, 4);
@@ -31,7 +32,17 @@ public class Game2048Board extends Board<Game2048Tile> {
     }
   }
 
-  public void move(AICanvas.Direction direction) {
+  public Direction getLastMove() {
+    return lastMove;
+  }
+
+  public void move(Direction direction) {
+    move(direction, true);
+  }
+
+  public boolean move(Direction direction, boolean shouldPlace) {
+    didMove = false;
+    lastMove = direction;
     switch (direction) {
       case UP:
         up();
@@ -47,11 +58,11 @@ public class Game2048Board extends Board<Game2048Tile> {
         break;
     }
 
-    if(didMove) {
+    if (shouldPlace && didMove) {
       place();
       notifyDataChanged();
     }
-    didMove = false;
+    return didMove;
   }
 
   private void up() {
@@ -198,5 +209,31 @@ public class Game2048Board extends Board<Game2048Tile> {
     return empty;
   }
 
+  public Game2048Board copy() {
+    Game2048Board copy = new Game2048Board();
 
+    for (Game2048Tile tile : getItems()) {
+      copy.set(tile);
+    }
+    return copy;
+  }
+
+  public int getScore() {
+    int score = 0;
+    for (Game2048Tile tile : getItems()) {
+      score += tile.getValue().VAL;
+    }
+    return score;
+  }
+
+  @Override
+  public int compareTo(Game2048Board o) {
+    int score = getScore();
+    int otherScore = o.getScore();
+    return otherScore - score;
+  }
+
+  public boolean didMove() {
+    return didMove;
+  }
 }

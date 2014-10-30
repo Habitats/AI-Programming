@@ -1,6 +1,10 @@
 package puzzles.game20480;
 
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 import ai.Log;
+import ai.gui.AICanvas;
 import puzzles.game20480.gui.Game2048Gui;
 
 import static ai.gui.AICanvas.Direction.DOWN;
@@ -28,6 +32,28 @@ public class Game2048 implements Runnable, GameButtonListener {
     gui.setAdapter(board);
 
     board.place();
+
+    doSomeMoves(board);
+  }
+
+  private Game2048Board getNextBoard(Game2048Board board) {
+    Queue<Game2048Board> boards = new PriorityQueue<>();
+    for (AICanvas.Direction dir : AICanvas.Direction.values()) {
+      Game2048Board next = board.copy();
+      if (next.move(dir, false)) {
+        boards.add(next);
+      }
+    }
+    return boards.poll();
+  }
+
+  private void doSomeMoves(Game2048Board board) {
+    Game2048Board bestNextBoard;
+    while ((bestNextBoard = getNextBoard(board.copy())) != null) {
+      AICanvas.Direction bestMove = bestNextBoard.getLastMove();
+      board.move(bestMove);
+    }
+    Log.v(TAG, "board:  " + board.getScore());
   }
 
   @Override
