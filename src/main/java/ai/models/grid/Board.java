@@ -6,12 +6,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import ai.models.AIAdapter;
-import algorithms.csp.canonical_utils.VariableListener;
 
 /**
  * Created by Patrick on 24.08.2014.
  */
-public class Board<T extends ColorTile & VariableListener<Integer>> extends AIAdapter<T> implements Iterable<List<T>> {
+public class Board<T extends ColorTile> extends AIAdapter<T> implements Iterable<List<T>> {
 
   private List<List<T>> tiles;
   private T start;
