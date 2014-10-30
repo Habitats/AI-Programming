@@ -27,6 +27,7 @@ public class AIContiniousScrollPane extends JScrollPane {
   public AIContiniousScrollPane() {
     super(new JTextPane());
     pane = (JTextPane) getViewport().getView();
+    pane.setEditable(false);
     autoScroll(pane);
     pane.getDocument().addDocumentListener(new LimitLinesDocumentListener(maxLength));
 //    setMinimumSize(new Dimension(100, 0));

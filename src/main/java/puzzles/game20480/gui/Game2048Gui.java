@@ -1,6 +1,8 @@
 package puzzles.game20480.gui;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -43,7 +45,25 @@ public class Game2048Gui {
   private AIButton leftButton;
   private AIButton rightButton;
 
+
   public Game2048Gui(GameButtonListener listener) {
+
+    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
+      if (e.getID() == KeyEvent.KEY_PRESSED) {
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+          listener.upClicked();
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+          listener.downClicked();
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+          listener.rightClicked();
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+          listener.leftClicked();
+        }
+      }
+      e.consume();
+      return false;
+    });
+
     buildFrame(getMainPanel(), log, statusField);
     stepButton.addActionListener(e -> listener.stepClicked());
     stepSlider.addChangeListener(new ChangeListener() {
@@ -68,6 +88,11 @@ public class Game2048Gui {
     downButton.addActionListener(e -> listener.downClicked());
     leftButton.addActionListener(e -> listener.leftClicked());
     upButton.addActionListener(e -> listener.upClicked());
+    leftButton.addKeyListener(new KeyAdapter() {
+    });
+
+    getDrawingCanvas().drawLabels(labelsCheckbox.isSelected());
+
   }
 
   protected void buildFrame(JPanel mainPanel, AIContiniousScrollPane log, AITextField statusField) {

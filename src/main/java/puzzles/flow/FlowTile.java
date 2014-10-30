@@ -14,13 +14,13 @@ import algorithms.csp.canonical_utils.Variable;
 /**
  * Created by Patrick on 14.10.2014.
  */
-public class FlowTile extends ColorTile {
+public class FlowTile extends ColorTile<FlowTile> {
 
   public static final String SEP = "_";
   public static final String NEIGHBOR = "n" + SEP;
   public static final String OUTPUT = "o" + SEP;
   public static final String ID = "id" + SEP;
-  public static final String INPUT = "i" + SEP;
+  public static final String INPUT = "VAL" + SEP;
   public static final int ABOVE = 0;
   public static final int RIGHT = 1;
   public static final int BELOW = 2;
@@ -40,9 +40,9 @@ public class FlowTile extends ColorTile {
   }
 
   @Override
-  public void update(ColorTile colorTile) {
+  public void update(FlowTile colorTile) {
     super.update(colorTile);
-    state = ((FlowTile) colorTile).state;
+    state = colorTile.state;
   }
 
   public void setManhattanNeighbors(List<FlowTile> manhattanNeighbors) {

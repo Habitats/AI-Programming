@@ -41,6 +41,11 @@ public class AIGridCanvas<T extends ColorTile> extends AICanvas {
 
     drawTile(g, colorTile, x, y);
 
+
+    if (drawLabels) {
+      drawStringCenter(g, colorTile.getDescription(), x, y);
+    }
+
     if (ShortestPathGui.DRAW_OUTLINES) {
       drawOutline(g, x, y);
     }

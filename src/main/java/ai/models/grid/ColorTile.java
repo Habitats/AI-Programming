@@ -7,12 +7,11 @@ import ai.models.Node;
 import algorithms.csp.canonical_utils.Domain;
 import algorithms.csp.canonical_utils.Variable;
 import algorithms.csp.canonical_utils.VariableListener;
-import puzzles.flow.FlowTile;
 
 /**
  * Created by Patrick on 24.08.2014.
  */
-public class ColorTile extends Node<Node> implements VariableListener<Integer> {
+public class ColorTile<T extends ColorTile> extends Node<Node> implements VariableListener<Integer> {
 
   public static final Color EMPTY = Color.WHITE;
   private static final String TAG = ColorTile.class.getSimpleName();
@@ -23,11 +22,11 @@ public class ColorTile extends Node<Node> implements VariableListener<Integer> {
   private final int numberOfColors;
 
   // mutable fields
-  private Color color = EMPTY;
-  private Color outlineColor;
-  private String description;
+  protected Color color = EMPTY;
+  protected Color outlineColor;
+  protected String description;
 
-  private Integer initialValue = null;
+  protected Integer initialValue = null;
 
   public ColorTile(int x, int y, int numberOfColors) {
     this.x = x;
@@ -56,7 +55,7 @@ public class ColorTile extends Node<Node> implements VariableListener<Integer> {
     if (description == null) {
       return toString();
     }
-    return "";
+    return description;
   }
 
   @Override
@@ -66,7 +65,7 @@ public class ColorTile extends Node<Node> implements VariableListener<Integer> {
 
   @Override
   public String getId() {
-    return FlowTile.ID + "x" + x + "y" + y;
+    return "x" + x + "y" + y;
   }
 
   @Override
@@ -80,7 +79,7 @@ public class ColorTile extends Node<Node> implements VariableListener<Integer> {
   }
 
   // update all the mutable fields
-  public void update(ColorTile colorTile) {
+  public void update(T colorTile) {
     color = colorTile.color;
     initialValue = colorTile.initialValue;
     outlineColor = colorTile.outlineColor;
