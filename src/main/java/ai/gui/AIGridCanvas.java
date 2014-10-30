@@ -9,7 +9,7 @@ import puzzles.shortestpath.gui.ShortestPathGui;
 /**
  * Created by Patrick on 08.09.2014.
  */
-public class AIGridCanvas extends AICanvas {
+public class AIGridCanvas<T extends ColorTile> extends AICanvas {
 
   private int tileHeight = 20;
   private int tileWidth = 20;
@@ -27,28 +27,22 @@ public class AIGridCanvas extends AICanvas {
     if (getAdapter() != null) {
       for (int x = 0; x < getAdapter().getWidth(); x++) {
         for (int y = 0; y < getAdapter().getHeight(); y++) {
-          ColorTile colorTile = ((Board) getAdapter()).get(x, y);
+          T colorTile = (T) ((Board) getAdapter()).get(x, y);
           paintTile(g, colorTile);
         }
       }
     }
   }
 
-  private void paintTile(Graphics g, ColorTile colorTile) {
+  protected void paintTile(Graphics g, T colorTile) {
     // put origin to be the left bottom corner
-    int x = colorTile.x * tileWidth;
-    int y = getHeight() - tileHeight - colorTile.y * tileHeight;
+    int x = colorTile.x * getTileWidth();
+    int y = getHeight() - getTileHeight() - colorTile.y * getTileHeight();
 
     drawTile(g, colorTile, x, y);
 
-    if (drawLabels) {
-      drawStringCenter(g, colorTile.getDomainText(), x, y);
-    }
     if (ShortestPathGui.DRAW_OUTLINES) {
       drawOutline(g, x, y);
-    }
-    if (colorTile.getDirection() != null) {
-      drawArrow(g, x, y, colorTile.getDirection());
     }
   }
 
@@ -58,44 +52,44 @@ public class AIGridCanvas extends AICanvas {
     int arrowLength = 40;
     switch (direction) {
       case UP:
-        start.setLocation(x + (tileWidth / 2), y + (tileHeight / 2) + (arrowLength / 2));
-        end.setLocation(x + (tileWidth / 2), y + (tileHeight / 2) - (arrowLength / 2));
+        start.setLocation(x + (getTileWidth() / 2), y + (getTileHeight() / 2) + (arrowLength / 2));
+        end.setLocation(x + (getTileWidth() / 2), y + (getTileHeight() / 2) - (arrowLength / 2));
         break;
       case RIGHT:
-        start.setLocation(x + (tileWidth / 2) - (arrowLength / 2), y + (tileHeight / 2));
-        end.setLocation(x + (tileWidth / 2) + (arrowLength / 2), y + (tileHeight / 2));
+        start.setLocation(x + (getTileWidth() / 2) - (arrowLength / 2), y + (getTileHeight() / 2));
+        end.setLocation(x + (getTileWidth() / 2) + (arrowLength / 2), y + (getTileHeight() / 2));
         break;
       case DOWN:
-        start.setLocation(x + (tileWidth / 2), y + (tileHeight / 2) - (arrowLength / 2));
-        end.setLocation(x + (tileWidth / 2), y + (tileHeight / 2)+ (arrowLength / 2));
+        start.setLocation(x + (getTileWidth() / 2), y + (getTileHeight() / 2) - (arrowLength / 2));
+        end.setLocation(x + (getTileWidth() / 2), y + (getTileHeight() / 2) + (arrowLength / 2));
         break;
       case LEFT:
-        start.setLocation(x + (tileWidth / 2) + (arrowLength / 2), y + (tileHeight / 2));
-        end.setLocation(x + (tileWidth / 2) - (arrowLength / 2), y + (tileHeight / 2));
+        start.setLocation(x + (getTileWidth() / 2) + (arrowLength / 2), y + (getTileHeight() / 2));
+        end.setLocation(x + (getTileWidth() / 2) - (arrowLength / 2), y + (getTileHeight() / 2));
         break;
     }
     createArrowShape((Graphics2D) g, start, end);
   }
 
-  private void drawTile(Graphics g, ColorTile colorTile, int x, int y) {
+  protected void drawTile(Graphics g, T colorTile, int x, int y) {
     g.setColor(colorTile.getColor());
-    g.fillRect(x, y, tileWidth, tileHeight);
+    g.fillRect(x, y, getTileWidth(), getTileHeight());
   }
 
   @Override
   protected int getItemHeight() {
-    return tileHeight;
+    return getTileHeight();
   }
 
   @Override
   protected int getItemWidth() {
-    return tileWidth;
+    return getTileWidth();
   }
 
   @Override
   protected void drawOutline(Graphics g, int x, int y) {
     g.setColor(Theme.getForeground());
-    g.drawRect(x, y, tileWidth, tileHeight);
+    g.drawRect(x, y, getTileWidth(), getTileHeight());
   }
 
   @Override
@@ -105,5 +99,13 @@ public class AIGridCanvas extends AICanvas {
     }
     tileHeight = getHeight() / getAdapter().getHeight();
     tileWidth = getWidth() / getAdapter().getWidth();
+  }
+
+  public int getTileHeight() {
+    return tileHeight;
+  }
+
+  public int getTileWidth() {
+    return tileWidth;
   }
 }

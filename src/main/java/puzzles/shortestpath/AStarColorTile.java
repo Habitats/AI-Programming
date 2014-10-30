@@ -3,28 +3,19 @@ package puzzles.shortestpath;
 import java.awt.*;
 
 import ai.gui.Theme;
-import ai.models.grid.CspColorTile;
-import puzzles.flow.FlowTile;
+import ai.models.grid.ColorTile;
 
 /**
  * Created by Patrick on 03.10.2014.
  */
-public class AStarColorTile extends CspColorTile {
+public class AStarColorTile extends ColorTile {
 
   private State state;
   private State previousState;
-  private CspColorTile output;
-  private CspColorTile input;
-  private String neighborId;
 
   public AStarColorTile(int x, int y, State state) {
     super(x, y, State.values().length);
     setState(state);
-  }
-
-  public AStarColorTile(int x, int y) {
-    super(x, y, State.values().length);
-    setState(State.EMPTY);
   }
 
   public State getPreviousState() {
@@ -48,7 +39,7 @@ public class AStarColorTile extends CspColorTile {
   }
 
   @Override
-  public void update(CspColorTile colorTile) {
+  public void update(ColorTile colorTile) {
     setState(((AStarColorTile) colorTile).getState());
   }
 
@@ -79,38 +70,6 @@ public class AStarColorTile extends CspColorTile {
   @Override
   public String getId() {
     return null;
-  }
-
-  public void setColorState(State state) {
-    this.state = state;
-  }
-
-  public State getColorState() {
-    return state;
-  }
-
-  public String getOutput() {
-    return FlowTile.OUTPUT + "x" + x + "y" + y;
-  }
-
-  public String getInput() {
-    return FlowTile.INPUT + "x" + x + "y" + y;
-  }
-
-  public void setOutput(CspColorTile output) {
-    this.output = output;
-  }
-
-  public void setInput(CspColorTile input) {
-    this.input = input;
-  }
-
-  public String getOutputNeighborId() {
-    return FlowTile.NEIGHBOR + FlowTile.OUTPUT + getId();
-  }
-
-  public String getInputNeighborId() {
-    return FlowTile.NEIGHBOR + FlowTile.INPUT + getId();
   }
 
   public enum State {

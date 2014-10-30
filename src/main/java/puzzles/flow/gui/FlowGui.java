@@ -19,16 +19,16 @@ import ai.gui.AISlider;
 import ai.gui.AITextArea;
 import ai.gui.AITextField;
 import ai.models.AIAdapter;
-import ai.models.grid.CspColorTile;
 import algorithms.a_star.AStar;
 import algorithms.csp.CspButtonListener;
 import puzzles.flow.Flow;
+import puzzles.flow.FlowTile;
 import puzzles.flow.FlowUtils;
 
 /**
  * Created by Patrick on 23.08.2014.
  */
-public class FlowGui extends AIGui<CspColorTile> {
+public class FlowGui extends AIGui<FlowTile> {
 
   private static final String TAG = FlowGui.class.getSimpleName();
   private AIButton resetButton;
@@ -98,7 +98,7 @@ public class FlowGui extends AIGui<CspColorTile> {
 
 
   @Override
-  public void setAdapter(AIAdapter<CspColorTile> adapter) {
+  public void setAdapter(AIAdapter<FlowTile> adapter) {
 
 //    setAdapter.setOrigin(minX, minY);
 

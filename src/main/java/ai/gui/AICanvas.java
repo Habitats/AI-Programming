@@ -71,7 +71,7 @@ public abstract class AICanvas<T extends Node & VariableListener> extends JPanel
     g2d.drawString(s, offsetWidth + XPos, offsetHeight + YPos);
   }
 
-  public void createArrowShape(Graphics2D g, Point fromPt, Point toPt) {
+  public static void createArrowShape(Graphics2D g, Point fromPt, Point toPt) {
     Polygon arrowPolygon = new Polygon();
     arrowPolygon.addPoint(-6, 1);
     arrowPolygon.addPoint(3, 1);
