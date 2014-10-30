@@ -9,12 +9,11 @@ import ai.gui.AICanvas;
 import ai.gui.AIGui;
 import ai.gui.AIPanel;
 import ai.gui.AITextArea;
-import algorithms.csp.CspPuzzle;
-import algorithms.csp.GeneralArchConsistency;
 import puzzles.flow.Flow;
 import puzzles.graph_coloring.GraphColoring;
 import puzzles.nono.Nono;
 import puzzles.shortestpath.ShortestPath;
+import puzzles.twentyfortyeight.Game2048;
 
 /**
  * Created by Patrick on 24.08.2014.
@@ -29,12 +28,6 @@ public class AIMain {
     loadGui();
 //    flowTest();
 //    nonoTest();
-  }
-
-  private static void nonoTest() {
-    Nono nono = new Nono();
-    nono.run();
-    nono.test(1);
   }
 
   private static void loadGui() {
@@ -58,14 +51,17 @@ public class AIMain {
         AIButton graphColoringButton = new AIButton("Graph Coloring");
         AIButton flowButton = new AIButton("Flow Free");
         AIButton nonoButton = new AIButton("Nonogram");
+        AIButton g2048Button = new AIButton("2048");
         shortestPathButton.addActionListener(e -> shortestPath());
         graphColoringButton.addActionListener(e -> graphColoring());
         flowButton.addActionListener(e -> flow());
         nonoButton.addActionListener(e -> nono());
+        g2048Button.addActionListener(e -> g2048());
         panel.add(shortestPathButton);
         panel.add(graphColoringButton);
         panel.add(flowButton);
         panel.add(nonoButton);
+        panel.add(g2048Button);
         buildFrame(panel, null, null);
       }
 
@@ -94,24 +90,8 @@ public class AIMain {
     new Thread(new Flow()).start();
   }
 
-  private static void flowTest() {
-    Flow flow = new Flow();
-    flow.run();
-    CspPuzzle puzzle = flow.getSamplePuzzle(0);
-    int domainSize = puzzle.getDomainSize();
-    GeneralArchConsistency.printVariables(puzzle);
-    GeneralArchConsistency.Result res = GeneralArchConsistency.domainFilter(puzzle);
-    GeneralArchConsistency.printVariables(puzzle);
-    puzzle.setAssumption("id_x1y0", 0);
-    puzzle.visualize();
-    res = GeneralArchConsistency.domainFilter(puzzle);
-    GeneralArchConsistency.printVariables(puzzle);
-    puzzle.setAssumption("id_x0y1", 0);
-    puzzle.visualize();
-    res = GeneralArchConsistency.domainFilter(puzzle);
-    GeneralArchConsistency.printVariables(puzzle);
-
-    puzzle.visualize();
+  private static void g2048() {
+    new Thread(new Game2048()).start();
   }
 
   private static void shortestPath() {
