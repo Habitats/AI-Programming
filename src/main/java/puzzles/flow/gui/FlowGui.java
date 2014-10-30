@@ -14,13 +14,12 @@ import ai.gui.AICanvas;
 import ai.gui.AICheckBox;
 import ai.gui.AIComboBox;
 import ai.gui.AIContiniousScrollPane;
-import ai.gui.AIGridCanvas;
 import ai.gui.AIGui;
 import ai.gui.AISlider;
 import ai.gui.AITextArea;
 import ai.gui.AITextField;
 import ai.models.AIAdapter;
-import ai.models.grid.ColorTile;
+import ai.models.grid.CspColorTile;
 import algorithms.a_star.AStar;
 import algorithms.csp.CspButtonListener;
 import puzzles.flow.Flow;
@@ -29,7 +28,7 @@ import puzzles.flow.FlowUtils;
 /**
  * Created by Patrick on 23.08.2014.
  */
-public class FlowGui extends AIGui<ColorTile> {
+public class FlowGui extends AIGui<CspColorTile> {
 
   private static final String TAG = FlowGui.class.getSimpleName();
   private AIButton resetButton;
@@ -38,7 +37,7 @@ public class FlowGui extends AIGui<ColorTile> {
 
   private JPanel mainPanel;
 
-  private AIGridCanvas drawingCanvas;
+  private FlowGridCanvas drawingCanvas;
   private AITextArea inputField;
   private AITextField logField;
   private AITextField statusField;
@@ -99,7 +98,7 @@ public class FlowGui extends AIGui<ColorTile> {
 
 
   @Override
-  public void setAdapter(AIAdapter<ColorTile> adapter) {
+  public void setAdapter(AIAdapter<CspColorTile> adapter) {
 
 //    setAdapter.setOrigin(minX, minY);
 

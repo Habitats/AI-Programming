@@ -3,18 +3,18 @@ package puzzles.shortestpath;
 import java.awt.*;
 
 import ai.gui.Theme;
-import ai.models.grid.ColorTile;
+import ai.models.grid.CspColorTile;
 import puzzles.flow.FlowTile;
 
 /**
  * Created by Patrick on 03.10.2014.
  */
-public class AStarColorTile extends ColorTile {
+public class AStarColorTile extends CspColorTile {
 
   private State state;
   private State previousState;
-  private ColorTile output;
-  private ColorTile input;
+  private CspColorTile output;
+  private CspColorTile input;
   private String neighborId;
 
   public AStarColorTile(int x, int y, State state) {
@@ -48,7 +48,7 @@ public class AStarColorTile extends ColorTile {
   }
 
   @Override
-  public void update(ColorTile colorTile) {
+  public void update(CspColorTile colorTile) {
     setState(((AStarColorTile) colorTile).getState());
   }
 
@@ -97,11 +97,11 @@ public class AStarColorTile extends ColorTile {
     return FlowTile.INPUT + "x" + x + "y" + y;
   }
 
-  public void setOutput(ColorTile output) {
+  public void setOutput(CspColorTile output) {
     this.output = output;
   }
 
-  public void setInput(ColorTile input) {
+  public void setInput(CspColorTile input) {
     this.input = input;
   }
 

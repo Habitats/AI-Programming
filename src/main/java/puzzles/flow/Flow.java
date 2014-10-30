@@ -15,7 +15,7 @@ import ai.Log;
 import ai.gui.AIGui;
 import ai.models.AIAdapter;
 import ai.models.grid.Board;
-import ai.models.grid.ColorTile;
+import ai.models.grid.CspColorTile;
 import algorithms.a_star_csp.AStarCsp;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.CspButtonListener;
@@ -271,7 +271,7 @@ public class Flow extends AStarCsp<FlowTile> implements CspButtonListener, Runna
 
     Tuple[] pairs = new Tuple[neighbors.size()];
     int i = 0;
-    for (ColorTile neighbor : neighbors) {
+    for (CspColorTile neighbor : neighbors) {
       pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
     }
     return pairs;
@@ -284,7 +284,7 @@ public class Flow extends AStarCsp<FlowTile> implements CspButtonListener, Runna
 
     Tuple[] pairs = new Tuple[neighbors.size()];
     int i = 0;
-    for (ColorTile neighbor : neighbors) {
+    for (CspColorTile neighbor : neighbors) {
       pairs[i++] = Pair.with(tile.getId(), neighbor.getId());
     }
 

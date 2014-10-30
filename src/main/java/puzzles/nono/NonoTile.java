@@ -2,19 +2,19 @@ package puzzles.nono;
 
 import java.util.List;
 
-import ai.models.grid.ColorTile;
+import ai.models.grid.CspColorTile;
 import puzzles.flow.FlowTile;
 
 /**
  * Created by Patrick on 14.10.2014.
  */
-public class NonoTile extends ColorTile {
+public class NonoTile extends CspColorTile {
 
 
   private final List<List<Integer>> colSpecs;
   private final List<List<Integer>> rowSpecs;
-  private ColorTile output;
-  private ColorTile input;
+  private CspColorTile output;
+  private CspColorTile input;
   private String neighborId;
   private FlowTile.State state;
 

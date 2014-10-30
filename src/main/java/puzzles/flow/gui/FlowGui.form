@@ -197,14 +197,12 @@
             <border type="none"/>
             <children/>
           </scrollpane>
-          <grid id="f2ccc" class="ai.gui.AIGridCanvas" binding="drawingCanvas" layout-manager="GridBagLayout">
+          <component id="3cdd2" class="puzzles.flow.gui.FlowGridCanvas" binding="drawingCanvas">
             <constraints>
               <splitpane position="left"/>
             </constraints>
             <properties/>
-            <border type="none"/>
-            <children/>
-          </grid>
+          </component>
         </children>
       </splitpane>
     </children>
