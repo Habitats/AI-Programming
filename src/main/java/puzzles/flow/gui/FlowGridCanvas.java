@@ -21,7 +21,7 @@ public class FlowGridCanvas extends AIGridCanvas<FlowTile> {
     drawTile(g, colorTile, x, y);
 
     if (drawLabels) {
-      drawStringCenter(g, colorTile.getDomainText(), x, y);
+      drawStringCenter(g, colorTile.getDescription(), x, y);
     }
 
     if (ShortestPathGui.DRAW_OUTLINES) {

@@ -1,6 +1,6 @@
-package puzzles.twentyfortyeight;
+package puzzles.game20480;
 
-import puzzles.twentyfortyeight.gui.Game2048Gui;
+import puzzles.game20480.gui.Game2048Gui;
 
 /**
  * Created by Patrick on 30.10.2014.

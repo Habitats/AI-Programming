@@ -50,11 +50,6 @@ public class Flow extends AStarCsp<FlowTile> implements CspButtonListener, Runna
     return new FlowGui();
   }
 
-  public void test() {
-    loadClicked();
-  }
-
-
   @Override
   protected AStarCspPuzzle generateCspPuzzle() {
     return new FlowCspPuzzle(this);
@@ -79,10 +74,6 @@ public class Flow extends AStarCsp<FlowTile> implements CspButtonListener, Runna
     for (Variable variable : puzzle.getVariables()) {
       variable.setConstraintsContainingVariable(immutableConstraints);
     }
-  }
-
-  private HashMap<String, Constraint> generateHaxConstraints(AStarCspPuzzle puzzle, AIAdapter<FlowTile> adapter) {
-    return null;
   }
 
   private HashMap<String, Constraint> generateSimpleConstraints(AStarCspPuzzle puzzle, AIAdapter<FlowTile> adapter) {
@@ -187,12 +178,12 @@ public class Flow extends AStarCsp<FlowTile> implements CspButtonListener, Runna
       FlowTile neighbor = neighbors.get(index);
       String input = tile.getInput();
       String output = neighbor.getOutput();
-      if(output.equals("o_x2y2")){
+      if (output.equals("o_x2y2")) {
         Log.v(TAG, "wut");
       }
       boolean inputVariableExist = puzzle.getVariable(input) != null;
       boolean outputVariableExist = puzzle.getVariable(output) != null;
-      if(inputVariableExist && outputVariableExist) {
+      if (inputVariableExist && outputVariableExist) {
         String expression = //
             S + not(Pair.with(input, index)) + OR + is(Pair.with(input, "( ( " + output + " +2 ) % 4)")) + E;
         Constraint outputColorConstraint = new CanonicalConstraint(puzzle.getVariables(), expression);
@@ -253,21 +244,13 @@ public class Flow extends AStarCsp<FlowTile> implements CspButtonListener, Runna
     return not(Pair.with(tile.getInput(), tile.getOutput()));
   }
 
-  private String generateInputMatchesOutputConstraint(AIAdapter<FlowTile> adapter, FlowTile tile) {
-    return is(Pair.with(tile.getInput(), ("(( " + tile.getOutput()) + " + 2) % 4)"));
-  }
-
   private String generateExactlyTwoEqualNeighborConstraint(AIAdapter<FlowTile> adapter, FlowTile tile) {
     Tuple[] pairs = getNeighborIdTuples((Board<FlowTile>) adapter, tile);
-    String expression;
-
     return exatlyTwoTuplesEquals(pairs);
   }
 
   private Tuple[] getNeighborIdTuples(Board<FlowTile> adapter, FlowTile tile) {
     List<FlowTile> neighbors = adapter.getManhattanNeighbors(tile);
-    String expression = "";
-
     Tuple[] pairs = new Tuple[neighbors.size()];
     int i = 0;
     for (FlowTile neighbor : neighbors) {
@@ -279,8 +262,6 @@ public class Flow extends AStarCsp<FlowTile> implements CspButtonListener, Runna
 
   private String generateExactlyOneEqualNeighborConstraint(AIAdapter<FlowTile> adapter, FlowTile tile) {
     List<FlowTile> neighbors = ((Board<FlowTile>) adapter).getManhattanNeighbors(tile);
-    String expression = "";
-
     Tuple[] pairs = new Tuple[neighbors.size()];
     int i = 0;
     for (FlowTile neighbor : neighbors) {

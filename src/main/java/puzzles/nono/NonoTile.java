@@ -9,7 +9,6 @@ import ai.models.grid.ColorTile;
  */
 public class NonoTile extends ColorTile {
 
-
   private final List<List<Integer>> colSpecs;
   private final List<List<Integer>> rowSpecs;
 
@@ -26,4 +25,5 @@ public class NonoTile extends ColorTile {
   public List<List<Integer>> getColSpecs() {
     return colSpecs;
   }
+
 }

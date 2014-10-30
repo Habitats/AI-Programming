@@ -1,4 +1,4 @@
-package puzzles.twentyfortyeight.gui;
+package puzzles.game20480.gui;
 
 import java.awt.*;
 
@@ -16,7 +16,7 @@ import ai.gui.AISlider;
 import ai.gui.AITextField;
 import ai.models.grid.Board;
 import algorithms.a_star.AStar;
-import puzzles.twentyfortyeight.GameButtonListener;
+import puzzles.game20480.GameButtonListener;
 
 /**
  * Created by Patrick on 23.08.2014.

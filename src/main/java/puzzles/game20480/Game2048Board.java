@@ -1,4 +1,4 @@
-package puzzles.twentyfortyeight;
+package puzzles.game20480;
 
 import ai.models.grid.Board;
 import ai.models.grid.ColorTile;

@@ -1,8 +1,6 @@
 package puzzles.flow;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,15 +25,14 @@ public class FlowTile extends ColorTile {
   public static final int RIGHT = 1;
   public static final int BELOW = 2;
   public static final int LEFT = 3;
-  private ColorTile output;
-  private ColorTile input;
-  private String neighborId;
+
   private State state;
   private String domainInputText = "";
   private String domainOuputText = "";
   private String domainColorText = "";
 
   private Map<Integer, FlowTile> manhattanNeighbors;
+  private AICanvas.Direction direction;
 
   public FlowTile(int x, int y, int numberOfColors) {
     super(x, y, numberOfColors);
@@ -90,31 +87,12 @@ public class FlowTile extends ColorTile {
     return INPUT + "x" + x + "y" + y;
   }
 
-  public void setOutput(ColorTile output) {
-    this.output = output;
+  public void setDirection(AICanvas.Direction direction) {
+    this.direction = direction;
   }
 
-  public void setInput(ColorTile input) {
-    this.input = input;
-  }
-
-  public String getOutputNeighborId() {
-    return NEIGHBOR + OUTPUT + getId();
-  }
-
-  public String getInputNeighborId() {
-    return NEIGHBOR + INPUT + getId();
-  }
-
-  public List<FlowTile> getSameColorNeighbor() {
-    Collection<FlowTile> neighbors = getManhattanNeighbors().values();
-    List<FlowTile> sameColor = new ArrayList<>();
-    for (FlowTile neighbor : neighbors) {
-      if (neighbor.getColor().equals(getColor())) {
-        sameColor.add(neighbor);
-      }
-    }
-    return sameColor;
+  public AICanvas.Direction getDirection() {
+    return direction;
   }
 
   public enum State {

@@ -127,7 +127,6 @@ public abstract class AStarCsp<T extends Node & VariableListener> implements Csp
 
   @Override
   public void sampleSelected(int i) {
-//    this.puzzle = getSamplePuzzle(i);
   }
 
   public AIAdapter<T> getAdapter() {

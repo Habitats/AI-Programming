@@ -12,7 +12,6 @@ import ai.models.grid.Board;
 import algorithms.a_star_csp.AStarCsp;
 import algorithms.a_star_csp.AStarCspPuzzle;
 import algorithms.csp.CspButtonListener;
-import algorithms.csp.GeneralArchConsistency;
 import algorithms.csp.canonical_utils.Constraint;
 import puzzles.nono.gui.NonoGui;
 
@@ -85,19 +84,6 @@ public class Nono extends AStarCsp<NonoTile> implements CspButtonListener, Runna
   public void runClicked() {
     loadClicked();
     super.runClicked();
-  }
-
-  public void test(int i) {
-    NonoCspPuzzle puzzle = (NonoCspPuzzle) getSamplePuzzle(i);
-
-    puzzle.visualize();
-    GeneralArchConsistency.Result res = GeneralArchConsistency.domainFilter(puzzle);
-    puzzle.visualize();
-    res = GeneralArchConsistency.domainFilter(puzzle);
-    puzzle.visualize();
-    res = GeneralArchConsistency.domainFilter(puzzle);
-    puzzle.visualize();
-
   }
 
   @Override

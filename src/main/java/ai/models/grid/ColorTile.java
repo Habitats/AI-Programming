@@ -2,7 +2,6 @@ package ai.models.grid;
 
 import java.awt.*;
 
-import ai.gui.AICanvas;
 import ai.gui.ColorUtils;
 import ai.models.Node;
 import algorithms.csp.canonical_utils.Domain;
@@ -26,10 +25,9 @@ public class ColorTile extends Node<Node> implements VariableListener<Integer> {
   // mutable fields
   private Color color = EMPTY;
   private Color outlineColor;
-  private String domainText;
+  private String description;
 
   private Integer initialValue = null;
-  private AICanvas.Direction direction;
 
   public ColorTile(int x, int y, int numberOfColors) {
     this.x = x;
@@ -45,21 +43,17 @@ public class ColorTile extends Node<Node> implements VariableListener<Integer> {
     }
   }
 
-  public void setDirection(AICanvas.Direction direction) {
-    this.direction = direction;
-  }
-
   @Override
   public String toString() {
-    return String.format("%s - %s", getId(), domainText);
+    return String.format("%s - %s", getId(), description);
   }
 
-  public void setDomainText(String domainText) {
-    this.domainText = domainText;
+  public void setDescription(String description) {
+    this.description = description;
   }
 
-  public String getDomainText() {
-    if (domainText == null) {
+  public String getDescription() {
+    if (description == null) {
       return toString();
     }
     return "";
@@ -90,7 +84,7 @@ public class ColorTile extends Node<Node> implements VariableListener<Integer> {
     color = colorTile.color;
     initialValue = colorTile.initialValue;
     outlineColor = colorTile.outlineColor;
-    domainText = colorTile.domainText;
+    description = colorTile.description;
   }
 
   public Color getColor() {
@@ -133,15 +127,11 @@ public class ColorTile extends Node<Node> implements VariableListener<Integer> {
 
   @Override
   public void onDomainChanged(Domain<Integer> domain, Variable<Integer> variable) {
-    domainText = domain.toString();
+    description = domain.toString();
   }
 
   public int getNumberOfColors() {
     return numberOfColors;
-  }
-
-  public AICanvas.Direction getDirection() {
-    return direction;
   }
 
 }

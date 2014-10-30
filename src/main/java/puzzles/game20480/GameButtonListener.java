@@ -1,4 +1,4 @@
-package puzzles.twentyfortyeight;
+package puzzles.game20480;
 
 /**
  * Created by Patrick on 29.10.2014.

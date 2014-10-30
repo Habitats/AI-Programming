@@ -128,7 +128,7 @@ public class AStarBoardNode extends AStarNode {
       while (node.hasParent()) {
         AStarColorTile tile = ((AStarBoardNode) node).getTile();
         tile.setState(state);
-        tile.setDomainText(node.toStringShort());
+        tile.setDescription(node.toStringShort());
         board.set(tile);
         node = node.getParent();
       }
@@ -140,7 +140,7 @@ public class AStarBoardNode extends AStarNode {
     for (AStarNode node : getSuccessors()) {
       AStarColorTile tile = ((AStarBoardNode) node).getTile();
       tile.setState(AStarColorTile.State.CHILDREN);
-//      tile.setDomainText(node.toStringShort());
+//      tile.setDescription(node.toStringShort());
       board.set(tile);
     }
     board.notifyDataChanged();

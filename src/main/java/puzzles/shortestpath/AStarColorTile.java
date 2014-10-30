@@ -2,6 +2,7 @@ package puzzles.shortestpath;
 
 import java.awt.*;
 
+import ai.gui.AICanvas;
 import ai.gui.Theme;
 import ai.models.grid.ColorTile;
 
@@ -12,6 +13,7 @@ public class AStarColorTile extends ColorTile {
 
   private State state;
   private State previousState;
+  private AICanvas.Direction direction;
 
   public AStarColorTile(int x, int y, State state) {
     super(x, y, State.values().length);
@@ -70,6 +72,14 @@ public class AStarColorTile extends ColorTile {
   @Override
   public String getId() {
     return null;
+  }
+
+  public void setDirection(AICanvas.Direction direction) {
+    this.direction = direction;
+  }
+
+  public AICanvas.Direction getDirection() {
+    return direction;
   }
 
   public enum State {

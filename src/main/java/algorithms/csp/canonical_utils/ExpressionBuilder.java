@@ -95,7 +95,6 @@ public class ExpressionBuilder {
     if (pairs.length == 2) {
       xy1 = pairs[0];
       xy2 = pairs[1];
-      //    ((xy == xy1) and (xy == xy2)
       return is(xy1) + AND + is(xy2);
 
     } else if (pairs.length == 3) {
@@ -109,16 +108,6 @@ public class ExpressionBuilder {
                    + OR + is(xy1) + AND + not(xy2) + AND + is(xy3) //
                    + OR + is(xy1) + AND + is(xy2) + AND + not(xy3) //
       ;
-
-      // ((NOT w) OR  (NOT y) OR  (NOT z)) AND  (w OR  y) AND  (w OR  z) AND  (y OR  z)
-      // w = (xy == xy1)
-      // y = (xy == xy2)
-      // z = (xy == xy3)
-      // q = (xy == xy4)
-//      expression = S + S + not(xy1) + E + OR + S + not(xy2) + E + OR + S + not(xy3) + E + E  //
-//                   + AND + S + is(xy1) + OR + is(xy2) + E  //
-//                   + AND + S + is(xy1) + OR + is(xy3) + E  //
-//                   + AND + S + is(xy2) + OR + is(xy3) + E;
 
       return expression;
 
@@ -141,28 +130,6 @@ public class ExpressionBuilder {
                    + OR + not(xy1) + AND + is(xy2) + AND + not(xy3) + AND + is(xy4)//
                    + OR + not(xy1) + AND + not(xy2) + AND + is(xy3) + AND + is(xy4)//
       ;
-
-//      ((NOT q) OR  (NOT w) OR  (NOT x))
-//       AND  ((NOT q) OR  (NOT w) OR  (NOT y))
-//      AND  ((NOT q) OR  (NOT x) OR  (NOT y))
-//      AND  (q OR  w OR  x)
-//      AND  (q OR  w OR  y)
-//      AND  (q OR  x OR  y)
-//      AND  ((NOT w) OR  (NOT x) OR  (NOT y))
-//      AND  (w OR  x OR  y)
-
-      // w = (xy == xy1)
-      // y = (xy == xy2)
-      // z = (xy == xy3)
-      // q = (xy == xy4)
-//
-//      expression =  //
-//          S + S + not(xy1) + E + OR + S + not(xy2) + E + OR + S + not(xy3) + E + E + AND + S + S + not(xy1) + E + OR + S
-//          + not(xy2) + E + OR + S + not(xy4) + E + E + AND + S + S + not(xy1) + E + OR + S + not(xy3) + E + OR + S
-//          + not(xy4) + E + E + AND + S + is(xy1) + OR + is(xy2) + OR + is(xy3) + E + AND + S + is(xy1) + OR + is(xy2)
-//          + OR + is(xy4) + E + AND + S + is(xy1) + OR + is(xy3) + OR + is(xy4) + E + AND + S + S + not(xy2) + E + OR + S
-//          + not(xy3) + E + OR + S + not(xy4) + E + E + AND + S + is(xy2) + OR + is(xy3) + OR + is(xy4) + E +
-//          " ";
 
       return expression;
     }

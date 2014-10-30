@@ -102,7 +102,7 @@ public class Function {
     for (String key : variablesMap.keySet()) {
       Variable<Integer> integerVariable = variablesMap.get(key);
       Integer value = integerVariable.getValue();
-      if(value == null){
+      if (value == null) {
         Log.v(TAG, "wut");
         return false;
       }

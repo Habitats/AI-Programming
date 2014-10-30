@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * Created by Patrick on 04.09.2014.
  */
-public class Variable<T> implements Comparable<Variable<T>>{
+public class Variable<T> implements Comparable<Variable<T>> {
 
   private String id;
   private Domain<T> domain;

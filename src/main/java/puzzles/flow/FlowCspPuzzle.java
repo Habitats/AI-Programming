@@ -158,7 +158,6 @@ public class FlowCspPuzzle extends SimpleAStarCspPuzzle {
 
     int domainSize = getDomainSize();
 
-
     int bestDomainSize = getVariables().size();
     if (domainSize == bestDomainSize) {
       return 0;

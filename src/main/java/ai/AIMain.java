@@ -10,10 +10,10 @@ import ai.gui.AIGui;
 import ai.gui.AIPanel;
 import ai.gui.AITextArea;
 import puzzles.flow.Flow;
+import puzzles.game20480.Game2048;
 import puzzles.graph_coloring.GraphColoring;
 import puzzles.nono.Nono;
 import puzzles.shortestpath.ShortestPath;
-import puzzles.twentyfortyeight.Game2048;
 
 /**
  * Created by Patrick on 24.08.2014.
@@ -23,11 +23,7 @@ public class AIMain {
   public static final String TAG = AIMain.class.getSimpleName();
 
   public static void main(String[] args) {
-//    graphColoring();
-//    shortestPath();
     loadGui();
-//    flowTest();
-//    nonoTest();
   }
 
   private static void loadGui() {
