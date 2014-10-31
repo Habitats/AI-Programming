@@ -1,10 +1,14 @@
 package puzzles.game20480;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
 import ai.Log;
 import ai.gui.AICanvas;
+import algorithms.minimax.MiniMax;
+import algorithms.minimax.MiniMaxState;
 import puzzles.game20480.gui.Game2048Gui;
 
 import static ai.gui.AICanvas.Direction.DOWN;
@@ -25,6 +29,7 @@ public class Game2048 implements Runnable, GameButtonListener {
   public void run() {
     gui = new Game2048Gui(this);
     initialize();
+
   }
 
   private void initialize() {
@@ -33,7 +38,34 @@ public class Game2048 implements Runnable, GameButtonListener {
 
     board.place();
 
-    doSomeMoves(board);
+
+    for (int i = 0; i < 1000; i++) {
+//      List<MiniMaxState> tree = MiniMax.getSearchTree(board, 2);
+//
+//      MiniMaxState bestScore = MiniMax.getBestState(tree);
+
+      Map<MiniMaxState, Integer> move = new HashMap<>();
+      int max = Integer.MIN_VALUE;
+      MiniMaxState best = null;
+      Log.v(TAG, "current:");
+
+      board.printBoard();
+      for (MiniMaxState next : board.getPossibleNextStates()) {
+        ((Game2048Board) next).printBoard();
+        int value = MiniMax.alphaBeta(next, 5);
+        if (value > max) {
+          max = value;
+          best = next;
+        }
+        move.put(next, value);
+      }
+      if(best == null)
+        return;
+      AICanvas.Direction bestMove = ((Game2048Board) best).getLastMove();
+      Log.v(TAG, "moving " + bestMove.name());
+      board.move(bestMove);
+      board.notifyDataChanged();
+    }
   }
 
   private Game2048Board getNextBoard(Game2048Board board) {
@@ -74,7 +106,7 @@ public class Game2048 implements Runnable, GameButtonListener {
   @Override
   public void runClicked() {
     Log.v(TAG, "run initiated ...");
-    board.place();
+    doSomeMoves(board);
   }
 
   @Override

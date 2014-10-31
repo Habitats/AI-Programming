@@ -12,7 +12,7 @@ public class Game2048Tile extends ColorTile<Game2048Tile> {
 
   public Game2048Tile(int x, int y) {
     super(x, y, VALUE.values().length);
-    setValue(VALUE.EMPTY);
+    setValue(VALUE.v0);
   }
 
   public void setValue(VALUE value) {
@@ -34,7 +34,7 @@ public class Game2048Tile extends ColorTile<Game2048Tile> {
   }
 
   public void setEmpty() {
-    setValue(VALUE.EMPTY);
+    setValue(VALUE.v0);
   }
 
 
@@ -60,7 +60,7 @@ public class Game2048Tile extends ColorTile<Game2048Tile> {
   }
 
   public enum VALUE {
-    EMPTY(0), v2(2), v4(4), v8(8), v16(16), v32(32), v64(64), v128(128), v256(256), v512(512), v1024(1024), v2048(
+    v0(0), v2(2), v4(4), v8(8), v16(16), v32(32), v64(64), v128(128), v256(256), v512(512), v1024(1024), v2048(
         2048), v4096(4096), v8192(8192);
     public final int VAL;
 
@@ -78,6 +78,6 @@ public class Game2048Tile extends ColorTile<Game2048Tile> {
 
   @Override
   public boolean isEmpty() {
-    return v == VALUE.EMPTY;
+    return v == VALUE.v0;
   }
 }
