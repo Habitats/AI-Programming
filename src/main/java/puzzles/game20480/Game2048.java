@@ -28,8 +28,9 @@ public class Game2048 implements Runnable, GameButtonListener {
   @Override
   public void run() {
     gui = new Game2048Gui(this);
-    initialize();
-
+    for (int i = 0; i < 10; i++) {
+      initialize();
+    }
   }
 
   private void initialize() {
@@ -38,8 +39,7 @@ public class Game2048 implements Runnable, GameButtonListener {
 
     board.place();
 
-
-    for (int i = 0; i < 1000; i++) {
+    while (true) {
 //      List<MiniMaxState> tree = MiniMax.getSearchTree(board, 2);
 //
 //      MiniMaxState bestScore = MiniMax.getBestState(tree);
@@ -50,22 +50,27 @@ public class Game2048 implements Runnable, GameButtonListener {
       Log.v(TAG, "current:");
 
       board.printBoard();
+
       for (MiniMaxState next : board.getPossibleNextStates()) {
-        ((Game2048Board) next).printBoard();
         int value = MiniMax.alphaBeta(next, 5);
+        ((Game2048Board) next).printBoard();
+        Log.v(TAG, "score: " + value);
         if (value > max) {
           max = value;
           best = next;
         }
         move.put(next, value);
       }
-      if(best == null)
-        return;
+      if (best == null) {
+        break;
+      }
       AICanvas.Direction bestMove = ((Game2048Board) best).getLastMove();
       Log.v(TAG, "moving " + bestMove.name());
       board.move(bestMove);
       board.notifyDataChanged();
     }
+
+    Log.i(TAG, board.getMaxScore());
   }
 
   private Game2048Board getNextBoard(Game2048Board board) {

@@ -1,7 +1,11 @@
 package puzzles.game20480;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import ai.Log;
 import ai.gui.AICanvas;
@@ -227,10 +231,121 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
 
   public void generateScore() {
     int score = 0;
+    List<Game2048Tile> sortedItems = getSortedItems();
+    Game2048Tile max = sortedItems.get(0);
+
+    if (get(3, 3).getValue() != sortedItems.get(0).getValue()) {
+      score -= 20000;
+    }
+    if (get(3, 2).getValue() != sortedItems.get(1).getValue()) {
+      score -= 10000;
+    }
+
+    score += (Game2048Tile.VALUE.values().length - getUniqueValuesCount()) * 100;
+
+    if (tileInCorner(max)) {
+      score += 3000 * max.getValue().VAL;
+      Game2048Tile second = sortedItems.get(1);
+      if (second.x == 3 && second.y == 2) {
+        score += sortedItems.get(1).getValue().VAL;
+
+        Game2048Tile third = sortedItems.get(2);
+        if (third.x == 3 && third.y == 1) {
+          score += third.getValue().VAL;
+
+          Game2048Tile forth = sortedItems.get(3);
+          if (forth.x == 3 && forth.y == 0) {
+            score += forth.getValue().VAL;
+
+            Game2048Tile fifth = sortedItems.get(4);
+            if (fifth.x == 2 && fifth.y == 0) {
+              score += fifth.getValue().VAL;
+
+              Game2048Tile sixth = sortedItems.get(5);
+              if (sixth.x == 2 && sixth.y == 1) {
+                score += sixth.getValue().VAL;
+
+                Game2048Tile seventh = sortedItems.get(6);
+                if (seventh.x == 2 && seventh.y == 2) {
+                  score += seventh.getValue().VAL;
+                }
+              }
+            }
+          }
+        }
+      } else if (second.x == 0) {
+        score -= 100;
+      } else if (second.x == 1) {
+        score -= 10;
+      } else if (second.x == 2) {
+        score -= 5;
+      }
+
+    } else if (max.x == 0) {
+      score -= 300;
+    } else if (max.x == 1) {
+      score -= 20;
+    } else if (max.x == 2) {
+      score -= 10;
+    }
+
+    for (int y = 0; y < 3; y++) {
+      if (get(3, y).getValue() == v0) {
+        score -= 100 * sortedItems.get(0).getValue().VAL;
+      } else if (get(3, y).getValue() == v2) {
+        score -= 50 * sortedItems.get(0).getValue().VAL;
+      }
+    }
+
+    for (int x = 0; x < 3; x++) {
+      for (int y = 0; y < 3; y++) {
+        Game2048Tile game2048Tile = get(x, y);
+        if (game2048Tile.isEmpty()) {
+          score += 200;
+        }
+      }
+    }
+
     for (Game2048Tile tile : getItems()) {
       score += tile.getValue().VAL;
     }
     setScore(score);
+  }
+
+  private int getUniqueValuesCount() {
+    Set<Integer> differentValues = new HashSet<>();
+    for (Game2048Tile tile : getItems()) {
+      differentValues.add(tile.getValue().VAL);
+    }
+    return differentValues.size();
+  }
+
+  public List<Game2048Tile> getSortedItems() {
+    List<Game2048Tile> items = getItems();
+    Collections.sort(items, new Comparator<Game2048Tile>() {
+      @Override
+      public int compare(Game2048Tile o1, Game2048Tile o2) {
+        return o2.getValue().VAL - o1.getValue().VAL;
+      }
+    });
+
+    return items;
+  }
+
+
+  private boolean tileInCorner(Game2048Tile max) {
+    return (max.x == 3 && max.y == 3);
+  }
+
+  public int getMaxScore() {
+    Game2048Tile max = Collections.max(getItems(), new Comparator<Game2048Tile>() {
+      @Override
+      public int compare(Game2048Tile o1, Game2048Tile o2) {
+        return o1.getValue().VAL - o2.getValue().VAL;
+      }
+    });
+
+    return max.getValue().VAL;
   }
 
   @Override
@@ -257,7 +372,7 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
 
   @Override
   public boolean isTerminal() {
-    return false;
+    return getEmptyTiles().size() == 0;
   }
 
   @Override
@@ -326,6 +441,7 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
+    sb.append("\n" + lastMove + "\n");
     for (int y = 3; y >= 0; y--) {
       for (int x = 0; x < 4; x++) {
         sb.append(get(x, y).getValue() + "\t");
@@ -347,6 +463,6 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
   }
 
   public void printBoard() {
-    Log.v(TAG, "\n" + lastMove + "\n" + toString());
+    Log.v(TAG, toString());
   }
 }

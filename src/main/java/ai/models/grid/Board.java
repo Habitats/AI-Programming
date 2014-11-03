@@ -1,7 +1,6 @@
 package ai.models.grid;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -91,11 +90,13 @@ public class Board<T extends ColorTile> extends AIAdapter<T> implements Iterable
   }
 
   @Override
-  public Collection<T> getItems() {
+  public List<T> getItems() {
     List<T> items = new ArrayList<>();
     tiles.forEach(items::addAll);
     return items;
   }
+
+
 
   @Override
   public boolean isLegalPosition(T tile) {
