@@ -244,7 +244,7 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
     score += (Game2048Tile.VALUE.values().length - getUniqueValuesCount()) * 100;
 
     if (tileInCorner(max)) {
-      score += 3000 * max.getValue().VAL;
+      score += 30000 * max.getValue().VAL;
       Game2048Tile second = sortedItems.get(1);
       if (second.x == 3 && second.y == 2) {
         score += sortedItems.get(1).getValue().VAL;
@@ -263,11 +263,11 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
 
               Game2048Tile sixth = sortedItems.get(5);
               if (sixth.x == 2 && sixth.y == 1) {
-                score += sixth.getValue().VAL;
+                score += 10 * sixth.getValue().VAL;
 
                 Game2048Tile seventh = sortedItems.get(6);
                 if (seventh.x == 2 && seventh.y == 2) {
-                  score += seventh.getValue().VAL;
+                  score += 10 * seventh.getValue().VAL;
                 }
               }
             }
@@ -305,6 +305,8 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
         }
       }
     }
+
+    score += getEmptyTiles().size() * 1000;
 
     for (Game2048Tile tile : getItems()) {
       score += tile.getValue().VAL;

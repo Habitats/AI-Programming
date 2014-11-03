@@ -52,7 +52,7 @@ public class Game2048 implements Runnable, GameButtonListener {
       board.printBoard();
 
       for (MiniMaxState next : board.getPossibleNextStates()) {
-        int value = MiniMax.alphaBeta(next, 5);
+        int value = MiniMax.alphaBeta(next, 6);
         ((Game2048Board) next).printBoard();
         Log.v(TAG, "score: " + value);
         if (value > max) {
