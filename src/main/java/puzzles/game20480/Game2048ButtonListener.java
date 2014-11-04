@@ -3,7 +3,7 @@ package puzzles.game20480;
 /**
  * Created by Patrick on 29.10.2014.
  */
-public interface GameButtonListener {
+public interface Game2048ButtonListener {
 
   void stepClicked();
 

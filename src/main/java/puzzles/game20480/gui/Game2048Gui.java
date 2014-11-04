@@ -18,7 +18,7 @@ import ai.gui.AISlider;
 import ai.gui.AITextField;
 import ai.models.grid.Board;
 import algorithms.a_star.AStar;
-import puzzles.game20480.GameButtonListener;
+import puzzles.game20480.Game2048ButtonListener;
 
 /**
  * Created by Patrick on 23.08.2014.
@@ -26,7 +26,7 @@ import puzzles.game20480.GameButtonListener;
 public class Game2048Gui {
 
   private static final String TAG = Game2048Gui.class.getSimpleName();
-  private GameButtonListener listener;
+  private Game2048ButtonListener listener;
   private AIButton resetButton;
   private AIButton runButton;
   private AIButton stepButton;
@@ -46,7 +46,7 @@ public class Game2048Gui {
   private AIButton rightButton;
 
 
-  public Game2048Gui(GameButtonListener listener) {
+  public Game2048Gui(Game2048ButtonListener listener) {
 
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
       if (e.getID() == KeyEvent.KEY_PRESSED) {

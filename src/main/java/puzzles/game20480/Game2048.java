@@ -19,7 +19,7 @@ import static ai.gui.AICanvas.Direction.UP;
 /**
  * Created by Patrick on 30.10.2014.
  */
-public class Game2048 implements Runnable, GameButtonListener {
+public class Game2048 implements Runnable, Game2048ButtonListener {
 
   private static final String TAG = Game2048.class.getSimpleName();
   private Game2048Board board;
