@@ -1,7 +1,5 @@
 package puzzles.game20480;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -42,48 +40,33 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
     board.place();
 
     while (true) {
-//      List<MiniMaxState> tree = MiniMax.getSearchTree(board, 2);
-//
-//      MiniMaxState bestScore = MiniMax.getBestState(tree);
-
-      Map<MiniMaxState, Integer> move = new HashMap<>();
-      int max = Integer.MIN_VALUE;
-      MiniMaxState best = null;
       Log.v(TAG, "current:");
 
       board.printBoard();
 
-      for (MiniMaxState next : board.getPossibleNextStates()) {
-        int value = MiniMax.alphaBeta(next, 6);
-        ((Game2048Board) next).printBoard();
-        Log.v(TAG, "score: " + value);
-        if (value > max) {
-          max = value;
-          best = next;
-        }
-        move.put(next, value);
-      }
-      if (best == null) {
-        break;
-      }
-      AICanvas.Direction bestMove = ((Game2048Board) best).getLastMove();
+      MiniMaxState best = MiniMax.alphaBeta(board, 5);
+
+      AICanvas.Direction bestMove = ((Game2048Board)best).getLastMove();
       Log.v(TAG, "moving " + bestMove.name());
       board.move(bestMove);
       board.notifyDataChanged();
 
-
+      if(board.isTerminal()){
+        break;
+      }
       stepAndWait();
     }
 
     Log.i(TAG, board.getMaxScore());
   }
+
   private synchronized void stepAndWait() {
     try {
 //      Log.v(TAG, "waiting...");
       if (AIMain.MANUAL_STEP) {
         wait();
       } else {
-        wait(100);
+        wait(50);
       }
 //      Log.v(TAG, "continuing!");
     } catch (InterruptedException e) {
