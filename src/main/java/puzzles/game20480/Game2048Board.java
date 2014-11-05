@@ -30,6 +30,7 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
   private List<MiniMaxState> possibleNextStates;
   private int b;
   private int a;
+  private List<MiniMaxState> children;
 
   public Game2048Board() {
     super(4, 4);
@@ -231,7 +232,7 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
 
   public void generateScore() {
     int score = 0;
-//    score = getSnakeScore();
+    score = getSnakeScore();
 //    score = getMonoticityScore();
 //    List<Game2048Tile> sortedItems = getSortedItems();
 //    Game2048Tile max = sortedItems.get(0);
@@ -248,13 +249,13 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
 //      }
 //    }
     // bonus for every empty tile
-    score += getEmptyTiles().size()  < 4 ? -1000 : 0;
-    score += getMaxScore() == get(3, 3).getValue().VAL ? 1000 : -1000;
-
-    int[][] logBoard = getLogBoard();
-    score -= logBoard[3][3] - (logBoard[3][2] + 1);
-    score -= logBoard[3][2] - (logBoard[3][1] + 1);
-    score -= logBoard[3][1] - (logBoard[3][0] + 1);
+//    score += getEmptyTiles().size()  < 4 ? -1000 : 0;
+//    score += getMaxScore() == get(3, 3).getValue().VAL ? 1000 : -1000;
+//
+//    int[][] logBoard = getLogBoard();
+//    score -= logBoard[3][3] - (logBoard[3][2] + 1);
+//    score -= logBoard[3][2] - (logBoard[3][1] + 1);
+//    score -= logBoard[3][1] - (logBoard[3][0] + 1);
 
     setScore(score);
   }
@@ -281,14 +282,15 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
     if (get(3, 2).getValue() != sortedItems.get(1).getValue()) {
       score -= 10000;
     }
-
-    // penalize too many different cells
-    score += (Game2048Tile.VALUE.values().length - getUniqueValuesCount()) * 100;
-
-    // bonus if right most column is monotically decreasing from board max
+//
+//    // penalize too many different cells
+//    score += (Game2048Tile.VALUE.values().length - getUniqueValuesCount()) * 100;
+//
+//    // bonus if right most column is monotically decreasing from board max
     Game2048Tile max = sortedItems.get(0);
-    if (tileInCorner(max)) {
-      score += 30000 * max.getValue().VAL;
+    if (max.getValue() == get(3, 3).getValue()) {
+      score += 300000 * max.getValue().VAL;
+
       Game2048Tile second = sortedItems.get(1);
       if (second.x == 3 && second.y == 2) {
         score += sortedItems.get(1).getValue().VAL;
@@ -320,22 +322,36 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
       }
     }
 
+    score += get(3, 3).getValue().VAL * 2048;
+    score += get(3, 2).getValue().VAL * 1023;
+    score += get(3, 1).getValue().VAL * 511;
+    score += get(3, 0).getValue().VAL * 255;
+    score += get(2, 0).getValue().VAL * 127;
+    score += get(2, 1).getValue().VAL * 63;
+    score += get(2, 2).getValue().VAL * 31;
+    score += get(2, 3).getValue().VAL * 15;
+//    score += get(3, 3).getValue().VAL > get(3, 2).getValue().VAL ? get(3, 3).getValue().VAL * 2048 : 0;
+//    score += get(3, 2).getValue().VAL > get(3, 1).getValue().VAL ? get(3, 2).getValue().VAL * 1023 : 0;
+//    score += get(3, 1).getValue().VAL > get(3, 0).getValue().VAL ? get(3, 1).getValue().VAL * 511 : 0;
+
     // penalize if there are low values in the two right most columns
     for (int y = 0; y < 3; y++) {
       if (get(3, y).getValue() == v0) {
         score -= 100 * sortedItems.get(0).getValue().VAL;
       } else if (get(3, y).getValue() == v2) {
         score -= 50 * sortedItems.get(0).getValue().VAL;
+      } else if (get(3, y).getValue() == v4) {
+        score -= 50 * sortedItems.get(0).getValue().VAL;
       }
     }
 
     // bonus for every empty tile
-    score += getEmptyTiles().size() * 2000;
-
+    score -= (getEmptyTiles().size() < 4) ? 20000 * getEmptyTiles().size() : 0;
     // bonus for the total score of the board
     for (Game2048Tile tile : getItems()) {
       score += tile.getValue().VAL;
     }
+
     return score;
   }
 
@@ -359,10 +375,6 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
     return items;
   }
 
-
-  private boolean tileInCorner(Game2048Tile max) {
-    return (max.x == 3 && max.y == 3);
-  }
 
   public int getMaxScore() {
     Game2048Tile max = Collections.max(getItems(), new Comparator<Game2048Tile>() {
@@ -452,7 +464,7 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
 
   @Override
   public boolean isTerminal() {
-    return getEmptyTiles().size() == 0;
+    return getPossibleNextStates().size() == 0;
   }
 
   @Override
@@ -495,6 +507,8 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
       }
     }
     this.possibleNextStates = boards;
+    children = new ArrayList<>();
+    children.addAll(possibleNextStates);
   }
 
   public void generateOpposingStates() {
@@ -505,6 +519,8 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
       opposingStates.add(opposing);
     }
     this.opposingStates = opposingStates;
+    children = new ArrayList<>();
+    children.addAll(opposingStates);
   }
 
   @Override
@@ -544,5 +560,14 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
 
   public void printBoard() {
     Log.v(TAG, toString());
+  }
+
+  public Game2048Board getChild(int bestVal) {
+    for (MiniMaxState child : children) {
+      if (child.getBeta() == bestVal) {
+        return (Game2048Board) child;
+      }
+    }
+    return null;
   }
 }
