@@ -54,7 +54,7 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
       board.printBoard();
 
       for (MiniMaxState next : board.getPossibleNextStates()) {
-        int value = MiniMax.alphaBeta(next, 5);
+        int value = MiniMax.alphaBeta(next, 6);
         ((Game2048Board) next).printBoard();
         Log.v(TAG, "score: " + value);
         if (value > max) {
@@ -63,27 +63,29 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
         }
         move.put(next, value);
       }
-      if (best == null) {
-        break;
-      }
+
       AICanvas.Direction bestMove = ((Game2048Board) best).getLastMove();
       Log.v(TAG, "moving " + bestMove.name());
       board.move(bestMove);
       board.notifyDataChanged();
 
+      if (board.isTerminal()) {
+        break;
+      }
 
       stepAndWait();
     }
 
     Log.i(TAG, board.getMaxScore());
   }
+
   private synchronized void stepAndWait() {
     try {
 //      Log.v(TAG, "waiting...");
       if (AIMain.MANUAL_STEP) {
         wait();
       } else {
-        wait(100);
+        wait(20);
       }
 //      Log.v(TAG, "continuing!");
     } catch (InterruptedException e) {
