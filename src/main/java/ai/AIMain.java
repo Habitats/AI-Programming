@@ -21,6 +21,7 @@ import puzzles.shortestpath.ShortestPath;
 public class AIMain {
 
   public static final String TAG = AIMain.class.getSimpleName();
+  public static boolean MANUAL_STEP = false;
 
   public static void main(String[] args) {
     loadGui();

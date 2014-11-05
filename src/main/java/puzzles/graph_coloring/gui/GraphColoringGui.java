@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import ai.AIMain;
 import ai.Log;
 import ai.gui.AIButton;
 import ai.gui.AICanvas;
@@ -21,7 +22,6 @@ import ai.gui.AITextArea;
 import ai.gui.AITextField;
 import ai.models.AIAdapter;
 import ai.models.graph.ColorNode;
-import algorithms.a_star.AStar;
 import algorithms.csp.CspButtonListener;
 import puzzles.graph_coloring.GraphColoringUtils;
 
@@ -79,7 +79,7 @@ public class GraphColoringGui extends AIGui<ColorNode> {
     });
     stepCheckBox.addActionListener(e -> {
       AICheckBox checkbox = (AICheckBox) e.getSource();
-      AStar.MANUAL_STEP = checkbox.isSelected();
+      AIMain.MANUAL_STEP = checkbox.isSelected();
     });
     resetButton.addActionListener(e -> listener.resetClicked());
     runButton.addActionListener(e -> listener.runClicked());

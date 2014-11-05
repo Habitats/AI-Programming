@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import ai.AIMain;
 import ai.Log;
 
 import static algorithms.a_star_csp.SimpleAStarCspPuzzle.avg;
@@ -19,7 +20,6 @@ import static algorithms.a_star_csp.SimpleAStarCspPuzzle.miss;
 public class AStar implements Runnable {
 
 
-  public static boolean MANUAL_STEP = false;
   public static boolean SHUFFLE_CHILDREN = true;
   private boolean terminate;
 
@@ -137,7 +137,7 @@ public class AStar implements Runnable {
     try {
 //      Log.v(TAG, "waiting...");
       setStatus(Status.PAUSED);
-      if (MANUAL_STEP) {
+      if (AIMain.MANUAL_STEP) {
         wait();
       } else {
         wait(stepTime);

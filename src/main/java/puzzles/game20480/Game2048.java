@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import ai.AIMain;
 import ai.Log;
 import ai.gui.AICanvas;
 import algorithms.minimax.MiniMax;
@@ -28,6 +29,7 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
   @Override
   public void run() {
     gui = new Game2048Gui(this);
+    new Thread(gui).start();
     for (int i = 0; i < 10; i++) {
       initialize();
     }
@@ -68,9 +70,25 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
       Log.v(TAG, "moving " + bestMove.name());
       board.move(bestMove);
       board.notifyDataChanged();
+
+
+      stepAndWait();
     }
 
     Log.i(TAG, board.getMaxScore());
+  }
+  private synchronized void stepAndWait() {
+    try {
+//      Log.v(TAG, "waiting...");
+      if (AIMain.MANUAL_STEP) {
+        wait();
+      } else {
+        wait(100);
+      }
+//      Log.v(TAG, "continuing!");
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 
   private Game2048Board getNextBoard(Game2048Board board) {

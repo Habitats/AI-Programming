@@ -5,9 +5,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
+import ai.AIMain;
 import ai.Log;
 import ai.gui.AIButton;
 import ai.gui.AICanvas;
@@ -17,13 +16,12 @@ import ai.gui.AIGridCanvas;
 import ai.gui.AISlider;
 import ai.gui.AITextField;
 import ai.models.grid.Board;
-import algorithms.a_star.AStar;
 import puzzles.game20480.Game2048ButtonListener;
 
 /**
  * Created by Patrick on 23.08.2014.
  */
-public class Game2048Gui {
+public class Game2048Gui implements Runnable {
 
   private static final String TAG = Game2048Gui.class.getSimpleName();
   private Game2048ButtonListener listener;
@@ -47,52 +45,7 @@ public class Game2048Gui {
 
 
   public Game2048Gui(Game2048ButtonListener listener) {
-
-    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
-      if (e.getID() == KeyEvent.KEY_PRESSED) {
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-          listener.upClicked();
-        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-          listener.downClicked();
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-          listener.rightClicked();
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-          listener.leftClicked();
-        }
-      }
-      e.consume();
-      return false;
-    });
-
-    buildFrame(getMainPanel(), log, statusField);
-    stepButton.addActionListener(e -> listener.stepClicked());
-    stepSlider.addChangeListener(new ChangeListener() {
-      @Override
-      public void stateChanged(ChangeEvent e) {
-        Log.v(TAG, "slider event: " + e);
-        AISlider slider = (AISlider) e.getSource();
-        listener.stepChanged(slider.getValue());
-      }
-    });
-    labelsCheckbox.addActionListener(e -> {
-      AICheckBox checkbox = (AICheckBox) e.getSource();
-      getDrawingCanvas().drawLabels(checkbox.isSelected());
-    });
-    stepCheckBox.addActionListener(e -> {
-      AICheckBox checkbox = (AICheckBox) e.getSource();
-      AStar.MANUAL_STEP = checkbox.isSelected();
-    });
-    resetButton.addActionListener(e -> listener.resetClicked());
-    runButton.addActionListener(e -> listener.runClicked());
-    rightButton.addActionListener(e -> listener.rightClicked());
-    downButton.addActionListener(e -> listener.downClicked());
-    leftButton.addActionListener(e -> listener.leftClicked());
-    upButton.addActionListener(e -> listener.upClicked());
-    leftButton.addKeyListener(new KeyAdapter() {
-    });
-
-    getDrawingCanvas().drawLabels(labelsCheckbox.isSelected());
-
+    this.listener = listener;
   }
 
   protected void buildFrame(JPanel mainPanel, AIContiniousScrollPane log, AITextField statusField) {
@@ -127,5 +80,55 @@ public class Game2048Gui {
 
   public AICanvas getDrawingCanvas() {
     return drawingCanvas;
+  }
+
+  @Override
+  public void run() {
+    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
+      if (e.getID() == KeyEvent.KEY_PRESSED) {
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+          listener.upClicked();
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+          listener.downClicked();
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+          listener.rightClicked();
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+          listener.leftClicked();
+        }
+      }
+      e.consume();
+      return false;
+    });
+
+    buildFrame(getMainPanel(), log, statusField);
+    stepButton.addActionListener(e -> {
+      synchronized (listener) {
+        listener.notify();
+      }
+      listener.stepClicked();
+    });
+    stepSlider.addChangeListener(e -> {
+      Log.v(TAG, "slider event: " + e);
+      AISlider slider = (AISlider) e.getSource();
+      listener.stepChanged(slider.getValue());
+    });
+    labelsCheckbox.addActionListener(e -> {
+      AICheckBox checkbox = (AICheckBox) e.getSource();
+      getDrawingCanvas().drawLabels(checkbox.isSelected());
+    });
+    stepCheckBox.addActionListener(e -> {
+      AICheckBox checkbox = (AICheckBox) e.getSource();
+      AIMain.MANUAL_STEP = checkbox.isSelected();
+    });
+    resetButton.addActionListener(e -> listener.resetClicked());
+    runButton.addActionListener(e -> listener.runClicked());
+    rightButton.addActionListener(e -> listener.rightClicked());
+    downButton.addActionListener(e -> listener.downClicked());
+    leftButton.addActionListener(e -> listener.leftClicked());
+    upButton.addActionListener(e -> listener.upClicked());
+    leftButton.addKeyListener(new KeyAdapter() {
+    });
+
+    getDrawingCanvas().drawLabels(labelsCheckbox.isSelected());
   }
 }

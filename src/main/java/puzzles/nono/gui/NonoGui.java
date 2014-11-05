@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import ai.AIMain;
 import ai.Log;
 import ai.gui.AIButton;
 import ai.gui.AICanvas;
@@ -19,7 +20,6 @@ import ai.gui.AIGui;
 import ai.gui.AISlider;
 import ai.gui.AITextArea;
 import ai.gui.AITextField;
-import algorithms.a_star.AStar;
 import puzzles.nono.NonoUtils;
 
 /**
@@ -74,7 +74,7 @@ public class NonoGui extends AIGui {
     });
     stepCheckBox.addActionListener(e -> {
       AICheckBox checkbox = (AICheckBox) e.getSource();
-      AStar.MANUAL_STEP = checkbox.isSelected();
+      AIMain.MANUAL_STEP = checkbox.isSelected();
     });
     resetButton.addActionListener(e -> listener.resetClicked());
     runButton.addActionListener(e -> listener.runClicked());

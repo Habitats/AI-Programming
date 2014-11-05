@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import ai.AIMain;
 import ai.Log;
 import ai.gui.AIButton;
 import ai.gui.AICanvas;
@@ -99,7 +100,7 @@ public class ShortestPathGui extends AIGui {
     });
     stepCheckBox.addActionListener(e -> {
       AICheckBox checkbox = (AICheckBox) e.getSource();
-      AStar.MANUAL_STEP = checkbox.isSelected();
+      AIMain.MANUAL_STEP = checkbox.isSelected();
     });
 
     buildFrame(mainPanel, log, statusField);
