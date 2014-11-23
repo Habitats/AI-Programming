@@ -2,9 +2,6 @@ package puzzles.game20480;
 
 import java.util.List;
 
-import static puzzles.game20480.Game2048Tile.VALUE.v0;
-import static puzzles.game20480.Game2048Tile.VALUE.v2;
-
 /**
  * Created by Patrick on 23.11.2014.
  */
@@ -60,13 +57,13 @@ public class FourOutOfTen {
     } else if (max.x == 2) {
       score -= 10;
     }
-    for (int y = 0; y < 3; y++) {
-      if (b.get(3, y).getValue() == v0) {
-        score -= 100 * sortedItems.get(0).getValue().VAL;
-      } else if (b.get(3, y).getValue() == v2) {
-        score -= 50 * sortedItems.get(0).getValue().VAL;
-      }
-    }
+//    for (int y = 0; y < 3; y++) {
+//      if (b.get(3, y).getValue() == v0) {
+//        score -= 100 * sortedItems.get(0).getValue().VAL;
+//      } else if (b.get(3, y).getValue() == v2) {
+//        score -= 50 * sortedItems.get(0).getValue().VAL;
+//      }
+//    }
     for (int x = 0; x < 3; x++) {
       for (int y = 0; y < 3; y++) {
         Game2048Tile game2048Tile = b.get(x, y);
