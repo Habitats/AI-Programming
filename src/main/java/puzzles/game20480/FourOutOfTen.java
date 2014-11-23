@@ -25,7 +25,7 @@ public class FourOutOfTen {
       score += 30000 * max.getValue().VAL;
       Game2048Tile second = sortedItems.get(1);
       if (second.x == 3 && second.y == 2) {
-        score += sortedItems.get(1).getValue().VAL;
+        score += 100 * sortedItems.get(1).getValue().VAL;
         Game2048Tile third = sortedItems.get(2);
         if (third.x == 3 && third.y == 1) {
           score += third.getValue().VAL;
