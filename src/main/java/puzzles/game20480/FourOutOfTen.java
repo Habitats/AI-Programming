@@ -21,7 +21,7 @@ public class FourOutOfTen {
       score -= 10000;
     }
     score += (Game2048Tile.VALUE.values().length - b.getUniqueValuesCount()) * 100;
-    if (b.tileInCorner(max)) {
+    if (tileInCorner(max)) {
       score += 30000 * max.getValue().VAL;
       Game2048Tile second = sortedItems.get(1);
       if (second.x == 3 && second.y == 2) {
@@ -80,5 +80,10 @@ public class FourOutOfTen {
       score += tile.getValue().VAL;
     }
     b.setScore(score);
+  }
+
+
+  private static boolean tileInCorner(Game2048Tile max) {
+    return (max.x == 3 && max.y == 3);
   }
 }

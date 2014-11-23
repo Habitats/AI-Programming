@@ -472,7 +472,8 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
   public int getScore() {
     if (score == null) {
 //      Snake.generateScore(this);
-      Simple.generateScore(this);
+//      Simple.generateScore(this);
+      FourOutOfTen.bitch(this);
     }
     return score;
   }
