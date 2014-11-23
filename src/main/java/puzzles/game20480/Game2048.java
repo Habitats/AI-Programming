@@ -57,8 +57,8 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
       board.printBoard();
 
       for (MiniMaxState next : board.getPossibleNextStates()) {
-//        int value = ExpectiMiniMax.expectiMax(next, 6);
-        int value = MiniMax.alphaBeta(next, 5);
+//        int value = ExpectiMax.expectiMax(next, 4);
+        int value = MiniMax.alphaBeta(next, 6);
         ((Game2048Board) next).printBoard();
 //        Log.v(TAG, "cluster: " + Simple.clusteringScore((Game2048Board) next));
         Log.v(TAG, "score: " + value);

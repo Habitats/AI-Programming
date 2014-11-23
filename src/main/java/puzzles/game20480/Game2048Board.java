@@ -412,15 +412,12 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
   public void generateAllOpposingStates() {
     List<MiniMaxState> opposingStates = new ArrayList<>();
     Set<Double> probs = new HashSet<>();
-    probs.add(0.1);
-    probs.add(0.9);
     for (Game2048Tile tile : getEmptyTiles()) {
-      for (Double prob : probs) {
-        Game2048Board opposing = copy();
-        opposing.setProbability(prob);
-        opposing.place(tile.x, tile.y, prob);
-        opposingStates.add(opposing);
-      }
+      Game2048Board opposing = copy();
+      double prob = Math.random() < .9 ? .1 : .9;
+      opposing.setProbability(prob);
+      opposing.place(tile.x, tile.y, prob);
+      opposingStates.add(opposing);
     }
     this.opposingStates = opposingStates;
     children = new ArrayList<>();
@@ -474,7 +471,7 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
 
   public int getScore() {
     if (score == null) {
-      Snake.generateScore(this);
+//      Snake.generateScore(this);
       Simple.generateScore(this);
     }
     return score;

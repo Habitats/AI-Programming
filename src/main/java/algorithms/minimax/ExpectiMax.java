@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by Patrick on 23.11.2014.
  */
-public class ExpectiMiniMax {
+public class ExpectiMax {
 
 //  function expectiminimax(node, depth)
 //    if node is a terminal node or depth = 0
@@ -37,12 +37,14 @@ public class ExpectiMiniMax {
       return node.getScore();
     }
     int a;
+    List<MiniMaxState> allOpposingStates = node.getAllOpposingStates();
     if (!randomEvent) {
       a = Integer.MIN_VALUE;
-      a = Math.max(a, expectiMax(node, depth - 1, !randomEvent));
+      for (MiniMaxState child : allOpposingStates) {
+        a = Math.max(a, expectiMax(child, depth - 1, !randomEvent));
+      }
     } else {
       a = 0;
-      List<MiniMaxState> allOpposingStates = node.getAllOpposingStates();
       for (MiniMaxState child : allOpposingStates) {
         a += child.getProbability() * expectiMax(child, depth - 1, !randomEvent);
       }
