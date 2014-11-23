@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by anon on 31.10.2014.
  */
-public interface MiniMaxState extends Comparable<MiniMaxState>{
+public interface MiniMaxState extends Comparable<MiniMaxState> {
 
   void generatePossibleNextStates();
 
@@ -23,6 +23,8 @@ public interface MiniMaxState extends Comparable<MiniMaxState>{
 
   List<MiniMaxState> getOpposingStates();
 
+  List<MiniMaxState> getAllOpposingStates();
+
   boolean isTerminal();
 
   int getAlpha();
@@ -32,5 +34,8 @@ public interface MiniMaxState extends Comparable<MiniMaxState>{
   void setAlpha(int a);
 
   void setBeta(int b);
+
+  double getProbability();
+
 
 }
