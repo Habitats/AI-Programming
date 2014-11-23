@@ -20,7 +20,7 @@ public class FourOutOfTen {
     if (b.get(3, 2).getValue() != sortedItems.get(1).getValue()) {
       score -= 10000;
     }
-    score += (Game2048Tile.VALUE.values().length - b.getUniqueValuesCount()) * 100;
+//    score += (Game2048Tile.VALUE.values().length - b.getUniqueValuesCount()) * 100;
     if (tileInCorner(max)) {
       score += 30000 * max.getValue().VAL;
       Game2048Tile second = sortedItems.get(1);
@@ -77,7 +77,7 @@ public class FourOutOfTen {
     }
     score += b.getEmptyTiles().size() * 1000;
     for (Game2048Tile tile : b.getItems()) {
-      score += Math.pow(tile.getValue().VAL, 2);
+      score += Math.pow(tile.getValue().VAL, 1.5);
     }
     b.setScore(score);
   }
