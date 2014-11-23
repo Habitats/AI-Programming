@@ -77,7 +77,7 @@ public class FourOutOfTen {
     }
     score += b.getEmptyTiles().size() * 1000;
     for (Game2048Tile tile : b.getItems()) {
-      score += tile.getValue().VAL;
+      score += Math.pow(tile.getValue().VAL, 2);
     }
     b.setScore(score);
   }
