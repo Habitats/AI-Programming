@@ -31,11 +31,12 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
   public void run() {
     gui = new Game2048Gui(this);
     new Thread(gui).start();
+    long start = System.currentTimeMillis();
     int i1 = 10;
     for (int i = 0; i < i1; i++) {
       initialize();
     }
-    Log.i(TAG, scores / i1);
+    Log.i(TAG, "Average score: " + scores / i1 + " - Average ttl: " + (System.currentTimeMillis() - start));
   }
 
   private void initialize() {
@@ -43,6 +44,7 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
     gui.setAdapter(board);
 
     board.place();
+    int numMoves = 0;
 
     while (true) {
 //      List<MiniMaxState> tree = MiniMax.getSearchTree(board, 2);
@@ -58,7 +60,7 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
 
       for (MiniMaxState next : board.getPossibleNextStates()) {
 //        int value = ExpectiMax.expectiMax(next, 4);
-        int value = MiniMax.alphaBeta(next, 5);
+        int value = MiniMax.alphaBeta(next, 6);
         ((Game2048Board) next).printBoard();
 //        Log.v(TAG, "cluster: " + Simple.clusteringScore((Game2048Board) next));
         Log.v(TAG, "score: " + value);
@@ -67,13 +69,13 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
           best = next;
         }
         move.put(next, value);
-
       }
 
       AICanvas.Direction bestMove = ((Game2048Board) best).getLastMove();
       Log.v(TAG, "moving " + bestMove.name());
       board.move(bestMove);
       board.notifyDataChanged();
+      numMoves++;
 
       if (board.isTerminal()) {
         break;
@@ -83,7 +85,9 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
     }
 
     scores += board.getMaxScore();
-    Log.i(TAG, board.getMaxScore());
+
+    int sum = board.getItems().stream().mapToInt(tile -> (tile.getValue().VAL)).sum();
+    Log.i(TAG, "Max tile: " + board.getMaxScore() + "\tMoves: " + numMoves + "\t\tScore: " + sum);
   }
 
   private synchronized void stepAndWait() {
