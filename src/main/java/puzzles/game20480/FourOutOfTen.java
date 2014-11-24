@@ -80,6 +80,11 @@ public class FourOutOfTen {
         score -= 50 * sortedItems.get(0).getValue().VAL;
       }
     }
+
+    if (b.get(3, 3).getValue() == v0) {
+      score -= 1000000;
+    }
+
     return score;
   }
 
