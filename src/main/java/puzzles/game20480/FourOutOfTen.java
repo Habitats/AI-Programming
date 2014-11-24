@@ -2,6 +2,8 @@ package puzzles.game20480;
 
 import java.util.List;
 
+import ai.Log;
+
 import static puzzles.game20480.Game2048Tile.VALUE.v0;
 import static puzzles.game20480.Game2048Tile.VALUE.v2;
 
@@ -10,7 +12,9 @@ import static puzzles.game20480.Game2048Tile.VALUE.v2;
  */
 public class FourOutOfTen {
 
-  public static void bitch(Game2048Board b) {
+  private static final String TAG = FourOutOfTen.class.getSimpleName();
+
+  public static void bitch(Game2048Board b, boolean log) {
     List<Game2048Tile> sortedItems = b.getSortedItems();
     Game2048Tile max = sortedItems.get(0);
 
@@ -22,12 +26,19 @@ public class FourOutOfTen {
 //        }
 //      }
 //    }
-    int score = 0//
-                + maxNotRight(b, sortedItems)//
-                + snake(b, sortedItems, max) //
-                + lowRights(b, sortedItems) //
-                + empty(b) //
-                + sum(b);
+
+    int maxNotRight = maxNotRight(b, sortedItems);
+    int snake = snake(b, sortedItems, max);
+    int lowRights = lowRights(b, sortedItems);
+    int empty = empty(b);
+    int sum = sum(b);
+
+    int score = maxNotRight + snake + lowRights + empty + sum;
+
+    if (log) {
+      Log.v(TAG,
+            "mnr: " + maxNotRight + " \tsnake: " + snake + " \tlr: " + lowRights + " \te: " + empty + " \ts:" + sum);
+    }
 
     b.setScore(score);
   }

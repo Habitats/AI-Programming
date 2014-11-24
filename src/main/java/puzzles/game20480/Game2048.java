@@ -26,7 +26,7 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
   private Game2048Board board;
   private Game2048Gui gui;
   private double scores;
-  private long stepTime;
+  private long stepTime = 1;
 
   @Override
   public void run() {
@@ -71,6 +71,8 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
         }
         move.put(next, value);
       }
+
+      FourOutOfTen.bitch((Game2048Board) best, true);
 
       AICanvas.Direction bestMove = ((Game2048Board) best).getLastMove();
       Log.v(TAG, "moving " + bestMove.name());

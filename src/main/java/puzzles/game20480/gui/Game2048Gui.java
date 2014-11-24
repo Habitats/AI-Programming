@@ -107,6 +107,7 @@ public class Game2048Gui implements Runnable {
       }
       listener.stepClicked();
     });
+    stepSlider.setValue(1);
     stepSlider.addChangeListener(e -> {
       Log.v(TAG, "slider event: " + e);
       AISlider slider = (AISlider) e.getSource();
