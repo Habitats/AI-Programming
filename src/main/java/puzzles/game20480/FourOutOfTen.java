@@ -14,13 +14,16 @@ public class FourOutOfTen {
     int score = 0;
     List<Game2048Tile> sortedItems = b.getSortedItems();
     Game2048Tile max = sortedItems.get(0);
+
+    // penalty if max two values are not at the upper right
     if (b.get(3, 3).getValue() != sortedItems.get(0).getValue()) {
       score -= 20000;
     }
     if (b.get(3, 2).getValue() != sortedItems.get(1).getValue()) {
       score -= 10000;
     }
-//    score += (Game2048Tile.VALUE.values().length - b.getUniqueValuesCount()) * 100;
+
+    // bonus for a snake-like patterns from the upper right, and down
     if (tileInCorner(max)) {
       score += 30000 * max.getValue().VAL;
 
