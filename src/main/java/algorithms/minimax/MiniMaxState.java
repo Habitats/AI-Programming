@@ -7,9 +7,6 @@ import java.util.List;
  */
 public interface MiniMaxState extends Comparable<MiniMaxState> {
 
-  void generatePossibleNextStates();
-
-  void generateOpposingStates();
 
   void setParent(MiniMaxState state);
 
@@ -17,7 +14,6 @@ public interface MiniMaxState extends Comparable<MiniMaxState> {
 
   MiniMaxState getParent();
 
-  boolean hasParent();
 
   List<MiniMaxState> getPossibleNextStates();
 
@@ -27,13 +23,6 @@ public interface MiniMaxState extends Comparable<MiniMaxState> {
 
   boolean isTerminal();
 
-  int getAlpha();
-
-  int getBeta();
-
-  void setAlpha(int a);
-
-  void setBeta(int b);
 
   double getProbability();
 

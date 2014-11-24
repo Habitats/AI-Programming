@@ -18,7 +18,6 @@ public class FourOutOfTen {
     List<Game2048Tile> sortedItems = b.getSortedItems();
     Game2048Tile max = sortedItems.get(0);
 
-
     int maxNotRight = maxNotRight(b, sortedItems);
     int snake = snake(b, sortedItems, max);
     int lowRights = lowRights(b, sortedItems);
@@ -48,11 +47,13 @@ public class FourOutOfTen {
     // penalty if max two values are not at the upper right
     int score = 0;
     if (b.get(3, 3).getValue() != sortedItems.get(0).getValue()) {
-      score -= 20000;
+      score -= 2000000;
+    } else {
+      if (b.get(3, 2).getValue() != sortedItems.get(1).getValue()) {
+        score -= 1000000;
+      }
     }
-    if (b.get(3, 2).getValue() != sortedItems.get(1).getValue()) {
-      score -= 10000;
-    }
+
     return score;
   }
 
@@ -75,6 +76,12 @@ public class FourOutOfTen {
 
     if (b.get(3, 3).getValue() == v0) {
       score -= 1000000;
+    }
+    if (b.get(3, 2).getValue() == v0) {
+      score -= 500000;
+    }
+    if (b.get(3, 1).getValue() == v0) {
+      score -= 250000;
     }
 
     return score;

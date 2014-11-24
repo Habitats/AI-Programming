@@ -2,7 +2,6 @@ package puzzles.game20480;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,8 +27,6 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
   private MiniMaxState parent;
   private Integer score;
   private List<MiniMaxState> possibleNextStates;
-  private int b;
-  private int a;
   private List<MiniMaxState> children;
   private Double probability;
 
@@ -101,17 +98,6 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
         combine(tile, newTile);
       }
     }
-  }
-
-  private List<Game2048Tile> getPieces() {
-    List<Game2048Tile> pieces = new ArrayList<>();
-    for (Game2048Tile tile : getItems()) {
-      if (!tile.isEmpty()) {
-        pieces.add(tile);
-        tile.reset();
-      }
-    }
-    return pieces;
   }
 
   private void right() {
@@ -231,17 +217,6 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
     return copy;
   }
 
-  private int[][] getLogBoard() {
-    int[][] logBoard = new int[4][4];
-    for (int x = 0; x < 4; x++) {
-      for (int y = 0; y < 4; y++) {
-        int val = get(x, y).getValue().VAL;
-        logBoard[x][y] = val > 0 ? (int) (Math.log(val) / Math.log(2)) : 0;
-      }
-    }
-    return logBoard;
-  }
-
   public int getUniqueValuesCount() {
     Set<Integer> differentValues = new HashSet<>();
     for (Game2048Tile tile : getItems()) {
@@ -252,89 +227,20 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
 
   public List<Game2048Tile> getSortedItems() {
     List<Game2048Tile> items = getItems();
-    Collections.sort(items, new Comparator<Game2048Tile>() {
-      @Override
-      public int compare(Game2048Tile o1, Game2048Tile o2) {
-        return o2.getValue().VAL - o1.getValue().VAL;
-      }
-    });
+    Collections.sort(items, (o1, o2) -> o2.getValue().VAL - o1.getValue().VAL);
 
     return items;
   }
 
 
   public int getMaxScore() {
-    Game2048Tile max = Collections.max(getItems(), new Comparator<Game2048Tile>() {
-      @Override
-      public int compare(Game2048Tile o1, Game2048Tile o2) {
-        return o1.getValue().VAL - o2.getValue().VAL;
-      }
-    });
-
+    Game2048Tile max = Collections.max(getItems(), (o1, o2) -> o1.getValue().VAL - o2.getValue().VAL);
     return max.getValue().VAL;
-  }
-
-  private int getMonoticityScore() {
-    int score = 0;
-    for (int x = 0; x < 4; x++) {
-      score += getRowScore(x);
-    }
-
-    for (int y = 0; y < 4; y++) {
-      score += getColumnScore(y);
-    }
-
-    return score;
-  }
-
-  private int getRowScore(int row) {
-    int score = 0;
-    Game2048Tile y0 = get(0, row);
-    Game2048Tile y1 = get(1, row);
-    Game2048Tile y2 = get(2, row);
-    Game2048Tile y3 = get(3, row);
-
-    if (y0.getValue().VAL <= y1.getValue().VAL) {
-      score += 4 * y0.getValue().VAL;
-    }
-    if (y1.getValue().VAL <= y2.getValue().VAL) {
-      score += 2 * y1.getValue().VAL;
-    }
-    if (y2.getValue().VAL <= y3.getValue().VAL) {
-      score += 1 * y2.getValue().VAL;
-    }
-
-    return score;
-  }
-
-  private int getColumnScore(int col) {
-    int score = 0;
-    Game2048Tile x0 = get(col, 0);
-    Game2048Tile x1 = get(col, 1);
-    Game2048Tile x2 = get(col, 2);
-    Game2048Tile x3 = get(col, 3);
-
-    if (x0.getValue().VAL <= x1.getValue().VAL) {
-      score += 4 * x0.getValue().VAL;
-    }
-    if (x1.getValue().VAL <= x2.getValue().VAL) {
-      score += 2 * x1.getValue().VAL;
-    }
-    if (x2.getValue().VAL <= x3.getValue().VAL) {
-      score += 1 * x2.getValue().VAL;
-    }
-
-    return score;
   }
 
   @Override
   public MiniMaxState getParent() {
     return parent;
-  }
-
-  @Override
-  public boolean hasParent() {
-    return parent != null;
   }
 
   @Override
@@ -361,26 +267,6 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
   }
 
   @Override
-  public int getAlpha() {
-    return a;
-  }
-
-  @Override
-  public int getBeta() {
-    return b;
-  }
-
-  @Override
-  public void setAlpha(int a) {
-    this.a = a;
-  }
-
-  @Override
-  public void setBeta(int b) {
-    this.b = b;
-  }
-
-  @Override
   public double getProbability() {
     return probability;
   }
@@ -390,10 +276,6 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
     int score = getScore();
     int otherScore = o.getScore();
     return otherScore - score;
-  }
-
-  public boolean didMove() {
-    return didMove;
   }
 
   public void generatePossibleNextStates() {
@@ -482,14 +364,6 @@ public class Game2048Board extends Board<Game2048Tile> implements MiniMaxState {
     Log.v(TAG, toString());
   }
 
-  public Game2048Board getChild(int bestVal) {
-    for (MiniMaxState child : children) {
-      if (child.getBeta() == bestVal) {
-        return (Game2048Board) child;
-      }
-    }
-    return null;
-  }
 
   public void setProbability(Double probability) {
     this.probability = probability;
