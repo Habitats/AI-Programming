@@ -31,7 +31,7 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
   public void run() {
     gui = new Game2048Gui(this);
     new Thread(gui).start();
-    int i1 = 100;
+    int i1 = 10;
     for (int i = 0; i < i1; i++) {
       initialize();
     }

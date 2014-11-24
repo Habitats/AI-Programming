@@ -24,31 +24,31 @@ public class FourOutOfTen {
     }
 
     // bonus for a snake-like patterns from the upper right, and down
-    if (tileInCorner(max)) {
+    if (b.get(3, 3).getValue() == max.getValue()) {
       score += 30000 * max.getValue().VAL;
 
       Game2048Tile second = sortedItems.get(1);
-      if (second.x == 3 && second.y == 2) {
+      if (b.get(3, 2).getValue() == second.getValue()) {
         score += 100 * sortedItems.get(1).getValue().VAL;
 
         Game2048Tile third = sortedItems.get(2);
-        if (third.x == 3 && third.y == 1) {
+        if (b.get(3, 1).getValue() == third.getValue()) {
           score += third.getValue().VAL;
 
           Game2048Tile forth = sortedItems.get(3);
-          if (forth.x == 3 && forth.y == 0) {
+          if (b.get(3, 0).getValue() == forth.getValue()) {
             score += forth.getValue().VAL;
 
             Game2048Tile fifth = sortedItems.get(4);
-            if (fifth.x == 2 && fifth.y == 0) {
+            if (b.get(2, 0).getValue() == fifth.getValue()) {
               score += fifth.getValue().VAL;
 
               Game2048Tile sixth = sortedItems.get(5);
-              if (sixth.x == 2 && sixth.y == 1) {
+              if (b.get(2, 1).getValue() == sixth.getValue()) {
                 score += 10 * sixth.getValue().VAL;
 
                 Game2048Tile seventh = sortedItems.get(6);
-                if (seventh.x == 2 && seventh.y == 2) {
+                if (b.get(2, 2).getValue() == seventh.getValue()) {
                   score += 10 * seventh.getValue().VAL;
                 }
               }
