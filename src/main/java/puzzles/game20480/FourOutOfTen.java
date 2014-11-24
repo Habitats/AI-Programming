@@ -11,19 +11,70 @@ import static puzzles.game20480.Game2048Tile.VALUE.v2;
 public class FourOutOfTen {
 
   public static void bitch(Game2048Board b) {
-    int score = 0;
     List<Game2048Tile> sortedItems = b.getSortedItems();
     Game2048Tile max = sortedItems.get(0);
 
+//    for (int x = 0; x < 3; x++) {
+//      for (int y = 0; y < 3; y++) {
+//        Game2048Tile game2048Tile = b.get(x, y);
+//        if (game2048Tile.isEmpty()) {
+//          score += 200;
+//        }
+//      }
+//    }
+    int score = 0//
+                + maxNotRight(b, sortedItems)//
+                + snake(b, sortedItems, max) //
+                + lowRights(b, sortedItems) //
+                + empty(b) //
+                + sum(b);
+
+    b.setScore(score);
+  }
+
+  private static int sum(Game2048Board b) {
+    // exponential bonus for sum of the board
+    int score = 0;
+    for (Game2048Tile tile : b.getItems()) {
+      score += Math.pow(tile.getValue().VAL, 2);
+    }
+    return score;
+  }
+
+  private static int maxNotRight(Game2048Board b, List<Game2048Tile> sortedItems) {
     // penalty if max two values are not at the upper right
+    int score = 0;
     if (b.get(3, 3).getValue() != sortedItems.get(0).getValue()) {
       score -= 20000;
     }
     if (b.get(3, 2).getValue() != sortedItems.get(1).getValue()) {
       score -= 10000;
     }
+    return score;
+  }
 
+  private static int empty(Game2048Board b) {
+    // bonus for empty tiles
+    int score = b.getEmptyTiles().size() * 1000;
+    return score;
+  }
+
+  private static int lowRights(Game2048Board b, List<Game2048Tile> sortedItems) {
+    // penalize if low values to the right
+    int score = 0;
+    for (int y = 0; y < 3; y++) {
+      if (b.get(3, y).getValue() == v0) {
+        score -= 100 * sortedItems.get(0).getValue().VAL;
+      } else if (b.get(3, y).getValue() == v2) {
+        score -= 50 * sortedItems.get(0).getValue().VAL;
+      }
+    }
+    return score;
+  }
+
+  private static int snake(Game2048Board b, List<Game2048Tile> sortedItems, Game2048Tile max) {
     // bonus for a snake-like patterns from the upper right, and down
+    int score = 0;
     if (b.get(3, 3).getValue() == max.getValue()) {
       score += 30000 * max.getValue().VAL;
 
@@ -69,32 +120,7 @@ public class FourOutOfTen {
     } else if (max.x == 2) {
       score -= 10;
     }
-
-    // penalize if low values to the right
-    for (int y = 0; y < 3; y++) {
-      if (b.get(3, y).getValue() == v0) {
-        score -= 100 * sortedItems.get(0).getValue().VAL;
-      } else if (b.get(3, y).getValue() == v2) {
-        score -= 50 * sortedItems.get(0).getValue().VAL;
-      }
-    }
-    for (int x = 0; x < 3; x++) {
-      for (int y = 0; y < 3; y++) {
-        Game2048Tile game2048Tile = b.get(x, y);
-        if (game2048Tile.isEmpty()) {
-          score += 200;
-        }
-      }
-    }
-
-    // bonus for empty tiles
-    score += b.getEmptyTiles().size() * 1000;
-
-    // exponential bonus for sum of the board
-    for (Game2048Tile tile : b.getItems()) {
-      score += Math.pow(tile.getValue().VAL, 2);
-    }
-    b.setScore(score);
+    return score;
   }
 
 
