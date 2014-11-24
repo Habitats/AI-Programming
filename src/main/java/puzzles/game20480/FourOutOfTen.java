@@ -18,14 +18,6 @@ public class FourOutOfTen {
     List<Game2048Tile> sortedItems = b.getSortedItems();
     Game2048Tile max = sortedItems.get(0);
 
-//    for (int x = 0; x < 3; x++) {
-//      for (int y = 0; y < 3; y++) {
-//        Game2048Tile game2048Tile = b.get(x, y);
-//        if (game2048Tile.isEmpty()) {
-//          score += 200;
-//        }
-//      }
-//    }
 
     int maxNotRight = maxNotRight(b, sortedItems);
     int snake = snake(b, sortedItems, max);
