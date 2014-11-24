@@ -26,6 +26,7 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
   private Game2048Board board;
   private Game2048Gui gui;
   private double scores;
+  private long stepTime;
 
   @Override
   public void run() {
@@ -87,7 +88,7 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
     scores += board.getMaxScore();
 
     int sum = board.getItems().stream().mapToInt(tile -> (tile.getValue().VAL)).sum();
-    Log.i(TAG, "Max tile: " + board.getMaxScore() + "\tMoves: " + numMoves + "\t\tScore: " + sum);
+    Log.i(TAG, "Max tile: " + board.getMaxScore() + "      Moves: " + numMoves + "      Score: " + sum);
   }
 
   private synchronized void stepAndWait() {
@@ -96,7 +97,7 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
       if (AIMain.MANUAL_STEP) {
         wait();
       } else {
-        wait(20);
+        wait(stepTime);
       }
 //      Log.v(TAG, "continuing!");
     } catch (InterruptedException e) {
@@ -132,6 +133,7 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
   @Override
   public void stepChanged(int value) {
     Log.v(TAG, "step changed: " + value);
+    stepTime = (value * 10) + 10;
   }
 
   @Override

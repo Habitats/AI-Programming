@@ -111,6 +111,9 @@ public class Game2048Gui implements Runnable {
       Log.v(TAG, "slider event: " + e);
       AISlider slider = (AISlider) e.getSource();
       listener.stepChanged(slider.getValue());
+      synchronized (listener) {
+        listener.notify();
+      }
     });
     labelsCheckbox.addActionListener(e -> {
       AICheckBox checkbox = (AICheckBox) e.getSource();
