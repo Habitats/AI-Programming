@@ -33,7 +33,7 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
     gui = new Game2048Gui(this);
     new Thread(gui).start();
     long start = System.currentTimeMillis();
-    int i1 = 30;
+    int i1 = 300;
     for (int i = 0; i < i1; i++) {
       initialize();
     }
