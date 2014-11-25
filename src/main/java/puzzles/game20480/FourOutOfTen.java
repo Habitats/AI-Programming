@@ -18,11 +18,17 @@ public class FourOutOfTen {
     List<Game2048Tile> sortedItems = b.getSortedItems();
     Game2048Tile max = sortedItems.get(0);
 
-    int maxNotRight = maxNotRight(b, sortedItems);
-    int snake = snake(b, sortedItems, max);
-    int lowRights = lowRights(b, sortedItems);
-    int empty = empty(b);
-    int sum = sum(b);
+    int maxNotRight = 0;
+    int snake = 0;
+    int lowRights = 0;
+    int empty = 0;
+    int sum = 0;
+
+    maxNotRight = maxNotRight(b, sortedItems);
+    snake = snake(b, sortedItems, max);
+    lowRights = lowRights(b, sortedItems);
+    empty = empty(b);
+    sum = sum(b);
 
     int score = maxNotRight + snake + lowRights + empty + sum;
 
@@ -82,6 +88,16 @@ public class FourOutOfTen {
     }
     if (b.get(3, 1).getValue() == v0) {
       score -= 250000;
+    }
+
+    if (b.get(3, 3).getValue() == v2) {
+      score -= 250000;
+    }
+    if (b.get(3, 2).getValue() == v2) {
+      score -= 100000;
+    }
+    if (b.get(3, 1).getValue() == v2) {
+      score -= 50000;
     }
 
     return score;

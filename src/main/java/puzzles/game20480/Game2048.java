@@ -35,6 +35,9 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
     long start = System.currentTimeMillis();
     int i1 = 300;
     for (int i = 0; i < i1; i++) {
+      if (i > 0 && i % 5 == 0) {
+        Log.i(TAG, "Average score: " + scores / i + " - Average ttl: " + (System.currentTimeMillis() - start));
+      }
       initialize();
     }
     Log.i(TAG, "Average score: " + scores / i1 + " - Average ttl: " + (System.currentTimeMillis() - start));
@@ -61,7 +64,7 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
 
       for (MiniMaxState next : board.getPossibleNextStates()) {
 //        int value = ExpectiMax.expectiMax(next, 4);
-        int value = MiniMax.alphaBeta(next, 4);
+        int value = MiniMax.alphaBeta(next, 5);
         ((Game2048Board) next).printBoard();
 //        Log.v(TAG, "cluster: " + Simple.clusteringScore((Game2048Board) next));
         Log.v(TAG, "score: " + value);
