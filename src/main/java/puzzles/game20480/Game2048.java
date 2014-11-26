@@ -33,7 +33,7 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
     gui = new Game2048Gui(this);
     new Thread(gui).start();
     long start = System.currentTimeMillis();
-    int i1 = 300;
+    int i1 = 5;
     for (int i = 0; i < i1; i++) {
       if (i > 0 && i % 5 == 0) {
         Log.i(TAG, "Average score: " + scores / i + " - Average ttl: " + (System.currentTimeMillis() - start));
@@ -88,6 +88,13 @@ public class Game2048 implements Runnable, Game2048ButtonListener {
       }
 
       stepAndWait();
+    }
+
+    synchronized (this){
+      try {
+        wait();
+      } catch (InterruptedException e) {
+      }
     }
 
     scores += board.getMaxScore();
